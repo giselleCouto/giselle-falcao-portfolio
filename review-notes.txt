@@ -1,0 +1,7 @@
+Revisão visual da prévia do portfólio em 2026-04-06.
+
+1. O cabeçalho ficou mais equilibrado após o ajuste, com melhor proporção entre logotipo, navegação e CTA.
+2. A hero section está mais elegante, mas ainda requer revisão fina conforme feedback posterior da usuária.
+3. Na área intermediária entre formação e publicações, há uma sensação de excesso de vazio vertical antes da seção de publicações.
+4. O bloco de formação parece distante da próxima seção, sugerindo necessidade de reduzir padding ou melhorar transição visual entre seções.
+5. A barra inferior do modo de preview interfere parcialmente na leitura das partes inferiores da viewport durante inspeção visual.
