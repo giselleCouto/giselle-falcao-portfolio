@@ -1,0 +1,7 @@
+- [ ] Reorganizar a arquitetura do site para operar como hub de identidades em `coutofalcao.com`
+- [ ] Criar a landing page raiz `/` como seletor de identidade com dois blocos interativos
+- [ ] Adaptar o portfólio atual para a rota `/giselle`, preservando conteúdo e refinando a UX
+- [ ] Definir o posicionamento, o tom e a estrutura visual da persona `/jade`
+- [ ] Implementar roteamento interno com suporte a deep linking para `/giselle` e `/jade`
+- [ ] Revisar consistência visual, SEO básico, responsividade e transições entre rotas
+- [ ] Validar a compilação final e preparar a nova entrega do projeto

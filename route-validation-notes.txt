@@ -1,0 +1,8 @@
+Validação da nova arquitetura em coutofalcao.com:
+
+1. A raiz / já foi convertida com sucesso em uma landing page seletora de identidade, com dois blocos principais: Giselle e Jade.
+2. A home do hub está visualmente coerente com a direção premium aprovada, com boa separação entre marca-mãe e personas.
+3. A rota /giselle carrega corretamente o portfólio existente dentro da nova arquitetura do domínio principal.
+4. O portfólio de /giselle ainda mantém navegação e assinatura visual próprias; o próximo passo é integrá-lo melhor ao hub, incluindo retorno claro ao seletor de identidade e consistência entre rotas.
+5. A rota /jade já possui base inicial no roteamento, mas ainda precisa de desenvolvimento e refinamento para consolidar posicionamento, conteúdo e diferenciação de tom.
+6. Há um erro antigo de parsing reportado em PortfolioSite.tsx no console do dev server, embora a rota /giselle esteja renderizando na prévia; isso precisa ser verificado antes da entrega final atualizada.
