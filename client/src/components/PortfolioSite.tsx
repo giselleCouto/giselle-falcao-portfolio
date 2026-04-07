@@ -25,8 +25,10 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { trpc } from "@/lib/trpc";
 import { assets, authorityMetrics, contact, educationTimeline, experienceTimeline, expertiseCards, heroCopy, impactStats, keyAreas, navItems, placeholderPrompt, projectCategories, projects, publications, speaking, stack, certifications, t, type Locale, aboutSection, valueBlocks } from "@/lib/portfolioData";
 import { cn } from "@/lib/utils";
+import { toast } from "sonner";
 
 type SectionId =
   | "home"
@@ -115,6 +117,54 @@ export default function PortfolioSite({ initialLocale = "pt", page = "home" }: P
   const [projectFilter, setProjectFilter] = useState("Todos");
   const [publicationFilter, setPublicationFilter] = useState(locale === "pt" ? "Todos" : "All");
   const [location] = useLocation();
+  const [leadForm, setLeadForm] = useState({
+    name: "",
+    email: "",
+    organization: "",
+    interest: "",
+    message: "",
+  });
+
+  const currentRoute = useMemo(() => {
+    if (location.startsWith("/jade")) {
+      return { route: "/jade", persona: "jade" } as const;
+    }
+
+    if (location.startsWith("/giselle")) {
+      return { route: "/giselle", persona: "giselle" } as const;
+    }
+
+    return { route: "/", persona: "hub" } as const;
+  }, [location]);
+
+  const submitLeadMutation = trpc.leads.submit.useMutation({
+    onSuccess: (result) => {
+      setLeadForm({
+        name: "",
+        email: "",
+        organization: "",
+        interest: "",
+        message: "",
+      });
+
+      toast.success(
+        locale === "pt"
+          ? result.notificationSent
+            ? "Mensagem enviada com sucesso. Sua solicitação já foi sinalizada internamente."
+            : "Mensagem recebida com sucesso. O registro foi salvo e será analisado em breve."
+          : result.notificationSent
+            ? "Message sent successfully. Your request has already been flagged internally."
+            : "Message received successfully. Your submission has been saved and will be reviewed soon.",
+      );
+    },
+    onError: () => {
+      toast.error(
+        locale === "pt"
+          ? "Não foi possível enviar sua mensagem agora. Tente novamente em instantes."
+          : "We could not send your message right now. Please try again shortly.",
+      );
+    },
+  });
 
   const scrollToSection = (href: string) => {
     if (typeof window === "undefined" || !href.startsWith("#")) return;
@@ -165,6 +215,30 @@ export default function PortfolioSite({ initialLocale = "pt", page = "home" }: P
 
     return () => window.cancelAnimationFrame(frame);
   }, [location]);
+
+  const handleLeadFieldChange =
+    (field: keyof typeof leadForm) =>
+    (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      setLeadForm((prev) => ({
+        ...prev,
+        [field]: event.target.value,
+      }));
+    };
+
+  const handleLeadSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    await submitLeadMutation.mutateAsync({
+      route: currentRoute.route,
+      persona: currentRoute.persona,
+      name: leadForm.name,
+      email: leadForm.email,
+      organization: leadForm.organization,
+      interest: leadForm.interest,
+      message: leadForm.message,
+      source: "website-contact-form",
+    });
+  };
 
   return (
     <div className="relative overflow-hidden bg-[var(--bg-obsidian)] text-slate-100">
@@ -769,28 +843,68 @@ export default function PortfolioSite({ initialLocale = "pt", page = "home" }: P
             <Card className="self-start rounded-[2.2rem] border-white/8 bg-white/5 text-white">
               <CardContent className="p-8 sm:p-10">
                 <p className="text-xs uppercase tracking-[0.26em] text-slate-400">{locale === "pt" ? "Formulário de contato" : "Contact form"}</p>
-                <h3 className="mt-4 font-display text-3xl">{locale === "pt" ? "Estrutura pronta para captação de leads qualificados" : "Ready structure for qualified lead generation"}</h3>
+                <h3 className="mt-4 font-display text-3xl">{locale === "pt" ? "Captação ativa de leads qualificados" : "Active qualified lead capture"}</h3>
                 <p className="mt-4 text-sm leading-7 text-slate-300">
                   {locale === "pt"
-                    ? "Nesta versão, o formulário foi preparado como interface premium para futura integração com automação, CRM ou backend. Os campos e a hierarquia já seguem padrão institucional."
-                    : "In this version, the form was prepared as a premium interface for future integration with automation, CRM, or backend workflows. The fields and hierarchy already follow an institutional standard."}
+                    ? "Este formulário agora registra contatos no projeto e aciona uma notificação interna para acompanhamento. A experiência foi mantida com linguagem institucional, mas já opera com persistência e fluxo real de entrada."
+                    : "This form now records contacts inside the project and triggers an internal notification for follow-up. The experience keeps its institutional language while already running on a real persistence workflow."}
                 </p>
-                <div className="mt-8 space-y-4">
-                  <Input placeholder={locale === "pt" ? "Nome" : "Name"} className="h-12 rounded-2xl border-white/10 bg-white/5 text-white placeholder:text-slate-500" />
-                  <Input placeholder="E-mail" className="h-12 rounded-2xl border-white/10 bg-white/5 text-white placeholder:text-slate-500" />
-                  <Input placeholder={locale === "pt" ? "Organização" : "Organization"} className="h-12 rounded-2xl border-white/10 bg-white/5 text-white placeholder:text-slate-500" />
-                  <Textarea placeholder={locale === "pt" ? "Descreva o contexto do projeto, parceria ou convite" : "Describe the context of the project, partnership, or invitation"} className="min-h-36 rounded-2xl border-white/10 bg-white/5 text-white placeholder:text-slate-500" />
-                  <Button className="w-full rounded-full bg-white text-slate-950 hover:bg-[var(--accent-copper)]">
+                <form className="mt-8 space-y-4" onSubmit={handleLeadSubmit}>
+                  <Input
+                    value={leadForm.name}
+                    onChange={handleLeadFieldChange("name")}
+                    placeholder={locale === "pt" ? "Nome" : "Name"}
+                    className="h-12 rounded-2xl border-white/10 bg-white/5 text-white placeholder:text-slate-500"
+                    required
+                  />
+                  <Input
+                    type="email"
+                    value={leadForm.email}
+                    onChange={handleLeadFieldChange("email")}
+                    placeholder="E-mail"
+                    className="h-12 rounded-2xl border-white/10 bg-white/5 text-white placeholder:text-slate-500"
+                    required
+                  />
+                  <Input
+                    value={leadForm.organization}
+                    onChange={handleLeadFieldChange("organization")}
+                    placeholder={locale === "pt" ? "Organização, empresa ou instituição" : "Organization, company, or institution"}
+                    className="h-12 rounded-2xl border-white/10 bg-white/5 text-white placeholder:text-slate-500"
+                  />
+                  <Input
+                    value={leadForm.interest}
+                    onChange={handleLeadFieldChange("interest")}
+                    placeholder={locale === "pt" ? "Interesse principal: parceria, consultoria, palestra, projeto" : "Primary interest: partnership, consulting, speaking, project"}
+                    className="h-12 rounded-2xl border-white/10 bg-white/5 text-white placeholder:text-slate-500"
+                  />
+                  <Textarea
+                    value={leadForm.message}
+                    onChange={handleLeadFieldChange("message")}
+                    placeholder={locale === "pt" ? "Descreva o contexto do projeto, parceria, convite ou demanda institucional" : "Describe the context of the project, partnership, invitation, or institutional demand"}
+                    className="min-h-36 rounded-2xl border-white/10 bg-white/5 text-white placeholder:text-slate-500"
+                    required
+                  />
+                  <Button
+                    type="submit"
+                    disabled={submitLeadMutation.isPending}
+                    className="w-full rounded-full bg-white text-slate-950 hover:bg-[var(--accent-copper)] disabled:cursor-not-allowed disabled:opacity-70"
+                  >
                     <Mail className="mr-2 size-4" />
-                    {locale === "pt" ? "Preparado para integração futura" : "Prepared for future integration"}
+                    {submitLeadMutation.isPending
+                      ? locale === "pt"
+                        ? "Enviando mensagem..."
+                        : "Sending message..."
+                      : locale === "pt"
+                        ? "Enviar contato e acionar notificação interna"
+                        : "Send contact and trigger internal notification"}
                   </Button>
-                </div>
-                <div className="mt-8 rounded-[1.7rem] border border-white/8 bg-[rgba(7,17,26,0.45)] p-5">
-                  <p className="text-xs uppercase tracking-[0.24em] text-slate-500">{locale === "pt" ? "Observação" : "Note"}</p>
+                </form>
+                <div className="mt-8 rounded-[1.7rem] border border-white/8 bg-white/[0.03] p-6">
+                  <p className="text-xs uppercase tracking-[0.24em] text-slate-500">{locale === "pt" ? "Operação" : "Operation"}</p>
                   <p className="mt-3 text-sm leading-7 text-slate-300">
                     {locale === "pt"
-                      ? "O formulário foi desenhado para uma futura integração com CRM, automação ou atendimento institucional, preservando a linguagem executiva e a experiência premium do site."
-                      : "The form was designed for future integration with CRM, automation, or institutional outreach while preserving the site’s executive language and premium experience."}
+                      ? "Cada envio cria um registro persistente de lead com rota, persona, origem e mensagem, permitindo acompanhamento posterior sem perder a sofisticação da interface pública."
+                      : "Each submission creates a persistent lead record with route, persona, source, and message, enabling future follow-up without losing the sophistication of the public interface."}
                   </p>
                 </div>
               </CardContent>

@@ -104,12 +104,12 @@ export const aboutSection = {
     en: "Giselle Couto Falcão has built a distinctive trajectory across mathematics, computing, artificial intelligence, education, and applied research. Her work goes beyond data analysis: she frames complex problems, models scenarios, structures decisions, and turns technical knowledge into solutions capable of generating economic, institutional, and social impact.",
   },
   body: {
-    pt: "Ao longo de mais de uma década, sua experiência integrou empresas, setor público, universidades e organizações de relevância institucional. Esse percurso consolidou uma combinação pouco comum entre rigor científico, visão estratégica, sensibilidade educacional e capacidade de execução. O resultado é uma profissional apta a transitar com profundidade entre machine learning, modelagem matemática computacional, IA generativa, séries temporais, educação baseada em dados e matemática do clima.",
-    en: "Over more than a decade, her experience has spanned companies, the public sector, universities, and institutionally relevant organizations. This journey has consolidated an unusual combination of scientific rigor, strategic vision, educational sensitivity, and execution capacity. The result is a professional able to move with depth across machine learning, computational mathematical modeling, generative AI, time series, data-driven education, and climate mathematics.",
+    pt: "Ao longo de mais de uma década, sua experiência integrou empresas, setor público, universidades, marcas e organizações de relevância institucional. Esse percurso consolidou uma combinação pouco comum entre rigor científico, visão estratégica, sensibilidade educacional e capacidade de execução. O resultado é uma profissional apta a transitar com profundidade entre machine learning, modelagem matemática computacional, IA generativa, séries temporais, educação baseada em dados e matemática do clima.",
+    en: "Over more than a decade, her experience has spanned companies, the public sector, universities, brands, and institutionally relevant organizations. This journey has consolidated an unusual combination of scientific rigor, strategic vision, educational sensitivity, and execution capacity. The result is a professional able to move with depth across machine learning, computational mathematical modeling, generative AI, time series, data-driven education, and climate mathematics.",
   },
   closing: {
-    pt: "Seu posicionamento é o de uma liderança técnico-intelectual capaz de conectar pesquisa profunda e aplicações reais, apoiando projetos complexos em ambientes onde precisão analítica, reputação e impacto são decisivos.",
-    en: "Her positioning is that of a technical-intellectual leader capable of connecting deep research with real-world applications, supporting complex initiatives in environments where analytical precision, reputation, and impact are decisive.",
+    pt: "Seu posicionamento é o de uma liderança técnico-intelectual capaz de conectar pesquisa profunda e aplicações reais, apoiando projetos complexos em ambientes onde precisão analítica, reputação e impacto são decisivos. A autoria de livros, artigos e produção científica, somada à atuação com iniciativas e marcas como a AIFA, reforça uma presença pública e institucional orientada por conhecimento, inovação e autoridade.",
+    en: "Her positioning is that of a technical-intellectual leader capable of connecting deep research with real-world applications, supporting complex initiatives in environments where analytical precision, reputation, and impact are decisive. The authorship of books, articles, and scientific production, combined with work involving initiatives and brands such as AIFA, reinforces a public and institutional presence guided by knowledge, innovation, and authority.",
   },
 };
 
@@ -793,12 +793,12 @@ export const contact = {
     en: "If your organization is looking for a professional able to connect artificial intelligence, mathematical modeling, education, applied research, and strategic decision-making, this is the right time to start a qualified conversation.",
   },
   links: [
-    { label: "LinkedIn", href: "", available: false },
-    { label: "GitHub", href: "", available: false },
+    { label: "LinkedIn", href: "https://www.linkedin.com/in/giselle-falc%C3%A3o-phd-29b90028/", available: true },
+    { label: "GitHub", href: "https://github.com/giselleCouto", available: true },
     { label: "E-mail", href: "mailto:contato@gisellefalcao.com", available: true },
-    { label: "CV", href: "", available: false },
-    { label: "Google Scholar", href: "", available: false },
-    { label: "Lattes", href: "", available: false },
+    { label: "CV", href: "http://lattes.cnpq.br/7661015485905669", available: true },
+    { label: "Google Scholar", href: "https://scholar.google.com.br/citations?hl=pt-BR&user=ljBj6GMAAAAJ", available: true },
+    { label: "Lattes", href: "http://lattes.cnpq.br/7661015485905669", available: true },
   ],
 };
 

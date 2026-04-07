@@ -1,15 +1,50 @@
-// Design reminder: o domínio principal deve operar como um hub editorial premium,
+// Arquitetura principal do hub Couto Falcão
 // com uma home seletora sofisticada e duas personas claramente distintas,
 // preservando continuidade de marca, profundidade institucional e navegação fluida.
 
+import { useEffect } from "react";
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/NotFound";
 import { ArrowRight, BrainCircuit, Orbit, Sparkles } from "lucide-react";
-import { Link, Route, Switch } from "wouter";
+import { Link, Route, Switch, useLocation } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import PortfolioSite from "./components/PortfolioSite";
 import { ThemeProvider } from "./contexts/ThemeContext";
+
+function RouteSeo() {
+  const [location] = useLocation();
+
+  useEffect(() => {
+    const descriptionTag = document.querySelector('meta[name="description"]');
+
+    if (location === "/giselle") {
+      document.title = "Giselle Couto Falcão | IA, Educação e Modelagem Matemática";
+      descriptionTag?.setAttribute(
+        "content",
+        "Portfólio institucional de Giselle Couto Falcão com foco em inteligência artificial, educação, machine learning, modelagem matemática computacional, matemática do clima, publicações e projetos para empresas e instituições.",
+      );
+      return;
+    }
+
+    if (location === "/jade") {
+      document.title = "Jade | Posicionamento, Narrativa e Presença de Marca";
+      descriptionTag?.setAttribute(
+        "content",
+        "Persona Jade por Couto Falcão: uma frente voltada a posicionamento autoral, narrativa, presença pública e construção estratégica de imagem e marca.",
+      );
+      return;
+    }
+
+    document.title = "Couto Falcão | Hub de Identidades";
+    descriptionTag?.setAttribute(
+      "content",
+      "Couto Falcão é um hub de identidades que organiza frentes autorais e institucionais. Explore a rota Giselle para autoridade científica em IA, educação e modelagem matemática, e a rota Jade para posicionamento, narrativa e presença de marca.",
+    );
+  }, [location]);
+
+  return null;
+}
 
 function IdentityHub() {
   return (
@@ -214,13 +249,16 @@ function JadeProfile() {
 
 function Router() {
   return (
-    <Switch>
-      <Route path="/" component={IdentityHub} />
-      <Route path="/giselle" component={() => <PortfolioSite />} />
-      <Route path="/jade" component={JadeProfile} />
-      <Route path="/404" component={NotFound} />
-      <Route component={NotFound} />
-    </Switch>
+    <>
+      <RouteSeo />
+      <Switch>
+        <Route path="/" component={IdentityHub} />
+        <Route path="/giselle" component={() => <PortfolioSite />} />
+        <Route path="/jade" component={JadeProfile} />
+        <Route path="/404" component={NotFound} />
+        <Route component={NotFound} />
+      </Switch>
+    </>
   );
 }
 
