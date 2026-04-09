@@ -26,7 +26,7 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { trpc } from "@/lib/trpc";
-import { assets, authorityMetrics, contact, educationTimeline, experienceTimeline, expertiseCards, heroCopy, impactStats, keyAreas, navItems, placeholderPrompt, projectCategories, projects, publications, speaking, stack, certifications, t, type Locale, aboutSection, valueBlocks } from "@/lib/portfolioData";
+import { assets, authorityMetrics, contact, educationTimeline, experienceTimeline, expertiseCards, heroCopy, impactStats, keyAreas, navItems, placeholderPrompt, projectCategories, projects, publications, speaking, stack, certifications, t, type Locale, aboutSection, valueBlocks, linkedinBadge } from "@/lib/portfolioData";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 
@@ -109,6 +109,14 @@ function SectionHeading({
       <p className="mt-5 text-base leading-8 text-slate-300 sm:text-lg">{text}</p>
     </motion.div>
   );
+}
+
+declare global {
+  interface Window {
+    IN?: {
+      parse?: () => void;
+    };
+  }
 }
 
 export default function PortfolioSite({ initialLocale = "pt", page = "home" }: PortfolioSiteProps) {
@@ -215,6 +223,36 @@ export default function PortfolioSite({ initialLocale = "pt", page = "home" }: P
 
     return () => window.cancelAnimationFrame(frame);
   }, [location]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const parseLinkedinBadge = () => {
+      window.IN?.parse?.();
+    };
+
+    const existingScript = document.querySelector<HTMLScriptElement>('script[src="https://platform.linkedin.com/badges/js/profile.js"]');
+
+    if (existingScript) {
+      if (window.IN?.parse) {
+        parseLinkedinBadge();
+      } else {
+        existingScript.addEventListener("load", parseLinkedinBadge, { once: true });
+        return () => existingScript.removeEventListener("load", parseLinkedinBadge);
+      }
+      return;
+    }
+
+    const script = document.createElement("script");
+    script.src = "https://platform.linkedin.com/badges/js/profile.js";
+    script.async = true;
+    script.defer = true;
+    script.type = "text/javascript";
+    script.addEventListener("load", parseLinkedinBadge, { once: true });
+    document.body.appendChild(script);
+
+    return () => script.removeEventListener("load", parseLinkedinBadge);
+  }, [location, locale]);
 
   const handleLeadFieldChange =
     (field: keyof typeof leadForm) =>
@@ -836,6 +874,30 @@ export default function PortfolioSite({ initialLocale = "pt", page = "home" }: P
                 <div className="mt-10 rounded-[1.7rem] border border-[color:rgba(191,148,103,0.25)] bg-[linear-gradient(135deg,rgba(191,148,103,0.12),rgba(37,167,167,0.04))] p-6">
                   <p className="text-xs uppercase tracking-[0.26em] text-[var(--accent-copper)]">Future-ready prompt</p>
                   <p className="mt-3 text-sm leading-7 text-slate-300">{placeholderPrompt[locale]}</p>
+                </div>
+
+                <div className="mt-8 rounded-[1.7rem] border border-white/8 bg-white/[0.03] p-6">
+                  <p className="text-xs uppercase tracking-[0.24em] text-slate-500">LinkedIn</p>
+                  <p className="mt-3 text-sm leading-7 text-slate-300">
+                    {locale === "pt"
+                      ? "O perfil institucional também pode ser validado pelo selo oficial do LinkedIn, reforçando autoria pública e coerência entre presença acadêmica e executiva."
+                      : "The institutional profile can also be validated through the official LinkedIn badge, reinforcing public authorship and coherence between academic and executive presence."}
+                  </p>
+                  <div className="mt-5 overflow-hidden rounded-[1.5rem] border border-white/8 bg-white px-3 py-5 text-slate-900">
+                    <div
+                      className="badge-base LI-profile-badge"
+                      data-locale={locale === "pt" ? "pt_BR" : "en_US"}
+                      data-size="large"
+                      data-theme="light"
+                      data-type="HORIZONTAL"
+                      data-vanity={linkedinBadge.publicIdentifier}
+                      data-version="v1"
+                    >
+                      <a className="badge-base__link LI-simple-link" href={linkedinBadge.profileUrl} target="_blank" rel="noreferrer">
+                        {linkedinBadge.displayName}
+                      </a>
+                    </div>
+                  </div>
                 </div>
               </CardContent>
             </Card>

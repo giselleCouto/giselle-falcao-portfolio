@@ -17,3 +17,13 @@
 - [x] Incluir a marca AIFA e demais referências institucionais relevantes no conteúdo
 - [x] Atualizar os links profissionais de Giselle para GitHub, LinkedIn, Lattes e Google Scholar
 - [x] Criar e executar testes automatizados para a nova funcionalidade de leads e notificações
+- [x] Garantir que todas as soluções criadas neste projeto estejam elencadas na seção de projetos do portfólio de Giselle
+- [x] Verificar e corrigir a integração com o LinkedIn no perfil de Giselle, incluindo a estratégia de exibição do selo profissional
+- [x] Validar a renderização final da seção de projetos e dos links/perfil do LinkedIn após os ajustes
+- [x] Garantir que todas as soluções desenvolvidas neste projeto estejam listadas explicitamente na seção de projetos do portfólio de Giselle
+- [x] Corrigir a URL canônica do LinkedIn no perfil de Giselle
+- [x] Integrar o selo profissional do LinkedIn com o nome público "Giselle Falcão, PhD" na área institucional do portfólio
+- [x] Validar a renderização final dos projetos e da integração com LinkedIn
+- [x] Executar validação frontend conclusiva da seção de projetos no /giselle, incluindo os novos cases de Arquitetura Digital, com evidência verificável
+- [x] Confirmar com evidência objetiva que a integração oficial do LinkedIn está presente no frontend por script global, markup do badge e configuração canônica do perfil
+- [x] Revalidar o estado final do portfólio e preparar checkpoint de entrega

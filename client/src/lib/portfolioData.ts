@@ -222,6 +222,7 @@ export const projectCategories = [
   "Clima e Meio Ambiente",
   "Pesquisa Científica",
   "Setor Público",
+  "Arquitetura Digital",
 ];
 
 export const projects = [
@@ -458,6 +459,136 @@ export const projects = [
       en: "Greater institutional clarity, support for public action, and stronger analytical capacity within organizations.",
     },
     tags: ["public policy", "education", "government", "impact"],
+  },
+  {
+    category: "Arquitetura Digital",
+    sector: { pt: "Arquitetura digital e branding", en: "Digital architecture and branding" },
+    title: {
+      pt: "Hub Couto Falcão com seletor de identidades e arquitetura editorial por rota",
+      en: "Couto Falcão hub with identity selector and route-based editorial architecture",
+    },
+    context: {
+      pt: "Estrutura criada para organizar uma marca-mãe com múltiplas frentes de posicionamento sem perder coesão institucional.",
+      en: "A structure created to organize a parent brand with multiple positioning fronts without losing institutional cohesion.",
+    },
+    problem: {
+      pt: "Necessidade de apresentar identidades distintas sob o mesmo domínio, com clareza estratégica, leitura executiva e navegação consistente.",
+      en: "Need to present distinct identities under the same domain with strategic clarity, executive readability, and consistent navigation.",
+    },
+    approach: {
+      pt: "Desenho de hub principal, governança de rotas `/`, `/giselle` e `/jade`, narrativa institucional e SEO editorial por contexto.",
+      en: "Design of a main hub, route governance for `/`, `/giselle`, and `/jade`, institutional storytelling, and contextual editorial SEO.",
+    },
+    stack: "Brand architecture, UX writing, React, Wouter, editorial SEO",
+    impact: {
+      pt: "Transformação do site em um ativo estratégico de posicionamento com escalabilidade para múltiplas personas e frentes de negócio.",
+      en: "Transformation of the site into a strategic positioning asset with scalability for multiple personas and business fronts.",
+    },
+    tags: ["brand architecture", "identity hub", "routing", "editorial positioning"],
+  },
+  {
+    category: "Arquitetura Digital",
+    sector: { pt: "Portfólio científico e institucional", en: "Scientific and institutional portfolio" },
+    title: {
+      pt: "Portfólio premium de Giselle para autoridade científica, IA, educação e modelagem",
+      en: "Premium Giselle portfolio for scientific authority, AI, education, and modeling",
+    },
+    context: {
+      pt: "Construção de uma presença digital orientada a empresas, universidades, fundações e organizações interessadas em alta densidade técnica.",
+      en: "Creation of a digital presence aimed at companies, universities, foundations, and organizations seeking high technical density.",
+    },
+    problem: {
+      pt: "Baixa conversão institucional quando competências complexas não são apresentadas com clareza executiva e coerência visual.",
+      en: "Low institutional conversion when complex competencies are not presented with executive clarity and visual coherence.",
+    },
+    approach: {
+      pt: "Direção editorial bilíngue, seções narrativas, prova de autoridade, organização multissetorial de cases e integração de credenciais acadêmicas.",
+      en: "Bilingual editorial direction, narrative sections, authority proof, cross-sector case organization, and integration of academic credentials.",
+    },
+    stack: "Content architecture, React, premium UI, bilingual UX, institutional storytelling",
+    impact: {
+      pt: "Reposicionamento da presença digital de Giselle como ativo de autoridade científica e comercial para consultoria, docência e pesquisa aplicada.",
+      en: "Repositioning of Giselle’s digital presence as an asset of scientific and commercial authority for consulting, teaching, and applied research.",
+    },
+    tags: ["scientific authority", "portfolio", "bilingual", "institutional design"],
+  },
+  {
+    category: "Arquitetura Digital",
+    sector: { pt: "Persona estratégica", en: "Strategic persona" },
+    title: {
+      pt: "Persona Jade com posicionamento próprio e coerência de marca-mãe",
+      en: "Jade persona with its own positioning and parent-brand coherence",
+    },
+    context: {
+      pt: "Desdobramento de uma segunda identidade dentro do mesmo ecossistema digital, com autonomia narrativa e alinhamento estratégico.",
+      en: "Unfolding of a second identity within the same digital ecosystem, with narrative autonomy and strategic alignment.",
+    },
+    problem: {
+      pt: "Criar diferenciação clara entre personas sem fragmentar a percepção de marca ou comprometer a experiência do usuário.",
+      en: "Create clear differentiation between personas without fragmenting brand perception or compromising user experience.",
+    },
+    approach: {
+      pt: "Definição de rota dedicada, copy própria, hierarquia visual distinta e vínculo explícito com o seletor principal Couto Falcão.",
+      en: "Definition of a dedicated route, custom copy, distinct visual hierarchy, and explicit connection to the main Couto Falcão selector.",
+    },
+    stack: "Multi-persona UX, routing, brand system, narrative design",
+    impact: {
+      pt: "Criação de base pronta para expansão de novas linhas de posicionamento sem retrabalho estrutural.",
+      en: "Creation of a foundation ready for expanding new positioning lines without structural rework.",
+    },
+    tags: ["persona strategy", "multi-brand", "UX architecture", "positioning"],
+  },
+  {
+    category: "Arquitetura Digital",
+    sector: { pt: "Captação de leads e operações", en: "Lead capture and operations" },
+    title: {
+      pt: "Captação de leads com persistência em banco e notificações internas ao proprietário",
+      en: "Lead capture with database persistence and internal owner notifications",
+    },
+    context: {
+      pt: "Conversão do contato institucional em fluxo operacional real dentro do projeto, sem depender de formulários meramente estáticos.",
+      en: "Conversion of institutional contact into a real operational workflow inside the project, instead of relying on purely static forms.",
+    },
+    problem: {
+      pt: "Perda de oportunidades e falta de acompanhamento quando contatos recebidos não são registrados nem sinalizados internamente.",
+      en: "Lost opportunities and lack of follow-up when incoming contacts are neither recorded nor flagged internally.",
+    },
+    approach: {
+      pt: "Criação de tabela de leads, mutation pública com validação, persistência estruturada, feedback visual no frontend e alerta interno ao proprietário.",
+      en: "Creation of a lead table, public validated mutation, structured persistence, visual frontend feedback, and internal owner alerting.",
+    },
+    stack: "tRPC, Drizzle, MySQL, React forms, notifications",
+    impact: {
+      pt: "O site passou a operar como canal de geração e acompanhamento de oportunidades, conectando autoridade pública a conversão qualificada.",
+      en: "The site now operates as a channel for generating and tracking opportunities, connecting public authority to qualified conversion.",
+    },
+    tags: ["lead capture", "notifications", "database", "conversion"],
+  },
+  {
+    category: "Arquitetura Digital",
+    sector: { pt: "SEO e presença institucional", en: "SEO and institutional presence" },
+    title: {
+      pt: "SEO básico por rota e integração institucional de presença digital",
+      en: "Route-level basic SEO and institutional digital-presence integration",
+    },
+    context: {
+      pt: "Refinamento do hub para ampliar legibilidade em buscadores e fortalecer a apresentação institucional de cada rota.",
+      en: "Refinement of the hub to improve search readability and strengthen the institutional presentation of each route.",
+    },
+    problem: {
+      pt: "Sem metadados por rota, diferentes identidades e propostas de valor perdem força na indexação e no compartilhamento.",
+      en: "Without route-level metadata, different identities and value propositions lose strength in indexing and sharing.",
+    },
+    approach: {
+      pt: "Atualização dinâmica de título e descrição por rota, metadados globais do hub e conexão com canais institucionais como LinkedIn, Lattes, GitHub e Google Scholar.",
+      en: "Dynamic route-level title and description updates, global hub metadata, and connection with institutional channels such as LinkedIn, Lattes, GitHub, and Google Scholar.",
+    },
+    stack: "SEO metadata, Wouter, institutional links, content strategy",
+    impact: {
+      pt: "Maior coerência entre marca, descoberta orgânica e credibilidade institucional nas diferentes entradas do ecossistema digital.",
+      en: "Greater coherence among brand, organic discovery, and institutional credibility across the different entry points of the digital ecosystem.",
+    },
+    tags: ["SEO", "metadata", "institutional links", "discoverability"],
   },
 ];
 
@@ -793,13 +924,19 @@ export const contact = {
     en: "If your organization is looking for a professional able to connect artificial intelligence, mathematical modeling, education, applied research, and strategic decision-making, this is the right time to start a qualified conversation.",
   },
   links: [
-    { label: "LinkedIn", href: "https://www.linkedin.com/in/giselle-falc%C3%A3o-phd-29b90028/", available: true },
+    { label: "LinkedIn", href: "https://www.linkedin.com/in/giselle-falcao-phd/", available: true },
     { label: "GitHub", href: "https://github.com/giselleCouto", available: true },
     { label: "E-mail", href: "mailto:contato@gisellefalcao.com", available: true },
     { label: "CV", href: "http://lattes.cnpq.br/7661015485905669", available: true },
     { label: "Google Scholar", href: "https://scholar.google.com.br/citations?hl=pt-BR&user=ljBj6GMAAAAJ", available: true },
     { label: "Lattes", href: "http://lattes.cnpq.br/7661015485905669", available: true },
   ],
+};
+
+export const linkedinBadge = {
+  publicIdentifier: "giselle-falcao-phd",
+  profileUrl: "https://www.linkedin.com/in/giselle-falcao-phd/",
+  displayName: "Giselle Falcão, PhD",
 };
 
 export const placeholderPrompt = {

@@ -1,0 +1,10 @@
+Verificação do LinkedIn de Giselle Falcão
+
+- O perfil público abriu com o título "Giselle Falcão, PhD | LinkedIn".
+- A URL canônica observada no navegador foi: https://www.linkedin.com/in/giselle-falcao-phd/
+- A URL atualmente cadastrada no portfólio usa o formato codificado com sufixo antigo: https://www.linkedin.com/in/giselle-falc%C3%A3o-phd-29b90028/
+- A navegação redirecionou para a URL pública curta/canônica, indicando que esta deve ser usada no site.
+- O perfil público mostra claramente o nome "Giselle Falcão, PhD".
+- Para exibição de selo/badge do LinkedIn, o identificador público mais seguro a testar no site é o slug canônico: giselle-falcao-phd.
+- É necessário revisar se o site já embute o script de badge do LinkedIn; até aqui, a seção de contato mostra apenas links textuais.
+- Também é necessário incluir explicitamente, na seção de projetos, as soluções construídas neste próprio projeto (hub de identidades, portfólio Giselle, persona Jade, captação de leads com notificações internas, SEO por rota e integração institucional).

@@ -1,0 +1,8 @@
+# Validação final parcial do portfólio de Giselle
+
+## Evidências coletadas no preview
+
+1. A página `/giselle` exibiu a seção de projetos com a categoria adicional `Arquitetura Digital`, confirmando que os novos cases do próprio projeto foram incorporados ao portfólio.
+2. Ao abrir `/giselle#contato`, a extração textual da página indicou explicitamente que a área de contato mostra o bloco do LinkedIn com o selo oficial associado ao perfil público de Giselle Falcão, PhD.
+3. A URL canônica adotada para LinkedIn no projeto é `https://www.linkedin.com/in/giselle-falcao-phd/`, conforme as notas anteriores de verificação.
+4. O viewport da navegação com hash apresentou renderização visual branca na captura, embora a extração textual tenha confirmado a presença do bloco do LinkedIn; isso sugere necessidade de checagem adicional do estado do preview para descartar artefato de captura.
