@@ -1,4 +1,4 @@
-- [ ] Reorganizar a arquitetura do site para operar como hub de identidades em `coutofalcao.com`
+- [x] Reorganizar a arquitetura do site para operar como hub de identidades em `coutofalcao.com`
 - [x] Criar a landing page raiz `/` como seletor de identidade com dois blocos interativos
 - [x] Adaptar o portfólio atual para a rota `/giselle`, preservando conteúdo e refinando a UX
 - [x] Definir o posicionamento, o tom e a estrutura visual da persona `/jade`
