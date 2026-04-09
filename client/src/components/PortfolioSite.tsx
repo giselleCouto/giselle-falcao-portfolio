@@ -736,17 +736,32 @@ export default function PortfolioSite({ initialLocale = "pt", page = "home" }: P
                         <span className="text-xs uppercase tracking-[0.22em] text-slate-500">{item.year}</span>
                       </div>
                       <h3 className="mt-5 font-display text-2xl leading-tight">{t(locale, item.title)}</h3>
+                      {item.venue ? <p className="mt-3 text-xs uppercase tracking-[0.18em] text-slate-400">{t(locale, item.venue)}</p> : null}
                       <p className="mt-4 text-sm leading-7 text-slate-300">{t(locale, item.summary)}</p>
-                      {item.link && item.link !== "#" ? (
-                        <a href={item.link} target="_blank" rel="noreferrer" className="mt-6 inline-flex items-center text-sm text-teal-200 transition hover:text-white">
-                          {locale === "pt" ? "Abrir publicação" : "Open publication"}
-                          <ArrowRight className="ml-2 size-4" />
-                        </a>
-                      ) : (
-                        <span className="mt-6 inline-flex items-center text-sm text-slate-500">
-                          {locale === "pt" ? "Link externo será inserido aqui" : "External link will be added here"}
-                        </span>
-                      )}
+                      <div className="mt-6 flex flex-wrap items-center gap-3">
+                        {item.link && item.link !== "#" ? (
+                          <a
+                            href={item.link}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="inline-flex items-center rounded-full border border-teal-300/30 bg-teal-300/10 px-4 py-2 text-sm text-teal-100 transition hover:border-teal-200 hover:bg-teal-300/20 hover:text-white"
+                          >
+                            {locale === "pt" ? "Abrir artigo" : "Open article"}
+                            <ArrowRight className="ml-2 size-4" />
+                          </a>
+                        ) : null}
+                        {item.doi ? (
+                          <a
+                            href={item.doi}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="inline-flex items-center rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-slate-200 transition hover:border-white/20 hover:bg-white/10 hover:text-white"
+                          >
+                            DOI
+                            <span className="ml-2 text-xs text-slate-400">{item.doi.replace("https://doi.org/", "")}</span>
+                          </a>
+                        ) : null}
+                      </div>
                     </CardContent>
                   </Card>
                 </motion.div>

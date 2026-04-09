@@ -1,0 +1,11 @@
+Validação da seção de publicações em /giselle#publicacoes
+
+1. O frontend renderiza a seção de publicações com a chamada editorial "Pesquisa, papers e escrita técnica como extensão natural da autoridade".
+2. A busca por "DOI" no preview retornou cinco ocorrências, incluindo os quatro cards de publicação com os seguintes identificadores renderizados:
+   - 10.54033/cadpedv22n9-249
+   - 10.61074/2596-0172.2019.v2.69-94
+   - 10.5540/03.2020.007.01.0380
+   - 10.5540/03.2018.006.02.0253
+3. O texto extraído da página confirma a presença dos botões "Abrir artigo" e "DOI" junto às descrições das quatro publicações.
+4. Testes automatizados executados com sucesso: 2 arquivos de teste aprovados, 5 testes aprovados.
+5. Verificação TypeScript executada com sucesso via `pnpm exec tsc --noEmit`, sem erros.

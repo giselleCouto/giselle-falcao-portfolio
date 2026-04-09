@@ -748,70 +748,76 @@ export const publications = [
     year: "2025",
     theme: "Educação",
     title: {
-      pt: "IA, recomposição da aprendizagem e taxonomias pedagógicas para decisões educacionais mais precisas",
-      en: "AI, learning recovery, and pedagogical taxonomies for more precise educational decisions",
+      pt: "O impacto da recomposição da aprendizagem: um estudo profundo de como a recomposição escolar pode melhor os níveis de desempenho dos estudantes da Ensino Fundamental II",
+      en: "The impact of learning recovery: an in-depth study of how school recovery can improve elementary students' performance levels",
+    },
+    venue: {
+      pt: "Caderno Pedagógico, v. 22, n. 9, e18270",
+      en: "Caderno Pedagógico, vol. 22, no. 9, e18270",
     },
     summary: {
-      pt: "Discussão sobre o uso de inteligência artificial para diagnóstico educacional, acompanhamento e priorização pedagógica em larga escala.",
-      en: "Discussion on the use of artificial intelligence for educational diagnosis, monitoring, and pedagogical prioritization at scale.",
+      pt: "Artigo sobre recomposição da aprendizagem com análise quantitativa do uso da plataforma Desafio Crescer e correlação entre engajamento escolar, descritores críticos e evolução de proficiência em avaliações oficiais.",
+      en: "Article on learning recovery featuring a quantitative analysis of the Desafio Crescer platform and the correlation between school engagement, critical descriptors, and proficiency gains in official assessments.",
     },
-    link: "#",
+    link: "https://ojs.studiespublicacoes.com.br/ojs/index.php/cadped/article/view/18270",
+    doi: "https://doi.org/10.54033/cadpedv22n9-249",
+  },
+  {
+    type: { pt: "Artigo / Educação", en: "Article / Education" },
+    year: "2019",
+    theme: "Educação",
+    title: {
+      pt: "Ensino da matemática convergente com a BNCC 2017: uma análise de experiências exitosas",
+      en: "Teaching mathematics aligned with BNCC 2017: an analysis of successful experiences",
+    },
+    venue: {
+      pt: "CoInspiração - Revista dos Professores que Ensinam Matemática, v. 2, n. 1, p. 69–94",
+      en: "CoInspiração - Journal of Mathematics Teachers, vol. 2, no. 1, pp. 69–94",
+    },
+    summary: {
+      pt: "Publicação dedicada à tradução prática da BNCC para o ensino da matemática, reunindo experiências pedagógicas, metodologias ativas e estratégias aplicáveis ao ensino fundamental e médio.",
+      en: "Publication focused on translating BNCC into practical mathematics teaching through pedagogical cases, active methodologies, and classroom strategies for middle and secondary education.",
+    },
+    link: "https://sbemmatogrosso.com.br/publicacoes/index.php/coinspiracao/article/view/50",
+    doi: "https://doi.org/10.61074/2596-0172.2019.v2.69-94",
   },
   {
     type: { pt: "Pesquisa / Clima", en: "Research / Climate" },
-    year: "2024",
+    year: "2020",
     theme: "Clima",
     title: {
-      pt: "Precipitação, previsibilidade e leitura matemática de sistemas climáticos complexos",
-      en: "Precipitation, predictability, and mathematical interpretation of complex climate systems",
+      pt: "Estudo matemático e estatístico sobre a análise do volume das precipitações pluviométricas na cidade de São Paulo e sua previsibilidade usando o modelo ARIMA",
+      en: "Mathematical and statistical study of rainfall volume in São Paulo and its predictability using the ARIMA model",
+    },
+    venue: {
+      pt: "Proceeding Series of the Brazilian Society of Computational and Applied Mathematics, v. 7, n. 1",
+      en: "Proceeding Series of the Brazilian Society of Computational and Applied Mathematics, vol. 7, no. 1",
     },
     summary: {
-      pt: "Estudo voltado à compreensão de séries temporais climáticas, variabilidade e modelagem aplicada à interpretação ambiental.",
-      en: "Study focused on understanding climate time series, variability, and modeling applied to environmental interpretation.",
+      pt: "Trabalho sobre modelagem de séries temporais não estacionárias para análise de sazonalidade e previsibilidade de precipitações máximas na capital paulista, com ênfase em métodos ARIMA.",
+      en: "Paper on non-stationary time-series modeling for seasonality and predictability analysis of maximum rainfall in São Paulo, with emphasis on ARIMA methods.",
     },
-    link: "#",
+    link: "https://proceedings.sbmac.org.br/sbmac/article/view/3076",
+    doi: "https://doi.org/10.5540/03.2020.007.01.0380",
   },
   {
-    type: { pt: "Pesquisa / Saúde", en: "Research / Health" },
-    year: "2023",
-    theme: "Saúde",
+    type: { pt: "Pesquisa / Clima", en: "Research / Climate" },
+    year: "2018",
+    theme: "Clima",
     title: {
-      pt: "EEG e modelagem matemática aplicada à análise de padrões neurofisiológicos",
-      en: "EEG and mathematical modeling applied to neurophysiological pattern analysis",
+      pt: "Análise do volume das precipitações pluviométricas em Belo Horizonte e sua previsibilidade usando expoente de Hurst",
+      en: "Analysis of rainfall volume in Belo Horizonte and its predictability using the Hurst exponent",
+    },
+    venue: {
+      pt: "Proceeding Series of the Brazilian Society of Computational and Applied Mathematics, v. 6, n. 2",
+      en: "Proceeding Series of the Brazilian Society of Computational and Applied Mathematics, vol. 6, no. 2",
     },
     summary: {
-      pt: "Produção orientada à análise quantitativa de sinais complexos e suporte a estudos com potencial clínico.",
-      en: "Research oriented toward quantitative analysis of complex signals and support for clinically relevant studies.",
+      pt: "Estudo que investiga autocorrelação, tendência e crescimento linear de precipitações históricas em Belo Horizonte a partir de análise multifractal e coeficiente de Hurst.",
+      en: "Study investigating autocorrelation, trend, and linear growth in historical rainfall series in Belo Horizonte through multifractal analysis and the Hurst coefficient.",
     },
-    link: "#",
-  },
-  {
-    type: { pt: "Tese / Modelagem", en: "Thesis / Modeling" },
-    year: "2026",
-    theme: "Matemática",
-    title: {
-      pt: "Tese em modelagem matemática e computacional para problemas complexos de alto impacto",
-      en: "Thesis in mathematical and computational modeling for high-impact complex problems",
-    },
-    summary: {
-      pt: "Produção intelectual orientada à formulação, experimentação e aplicação de métodos avançados de modelagem.",
-      en: "Intellectual production focused on formulating, experimenting with, and applying advanced modeling methods.",
-    },
-    link: "#",
-  },
-  {
-    type: { pt: "Paper / IA", en: "Paper / AI" },
-    year: "2026",
-    theme: "IA / Machine Learning",
-    title: {
-      pt: "Avaliação de modelos, embeddings e fluxos baseados em linguagem para cenários institucionais",
-      en: "Model evaluation, embeddings, and language-based workflows for institutional scenarios",
-    },
-    summary: {
-      pt: "Reflexão técnica sobre arquiteturas de IA contemporâneas aplicadas a contextos de negócio, educação e gestão do conhecimento.",
-      en: "Technical reflection on contemporary AI architectures applied to business, education, and knowledge-management contexts.",
-    },
-    link: "#",
+    link: "https://proceedings.sbmac.emnuvens.com.br/sbmac/article/view/2376",
+    doi: "https://doi.org/10.5540/03.2018.006.02.0253",
   },
 ];
 

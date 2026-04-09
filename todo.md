@@ -27,3 +27,5 @@
 - [x] Executar validação frontend conclusiva da seção de projetos no /giselle, incluindo os novos cases de Arquitetura Digital, com evidência verificável
 - [x] Confirmar com evidência objetiva que a integração oficial do LinkedIn está presente no frontend por script global, markup do badge e configuração canônica do perfil
 - [x] Revalidar o estado final do portfólio e preparar checkpoint de entrega
+- [x] Adicionar uma seção de publicações ao portfólio de Giselle com links para artigos e DOIs correspondentes
+- [x] Validar a renderização e a integridade dos links e DOIs da nova seção de publicações

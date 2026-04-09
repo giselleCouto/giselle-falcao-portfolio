@@ -1,0 +1,41 @@
+# Publicações identificadas para o portfólio de Giselle
+
+## Fontes consultadas
+
+1. Perfil público do Google Scholar de Giselle Couto Falcão.
+2. Página oficial do artigo no Caderno Pedagógico.
+
+## Publicações visíveis no Google Scholar
+
+- Ensino da matemática convergente com a BNCC 2017: uma análise de experiências exitosas (2019)
+- Análise do volume das precipitações pluviométricas em Belo Horizonte e sua previsibilidade usando expoente de Hurst (2018)
+- O impacto da recomposição da aprendizagem: um estudo profundo de como a recomposição escolar pode melhor os níveis de desempenho dos estudantes da Ensino Fundamental II (2025)
+- Estudo matemático e estatístico sobre a análise do volume das precipitações pluviométricas na cidade de São Paulo e sua previsibilidade usando o modelo ARIMA (2020)
+- Analysis of the Volume of Pluviometric Precipitations in Belo Horizonte and its Forecastability Using Hurst Exponent (2019)
+- Análise de tendência para o volume de precipitações máximas na capital mineira usando estimativa expoente de Hurst (2018)
+- Como as emoções são processadas no Cérebro: uma análise de EEG
+
+## Metadados confirmados da página oficial do Caderno Pedagógico
+
+- Título: O impacto da recomposição da aprendizagem: um estudo profundo de como a recomposição escolar pode melhor os níveis de desempenho dos estudantes da Ensino Fundamental II
+- Autores: Giselle Couto Falcao; Philipy Rodrigues Silva
+- Revista: Caderno Pedagógico
+- Ano: 2025
+- Volume e número: 22(9)
+- Identificador: e18270
+- DOI: https://doi.org/10.54033/cadpedv22n9-249
+- Link do artigo: https://ojs.studiespublicacoes.com.br/ojs/index.php/cadped/article/view/18270
+
+## Metadados confirmados de proceedings da SBMAC
+
+- Análise do volume das precipitações pluviométricas em belo horizonte e sua previsibilidade usando expoente de Hurst
+  - Autores: Giselle Couto Falcão; Edgar Lacerda Aguiar
+  - Ano: 2018
+  - Link: https://proceedings.sbmac.emnuvens.com.br/sbmac/article/view/2376
+  - DOI: https://doi.org/10.5540/03.2018.006.02.0253
+
+- Estudo matemático e estatístico sobre a análise do volume das precipitações pluviométricas na cidade de São Paulo e sua previsibilidade usando o modelo ARIMA
+  - Autores: Giselle Couto Falcão; Edgar Lacerda Aguiar
+  - Ano: 2020
+  - Link: https://proceedings.sbmac.org.br/sbmac/article/view/3076
+  - DOI: https://doi.org/10.5540/03.2020.007.01.0380
