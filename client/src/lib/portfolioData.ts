@@ -358,29 +358,29 @@ export const projects = [
   },
   {
     category: "Logística",
-    sector: { pt: "Logística", en: "Logistics" },
+    sector: { pt: "Logística marítima e otimização", en: "Maritime logistics and optimization" },
     title: {
-      pt: "Planejamento de rotas e otimização com heurísticas e metaheurísticas",
-      en: "Route Planning and Optimization with Heuristics and Metaheuristics",
+      pt: "Otimização logística naval com meta-heurística, VRP e inteligência operacional",
+      en: "Naval logistics optimization with meta-heuristics, VRP, and operational intelligence",
     },
     context: {
-      pt: "Problemas logísticos com múltiplas restrições operacionais e necessidade de ganho de eficiência sob pressão de custo.",
-      en: "Logistical problems with multiple operational constraints and the need for efficiency gains under cost pressure.",
+      pt: "Operação naval multirrestrita com pressão simultânea sobre custo, nível de serviço, ocupação de frota, integração entre demandas e governança de dados em ambiente multitenant.",
+      en: "A multi-constrained naval operation under simultaneous pressure on cost, service level, fleet utilization, demand consolidation, and data governance in a multitenant environment.",
     },
     problem: {
-      pt: "Percursos ineficientes, baixa ocupação, alto custo operacional e variabilidade da operação.",
-      en: "Inefficient routes, low utilization, high operational cost, and operational variability.",
+      pt: "Rotas pouco eficientes, ocupação média de 60%, alto consumo de bunker, baixa capacidade de simular cenários de risco e custo e dificuldade de traduzir a complexidade operacional para o decisor em tempo hábil.",
+      en: "Inefficient routes, average fleet utilization of 60%, high bunker consumption, limited ability to simulate cost and risk scenarios, and difficulty translating operational complexity into timely decision support.",
     },
     approach: {
-      pt: "Modelagem matemática, algoritmos exatos, heurísticos e simulação orientada por cenários.",
-      en: "Mathematical modeling, exact algorithms, heuristics, and scenario-based simulation.",
+      pt: "Desenvolvimento de um modelo matemático de VRP com janelas de tempo e restrições de capacidade volumétrica/tanque, resolvido por meta-heurística e motor de simulação multi-cenário. A solução incorporou agrupamento inteligente de demandas, sequenciamento de portos, bunker dinâmico, APIs Type 4, SLA operacional, Gantt interativo e mapa de rotas em SVG para leitura executiva.",
+      en: "Development of a VRP mathematical model with time windows and volumetric/tank capacity constraints, solved through meta-heuristics and a multi-scenario simulation engine. The solution incorporated intelligent demand clustering, port sequencing, dynamic bunker optimization, Type 4 APIs, operational SLA controls, an interactive Gantt, and SVG route maps for executive decision-making.",
     },
-    stack: "Optimization, Python, operations research, simulation",
+    stack: "Python, operations research, meta-heuristics, VRP, multitenancy, AWS, Azure, Oracle, SVG, Type 4 APIs",
     impact: {
-      pt: "Redução de custo, racionalização do planejamento e maior previsibilidade operacional.",
-      en: "Cost reduction, smarter planning, and greater operational predictability.",
+      pt: "Redução de USD 96 mil por mês no custo operacional, aumento da ocupação de frota de 60% para 87%, redução de 22% na pegada de carbono e arquitetura cloud-agnostic com 100% de isolamento de dados em ambiente multitenant.",
+      en: "Reduced operational cost by USD 96k per month, increased fleet utilization from 60% to 87%, lowered carbon footprint by 22%, and delivered a cloud-agnostic architecture with 100% data isolation in a multitenant environment.",
     },
-    tags: ["routing", "operations research", "metaheuristics", "supply planning"],
+    tags: ["VRP", "meta-heuristics", "multitenancy", "bunker optimization", "SVG routing"],
   },
   {
     category: "Clima e Meio Ambiente",
@@ -661,6 +661,14 @@ export const experienceTimeline = [
     focus: {
       pt: "Aplicação de analytics e otimização a cenários industriais de alta exigência operacional.",
       en: "Application of analytics and optimization to industrial scenarios with high operational demands.",
+    },
+  },
+  {
+    org: "Logística marítima e otimização operacional",
+    role: { pt: "Pesquisa operacional, VRP e simulação multi-cenário", en: "Operations research, VRP, and multi-scenario simulation" },
+    focus: {
+      pt: "Desenvolvimento de solução meta-heurística cloud-agnostic para roteirização naval, multitenancy, redução de bunker, Gantt interativo e mapa de rotas em SVG voltados à decisão executiva.",
+      en: "Development of a cloud-agnostic meta-heuristic solution for naval routing, multitenancy, bunker reduction, an interactive Gantt, and SVG route maps designed for executive decision-making.",
     },
   },
   {

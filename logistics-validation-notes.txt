@@ -1,0 +1,7 @@
+Validação da experiência de otimização logística
+
+1. Testes automatizados: `pnpm test` concluído com sucesso, com 2 arquivos de teste aprovados e 5 testes passando no total.
+2. Tipagem: `pnpm exec tsc --noEmit` concluído sem erros.
+3. Frontend: a rota `/giselle#projetos` carregou corretamente no preview.
+4. Evidência textual no frontend: a busca por `USD 96 mil` retornou o texto completo do impacto do case logístico, incluindo aumento de ocupação de 60% para 87%, redução de 22% na pegada de carbono e arquitetura multitenant cloud-agnostic.
+5. Conteúdo técnico confirmado no código: o case menciona VRP, meta-heurística, bunker dinâmico, API Type 4, SLA operacional, Gantt interativo e mapa de rotas em SVG.

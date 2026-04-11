@@ -29,3 +29,5 @@
 - [x] Revalidar o estado final do portfólio e preparar checkpoint de entrega
 - [x] Adicionar uma seção de publicações ao portfólio de Giselle com links para artigos e DOIs correspondentes
 - [x] Validar a renderização e a integridade dos links e DOIs da nova seção de publicações
+- [x] Adicionar a experiência de otimização logística ao portfólio de Giselle com métricas de impacto, terminologia técnica e destaque para UI/UX analítica
+- [x] Validar a renderização e a consistência da nova experiência de otimização logística no portfólio
