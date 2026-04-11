@@ -838,7 +838,6 @@ export const contact = {
     { label: "LinkedIn", href: "https://www.linkedin.com/in/giselle-falcao-phd/", available: true },
     { label: "GitHub", href: "https://github.com/giselleCouto", available: true },
     { label: "E-mail", href: "mailto:contato@gisellefalcao.com", available: true },
-    { label: "CV", href: "http://lattes.cnpq.br/7661015485905669", available: true },
     { label: "Google Scholar", href: "https://scholar.google.com.br/citations?hl=pt-BR&user=ljBj6GMAAAAJ", available: true },
     { label: "Lattes", href: "http://lattes.cnpq.br/7661015485905669", available: true },
   ],
@@ -851,8 +850,8 @@ export const linkedinBadge = {
 };
 
 export const placeholderPrompt = {
-  pt: "Prompt-base para expansão futura: este site foi estruturado para receber cases adicionais, links de artigos, currículo, mídia, SEO ampliado, integrações de CMS e formulário com backend sem perda da linguagem institucional adotada.",
-  en: "Base prompt for future expansion: this website was structured to receive additional case studies, article links, CV, media, expanded SEO, CMS integrations, and backend-powered forms without losing the adopted institutional language.",
+  pt: "Prompt-base para expansão futura: este site foi estruturado para receber cases adicionais, links de artigos, mídia, SEO ampliado, integrações de CMS e formulário com backend sem perda da linguagem institucional adotada.",
+  en: "Base prompt for future expansion: this website was structured to receive additional case studies, article links, media, expanded SEO, CMS integrations, and backend-powered forms without losing the adopted institutional language.",
 };
 
 export function t(locale: Locale, value: { pt: string; en: string }) {

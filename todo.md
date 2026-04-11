@@ -37,3 +37,5 @@
 - [x] Remover do portfólio os cases de SEO por rota, captação de leads com banco e notificações, persona Jade, portfólio premium de Giselle e hub Couto Falcão
 - [x] Incluir no portfólio o projeto Wealthy Audit Flow AI com base na documentação técnica anexada
 - [x] Validar a renderização e a consistência final do portfólio após a troca dos projetos destacados
+- [x] Remover o currículo da interface do portfólio e manter o CV apenas como arquivo separado
+- [x] Validar que o currículo não aparece mais no site e que o arquivo separado permanece preservado

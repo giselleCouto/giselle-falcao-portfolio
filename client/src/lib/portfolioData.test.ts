@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { experienceTimeline, projects, publications } from "./portfolioData";
+import { contact, experienceTimeline, projects, publications } from "./portfolioData";
 
 describe("portfolio publications", () => {
   it("expõe links públicos e DOI para todas as publicações listadas", () => {
@@ -56,5 +56,14 @@ describe("portfolio featured projects curation", () => {
     expect(wealthyProject?.link).toBe("https://wealthy-audit-flow-ai.base44.app");
     expect(wealthyProject?.tags).toContain("multi-tenant");
     expect(wealthyProject?.tags).toContain("TISS/TUSS");
+  });
+
+  it("não expõe currículo como link do portfólio, mantendo apenas canais profissionais e acadêmicos", () => {
+    const contactLabels = contact.links.map(link => link.label);
+
+    expect(contactLabels).not.toContain("CV");
+    expect(contactLabels).toContain("LinkedIn");
+    expect(contactLabels).toContain("Google Scholar");
+    expect(contactLabels).toContain("Lattes");
   });
 });
