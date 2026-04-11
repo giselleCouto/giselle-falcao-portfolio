@@ -461,134 +461,31 @@ export const projects = [
     tags: ["public policy", "education", "government", "impact"],
   },
   {
-    category: "Arquitetura Digital",
-    sector: { pt: "Arquitetura digital e branding", en: "Digital architecture and branding" },
+    category: "HealthTech e IA aplicada",
+    sector: { pt: "Auditoria médica e recuperação financeira", en: "Medical auditing and financial recovery" },
     title: {
-      pt: "Hub Couto Falcão com seletor de identidades e arquitetura editorial por rota",
-      en: "Couto Falcão hub with identity selector and route-based editorial architecture",
+      pt: "Wealthy Audit Flow AI / AuditMed para auditoria de contas médicas e recuperação de glosas",
+      en: "Wealthy Audit Flow AI / AuditMed for medical-billing auditing and claim recovery",
     },
     context: {
-      pt: "Estrutura criada para organizar uma marca-mãe com múltiplas frentes de posicionamento sem perder coesão institucional.",
-      en: "A structure created to organize a parent brand with multiple positioning fronts without losing institutional cohesion.",
+      pt: "Plataforma SaaS multi-tenant criada para operadoras de saúde, clínicas e hospitais analisarem arquivos TISS, XML, Excel e CSV, detectando cobranças indevidas, glosas recuperáveis e anomalias financeiras em escala.",
+      en: "A multi-tenant SaaS platform built for health insurers, clinics, and hospitals to analyze TISS, XML, Excel, and CSV files, detecting improper charges, recoverable denials, and financial anomalies at scale.",
     },
     problem: {
-      pt: "Necessidade de apresentar identidades distintas sob o mesmo domínio, com clareza estratégica, leitura executiva e navegação consistente.",
-      en: "Need to present distinct identities under the same domain with strategic clarity, executive readability, and consistent navigation.",
+      pt: "Equipes de auditoria lidavam com grande volume de contas médicas, baixa rastreabilidade de inconsistências, risco de fraude, dificuldade de priorizar recursos e pouca visibilidade sobre recuperação potencial e modelo de success fee.",
+      en: "Audit teams faced high volumes of medical bills, limited inconsistency traceability, fraud risk, difficulty prioritizing appeals, and low visibility into recovery potential and success-fee economics.",
     },
     approach: {
-      pt: "Desenho de hub principal, governança de rotas `/`, `/giselle` e `/jade`, narrativa institucional e SEO editorial por contexto.",
-      en: "Design of a main hub, route governance for `/`, `/giselle`, and `/jade`, institutional storytelling, and contextual editorial SEO.",
+      pt: "Desenho de arquitetura React + Vite com Base44, entidades isoladas por tenant, pipeline de upload e extração de arquivos, análise com IA generativa para classificar duplicidades, sobrepreço, incompatibilidades TUSS/TISS e materiais sem registro ANVISA, além de dashboards, relatórios executivos e trilha de recuperação financeira por anomalia.",
+      en: "Designed a React + Vite architecture on Base44 with tenant-isolated entities, file-upload and extraction pipeline, generative-AI analysis to classify duplications, overpricing, TUSS/TISS incompatibilities, and materials lacking ANVISA registration, plus dashboards, executive reports, and financial recovery tracking per anomaly.",
     },
-    stack: "Brand architecture, UX writing, React, Wouter, editorial SEO",
+    stack: "React 18, Vite, Tailwind CSS, shadcn/ui, TanStack Query, React Router v6, Base44, JWT Auth, NoSQL entities, LLM analysis, Recharts",
     impact: {
-      pt: "Transformação do site em um ativo estratégico de posicionamento com escalabilidade para múltiplas personas e frentes de negócio.",
-      en: "Transformation of the site into a strategic positioning asset with scalability for multiple personas and business fronts.",
+      pt: "A solução estruturou uma operação auditável ponta a ponta, com detecção automática de anomalias, cálculo de potencial recuperável, gestão de success fee e acompanhamento do ciclo de recurso para transformar auditoria médica em inteligência operacional e financeira. Demo: https://wealthy-audit-flow-ai.base44.app",
+      en: "The solution structured an end-to-end auditable operation, with automated anomaly detection, recoverable-value estimation, success-fee calculation, and appeal lifecycle tracking to turn medical auditing into operational and financial intelligence. Demo: https://wealthy-audit-flow-ai.base44.app",
     },
-    tags: ["brand architecture", "identity hub", "routing", "editorial positioning"],
-  },
-  {
-    category: "Arquitetura Digital",
-    sector: { pt: "Portfólio científico e institucional", en: "Scientific and institutional portfolio" },
-    title: {
-      pt: "Portfólio premium de Giselle para autoridade científica, IA, educação e modelagem",
-      en: "Premium Giselle portfolio for scientific authority, AI, education, and modeling",
-    },
-    context: {
-      pt: "Construção de uma presença digital orientada a empresas, universidades, fundações e organizações interessadas em alta densidade técnica.",
-      en: "Creation of a digital presence aimed at companies, universities, foundations, and organizations seeking high technical density.",
-    },
-    problem: {
-      pt: "Baixa conversão institucional quando competências complexas não são apresentadas com clareza executiva e coerência visual.",
-      en: "Low institutional conversion when complex competencies are not presented with executive clarity and visual coherence.",
-    },
-    approach: {
-      pt: "Direção editorial bilíngue, seções narrativas, prova de autoridade, organização multissetorial de cases e integração de credenciais acadêmicas.",
-      en: "Bilingual editorial direction, narrative sections, authority proof, cross-sector case organization, and integration of academic credentials.",
-    },
-    stack: "Content architecture, React, premium UI, bilingual UX, institutional storytelling",
-    impact: {
-      pt: "Reposicionamento da presença digital de Giselle como ativo de autoridade científica e comercial para consultoria, docência e pesquisa aplicada.",
-      en: "Repositioning of Giselle’s digital presence as an asset of scientific and commercial authority for consulting, teaching, and applied research.",
-    },
-    tags: ["scientific authority", "portfolio", "bilingual", "institutional design"],
-  },
-  {
-    category: "Arquitetura Digital",
-    sector: { pt: "Persona estratégica", en: "Strategic persona" },
-    title: {
-      pt: "Persona Jade com posicionamento próprio e coerência de marca-mãe",
-      en: "Jade persona with its own positioning and parent-brand coherence",
-    },
-    context: {
-      pt: "Desdobramento de uma segunda identidade dentro do mesmo ecossistema digital, com autonomia narrativa e alinhamento estratégico.",
-      en: "Unfolding of a second identity within the same digital ecosystem, with narrative autonomy and strategic alignment.",
-    },
-    problem: {
-      pt: "Criar diferenciação clara entre personas sem fragmentar a percepção de marca ou comprometer a experiência do usuário.",
-      en: "Create clear differentiation between personas without fragmenting brand perception or compromising user experience.",
-    },
-    approach: {
-      pt: "Definição de rota dedicada, copy própria, hierarquia visual distinta e vínculo explícito com o seletor principal Couto Falcão.",
-      en: "Definition of a dedicated route, custom copy, distinct visual hierarchy, and explicit connection to the main Couto Falcão selector.",
-    },
-    stack: "Multi-persona UX, routing, brand system, narrative design",
-    impact: {
-      pt: "Criação de base pronta para expansão de novas linhas de posicionamento sem retrabalho estrutural.",
-      en: "Creation of a foundation ready for expanding new positioning lines without structural rework.",
-    },
-    tags: ["persona strategy", "multi-brand", "UX architecture", "positioning"],
-  },
-  {
-    category: "Arquitetura Digital",
-    sector: { pt: "Captação de leads e operações", en: "Lead capture and operations" },
-    title: {
-      pt: "Captação de leads com persistência em banco e notificações internas ao proprietário",
-      en: "Lead capture with database persistence and internal owner notifications",
-    },
-    context: {
-      pt: "Conversão do contato institucional em fluxo operacional real dentro do projeto, sem depender de formulários meramente estáticos.",
-      en: "Conversion of institutional contact into a real operational workflow inside the project, instead of relying on purely static forms.",
-    },
-    problem: {
-      pt: "Perda de oportunidades e falta de acompanhamento quando contatos recebidos não são registrados nem sinalizados internamente.",
-      en: "Lost opportunities and lack of follow-up when incoming contacts are neither recorded nor flagged internally.",
-    },
-    approach: {
-      pt: "Criação de tabela de leads, mutation pública com validação, persistência estruturada, feedback visual no frontend e alerta interno ao proprietário.",
-      en: "Creation of a lead table, public validated mutation, structured persistence, visual frontend feedback, and internal owner alerting.",
-    },
-    stack: "tRPC, Drizzle, MySQL, React forms, notifications",
-    impact: {
-      pt: "O site passou a operar como canal de geração e acompanhamento de oportunidades, conectando autoridade pública a conversão qualificada.",
-      en: "The site now operates as a channel for generating and tracking opportunities, connecting public authority to qualified conversion.",
-    },
-    tags: ["lead capture", "notifications", "database", "conversion"],
-  },
-  {
-    category: "Arquitetura Digital",
-    sector: { pt: "SEO e presença institucional", en: "SEO and institutional presence" },
-    title: {
-      pt: "SEO básico por rota e integração institucional de presença digital",
-      en: "Route-level basic SEO and institutional digital-presence integration",
-    },
-    context: {
-      pt: "Refinamento do hub para ampliar legibilidade em buscadores e fortalecer a apresentação institucional de cada rota.",
-      en: "Refinement of the hub to improve search readability and strengthen the institutional presentation of each route.",
-    },
-    problem: {
-      pt: "Sem metadados por rota, diferentes identidades e propostas de valor perdem força na indexação e no compartilhamento.",
-      en: "Without route-level metadata, different identities and value propositions lose strength in indexing and sharing.",
-    },
-    approach: {
-      pt: "Atualização dinâmica de título e descrição por rota, metadados globais do hub e conexão com canais institucionais como LinkedIn, Lattes, GitHub e Google Scholar.",
-      en: "Dynamic route-level title and description updates, global hub metadata, and connection with institutional channels such as LinkedIn, Lattes, GitHub, and Google Scholar.",
-    },
-    stack: "SEO metadata, Wouter, institutional links, content strategy",
-    impact: {
-      pt: "Maior coerência entre marca, descoberta orgânica e credibilidade institucional nas diferentes entradas do ecossistema digital.",
-      en: "Greater coherence among brand, organic discovery, and institutional credibility across the different entry points of the digital ecosystem.",
-    },
-    tags: ["SEO", "metadata", "institutional links", "discoverability"],
+    tags: ["healthtech", "multi-tenant", "TISS/TUSS", "generative AI", "claim recovery"],
+    link: "https://wealthy-audit-flow-ai.base44.app",
   },
 ];
 

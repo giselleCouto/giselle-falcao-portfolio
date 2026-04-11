@@ -605,6 +605,19 @@ export default function PortfolioSite({ initialLocale = "pt", page = "home" }: P
                               </span>
                             ))}
                           </div>
+                          {project.link ? (
+                            <div className="mt-6">
+                              <a
+                                href={project.link}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="inline-flex items-center gap-2 rounded-full border border-[rgba(191,148,103,0.28)] bg-[rgba(191,148,103,0.08)] px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-[var(--accent-copper)] transition hover:border-[rgba(191,148,103,0.45)] hover:bg-[rgba(191,148,103,0.16)]"
+                              >
+                                {locale === "pt" ? "Abrir projeto" : "Open project"}
+                                <ArrowRight className="size-4" />
+                              </a>
+                            </div>
+                          ) : null}
                         </div>
                       </div>
                     </CardContent>

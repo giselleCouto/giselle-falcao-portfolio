@@ -34,3 +34,6 @@
 - [x] Extrair um currículo da Giselle a partir do conteúdo atual do portfólio
 - [x] Consolidar experiência, formação, projetos e publicações em um documento profissional de currículo
 - [x] Revisar a consistência textual e entregar o currículo final ao usuário
+- [x] Remover do portfólio os cases de SEO por rota, captação de leads com banco e notificações, persona Jade, portfólio premium de Giselle e hub Couto Falcão
+- [x] Incluir no portfólio o projeto Wealthy Audit Flow AI com base na documentação técnica anexada
+- [x] Validar a renderização e a consistência final do portfólio após a troca dos projetos destacados

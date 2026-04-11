@@ -1,3 +1,5 @@
+import { describe, expect, it } from "vitest";
+
 import { experienceTimeline, projects, publications } from "./portfolioData";
 
 describe("portfolio publications", () => {
@@ -23,7 +25,7 @@ describe("portfolio logistics experience", () => {
 
     expect(logisticsProject?.title.pt).toContain("VRP");
     expect(logisticsProject?.approach.pt).toContain("meta-heurística");
-    expect(logisticsProject?.approach.pt).toContain("API Type 4");
+    expect(logisticsProject?.approach.pt).toContain("APIs Type 4");
     expect(logisticsProject?.approach.pt).toContain("Gantt interativo");
     expect(logisticsProject?.impact.pt).toContain("USD 96 mil por mês");
     expect(logisticsProject?.impact.pt).toContain("60% para 87%");
@@ -31,5 +33,28 @@ describe("portfolio logistics experience", () => {
     expect(logisticsProject?.stack).toContain("multitenancy");
     expect(logisticsExperience?.focus.pt).toContain("roteirização naval");
     expect(logisticsExperience?.focus.pt).toContain("SVG");
+  });
+});
+
+describe("portfolio featured projects curation", () => {
+  it("remove os cases internos solicitados e preserva o novo case do Wealthy Audit Flow AI", () => {
+    const projectTitlesPt = projects.map(project => project.title.pt);
+
+    expect(projectTitlesPt).not.toContain("SEO básico por rota e integração institucional de presença digital");
+    expect(projectTitlesPt).not.toContain("Captação de leads com persistência em banco e notificações internas ao proprietário");
+    expect(projectTitlesPt).not.toContain("Persona Jade com posicionamento próprio e coerência de marca-mãe");
+    expect(projectTitlesPt).not.toContain("Portfólio premium de Giselle para autoridade científica, IA, educação e modelagem");
+    expect(projectTitlesPt).not.toContain("Hub Couto Falcão com seletor de identidades e arquitetura editorial por rota");
+
+    const wealthyProject = projects.find(
+      project => project.title.pt === "Wealthy Audit Flow AI / AuditMed para auditoria de contas médicas e recuperação de glosas",
+    );
+
+    expect(wealthyProject).toBeDefined();
+    expect(wealthyProject?.sector.pt).toBe("Auditoria médica e recuperação financeira");
+    expect(wealthyProject?.stack).toContain("Base44");
+    expect(wealthyProject?.link).toBe("https://wealthy-audit-flow-ai.base44.app");
+    expect(wealthyProject?.tags).toContain("multi-tenant");
+    expect(wealthyProject?.tags).toContain("TISS/TUSS");
   });
 });
