@@ -31,3 +31,6 @@
 - [x] Validar a renderização e a integridade dos links e DOIs da nova seção de publicações
 - [x] Adicionar a experiência de otimização logística ao portfólio de Giselle com métricas de impacto, terminologia técnica e destaque para UI/UX analítica
 - [x] Validar a renderização e a consistência da nova experiência de otimização logística no portfólio
+- [x] Extrair um currículo da Giselle a partir do conteúdo atual do portfólio
+- [x] Consolidar experiência, formação, projetos e publicações em um documento profissional de currículo
+- [x] Revisar a consistência textual e entregar o currículo final ao usuário
