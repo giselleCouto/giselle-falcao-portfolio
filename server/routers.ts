@@ -3,8 +3,24 @@ import { COOKIE_NAME } from "@shared/const";
 import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
 import { notifyOwner } from "./_core/notification";
-import { adminProcedure, publicProcedure, router } from "./_core/trpc";
-import { createLeadContact, listLeadContacts } from "./db";
+import { adminProcedure, protectedProcedure, publicProcedure, router } from "./_core/trpc";
+import {
+  createLeadContact,
+  getCourseAccessForUser,
+  getUserById,
+  listCourseProgress,
+  listLeadContacts,
+  upsertCourseCheckout,
+  upsertCourseProgressRecord,
+} from "./db";
+import {
+  COURSE_PRICE_CENTS,
+  COURSE_SLUG,
+  COURSE_TITLE,
+  FREE_MODULE_IDS,
+  createCourseCheckoutSession,
+  isFreeModule,
+} from "./coursePayments";
 
 const leadInputSchema = z.object({
   route: z.string().trim().min(1).max(64),
@@ -16,6 +32,30 @@ const leadInputSchema = z.object({
   message: z.string().trim().min(12).max(4000),
   source: z.string().trim().max(120).optional(),
 });
+
+const progressInputSchema = z.object({
+  moduleId: z.string().trim().min(1).max(64),
+  lessonTitle: z.string().trim().max(255).optional().or(z.literal("")),
+  completed: z.boolean().optional(),
+  practiceCompleted: z.boolean().optional(),
+});
+
+function resolveOrigin(req: {
+  protocol?: string;
+  headers: Record<string, unknown>;
+}) {
+  const originHeader = req.headers.origin;
+  if (typeof originHeader === "string" && originHeader.length > 0) {
+    return originHeader;
+  }
+
+  const hostHeader = req.headers.host;
+  if (typeof hostHeader === "string" && hostHeader.length > 0) {
+    return `${req.protocol ?? "https"}://${hostHeader}`;
+  }
+
+  throw new Error("Unable to determine request origin for checkout");
+}
 
 export const appRouter = router({
   system: systemRouter,
@@ -64,6 +104,84 @@ export const appRouter = router({
     }),
     list: adminProcedure.query(async () => {
       return listLeadContacts();
+    }),
+  }),
+  course: router({
+    status: publicProcedure.query(async ({ ctx }) => {
+      const baseResponse = {
+        courseSlug: COURSE_SLUG,
+        courseTitle: COURSE_TITLE,
+        priceCents: COURSE_PRICE_CENTS,
+        freeModuleIds: [...FREE_MODULE_IDS],
+      };
+
+      if (!ctx.user) {
+        return {
+          ...baseResponse,
+          authenticated: false,
+          hasPaidAccess: false,
+          accessStatus: null,
+          progress: [],
+        } as const;
+      }
+
+      const [access, progress] = await Promise.all([
+        getCourseAccessForUser(ctx.user.id, COURSE_SLUG),
+        listCourseProgress(ctx.user.id, COURSE_SLUG),
+      ]);
+
+      return {
+        ...baseResponse,
+        authenticated: true,
+        hasPaidAccess: access?.status === "active",
+        accessStatus: access?.status ?? null,
+        progress,
+      } as const;
+    }),
+    createCheckout: protectedProcedure.mutation(async ({ ctx }) => {
+      const user = await getUserById(ctx.user.id);
+      const origin = resolveOrigin(ctx.req as never);
+
+      const session = await createCourseCheckoutSession({
+        origin,
+        user: {
+          id: ctx.user.id,
+          email: user?.email ?? ctx.user.email ?? null,
+          name: user?.name ?? ctx.user.name ?? null,
+          stripeCustomerId: user?.stripeCustomerId ?? null,
+        },
+      });
+
+      await upsertCourseCheckout({
+        userId: ctx.user.id,
+        courseSlug: COURSE_SLUG,
+        stripeCheckoutSessionId: session.id,
+      });
+
+      return {
+        checkoutUrl: session.url,
+      } as const;
+    }),
+    progress: protectedProcedure.input(progressInputSchema).mutation(async ({ ctx, input }) => {
+      const access = await getCourseAccessForUser(ctx.user.id, COURSE_SLUG);
+      const hasPaidAccess = access?.status === "active";
+
+      if (!isFreeModule(input.moduleId) && !hasPaidAccess) {
+        throw new Error("Purchase required to record progress in paid modules");
+      }
+
+      await upsertCourseProgressRecord({
+        userId: ctx.user.id,
+        courseSlug: COURSE_SLUG,
+        moduleId: input.moduleId,
+        lessonTitle: input.lessonTitle?.trim() || null,
+        completed: input.completed ?? false,
+        practiceCompleted: input.practiceCompleted ?? false,
+      });
+
+      return {
+        success: true,
+      } as const;
     }),
   }),
 });

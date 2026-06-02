@@ -1,11 +1,19 @@
-import { desc, eq } from "drizzle-orm";
+import { and, desc, eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { InsertLeadContact, InsertUser, leadContacts, users } from "../drizzle/schema";
-import { ENV } from './_core/env';
+import {
+  courseAccess,
+  courseProgress,
+  InsertCourseAccess,
+  InsertCourseProgress,
+  InsertLeadContact,
+  InsertUser,
+  leadContacts,
+  users,
+} from "../drizzle/schema";
+import { ENV } from "./_core/env";
 
 let _db: ReturnType<typeof drizzle> | null = null;
 
-// Lazily create the drizzle instance so local tooling can run without a DB.
 export async function getDb() {
   if (!_db && process.env.DATABASE_URL) {
     try {
@@ -15,6 +23,7 @@ export async function getDb() {
       _db = null;
     }
   }
+
   return _db;
 }
 
@@ -35,7 +44,7 @@ export async function upsertUser(user: InsertUser): Promise<void> {
     };
     const updateSet: Record<string, unknown> = {};
 
-    const textFields = ["name", "email", "loginMethod"] as const;
+    const textFields = ["name", "email", "loginMethod", "stripeCustomerId"] as const;
     type TextField = (typeof textFields)[number];
 
     const assignNullable = (field: TextField) => {
@@ -52,12 +61,13 @@ export async function upsertUser(user: InsertUser): Promise<void> {
       values.lastSignedIn = user.lastSignedIn;
       updateSet.lastSignedIn = user.lastSignedIn;
     }
+
     if (user.role !== undefined) {
       values.role = user.role;
       updateSet.role = user.role;
     } else if (user.openId === ENV.ownerOpenId) {
-      values.role = 'admin';
-      updateSet.role = 'admin';
+      values.role = "admin";
+      updateSet.role = "admin";
     }
 
     if (!values.lastSignedIn) {
@@ -85,8 +95,31 @@ export async function getUserByOpenId(openId: string) {
   }
 
   const result = await db.select().from(users).where(eq(users.openId, openId)).limit(1);
-
   return result.length > 0 ? result[0] : undefined;
+}
+
+export async function getUserById(userId: number) {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot get user by id: database not available");
+    return undefined;
+  }
+
+  const result = await db.select().from(users).where(eq(users.id, userId)).limit(1);
+  return result.length > 0 ? result[0] : undefined;
+}
+
+export async function updateUserStripeCustomerId(userId: number, stripeCustomerId: string) {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot update stripe customer id: database not available");
+    return;
+  }
+
+  await db
+    .update(users)
+    .set({ stripeCustomerId, updatedAt: new Date() })
+    .where(eq(users.id, userId));
 }
 
 export async function createLeadContact(input: InsertLeadContact) {
@@ -96,10 +129,7 @@ export async function createLeadContact(input: InsertLeadContact) {
   }
 
   await db.insert(leadContacts).values(input);
-
-  return {
-    ...input,
-  };
+  return { ...input };
 }
 
 export async function listLeadContacts() {
@@ -110,4 +140,145 @@ export async function listLeadContacts() {
   }
 
   return db.select().from(leadContacts).orderBy(desc(leadContacts.createdAt));
+}
+
+export async function upsertCourseCheckout(input: {
+  userId: number;
+  courseSlug: string;
+  stripeCheckoutSessionId: string;
+}) {
+  const db = await getDb();
+  if (!db) {
+    throw new Error("Database not available for course checkout");
+  }
+
+  const values: InsertCourseAccess = {
+    userId: input.userId,
+    courseSlug: input.courseSlug,
+    accessLevel: "full",
+    status: "pending",
+    stripeCheckoutSessionId: input.stripeCheckoutSessionId,
+  };
+
+  await db.insert(courseAccess).values(values).onDuplicateKeyUpdate({
+    set: {
+      status: "pending",
+      accessLevel: "full",
+      stripeCheckoutSessionId: input.stripeCheckoutSessionId,
+      updatedAt: new Date(),
+    },
+  });
+}
+
+export async function activateCourseAccess(input: {
+  userId: number;
+  courseSlug: string;
+  stripeCheckoutSessionId?: string | null;
+  stripePaymentIntentId?: string | null;
+}) {
+  const db = await getDb();
+  if (!db) {
+    throw new Error("Database not available for course activation");
+  }
+
+  const values: InsertCourseAccess = {
+    userId: input.userId,
+    courseSlug: input.courseSlug,
+    accessLevel: "full",
+    status: "active",
+    stripeCheckoutSessionId: input.stripeCheckoutSessionId ?? null,
+    stripePaymentIntentId: input.stripePaymentIntentId ?? null,
+    grantedAt: new Date(),
+  };
+
+  await db.insert(courseAccess).values(values).onDuplicateKeyUpdate({
+    set: {
+      accessLevel: "full",
+      status: "active",
+      stripeCheckoutSessionId: input.stripeCheckoutSessionId ?? null,
+      stripePaymentIntentId: input.stripePaymentIntentId ?? null,
+      grantedAt: new Date(),
+      updatedAt: new Date(),
+    },
+  });
+}
+
+export async function getCourseAccessForUser(userId: number, courseSlug: string) {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot get course access: database not available");
+    return null;
+  }
+
+  const result = await db
+    .select()
+    .from(courseAccess)
+    .where(and(eq(courseAccess.userId, userId), eq(courseAccess.courseSlug, courseSlug)))
+    .limit(1);
+
+  return result[0] ?? null;
+}
+
+export async function getCourseAccessByCheckoutSessionId(checkoutSessionId: string) {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot get course access by checkout session: database not available");
+    return null;
+  }
+
+  const result = await db
+    .select()
+    .from(courseAccess)
+    .where(eq(courseAccess.stripeCheckoutSessionId, checkoutSessionId))
+    .limit(1);
+
+  return result[0] ?? null;
+}
+
+export async function upsertCourseProgressRecord(input: {
+  userId: number;
+  courseSlug: string;
+  moduleId: string;
+  lessonTitle?: string | null;
+  practiceCompleted?: boolean;
+  completed?: boolean;
+}) {
+  const db = await getDb();
+  if (!db) {
+    throw new Error("Database not available for course progress");
+  }
+
+  const values: InsertCourseProgress = {
+    userId: input.userId,
+    courseSlug: input.courseSlug,
+    moduleId: input.moduleId,
+    lessonTitle: input.lessonTitle ?? null,
+    practiceCompleted: input.practiceCompleted ?? false,
+    completed: input.completed ?? false,
+    lastVisitedAt: new Date(),
+  };
+
+  await db.insert(courseProgress).values(values).onDuplicateKeyUpdate({
+    set: {
+      lessonTitle: input.lessonTitle ?? null,
+      practiceCompleted: input.practiceCompleted ?? false,
+      completed: input.completed ?? false,
+      lastVisitedAt: new Date(),
+      updatedAt: new Date(),
+    },
+  });
+}
+
+export async function listCourseProgress(userId: number, courseSlug: string) {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot list course progress: database not available");
+    return [];
+  }
+
+  return db
+    .select()
+    .from(courseProgress)
+    .where(and(eq(courseProgress.userId, userId), eq(courseProgress.courseSlug, courseSlug)))
+    .orderBy(desc(courseProgress.lastVisitedAt));
 }

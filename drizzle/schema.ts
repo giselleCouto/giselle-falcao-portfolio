@@ -1,4 +1,4 @@
-import { int, mysqlEnum, mysqlTable, text, timestamp, varchar } from "drizzle-orm/mysql-core";
+import { boolean, index, int, mysqlEnum, mysqlTable, text, timestamp, uniqueIndex, varchar } from "drizzle-orm/mysql-core";
 
 /**
  * Core user table backing auth flow.
@@ -6,17 +6,13 @@ import { int, mysqlEnum, mysqlTable, text, timestamp, varchar } from "drizzle-or
  * Columns use camelCase to match both database fields and generated types.
  */
 export const users = mysqlTable("users", {
-  /**
-   * Surrogate primary key. Auto-incremented numeric value managed by the database.
-   * Use this for relations between tables.
-   */
   id: int("id").autoincrement().primaryKey(),
-  /** Manus OAuth identifier (openId) returned from the OAuth callback. Unique per user. */
   openId: varchar("openId", { length: 64 }).notNull().unique(),
   name: text("name"),
   email: varchar("email", { length: 320 }),
   loginMethod: varchar("loginMethod", { length: 64 }),
   role: mysqlEnum("role", ["user", "admin"]).default("user").notNull(),
+  stripeCustomerId: varchar("stripeCustomerId", { length: 255 }),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
   lastSignedIn: timestamp("lastSignedIn").defaultNow().notNull(),
@@ -42,3 +38,50 @@ export const leadContacts = mysqlTable("lead_contacts", {
 
 export type LeadContact = typeof leadContacts.$inferSelect;
 export type InsertLeadContact = typeof leadContacts.$inferInsert;
+
+export const courseAccess = mysqlTable(
+  "course_access",
+  {
+    id: int("id").autoincrement().primaryKey(),
+    userId: int("userId").notNull(),
+    courseSlug: varchar("courseSlug", { length: 120 }).notNull(),
+    accessLevel: mysqlEnum("accessLevel", ["free", "full"]).default("full").notNull(),
+    status: mysqlEnum("status", ["pending", "active", "canceled"]).default("pending").notNull(),
+    stripeCheckoutSessionId: varchar("stripeCheckoutSessionId", { length: 255 }),
+    stripePaymentIntentId: varchar("stripePaymentIntentId", { length: 255 }),
+    grantedAt: timestamp("grantedAt"),
+    createdAt: timestamp("createdAt").defaultNow().notNull(),
+    updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+  },
+  (table) => ({
+    userCourseUnique: uniqueIndex("course_access_user_course_unique").on(table.userId, table.courseSlug),
+    checkoutSessionUnique: uniqueIndex("course_access_checkout_session_unique").on(table.stripeCheckoutSessionId),
+    userIdx: index("course_access_user_idx").on(table.userId),
+  }),
+);
+
+export type CourseAccess = typeof courseAccess.$inferSelect;
+export type InsertCourseAccess = typeof courseAccess.$inferInsert;
+
+export const courseProgress = mysqlTable(
+  "course_progress",
+  {
+    id: int("id").autoincrement().primaryKey(),
+    userId: int("userId").notNull(),
+    courseSlug: varchar("courseSlug", { length: 120 }).notNull(),
+    moduleId: varchar("moduleId", { length: 64 }).notNull(),
+    lessonTitle: varchar("lessonTitle", { length: 255 }),
+    practiceCompleted: boolean("practiceCompleted").default(false).notNull(),
+    completed: boolean("completed").default(false).notNull(),
+    lastVisitedAt: timestamp("lastVisitedAt").defaultNow().notNull(),
+    createdAt: timestamp("createdAt").defaultNow().notNull(),
+    updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+  },
+  (table) => ({
+    userModuleUnique: uniqueIndex("course_progress_user_module_unique").on(table.userId, table.courseSlug, table.moduleId),
+    progressUserIdx: index("course_progress_user_idx").on(table.userId),
+  }),
+);
+
+export type CourseProgress = typeof courseProgress.$inferSelect;
+export type InsertCourseProgress = typeof courseProgress.$inferInsert;

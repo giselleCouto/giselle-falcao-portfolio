@@ -337,14 +337,20 @@ export default function PortfolioSite({ initialLocale = "pt", page = "home" }: P
                 EN
               </button>
             </div>
-            <a
-              href="#contato"
-              onClick={handleAnchorNavigation("#contato")}
-              className="group inline-flex items-center rounded-full bg-white px-5 py-2.5 text-sm font-medium text-slate-950 transition hover:bg-[var(--accent-copper)] hover:text-slate-950"
-            >
-              {t(locale, heroCopy.ctaSecondary)}
-              <ArrowRight className="ml-2 size-4 transition-transform group-hover:translate-x-1" />
-            </a>
+            <div className="flex flex-wrap items-center gap-3">
+              <Link href="/giselle/cursos" className="group inline-flex items-center rounded-full border border-cyan-300/20 bg-cyan-400/10 px-5 py-2.5 text-sm font-medium text-cyan-50 transition hover:bg-cyan-400/20">
+                {locale === "pt" ? "Cursos de IA" : "AI Courses"}
+                <ChevronRight className="ml-2 size-4 transition-transform group-hover:translate-x-1" />
+              </Link>
+              <a
+                href="#contato"
+                onClick={handleAnchorNavigation("#contato")}
+                className="group inline-flex items-center rounded-full bg-white px-5 py-2.5 text-sm font-medium text-slate-950 transition hover:bg-[var(--accent-copper)] hover:text-slate-950"
+              >
+                {t(locale, heroCopy.ctaSecondary)}
+                <ArrowRight className="ml-2 size-4 transition-transform group-hover:translate-x-1" />
+              </a>
+            </div>
           </div>
 
           <button
@@ -377,6 +383,9 @@ export default function PortfolioSite({ initialLocale = "pt", page = "home" }: P
                   <Languages className="mr-2 size-4" />
                   {locale === "pt" ? "Switch to English" : "Mudar para português"}
                 </Button>
+                <Link href="/giselle/cursos" className="inline-flex items-center justify-center rounded-full border border-cyan-300/20 bg-cyan-400/10 px-4 py-2 text-sm font-medium text-cyan-50 transition hover:bg-cyan-400/20">
+                  {locale === "pt" ? "Cursos de IA" : "AI Courses"}
+                </Link>
                 <a
                   href="#contato"
                   className="inline-flex items-center justify-center rounded-full bg-white px-4 py-2 text-sm font-medium text-slate-950 transition hover:bg-[var(--accent-copper)]"
@@ -408,6 +417,9 @@ export default function PortfolioSite({ initialLocale = "pt", page = "home" }: P
                   {t(locale, heroCopy.ctaPrimary)}
                   <ArrowRight className="ml-2 size-4 transition-transform group-hover:translate-x-1" />
                 </a>
+                <Link href="/giselle/cursos" className="inline-flex items-center rounded-full border border-cyan-300/18 bg-cyan-400/10 px-6 py-3 text-sm font-medium text-cyan-50 transition hover:bg-cyan-400/20">
+                  {locale === "pt" ? "Explorar cursos" : "Explore courses"}
+                </Link>
                 <a href="#contato" onClick={handleAnchorNavigation("#contato")} className="inline-flex items-center rounded-full border border-white/12 bg-white/5 px-6 py-3 text-sm font-medium text-white transition hover:bg-white/10">
                   {t(locale, heroCopy.ctaSecondary)}
                 </a>

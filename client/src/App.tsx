@@ -11,12 +11,40 @@ import { Link, Route, Switch, useLocation } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import PortfolioSite from "./components/PortfolioSite";
 import { ThemeProvider } from "./contexts/ThemeContext";
+import GiselleCourses from "./pages/GiselleCourses";
 
 function RouteSeo() {
   const [location] = useLocation();
 
   useEffect(() => {
     const descriptionTag = document.querySelector('meta[name="description"]');
+
+    if (location === "/giselle/cursos") {
+      document.title = "Curso de Engenharia de Sistemas de IA Generativa | Giselle Falcão";
+      descriptionTag?.setAttribute(
+        "content",
+        "Curso de IA generativa com módulos gratuitos e pagos, prática visual, engenharia de RAG, embeddings, bancos vetoriais, frameworks, avaliação e checkout com PIX.",
+      );
+      return;
+    }
+
+    if (location === "/giselle/cursos/checkout") {
+      document.title = "Checkout do Curso | Giselle Falcão";
+      descriptionTag?.setAttribute(
+        "content",
+        "Libere os módulos avançados do curso de IA generativa com checkout seguro, PIX, laboratório visual e continuidade autenticada do aprendizado.",
+      );
+      return;
+    }
+
+    if (location === "/giselle/cursos/lab") {
+      document.title = "Laboratório Visual do Curso | Giselle Falcão";
+      descriptionTag?.setAttribute(
+        "content",
+        "Ambiente visual de prática do curso de IA generativa com simulação de parâmetros de RAG, chunking, top-k, temperatura e fidelidade esperada.",
+      );
+      return;
+    }
 
     if (location === "/giselle") {
       document.title = "Giselle Couto Falcão | IA, Educação e Modelagem Matemática";
@@ -253,6 +281,9 @@ function Router() {
       <RouteSeo />
       <Switch>
         <Route path="/" component={IdentityHub} />
+        <Route path="/giselle/cursos" component={() => <GiselleCourses view="overview" />} />
+        <Route path="/giselle/cursos/checkout" component={() => <GiselleCourses view="checkout" />} />
+        <Route path="/giselle/cursos/lab" component={() => <GiselleCourses view="lab" />} />
         <Route path="/giselle" component={() => <PortfolioSite />} />
         <Route path="/jade" component={JadeProfile} />
         <Route path="/404" component={NotFound} />

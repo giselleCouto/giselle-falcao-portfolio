@@ -15,6 +15,13 @@
       "when": 1775525328512,
       "tag": "0001_previous_deathstrike",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1780437741892,
+      "tag": "0002_public_stick",
+      "breakpoints": true
     }
   ]
 }

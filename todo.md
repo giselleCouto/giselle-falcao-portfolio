@@ -39,3 +39,9 @@
 - [x] Validar a renderização e a consistência final do portfólio após a troca dos projetos destacados
 - [x] Remover o currículo da interface do portfólio e manter o CV apenas como arquivo separado
 - [x] Validar que o currículo não aparece mais no site e que o arquivo separado permanece preservado
+- [x] Estruturar a área `/giselle/cursos` com landing do curso, trilha modular e narrativa comercial baseada nos anexos
+- [x] Implementar 2 módulos gratuitos e os módulos pagos com bloqueio progressivo e CTAs para checkout
+- [x] Integrar fluxo de checkout com PIX para destravar os módulos pagos e continuidade do curso
+- [x] Criar ambiente de prática e experiência visual interativa para reforçar aprendizagem e engajamento
+- [x] Incorporar a logo anexada e ajustar a identidade visual da área de cursos
+- [x] Validar a experiência completa da área de cursos com testes, build e navegação principal
