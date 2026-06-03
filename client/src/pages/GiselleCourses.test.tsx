@@ -136,7 +136,7 @@ describe("GiselleCourses resume by lesson", () => {
     expect(serverButton.getAttribute("aria-pressed")).toBe("true");
   });
 
-  it("simula uma conexão com servidor MCP acadêmico no laboratório e permite marcar exercícios práticos", async () => {
+  it("simula uma conexão com servidor MCP acadêmico no laboratório, permite marcar exercícios e corrige o quiz ao final", async () => {
     const user = userEvent.setup();
     render(<GiselleCourses view="lab" />);
 
@@ -151,11 +151,27 @@ describe("GiselleCourses resume by lesson", () => {
     const climateResourceButton = screen.getAllByText("Observatório de clima e séries históricas")[0]!.closest("button")!;
     await user.click(climateResourceButton);
     expect(climateResourceButton.getAttribute("aria-pressed")).toBe("true");
-    expect(screen.getByText(/extremos climáticos e produtividade agrícola/i)).toBeTruthy();
+    expect(screen.getAllByText(/extremos climáticos e produtividade agrícola/i).length).toBeGreaterThan(0);
 
-    const exerciseButton = screen.getAllByText(/Exercício 1 · Escolha do resource correto/i)[0]!.closest("button")!;
-    expect(exerciseButton?.getAttribute("aria-pressed")).toBe("false");
-    await user.click(exerciseButton!);
-    expect(exerciseButton?.getAttribute("aria-pressed")).toBe("true");
+    const exerciseOneButton = screen.getAllByText(/Exercício 1 · Escolha do resource correto/i)[0]!.closest("button")!;
+    const exerciseTwoButton = screen.getAllByText(/Exercício 2 · Ajuste de parâmetros/i)[0]!.closest("button")!;
+    const exerciseThreeButton = screen.getAllByText(/Exercício 3 · Evidência e devolutiva/i)[0]!.closest("button")!;
+
+    expect(exerciseOneButton.getAttribute("aria-pressed")).toBe("false");
+    await user.click(exerciseOneButton);
+    await user.click(exerciseTwoButton);
+    await user.click(exerciseThreeButton);
+    expect(exerciseOneButton.getAttribute("aria-pressed")).toBe("true");
+    expect(exerciseTwoButton.getAttribute("aria-pressed")).toBe("true");
+    expect(exerciseThreeButton.getAttribute("aria-pressed")).toBe("true");
+
+    await user.click(screen.getAllByText("Client, porque faz handshake, descoberta e repasse das chamadas.")[0]!);
+    await user.click(screen.getAllByText("Observatório de clima e séries históricas.")[0]!);
+    await user.click(screen.getAllByText("Justificar a proveniência da evidência e citar o acervo consultado na devolutiva ao aluno.")[0]!);
+
+    await user.click(screen.getAllByRole("button", { name: /Corrigir quiz automaticamente/i })[0]!);
+
+    expect(screen.getByText(/Resultado do quiz: 3 de 3 respostas corretas/i)).toBeTruthy();
+    expect(screen.getAllByText(/Resposta correta/i).length).toBeGreaterThan(0);
   });
 });

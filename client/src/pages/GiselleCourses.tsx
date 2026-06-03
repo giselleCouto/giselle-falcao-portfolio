@@ -177,6 +177,58 @@ const academicMcpExercises = [
   },
 ] as const;
 
+const academicMcpQuizQuestions = [
+  {
+    id: "mcp-role",
+    prompt: "No fluxo MCP, qual camada negocia capacidades com o servidor e encaminha chamadas padronizadas?",
+    options: [
+      { id: "host", label: "Host, porque é a interface final com o aluno." },
+      { id: "client", label: "Client, porque faz handshake, descoberta e repasse das chamadas." },
+      { id: "server", label: "Server, porque inicia a conversa com o usuário." },
+    ],
+    correctOptionId: "client",
+    explanation: "O client é a camada de negociação do protocolo: ele descobre capacidades, estrutura chamadas e conecta host e server de maneira padronizada.",
+  },
+  {
+    id: "mcp-resource",
+    prompt: "Se a pergunta do aluno trata de extremos climáticos e produtividade agrícola, qual resource acadêmico é o mais adequado nesta simulação?",
+    options: [
+      { id: "thesis_archive", label: "Repositório de teses e dissertações." },
+      { id: "climate_observatory", label: "Observatório de clima e séries históricas." },
+      { id: "peer_review_lab", label: "Laboratório de revisão por pares." },
+    ],
+    correctOptionId: "climate_observatory",
+    explanation: "O observatório de clima reúne séries históricas e indicadores diretamente alinhados à pergunta sobre eventos extremos e produtividade agrícola.",
+  },
+  {
+    id: "mcp-safety",
+    prompt: "Qual prática aumenta a confiabilidade da resposta ao chamar uma tool em um servidor MCP acadêmico?",
+    options: [
+      { id: "high-temp", label: "Elevar a temperatura para tornar a resposta mais criativa, mesmo sem evidência explícita." },
+      { id: "citation", label: "Justificar a proveniência da evidência e citar o acervo consultado na devolutiva ao aluno." },
+      { id: "skip-discovery", label: "Pular a etapa de descoberta para reduzir latência na conexão." },
+    ],
+    correctOptionId: "citation",
+    explanation: "A confiabilidade aumenta quando o host devolve a resposta com proveniência clara, recurso consultado e justificativa metodológica explícita.",
+  },
+] as const;
+
+function buildAcademicQuizResult(answers: Record<string, string>) {
+  const total = academicMcpQuizQuestions.length;
+  const correctCount = academicMcpQuizQuestions.filter((question) => answers[question.id] === question.correctOptionId).length;
+  const answeredCount = academicMcpQuizQuestions.filter((question) => Boolean(answers[question.id])).length;
+  const scorePercent = Math.round((correctCount / total) * 100);
+  const allAnswered = answeredCount === total;
+
+  return {
+    total,
+    correctCount,
+    answeredCount,
+    scorePercent,
+    allAnswered,
+  };
+}
+
 export default function GiselleCourses({ view = "overview" }: GiselleCoursesProps) {
   const [location] = useLocation();
   const { user, isAuthenticated } = useAuth();
@@ -192,6 +244,8 @@ export default function GiselleCourses({ view = "overview" }: GiselleCoursesProp
   const [activeAcademicStep, setActiveAcademicStep] = useState<(typeof academicMcpSteps)[number]["id"]>("initialize");
   const [activeAcademicResource, setActiveAcademicResource] = useState<(typeof academicMcpResources)[number]["id"]>("thesis_archive");
   const [completedAcademicExercises, setCompletedAcademicExercises] = useState<string[]>([]);
+  const [academicQuizAnswers, setAcademicQuizAnswers] = useState<Record<string, string>>({});
+  const [academicQuizSubmitted, setAcademicQuizSubmitted] = useState(false);
 
   const statusQuery = trpc.course.status.useQuery(undefined, {
     retry: false,
@@ -372,10 +426,37 @@ export default function GiselleCourses({ view = "overview" }: GiselleCoursesProp
     };
   }, [activeAcademicResourceData, activeAcademicStep, chunkSize, completedAcademicExercises.length, overlap, temperature, topK]);
 
+  const academicQuizResult = useMemo(() => buildAcademicQuizResult(academicQuizAnswers), [academicQuizAnswers]);
+
   const toggleAcademicExercise = (exerciseId: string) => {
     setCompletedAcademicExercises((current) =>
       current.includes(exerciseId) ? current.filter((item) => item !== exerciseId) : [...current, exerciseId],
     );
+  };
+
+  const handleSelectAcademicQuizAnswer = (questionId: string, optionId: string) => {
+    setAcademicQuizAnswers((current) => ({ ...current, [questionId]: optionId }));
+  };
+
+  const handleSubmitAcademicQuiz = () => {
+    if (completedAcademicExercises.length !== academicMcpExercises.length) {
+      toast.message("Conclua primeiro os exercícios guiados da simulação antes de corrigir o quiz.");
+      return;
+    }
+
+    if (!academicQuizResult.allAnswered) {
+      toast.message("Responda todas as perguntas do quiz para receber a correção automática.");
+      return;
+    }
+
+    setAcademicQuizSubmitted(true);
+
+    if (academicQuizResult.correctCount === academicQuizResult.total) {
+      toast.success("Excelente. Você concluiu o quiz do laboratório MCP com aproveitamento máximo.");
+      return;
+    }
+
+    toast.message(`Quiz corrigido: ${academicQuizResult.correctCount} de ${academicQuizResult.total} respostas corretas.`);
   };
 
   const handleOpenCertificate = () => {
@@ -1248,6 +1329,105 @@ export default function GiselleCourses({ view = "overview" }: GiselleCoursesProp
                         <p className="font-medium text-white">Conexão didática</p>
                         <p className="mt-2">{academicMcpSimulation.connectionReadiness}</p>
                       </div>
+                    </div>
+
+                    <div className="mt-6 rounded-[1.35rem] border border-amber-300/15 bg-[linear-gradient(180deg,rgba(55,36,14,0.44),rgba(11,14,24,0.96))] p-5">
+                      <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
+                        <div>
+                          <p className="text-[0.68rem] font-semibold uppercase tracking-[0.28em] text-amber-200">Quiz com correção automática</p>
+                          <h4 className="mt-3 text-2xl font-semibold text-white">Feche a simulação validando seu entendimento do fluxo MCP</h4>
+                          <p className="mt-3 max-w-3xl text-sm leading-7 text-slate-300">
+                            Responda o quiz ao final do exercício para receber pontuação imediata, correção automática e explicações curtas sobre cada decisão.
+                          </p>
+                        </div>
+                        <div className="rounded-full border border-amber-300/20 bg-amber-400/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] text-amber-100">
+                          {academicQuizSubmitted
+                            ? `${academicQuizResult.correctCount}/${academicQuizResult.total} corretas · ${academicQuizResult.scorePercent}%`
+                            : `${academicQuizResult.answeredCount}/${academicQuizResult.total} respondidas`}
+                        </div>
+                      </div>
+
+                      <div className="mt-5 space-y-4">
+                        {academicMcpQuizQuestions.map((question, questionIndex) => {
+                          const selectedOption = academicQuizAnswers[question.id];
+                          const isQuestionCorrect = selectedOption === question.correctOptionId;
+
+                          return (
+                            <div key={question.id} className="rounded-[1.2rem] border border-white/8 bg-black/20 px-4 py-4">
+                              <p className="text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-amber-200">Questão {questionIndex + 1}</p>
+                              <p className="mt-3 text-sm font-medium leading-7 text-white">{question.prompt}</p>
+                              <div className="mt-4 space-y-3">
+                                {question.options.map((option) => {
+                                  const isSelected = selectedOption === option.id;
+                                  const revealCorrect = academicQuizSubmitted && option.id === question.correctOptionId;
+                                  const revealIncorrect = academicQuizSubmitted && isSelected && option.id !== question.correctOptionId;
+
+                                  return (
+                                    <button
+                                      key={option.id}
+                                      type="button"
+                                      aria-pressed={isSelected}
+                                      onClick={() => handleSelectAcademicQuizAnswer(question.id, option.id)}
+                                      className={cn(
+                                        "w-full rounded-[1rem] border px-4 py-3 text-left text-sm leading-7 transition",
+                                        revealCorrect
+                                          ? "border-emerald-300/35 bg-emerald-400/12 text-white"
+                                          : revealIncorrect
+                                            ? "border-rose-300/35 bg-rose-400/12 text-white"
+                                            : isSelected
+                                              ? "border-amber-300/35 bg-amber-400/12 text-white"
+                                              : "border-white/10 bg-white/[0.03] text-slate-200 hover:border-white/20 hover:bg-white/[0.05]",
+                                      )}
+                                    >
+                                      <span>{option.label}</span>
+                                    </button>
+                                  );
+                                })}
+                              </div>
+                              {academicQuizSubmitted ? (
+                                <div className={cn(
+                                  "mt-4 rounded-[1rem] border px-4 py-4 text-sm leading-7",
+                                  isQuestionCorrect
+                                    ? "border-emerald-300/20 bg-emerald-400/10 text-emerald-50"
+                                    : "border-rose-300/20 bg-rose-400/10 text-rose-50",
+                                )}>
+                                  <p className="font-medium text-white">{isQuestionCorrect ? "Resposta correta" : "Revise esta resposta"}</p>
+                                  <p className="mt-2">{question.explanation}</p>
+                                </div>
+                              ) : null}
+                            </div>
+                          );
+                        })}
+                      </div>
+
+                      <div className="mt-5 flex flex-wrap gap-3">
+                        <Button
+                          type="button"
+                          onClick={handleSubmitAcademicQuiz}
+                          className="rounded-full bg-white text-slate-950 hover:bg-amber-200"
+                        >
+                          Corrigir quiz automaticamente
+                        </Button>
+                        <p className="text-sm leading-7 text-slate-300">
+                          Primeiro conclua os {academicMcpExercises.length} exercícios guiados e responda todas as perguntas para liberar a correção automática.
+                        </p>
+                      </div>
+
+                      {academicQuizSubmitted ? (
+                        <div className={cn(
+                          "mt-5 rounded-[1.2rem] border px-4 py-4 text-sm leading-7",
+                          academicQuizResult.scorePercent >= 80
+                            ? "border-emerald-300/20 bg-emerald-400/10 text-emerald-50"
+                            : "border-amber-300/20 bg-amber-400/10 text-amber-50",
+                        )}>
+                          <p className="font-medium text-white">Resultado do quiz: {academicQuizResult.correctCount} de {academicQuizResult.total} respostas corretas</p>
+                          <p className="mt-2">
+                            {academicQuizResult.scorePercent >= 80
+                              ? "Ótimo domínio. Você já demonstra leitura consistente do fluxo host-client-server, seleção de resources e uso de evidência confiável."
+                              : "Você concluiu a avaliação, mas ainda vale revisar a sequência operacional, a escolha do resource e o papel do client na negociação com o servidor."}
+                          </p>
+                        </div>
+                      ) : null}
                     </div>
                   </div>
                 </div>

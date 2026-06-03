@@ -64,3 +64,6 @@
 - [x] Criar no laboratório um exemplo prático simulando a conexão com um servidor MCP acadêmico
 - [x] Integrar exercícios guiados e feedback visual ao laboratório MCP acadêmico
 - [x] Validar a nova experiência prática do laboratório MCP com testes e build
+- [x] Adicionar um quiz com correção automática ao final da simulação do laboratório MCP
+- [x] Integrar pontuação, feedback pedagógico e estados visuais de acerto/erro ao quiz da simulação MCP
+- [x] Validar a nova avaliação automática do laboratório MCP com testes e build
