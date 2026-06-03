@@ -203,14 +203,18 @@ describe("course router", () => {
       { lessonKey: "modulo-7::lesson-0", completed: true },
       { lessonKey: "modulo-7::lesson-1", completed: true },
       { lessonKey: "modulo-7::lesson-2", completed: true },
+      { lessonKey: "modulo-8::lesson-0", completed: true },
+      { lessonKey: "modulo-8::lesson-1", completed: true },
+      { lessonKey: "modulo-8::lesson-2", completed: true },
+      { lessonKey: "modulo-8::lesson-3", completed: true },
     ]);
     isFreeModuleMock.mockReturnValue(false);
 
     const caller = appRouter.createCaller(createContext("user"));
     const result = await caller.course.progress({
-      moduleId: "modulo-7",
-      lessonKey: "modulo-7::lesson-2",
-      lessonTitle: "Encerramento da trilha",
+      moduleId: "modulo-8",
+      lessonKey: "modulo-8::lesson-3",
+      lessonTitle: "Segurança, governança e desenho de integração",
       completed: true,
       practiceCompleted: true,
     });

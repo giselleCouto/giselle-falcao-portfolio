@@ -30,6 +30,10 @@ export const COURSE_LESSON_KEYS = [
   "modulo-7::lesson-0",
   "modulo-7::lesson-1",
   "modulo-7::lesson-2",
+  "modulo-8::lesson-0",
+  "modulo-8::lesson-1",
+  "modulo-8::lesson-2",
+  "modulo-8::lesson-3",
 ] as const;
 
 export const COURSE_LESSON_KEYS_BY_MODULE = COURSE_LESSON_KEYS.reduce<Record<string, string[]>>((accumulator, lessonKey) => {

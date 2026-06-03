@@ -20,6 +20,12 @@ export type CourseModule = {
     challenge: string;
     deliverable: string;
   };
+  evaluation?: {
+    title: string;
+    format: string;
+    criteria: string[];
+    prompt: string;
+  };
 };
 
 export const courseSlug = "engenharia-sistemas-ia-generativa";
@@ -38,7 +44,7 @@ export const courseHero = {
   secondaryCta: "Ver módulos e prática",
   socialProof: [
     "2 módulos liberados sem pagamento",
-    "8 módulos + laboratório visual",
+    "9 módulos + laboratório visual",
     "Projeto final com avaliação de respostas de IA",
   ],
 };
@@ -370,7 +376,7 @@ export const courseModules: CourseModule[] = [
     level: "Pago",
     hook: "Se você não mede fidelidade, relevância e recuperação, você não tem um produto; você tem um palpite elegante.",
     summary:
-      "O módulo final amarra toda a trilha, ensinando métricas de recuperação e geração, LLM-as-a-Judge, sinais automáticos de confiança, golden sets e um protocolo prático de validação.",
+      "O módulo amarra toda a trilha técnica até aqui, ensinando métricas de recuperação e geração, LLM-as-a-Judge, sinais automáticos de confiança, golden sets e um protocolo prático de validação.",
     outcomes: [
       "Aplicar métricas de recuperação e geração em avaliações reais.",
       "Compreender limites e vieses de LLM-as-a-Judge.",
@@ -400,6 +406,63 @@ export const courseModules: CourseModule[] = [
       deliverable: "Relatório de validação do sistema.",
     },
   },
+  {
+    id: "modulo-8",
+    order: 8,
+    title: "MCP na prática: conectando LLMs, ferramentas e contexto externo",
+    subtitle: "Um passo a passo para entender host, client, server, primitives e fluxos reais de execução com Model Context Protocol.",
+    duration: "5h",
+    free: false,
+    level: "Pago",
+    hook: "O valor do MCP não está no nome do protocolo, mas na capacidade de transformar um LLM isolado em um sistema que enxerga contexto e age com ferramentas reais.",
+    summary:
+      "O módulo introduz o Model Context Protocol como padrão aberto para conectar aplicações de IA a dados, ferramentas e workflows externos. O aluno aprende a arquitetura host-client-server, a diferença entre tools, resources e prompts, os fluxos de inicialização, descoberta e execução e os cuidados de segurança e governança necessários para usar MCP em ambientes reais.",
+    outcomes: [
+      "Explicar o que o MCP resolve e quando seu uso faz sentido em produtos com IA.",
+      "Distinguir host, client e server no fluxo arquitetural do protocolo.",
+      "Mapear tools, resources e prompts em cenários reais de integração.",
+      "Desenhar um fluxo mínimo de inicialização, descoberta e execução com controle de risco.",
+    ],
+    lessons: [
+      {
+        title: "O problema que o MCP resolve",
+        summary: "Por que integrar cada fonte de dados de forma ad hoc escala custo, risco e retrabalho em aplicações de IA.",
+        duration: "35 min",
+      },
+      {
+        title: "Arquitetura host, client e server",
+        summary: "Como uma aplicação de IA coordena clientes MCP e conversa com servidores locais ou remotos.",
+        duration: "45 min",
+      },
+      {
+        title: "Primitives e fluxo operacional passo a passo",
+        summary: "Initialize, negotiation, tools/list, resources/read, prompts/get, tools/call e notificações em linguagem prática.",
+        duration: "60 min",
+      },
+      {
+        title: "Segurança, governança e desenho de integração",
+        summary: "Escopo, autenticação, confirmação de ações sensíveis, logs e limites para uso responsável de MCP.",
+        duration: "40 min",
+      },
+    ],
+    practice: {
+      title: "Laboratório 8 · MCP Integration Studio",
+      scenario: "O aluno recebe o desenho de um assistente corporativo que precisa consultar uma base documental, acionar uma ferramenta de agenda e pedir confirmação antes de executar ações críticas.",
+      challenge: "Definir quais capacidades devem ser expostas como resources, tools e prompts, desenhando também o fluxo de inicialização, descoberta e chamada com checkpoints de segurança.",
+      deliverable: "Mapa arquitetural do servidor MCP + roteiro de mensagens entre host, client e server para um caso real.",
+    },
+    evaluation: {
+      title: "Avaliação aplicada · MCP Blueprint",
+      format: "Estudo de caso guiado + checklist avaliativo de arquitetura",
+      criteria: [
+        "Identificar corretamente o papel de host, client e server no cenário proposto.",
+        "Separar com coerência o que deve ser tool, resource e prompt.",
+        "Explicar o fluxo mínimo do protocolo sem omitir inicialização, descoberta e execução.",
+        "Propor controles de autenticação, confirmação e observabilidade adequados ao risco da integração.",
+      ],
+      prompt: "Desenhe a arquitetura MCP de um assistente para operações acadêmicas que consulta calendário, documentos e base de FAQs. Justifique quais capacidades serão expostas, como o host descobre essas capacidades e em quais pontos o usuário deve ser consultado antes de ações críticas.",
+    },
+  },
 ];
 
 export const practiceScenarios = [
@@ -427,7 +490,7 @@ export const pricingCard = {
   price: paidPriceFormatted,
   paymentCopy: "Checkout com PIX e cartão via ambiente seguro. A liberação dos módulos pagos acontece assim que a compra for confirmada.",
   features: [
-    "Acesso aos módulos 2 a 7",
+    "Acesso aos módulos 2 a 8",
     "Laboratórios visuais interativos",
     "Projeto final com protocolo de validação",
     "Histórico de progresso e retomada de estudo",

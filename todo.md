@@ -56,3 +56,6 @@
 - [x] Persistir progresso em nível de aula e liberar o certificado somente quando todas as aulas da trilha estiverem concluídas
 - [x] Adicionar testes automatizados da rota de certificado cobrindo autenticação, bloqueio antes da conclusão total e resposta PDF válida
 - [x] Ajustar a UI do certificado para refletir a elegibilidade real por aula concluída e revalidar a emissão automática
+- [x] Verificar se a trilha atual já possui um módulo dedicado a MCP e mapear lacunas de conteúdo
+- [x] Criar ou expandir um módulo sobre MCP com explicação passo a passo de funcionamento, práticas guiadas e atividades de avaliação
+- [x] Validar a integração do novo módulo MCP na área de cursos com testes, build e consistência pedagógica

@@ -743,12 +743,30 @@ export default function GiselleCourses({ view = "overview" }: GiselleCoursesProp
                   </div>
                 </div>
 
-                <div className="rounded-[1.6rem] border border-cyan-300/15 bg-[linear-gradient(180deg,rgba(16,30,43,0.82),rgba(10,12,23,0.92))] p-6">
-                  <p className="text-[0.68rem] font-semibold uppercase tracking-[0.28em] text-cyan-200">Prática guiada</p>
-                  <h4 className="mt-4 text-2xl font-semibold text-white">{activeModule.practice.title}</h4>
-                  <p className="mt-4 text-sm leading-7 text-slate-300">{activeModule.practice.scenario}</p>
-                  <p className="mt-4 text-sm leading-7 text-slate-200"><span className="font-semibold text-white">Desafio:</span> {activeModule.practice.challenge}</p>
-                  <p className="mt-4 text-sm leading-7 text-slate-200"><span className="font-semibold text-white">Entrega esperada:</span> {activeModule.practice.deliverable}</p>
+                <div className="space-y-5">
+                  <div className="rounded-[1.6rem] border border-cyan-300/15 bg-[linear-gradient(180deg,rgba(16,30,43,0.82),rgba(10,12,23,0.92))] p-6">
+                    <p className="text-[0.68rem] font-semibold uppercase tracking-[0.28em] text-cyan-200">Prática guiada</p>
+                    <h4 className="mt-4 text-2xl font-semibold text-white">{activeModule.practice.title}</h4>
+                    <p className="mt-4 text-sm leading-7 text-slate-300">{activeModule.practice.scenario}</p>
+                    <p className="mt-4 text-sm leading-7 text-slate-200"><span className="font-semibold text-white">Desafio:</span> {activeModule.practice.challenge}</p>
+                    <p className="mt-4 text-sm leading-7 text-slate-200"><span className="font-semibold text-white">Entrega esperada:</span> {activeModule.practice.deliverable}</p>
+                  </div>
+
+                  {activeModule.evaluation ? (
+                    <div className="rounded-[1.6rem] border border-emerald-300/15 bg-[linear-gradient(180deg,rgba(16,44,38,0.7),rgba(10,12,23,0.92))] p-6">
+                      <p className="text-[0.68rem] font-semibold uppercase tracking-[0.28em] text-emerald-200">Avaliação aplicada</p>
+                      <h4 className="mt-4 text-2xl font-semibold text-white">{activeModule.evaluation.title}</h4>
+                      <p className="mt-4 text-sm leading-7 text-slate-300"><span className="font-semibold text-white">Formato:</span> {activeModule.evaluation.format}</p>
+                      <p className="mt-4 text-sm leading-7 text-slate-200"><span className="font-semibold text-white">Atividade:</span> {activeModule.evaluation.prompt}</p>
+                      <div className="mt-5 space-y-3">
+                        {activeModule.evaluation.criteria.map((criterion) => (
+                          <div key={criterion} className="rounded-[1.1rem] border border-white/8 bg-black/15 px-4 py-3 text-sm leading-7 text-slate-200">
+                            {criterion}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  ) : null}
                 </div>
               </div>
 
