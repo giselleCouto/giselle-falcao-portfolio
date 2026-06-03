@@ -35,6 +35,7 @@ const leadInputSchema = z.object({
 
 const progressInputSchema = z.object({
   moduleId: z.string().trim().min(1).max(64),
+  lessonKey: z.string().trim().max(120).optional().or(z.literal("")),
   lessonTitle: z.string().trim().max(255).optional().or(z.literal("")),
   completed: z.boolean().optional(),
   practiceCompleted: z.boolean().optional(),
@@ -174,6 +175,7 @@ export const appRouter = router({
         userId: ctx.user.id,
         courseSlug: COURSE_SLUG,
         moduleId: input.moduleId,
+        lessonKey: input.lessonKey?.trim() || null,
         lessonTitle: input.lessonTitle?.trim() || null,
         completed: input.completed ?? false,
         practiceCompleted: input.practiceCompleted ?? false,

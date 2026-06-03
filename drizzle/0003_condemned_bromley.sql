@@ -1,0 +1,1 @@
+ALTER TABLE `course_progress` ADD `lessonKey` varchar(120);

@@ -46,6 +46,15 @@ function RouteSeo() {
       return;
     }
 
+    if (location === "/giselle/cursos/meus-cursos") {
+      document.title = "Meus Cursos | Giselle Falcão";
+      descriptionTag?.setAttribute(
+        "content",
+        "Área autenticada dos cursos de Giselle Falcão com histórico detalhado, retomada por aula, progresso salvo e status claro de liberação pós-compra.",
+      );
+      return;
+    }
+
     if (location === "/giselle") {
       document.title = "Giselle Couto Falcão | IA, Educação e Modelagem Matemática";
       descriptionTag?.setAttribute(
@@ -284,6 +293,7 @@ function Router() {
         <Route path="/giselle/cursos" component={() => <GiselleCourses view="overview" />} />
         <Route path="/giselle/cursos/checkout" component={() => <GiselleCourses view="checkout" />} />
         <Route path="/giselle/cursos/lab" component={() => <GiselleCourses view="lab" />} />
+        <Route path="/giselle/cursos/meus-cursos" component={() => <GiselleCourses view="dashboard" />} />
         <Route path="/giselle" component={() => <PortfolioSite />} />
         <Route path="/jade" component={JadeProfile} />
         <Route path="/404" component={NotFound} />

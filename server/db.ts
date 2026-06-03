@@ -239,6 +239,7 @@ export async function upsertCourseProgressRecord(input: {
   userId: number;
   courseSlug: string;
   moduleId: string;
+  lessonKey?: string | null;
   lessonTitle?: string | null;
   practiceCompleted?: boolean;
   completed?: boolean;
@@ -252,6 +253,7 @@ export async function upsertCourseProgressRecord(input: {
     userId: input.userId,
     courseSlug: input.courseSlug,
     moduleId: input.moduleId,
+    lessonKey: input.lessonKey ?? null,
     lessonTitle: input.lessonTitle ?? null,
     practiceCompleted: input.practiceCompleted ?? false,
     completed: input.completed ?? false,
@@ -260,6 +262,7 @@ export async function upsertCourseProgressRecord(input: {
 
   await db.insert(courseProgress).values(values).onDuplicateKeyUpdate({
     set: {
+      lessonKey: input.lessonKey ?? null,
       lessonTitle: input.lessonTitle ?? null,
       practiceCompleted: input.practiceCompleted ?? false,
       completed: input.completed ?? false,

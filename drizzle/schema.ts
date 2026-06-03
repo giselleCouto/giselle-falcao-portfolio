@@ -70,6 +70,7 @@ export const courseProgress = mysqlTable(
     userId: int("userId").notNull(),
     courseSlug: varchar("courseSlug", { length: 120 }).notNull(),
     moduleId: varchar("moduleId", { length: 64 }).notNull(),
+    lessonKey: varchar("lessonKey", { length: 120 }),
     lessonTitle: varchar("lessonTitle", { length: 255 }),
     practiceCompleted: boolean("practiceCompleted").default(false).notNull(),
     completed: boolean("completed").default(false).notNull(),

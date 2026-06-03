@@ -41,8 +41,8 @@ export async function createCourseCheckoutSession(input: {
 
   const session = await stripe.checkout.sessions.create({
     mode: "payment",
-    success_url: `${input.origin}/giselle/cursos?checkout=success&session_id={CHECKOUT_SESSION_ID}`,
-    cancel_url: `${input.origin}/giselle/cursos?checkout=cancelled`,
+    success_url: `${input.origin}/giselle/cursos/checkout?checkout=success&session_id={CHECKOUT_SESSION_ID}`,
+    cancel_url: `${input.origin}/giselle/cursos/checkout?checkout=cancelled`,
     customer: input.user.stripeCustomerId || undefined,
     customer_email: input.user.stripeCustomerId ? undefined : input.user.email ?? undefined,
     client_reference_id: input.user.id.toString(),

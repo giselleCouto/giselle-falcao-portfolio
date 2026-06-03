@@ -45,3 +45,8 @@
 - [x] Criar ambiente de prática e experiência visual interativa para reforçar aprendizagem e engajamento
 - [x] Incorporar a logo anexada e ajustar a identidade visual da área de cursos
 - [x] Validar a experiência completa da área de cursos com testes, build e navegação principal
+- [x] Implementar confirmação visual pós-compra com estados claros de pagamento em análise e acesso liberado
+- [x] Adicionar previews por módulo para aumentar conversão na página de cursos
+- [x] Criar a área "Meus cursos" com histórico detalhado de progresso e retomada por aula
+- [x] Implementar retomada real por aula em "Meus cursos", persistindo um identificador estável da aula no progresso
+- [x] Adicionar teste automatizado cobrindo retomada por aula a partir do último ponto estudado

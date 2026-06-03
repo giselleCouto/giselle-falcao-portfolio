@@ -130,6 +130,7 @@ describe("course router", () => {
     const caller = appRouter.createCaller(createContext("user"));
     const result = await caller.course.progress({
       moduleId: "modulo-0",
+      lessonKey: "modulo-0::lesson-0",
       lessonTitle: "O problema que origina tudo",
       completed: true,
       practiceCompleted: true,
@@ -139,6 +140,7 @@ describe("course router", () => {
       userId: 7,
       courseSlug: "engenharia-sistemas-ia-generativa",
       moduleId: "modulo-0",
+      lessonKey: "modulo-0::lesson-0",
       lessonTitle: "O problema que origina tudo",
       completed: true,
       practiceCompleted: true,
@@ -159,6 +161,7 @@ describe("course router", () => {
     await expect(
       caller.course.progress({
         moduleId: "modulo-4",
+        lessonKey: "modulo-4::lesson-1",
         lessonTitle: "Sampling, temperatura e controle",
         completed: true,
       }),
