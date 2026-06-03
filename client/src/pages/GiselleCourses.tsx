@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { Link, useLocation } from "wouter";
 import {
   ArrowRight,
+  Award,
   BookOpen,
   CheckCircle2,
   ChevronRight,
@@ -72,6 +73,7 @@ export default function GiselleCourses({ view = "overview" }: GiselleCoursesProp
   const [topK, setTopK] = useState(4);
   const [temperature, setTemperature] = useState(0.3);
   const [checkoutSearch, setCheckoutSearch] = useState("");
+  const [certificateAutoOpened, setCertificateAutoOpened] = useState(false);
 
   const statusQuery = trpc.course.status.useQuery(undefined, {
     retry: false,
@@ -94,8 +96,15 @@ export default function GiselleCourses({ view = "overview" }: GiselleCoursesProp
   });
 
   const progressMutation = trpc.course.progress.useMutation({
-    onSuccess: () => {
+    onSuccess: (result) => {
       toast.success("Seu avanço no curso foi registrado.");
+
+      if (result.certificateEligible && result.certificateUrl && !certificateAutoOpened) {
+        setCertificateAutoOpened(true);
+        toast.success("Parabéns. Seu certificado de conclusão em PDF foi gerado automaticamente.");
+        window.open(result.certificateUrl, "_blank", "noopener,noreferrer");
+      }
+
       statusQuery.refetch();
     },
     onError: () => {
@@ -166,8 +175,9 @@ export default function GiselleCourses({ view = "overview" }: GiselleCoursesProp
         progress: [...(statusQuery.data?.progress ?? [])],
         hasPaidAccess: statusQuery.data?.hasPaidAccess ?? false,
         isAuthenticated,
+        certificateEligible: statusQuery.data?.certificateEligible ?? false,
       }),
-    [isAuthenticated, statusQuery.data?.hasPaidAccess, statusQuery.data?.progress],
+    [isAuthenticated, statusQuery.data?.certificateEligible, statusQuery.data?.hasPaidAccess, statusQuery.data?.progress],
   );
 
   useEffect(() => {
@@ -212,6 +222,17 @@ export default function GiselleCourses({ view = "overview" }: GiselleCoursesProp
 
     return { score, quality, guidance };
   }, [chunkSize, overlap, topK, temperature]);
+
+  const handleOpenCertificate = () => {
+    const certificateUrl = statusQuery.data?.certificateUrl;
+
+    if (!certificateUrl) {
+      toast.error("O certificado ainda não está disponível.");
+      return;
+    }
+
+    window.open(certificateUrl, "_blank", "noopener,noreferrer");
+  };
 
   const handleStartCheckout = () => {
     if (!isAuthenticated) {
@@ -408,11 +429,13 @@ export default function GiselleCourses({ view = "overview" }: GiselleCoursesProp
                   {user ? ` Sessão de estudo vinculada a ${user.name ?? user.email ?? "sua conta"}.` : " Faça login para salvar o avanço e retomar do ponto exato em que parou."}
                 </p>
                 <p className="mt-3 text-sm leading-7 text-cyan-100/90">
-                  {statusQuery.data?.accessStatus === "pending"
-                    ? "Seu pagamento está em análise. Assim que o PIX for confirmado, o acesso avançado será liberado sem necessidade de nova compra."
-                    : statusQuery.data?.hasPaidAccess
-                      ? "A trilha premium já está disponível, incluindo retomada, práticas e histórico autenticado."
-                      : "O percurso gratuito apresenta a base do método e prepara você para o destravamento completo quando decidir avançar."}
+                  {statusQuery.data?.certificateEligible
+                    ? "Todas as aulas da trilha foram concluídas. O certificado em PDF já está liberado para abertura imediata."
+                    : statusQuery.data?.accessStatus === "pending"
+                      ? "Seu pagamento está em análise. Assim que o PIX for confirmado, o acesso avançado será liberado sem necessidade de nova compra."
+                      : statusQuery.data?.hasPaidAccess
+                        ? "A trilha premium já está disponível, incluindo retomada, práticas, histórico autenticado e certificado ao final da jornada."
+                        : "O percurso gratuito apresenta a base do método e prepara você para o destravamento completo quando decidir avançar."}
                 </p>
               </CardContent>
             </Card>
@@ -457,9 +480,13 @@ export default function GiselleCourses({ view = "overview" }: GiselleCoursesProp
                 <p className="mt-2 text-sm leading-7 text-slate-300">Módulos marcados como estudados e sincronizados com sua sessão autenticada.</p>
               </div>
               <div className="rounded-[1.4rem] border border-white/8 bg-black/20 px-5 py-5">
-                <p className="text-[0.68rem] font-semibold uppercase tracking-[0.28em] text-slate-400">Retomada sugerida</p>
-                <p className="mt-4 text-lg font-semibold text-white">{dashboard.nextModule?.title ?? "Comece pelo módulo 0"}</p>
-                <p className="mt-2 text-sm leading-7 text-slate-300">O sistema sugere a próxima etapa disponível com base no seu histórico salvo.</p>
+                <p className="text-[0.68rem] font-semibold uppercase tracking-[0.28em] text-slate-400">Certificação</p>
+                <p className="mt-4 text-lg font-semibold text-white">{dashboard.certificateReady ? "PDF liberado" : "Disponível ao concluir a trilha"}</p>
+                <p className="mt-2 text-sm leading-7 text-slate-300">
+                  {dashboard.certificateReady
+                    ? "Seu histórico já atingiu o critério de conclusão integral. O PDF pode ser aberto e baixado imediatamente."
+                    : "Assim que todas as aulas da trilha forem concluídas, o sistema gera automaticamente seu certificado em PDF."}
+                </p>
               </div>
             </div>
 
@@ -485,16 +512,24 @@ export default function GiselleCourses({ view = "overview" }: GiselleCoursesProp
                   {dashboard.latestModule ? (
                     <div className="mt-5 rounded-[1.2rem] border border-white/8 bg-white/[0.03] px-4 py-4 text-sm leading-7 text-slate-200">
                       <p className="font-medium text-white">Retomar agora</p>
-                      <p className="mt-2">Abra novamente exatamente a aula registrada por último, mantendo continuidade entre leitura, prática e fechamento do módulo.</p>
-                      <Button
-                        onClick={() => {
-                          setActiveModuleId(dashboard.latestModule!.id);
-                          setActiveLessonKey(dashboard.latestProgress?.lessonKey ?? getLessonKey(dashboard.latestModule!.id, 0));
-                        }}
-                        className="mt-4 rounded-full bg-white text-slate-950 hover:bg-fuchsia-200"
-                      >
-                        Voltar para esta aula
-                      </Button>
+                      <p className="mt-2">Abra novamente exatamente a aula registrada por último, mantendo continuidade entre leitura, prática, fechamento do módulo e avanço rumo ao certificado final.</p>
+                      <div className="mt-4 flex flex-wrap gap-3">
+                        <Button
+                          onClick={() => {
+                            setActiveModuleId(dashboard.latestModule!.id);
+                            setActiveLessonKey(dashboard.latestProgress?.lessonKey ?? getLessonKey(dashboard.latestModule!.id, 0));
+                          }}
+                          className="rounded-full bg-white text-slate-950 hover:bg-fuchsia-200"
+                        >
+                          Voltar para esta aula
+                        </Button>
+                        {dashboard.certificateReady ? (
+                          <Button onClick={handleOpenCertificate} variant="outline" className="rounded-full border-cyan-300/20 bg-transparent text-cyan-100 hover:bg-cyan-400/10">
+                            <Award className="mr-2 size-4" />
+                            Abrir certificado em PDF
+                          </Button>
+                        ) : null}
+                      </div>
                     </div>
                   ) : null}
                 </div>
@@ -523,7 +558,7 @@ export default function GiselleCourses({ view = "overview" }: GiselleCoursesProp
                               }}
                               className="inline-flex items-center rounded-full border border-cyan-300/20 bg-cyan-400/10 px-3 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.2em] text-cyan-100 transition hover:bg-cyan-400/20"
                             >
-                              Retomar aula
+                              Retomar esta aula
                             </button>
                           </div>
                         </div>
@@ -539,14 +574,22 @@ export default function GiselleCourses({ view = "overview" }: GiselleCoursesProp
             <Card className="rounded-[2rem] border-white/10 bg-white/[0.05] text-white backdrop-blur-xl">
               <CardContent className="p-7 sm:p-8">
                 <p className="text-[0.68rem] font-semibold uppercase tracking-[0.28em] text-slate-400">Retorno imediato</p>
-                <h3 className="mt-4 text-2xl font-semibold text-white">Acompanhe seu avanço e volte exatamente do ponto em que parou</h3>
+                <h3 className="mt-4 text-2xl font-semibold text-white">Acompanhe seu avanço, volte exatamente do ponto em que parou e libere seu certificado ao final</h3>
                 <p className="mt-4 text-sm leading-7 text-slate-300">
-                  A área autenticada reduz fricção de continuidade, organiza o histórico recente e mantém um encadeamento mais claro entre estudo, prática e próxima decisão de arquitetura.
+                  A área autenticada reduz fricção de continuidade, organiza o histórico recente e mantém um encadeamento claro entre estudo, prática, conclusão e emissão do PDF final.
                 </p>
-                <Link href="/giselle/cursos/meus-cursos" className="mt-6 inline-flex items-center rounded-full border border-cyan-300/20 bg-cyan-400/10 px-5 py-3 text-sm font-medium text-cyan-100 transition hover:bg-cyan-400/20">
-                  Abrir meus cursos
-                  <ChevronRight className="ml-2 size-4" />
-                </Link>
+                <div className="mt-6 flex flex-wrap gap-3">
+                  <Link href="/giselle/cursos/meus-cursos" className="inline-flex items-center rounded-full border border-cyan-300/20 bg-cyan-400/10 px-5 py-3 text-sm font-medium text-cyan-100 transition hover:bg-cyan-400/20">
+                    Abrir meus cursos
+                    <ChevronRight className="ml-2 size-4" />
+                  </Link>
+                  {dashboard.certificateReady ? (
+                    <Button onClick={handleOpenCertificate} variant="outline" className="rounded-full border-fuchsia-300/20 bg-transparent text-fuchsia-100 hover:bg-fuchsia-400/10">
+                      <Award className="mr-2 size-4" />
+                      Baixar certificado
+                    </Button>
+                  ) : null}
+                </div>
               </CardContent>
             </Card>
 
@@ -714,12 +757,18 @@ export default function GiselleCourses({ view = "overview" }: GiselleCoursesProp
                   <>
                     <Button onClick={() => handleMarkModule(false)} disabled={progressMutation.isPending} className="rounded-full bg-white px-5 text-slate-950 hover:bg-fuchsia-200">
                       <CirclePlay className="mr-2 size-4" />
-                      Marcar módulo como estudado
+                      Marcar aula atual como estudada
                     </Button>
                     <Button onClick={() => handleMarkModule(true)} disabled={progressMutation.isPending} variant="outline" className="rounded-full border-cyan-300/20 bg-transparent text-cyan-100 hover:bg-cyan-400/10">
                       <Sparkles className="mr-2 size-4" />
-                      Registrar prática concluída
+                      Registrar prática desta aula
                     </Button>
+                    {dashboard.certificateReady ? (
+                      <Button onClick={handleOpenCertificate} variant="outline" className="rounded-full border-fuchsia-300/20 bg-transparent text-fuchsia-100 hover:bg-fuchsia-400/10">
+                        <Award className="mr-2 size-4" />
+                        Abrir certificado em PDF
+                      </Button>
+                    ) : null}
                   </>
                 ) : (
                   <Button onClick={handleStartCheckout} disabled={checkoutMutation.isPending} className="rounded-full bg-white px-5 text-slate-950 hover:bg-fuchsia-200">

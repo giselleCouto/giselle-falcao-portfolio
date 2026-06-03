@@ -34,6 +34,7 @@ describe("courseExperience", () => {
       modules: courseModules,
       hasPaidAccess: true,
       isAuthenticated: true,
+      certificateEligible: false,
       progress: [
         {
           moduleId: "modulo-1",
@@ -59,5 +60,27 @@ describe("courseExperience", () => {
     expect(dashboard.latestProgress?.lessonKey).toBe("modulo-1::lesson-1");
     expect(dashboard.nextModule?.id).toBe("modulo-2");
     expect(dashboard.progressPercent).toBeGreaterThan(0);
+    expect(dashboard.certificateReady).toBe(false);
+  });
+
+  it("marca o certificado como pronto quando a elegibilidade já foi liberada", () => {
+    const dashboard = buildCourseDashboard({
+      modules: courseModules,
+      hasPaidAccess: true,
+      isAuthenticated: true,
+      certificateEligible: true,
+      progress: courseModules.map((module, index) => ({
+        moduleId: module.id,
+        lessonKey: `${module.id}::lesson-2`,
+        lessonTitle: module.lessons[module.lessons.length - 1]?.title ?? `Aula ${index + 1}`,
+        completed: true,
+        practiceCompleted: true,
+        lastVisitedAt: new Date(`2026-06-${String(index + 1).padStart(2, "0")}T20:00:00Z`),
+      })),
+    });
+
+    expect(dashboard.completedCount).toBe(courseModules.length);
+    expect(dashboard.progressPercent).toBe(100);
+    expect(dashboard.certificateReady).toBe(true);
   });
 });

@@ -50,3 +50,9 @@
 - [x] Criar a área "Meus cursos" com histórico detalhado de progresso e retomada por aula
 - [x] Implementar retomada real por aula em "Meus cursos", persistindo um identificador estável da aula no progresso
 - [x] Adicionar teste automatizado cobrindo retomada por aula a partir do último ponto estudado
+- [x] Implementar geração automática de certificado de conclusão em PDF quando o aluno finalizar todas as aulas
+- [x] Integrar a área de cursos com emissão e acesso ao certificado concluído
+- [x] Validar a elegibilidade, a geração do PDF e a experiência final com testes e build
+- [x] Persistir progresso em nível de aula e liberar o certificado somente quando todas as aulas da trilha estiverem concluídas
+- [x] Adicionar testes automatizados da rota de certificado cobrindo autenticação, bloqueio antes da conclusão total e resposta PDF válida
+- [x] Ajustar a UI do certificado para refletir a elegibilidade real por aula concluída e revalidar a emissão automática

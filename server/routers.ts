@@ -8,9 +8,11 @@ import {
   createLeadContact,
   getCourseAccessForUser,
   getUserById,
+  listCourseLessonProgress,
   listCourseProgress,
   listLeadContacts,
   upsertCourseCheckout,
+  upsertCourseLessonProgressRecord,
   upsertCourseProgressRecord,
 } from "./db";
 import {
@@ -21,6 +23,11 @@ import {
   createCourseCheckoutSession,
   isFreeModule,
 } from "./coursePayments";
+import {
+  COURSE_CERTIFICATE_PATH,
+  hasCompletedCourseCertificate,
+  hasCompletedModuleLessons,
+} from "./courseCertificate";
 
 const leadInputSchema = z.object({
   route: z.string().trim().min(1).max(64),
@@ -114,6 +121,7 @@ export const appRouter = router({
         courseTitle: COURSE_TITLE,
         priceCents: COURSE_PRICE_CENTS,
         freeModuleIds: [...FREE_MODULE_IDS],
+        certificateUrl: COURSE_CERTIFICATE_PATH,
       };
 
       if (!ctx.user) {
@@ -122,13 +130,15 @@ export const appRouter = router({
           authenticated: false,
           hasPaidAccess: false,
           accessStatus: null,
+          certificateEligible: false,
           progress: [],
         } as const;
       }
 
-      const [access, progress] = await Promise.all([
+      const [access, progress, lessonProgress] = await Promise.all([
         getCourseAccessForUser(ctx.user.id, COURSE_SLUG),
         listCourseProgress(ctx.user.id, COURSE_SLUG),
+        listCourseLessonProgress(ctx.user.id, COURSE_SLUG),
       ]);
 
       return {
@@ -136,6 +146,7 @@ export const appRouter = router({
         authenticated: true,
         hasPaidAccess: access?.status === "active",
         accessStatus: access?.status ?? null,
+        certificateEligible: hasCompletedCourseCertificate(lessonProgress),
         progress,
       } as const;
     }),
@@ -171,18 +182,37 @@ export const appRouter = router({
         throw new Error("Purchase required to record progress in paid modules");
       }
 
+      const normalizedLessonKey = input.lessonKey?.trim();
+      const normalizedLessonTitle = input.lessonTitle?.trim() || null;
+
+      if (normalizedLessonKey) {
+        await upsertCourseLessonProgressRecord({
+          userId: ctx.user.id,
+          courseSlug: COURSE_SLUG,
+          moduleId: input.moduleId,
+          lessonKey: normalizedLessonKey,
+          lessonTitle: normalizedLessonTitle,
+          completed: input.completed ?? false,
+        });
+      }
+
+      const updatedLessonProgress = await listCourseLessonProgress(ctx.user.id, COURSE_SLUG);
+      const moduleCompleted = hasCompletedModuleLessons(input.moduleId, updatedLessonProgress);
+
       await upsertCourseProgressRecord({
         userId: ctx.user.id,
         courseSlug: COURSE_SLUG,
         moduleId: input.moduleId,
-        lessonKey: input.lessonKey?.trim() || null,
-        lessonTitle: input.lessonTitle?.trim() || null,
-        completed: input.completed ?? false,
+        lessonKey: normalizedLessonKey || null,
+        lessonTitle: normalizedLessonTitle,
+        completed: moduleCompleted,
         practiceCompleted: input.practiceCompleted ?? false,
       });
 
       return {
         success: true,
+        certificateEligible: hasCompletedCourseCertificate(updatedLessonProgress),
+        certificateUrl: COURSE_CERTIFICATE_PATH,
       } as const;
     }),
   }),

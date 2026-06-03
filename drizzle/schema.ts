@@ -86,3 +86,26 @@ export const courseProgress = mysqlTable(
 
 export type CourseProgress = typeof courseProgress.$inferSelect;
 export type InsertCourseProgress = typeof courseProgress.$inferInsert;
+
+export const courseLessonProgress = mysqlTable(
+  "course_lesson_progress",
+  {
+    id: int("id").autoincrement().primaryKey(),
+    userId: int("userId").notNull(),
+    courseSlug: varchar("courseSlug", { length: 120 }).notNull(),
+    moduleId: varchar("moduleId", { length: 64 }).notNull(),
+    lessonKey: varchar("lessonKey", { length: 120 }).notNull(),
+    lessonTitle: varchar("lessonTitle", { length: 255 }),
+    completed: boolean("completed").default(false).notNull(),
+    lastVisitedAt: timestamp("lastVisitedAt").defaultNow().notNull(),
+    createdAt: timestamp("createdAt").defaultNow().notNull(),
+    updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+  },
+  (table) => ({
+    userLessonUnique: uniqueIndex("course_lesson_progress_user_lesson_unique").on(table.userId, table.courseSlug, table.lessonKey),
+    lessonProgressUserIdx: index("course_lesson_progress_user_idx").on(table.userId),
+  }),
+);
+
+export type CourseLessonProgress = typeof courseLessonProgress.$inferSelect;
+export type InsertCourseLessonProgress = typeof courseLessonProgress.$inferInsert;

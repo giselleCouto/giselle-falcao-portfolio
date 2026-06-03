@@ -29,6 +29,13 @@
       "when": 1780446661863,
       "tag": "0003_condemned_bromley",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "5",
+      "when": 1780449175422,
+      "tag": "0004_new_raider",
+      "breakpoints": true
     }
   ]
 }

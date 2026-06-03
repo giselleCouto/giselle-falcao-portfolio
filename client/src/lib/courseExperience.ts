@@ -69,6 +69,7 @@ export function buildCourseDashboard(input: {
   progress: CourseProgressEntry[];
   hasPaidAccess: boolean;
   isAuthenticated: boolean;
+  certificateEligible?: boolean;
 }) {
   const completedModuleIds = new Set(input.progress.filter((entry) => entry.completed).map((entry) => entry.moduleId));
   const latestProgress = input.progress[0] ?? null;
@@ -91,6 +92,7 @@ export function buildCourseDashboard(input: {
     accessibleModules,
     completedCount,
     progressPercent,
+    certificateReady: Boolean(input.certificateEligible) || progressPercent === 100,
     emptyState:
       !input.isAuthenticated
         ? "Faça login para salvar seu histórico, acompanhar aulas concluídas e retomar exatamente do último ponto estudado."

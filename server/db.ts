@@ -2,8 +2,10 @@ import { and, desc, eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
 import {
   courseAccess,
+  courseLessonProgress,
   courseProgress,
   InsertCourseAccess,
+  InsertCourseLessonProgress,
   InsertCourseProgress,
   InsertLeadContact,
   InsertUser,
@@ -270,6 +272,53 @@ export async function upsertCourseProgressRecord(input: {
       updatedAt: new Date(),
     },
   });
+}
+
+export async function upsertCourseLessonProgressRecord(input: {
+  userId: number;
+  courseSlug: string;
+  moduleId: string;
+  lessonKey: string;
+  lessonTitle?: string | null;
+  completed?: boolean;
+}) {
+  const db = await getDb();
+  if (!db) {
+    throw new Error("Database not available for lesson progress");
+  }
+
+  const values: InsertCourseLessonProgress = {
+    userId: input.userId,
+    courseSlug: input.courseSlug,
+    moduleId: input.moduleId,
+    lessonKey: input.lessonKey,
+    lessonTitle: input.lessonTitle ?? null,
+    completed: input.completed ?? false,
+    lastVisitedAt: new Date(),
+  };
+
+  await db.insert(courseLessonProgress).values(values).onDuplicateKeyUpdate({
+    set: {
+      lessonTitle: input.lessonTitle ?? null,
+      completed: input.completed ?? false,
+      lastVisitedAt: new Date(),
+      updatedAt: new Date(),
+    },
+  });
+}
+
+export async function listCourseLessonProgress(userId: number, courseSlug: string) {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot list lesson progress: database not available");
+    return [];
+  }
+
+  return db
+    .select()
+    .from(courseLessonProgress)
+    .where(and(eq(courseLessonProgress.userId, userId), eq(courseLessonProgress.courseSlug, courseSlug)))
+    .orderBy(desc(courseLessonProgress.lastVisitedAt));
 }
 
 export async function listCourseProgress(userId: number, courseSlug: string) {

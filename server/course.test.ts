@@ -3,8 +3,10 @@ import type { TrpcContext } from "./_core/context";
 
 const getCourseAccessForUserMock = vi.fn();
 const getUserByIdMock = vi.fn();
+const listCourseLessonProgressMock = vi.fn();
 const listCourseProgressMock = vi.fn();
 const upsertCourseCheckoutMock = vi.fn();
+const upsertCourseLessonProgressRecordMock = vi.fn();
 const upsertCourseProgressRecordMock = vi.fn();
 
 const createCourseCheckoutSessionMock = vi.fn();
@@ -17,8 +19,10 @@ vi.mock("./db", async () => {
     ...actual,
     getCourseAccessForUser: getCourseAccessForUserMock,
     getUserById: getUserByIdMock,
+    listCourseLessonProgress: listCourseLessonProgressMock,
     listCourseProgress: listCourseProgressMock,
     upsertCourseCheckout: upsertCourseCheckoutMock,
+    upsertCourseLessonProgressRecord: upsertCourseLessonProgressRecordMock,
     upsertCourseProgressRecord: upsertCourseProgressRecordMock,
   };
 });
@@ -66,8 +70,10 @@ describe("course router", () => {
     vi.resetModules();
     getCourseAccessForUserMock.mockReset();
     getUserByIdMock.mockReset();
+    listCourseLessonProgressMock.mockReset();
     listCourseProgressMock.mockReset();
     upsertCourseCheckoutMock.mockReset();
+    upsertCourseLessonProgressRecordMock.mockReset();
     upsertCourseProgressRecordMock.mockReset();
     createCourseCheckoutSessionMock.mockReset();
     isFreeModuleMock.mockReset();
@@ -82,6 +88,8 @@ describe("course router", () => {
     expect(result.authenticated).toBe(false);
     expect(result.hasPaidAccess).toBe(false);
     expect(result.freeModuleIds).toEqual(["modulo-0", "modulo-1"]);
+    expect(result.certificateEligible).toBe(false);
+    expect(result.certificateUrl).toBe("/api/course/certificate.pdf");
     expect(result.progress).toEqual([]);
   });
 
@@ -125,6 +133,10 @@ describe("course router", () => {
     const { appRouter } = await import("./routers");
 
     getCourseAccessForUserMock.mockResolvedValue(null);
+    listCourseLessonProgressMock.mockResolvedValue([
+      { lessonKey: "modulo-0::lesson-0", completed: true },
+      { lessonKey: "modulo-0::lesson-1", completed: true },
+    ]);
     isFreeModuleMock.mockReturnValue(true);
 
     const caller = appRouter.createCaller(createContext("user"));
@@ -136,16 +148,78 @@ describe("course router", () => {
       practiceCompleted: true,
     });
 
-    expect(upsertCourseProgressRecordMock).toHaveBeenCalledWith({
+    expect(upsertCourseLessonProgressRecordMock).toHaveBeenCalledWith({
       userId: 7,
       courseSlug: "engenharia-sistemas-ia-generativa",
       moduleId: "modulo-0",
       lessonKey: "modulo-0::lesson-0",
       lessonTitle: "O problema que origina tudo",
       completed: true,
+    });
+    expect(upsertCourseProgressRecordMock).toHaveBeenCalledWith({
+      userId: 7,
+      courseSlug: "engenharia-sistemas-ia-generativa",
+      moduleId: "modulo-0",
+      lessonKey: "modulo-0::lesson-0",
+      lessonTitle: "O problema que origina tudo",
+      completed: false,
       practiceCompleted: true,
     });
-    expect(result).toEqual({ success: true });
+    expect(result).toEqual({
+      success: true,
+      certificateEligible: false,
+      certificateUrl: "/api/course/certificate.pdf",
+    });
+  });
+
+  it("sinaliza certificado pronto quando o último módulo concluído completa a trilha", async () => {
+    const { appRouter } = await import("./routers");
+
+    getCourseAccessForUserMock.mockResolvedValue({
+      status: "active",
+    });
+    listCourseLessonProgressMock.mockResolvedValue([
+      { lessonKey: "modulo-0::lesson-0", completed: true },
+      { lessonKey: "modulo-0::lesson-1", completed: true },
+      { lessonKey: "modulo-0::lesson-2", completed: true },
+      { lessonKey: "modulo-1::lesson-0", completed: true },
+      { lessonKey: "modulo-1::lesson-1", completed: true },
+      { lessonKey: "modulo-1::lesson-2", completed: true },
+      { lessonKey: "modulo-2::lesson-0", completed: true },
+      { lessonKey: "modulo-2::lesson-1", completed: true },
+      { lessonKey: "modulo-2::lesson-2", completed: true },
+      { lessonKey: "modulo-3::lesson-0", completed: true },
+      { lessonKey: "modulo-3::lesson-1", completed: true },
+      { lessonKey: "modulo-3::lesson-2", completed: true },
+      { lessonKey: "modulo-4::lesson-0", completed: true },
+      { lessonKey: "modulo-4::lesson-1", completed: true },
+      { lessonKey: "modulo-4::lesson-2", completed: true },
+      { lessonKey: "modulo-5::lesson-0", completed: true },
+      { lessonKey: "modulo-5::lesson-1", completed: true },
+      { lessonKey: "modulo-5::lesson-2", completed: true },
+      { lessonKey: "modulo-6::lesson-0", completed: true },
+      { lessonKey: "modulo-6::lesson-1", completed: true },
+      { lessonKey: "modulo-6::lesson-2", completed: true },
+      { lessonKey: "modulo-7::lesson-0", completed: true },
+      { lessonKey: "modulo-7::lesson-1", completed: true },
+      { lessonKey: "modulo-7::lesson-2", completed: true },
+    ]);
+    isFreeModuleMock.mockReturnValue(false);
+
+    const caller = appRouter.createCaller(createContext("user"));
+    const result = await caller.course.progress({
+      moduleId: "modulo-7",
+      lessonKey: "modulo-7::lesson-2",
+      lessonTitle: "Encerramento da trilha",
+      completed: true,
+      practiceCompleted: true,
+    });
+
+    expect(result).toEqual({
+      success: true,
+      certificateEligible: true,
+      certificateUrl: "/api/course/certificate.pdf",
+    });
   });
 
   it("bloqueia progresso em módulo pago quando o acesso ainda não foi liberado", async () => {
