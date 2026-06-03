@@ -61,3 +61,6 @@
 - [x] Validar a integração do novo módulo MCP na área de cursos com testes, build e consistência pedagógica
 - [x] Adicionar um diagrama visual interativo do fluxo host-client-server ao módulo MCP para facilitar o entendimento
 - [x] Validar a nova experiência visual do módulo MCP com testes e build
+- [x] Criar no laboratório um exemplo prático simulando a conexão com um servidor MCP acadêmico
+- [x] Integrar exercícios guiados e feedback visual ao laboratório MCP acadêmico
+- [x] Validar a nova experiência prática do laboratório MCP com testes e build

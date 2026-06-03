@@ -135,4 +135,27 @@ describe("GiselleCourses resume by lesson", () => {
     expect(screen.getByText("Camada em foco")).toBeTruthy();
     expect(serverButton.getAttribute("aria-pressed")).toBe("true");
   });
+
+  it("simula uma conexão com servidor MCP acadêmico no laboratório e permite marcar exercícios práticos", async () => {
+    const user = userEvent.setup();
+    render(<GiselleCourses view="lab" />);
+
+    expect(screen.getAllByText("MCP Academic Sandbox").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("Sessão MCP aberta com contexto de aula e trilha ativa.").length).toBeGreaterThan(0);
+
+    const discoverButton = screen.getAllByRole("button", { name: /Discover/i })[0]!;
+    await user.click(discoverButton);
+    expect(discoverButton.getAttribute("aria-pressed")).toBe("true");
+    expect(screen.getByText(/client lista resources, prompts e tools disponíveis/i)).toBeTruthy();
+
+    const climateResourceButton = screen.getAllByText("Observatório de clima e séries históricas")[0]!.closest("button")!;
+    await user.click(climateResourceButton);
+    expect(climateResourceButton.getAttribute("aria-pressed")).toBe("true");
+    expect(screen.getByText(/extremos climáticos e produtividade agrícola/i)).toBeTruthy();
+
+    const exerciseButton = screen.getAllByText(/Exercício 1 · Escolha do resource correto/i)[0]!.closest("button")!;
+    expect(exerciseButton?.getAttribute("aria-pressed")).toBe("false");
+    await user.click(exerciseButton!);
+    expect(exerciseButton?.getAttribute("aria-pressed")).toBe("true");
+  });
 });

@@ -105,6 +105,78 @@ const mcpFlowStages = [
   "4. Confirmação de ações sensíveis e observabilidade",
 ] as const;
 
+const academicMcpSteps = [
+  {
+    id: "initialize",
+    title: "Handshake inicial",
+    short: "Initialize",
+    detail:
+      "O host acadêmico abre a sessão, negocia a versão do protocolo e verifica se o servidor aceita conexões autenticadas para pesquisa.",
+    outcome: "Sessão MCP aberta com contexto de aula e trilha ativa.",
+  },
+  {
+    id: "discover",
+    title: "Descoberta de capacidades",
+    short: "Discover",
+    detail:
+      "O client lista resources, prompts e tools disponíveis no servidor acadêmico para a disciplina em andamento.",
+    outcome: "Catálogo pronto com biblioteca, buscador semântico e rubrica de avaliação.",
+  },
+  {
+    id: "call_tool",
+    title: "Consulta orientada",
+    short: "Call Tool",
+    detail:
+      "A aplicação consulta o servidor para buscar uma evidência, sintetizar resposta e registrar a justificativa para o aluno.",
+    outcome: "Resposta contextualizada com citações e recomendação de estudo.",
+  },
+] as const;
+
+const academicMcpResources = [
+  {
+    id: "thesis_archive",
+    title: "Repositório de teses e dissertações",
+    type: "resource://academic/theses",
+    description: "Coleção de trabalhos sobre IA, modelagem matemática e políticas públicas, com metadados de autoria, ano e programa.",
+    sampleQuestion: "Quais trabalhos tratam de RAG aplicado a bibliotecas universitárias?",
+    recommendedTopK: 4,
+  },
+  {
+    id: "climate_observatory",
+    title: "Observatório de clima e séries históricas",
+    type: "resource://academic/climate-observatory",
+    description: "Base acadêmica com séries temporais, indicadores climáticos e notas metodológicas para pesquisa aplicada.",
+    sampleQuestion: "Que evidências aparecem para correlação entre extremos climáticos e produtividade agrícola?",
+    recommendedTopK: 5,
+  },
+  {
+    id: "peer_review_lab",
+    title: "Laboratório de revisão por pares",
+    type: "tool://academic/peer-review-rubric",
+    description: "Ferramenta que cruza rubricas de avaliação, consistência argumentativa e checklist de citação para trabalhos dos alunos.",
+    sampleQuestion: "Como revisar um resumo expandido sem perder aderência metodológica?",
+    recommendedTopK: 3,
+  },
+] as const;
+
+const academicMcpExercises = [
+  {
+    id: "resource-fit",
+    title: "Exercício 1 · Escolha do resource correto",
+    instruction: "Selecione o recurso acadêmico mais coerente com a pergunta do aluno e explique por que ele reduz alucinação.",
+  },
+  {
+    id: "parameter-fit",
+    title: "Exercício 2 · Ajuste de parâmetros",
+    instruction: "Compare seu top-k atual com o top-k recomendado pelo servidor e justifique a diferença para precisão ou abrangência.",
+  },
+  {
+    id: "evidence-fit",
+    title: "Exercício 3 · Evidência e devolutiva",
+    instruction: "Após a simulação, registre qual evidência o host devolveria ao aluno e como ela entraria na resposta final.",
+  },
+] as const;
+
 export default function GiselleCourses({ view = "overview" }: GiselleCoursesProps) {
   const [location] = useLocation();
   const { user, isAuthenticated } = useAuth();
@@ -117,6 +189,9 @@ export default function GiselleCourses({ view = "overview" }: GiselleCoursesProp
   const [checkoutSearch, setCheckoutSearch] = useState("");
   const [certificateAutoOpened, setCertificateAutoOpened] = useState(false);
   const [activeMcpNode, setActiveMcpNode] = useState<(typeof mcpDiagramNodes)[number]["id"]>("host");
+  const [activeAcademicStep, setActiveAcademicStep] = useState<(typeof academicMcpSteps)[number]["id"]>("initialize");
+  const [activeAcademicResource, setActiveAcademicResource] = useState<(typeof academicMcpResources)[number]["id"]>("thesis_archive");
+  const [completedAcademicExercises, setCompletedAcademicExercises] = useState<string[]>([]);
 
   const statusQuery = trpc.course.status.useQuery(undefined, {
     retry: false,
@@ -139,6 +214,8 @@ export default function GiselleCourses({ view = "overview" }: GiselleCoursesProp
   });
 
   const activeMcpDiagramNode = mcpDiagramNodes.find((node) => node.id === activeMcpNode) ?? mcpDiagramNodes[0];
+  const activeAcademicStepData = academicMcpSteps.find((step) => step.id === activeAcademicStep) ?? academicMcpSteps[0];
+  const activeAcademicResourceData = academicMcpResources.find((resource) => resource.id === activeAcademicResource) ?? academicMcpResources[0];
 
   const progressMutation = trpc.course.progress.useMutation({
     onSuccess: (result) => {
@@ -267,6 +344,39 @@ export default function GiselleCourses({ view = "overview" }: GiselleCoursesProp
 
     return { score, quality, guidance };
   }, [chunkSize, overlap, topK, temperature]);
+
+  const academicMcpSimulation = useMemo(() => {
+    const retrievalHealth = topK >= activeAcademicResourceData.recommendedTopK ? "ampla" : "restrita";
+    const temperatureProfile = temperature <= 0.4 ? "conservador" : temperature <= 0.7 ? "equilibrado" : "exploratório";
+    const connectionReadiness = overlap >= 80 && chunkSize <= 920 ? "estável" : "sensível a ruído";
+
+    const evidenceSummary =
+      activeAcademicStep === "initialize"
+        ? "Sessão criada. O host ainda não consultou nenhum acervo, mas já tem escopo da aula, identidade do aluno e política de acesso." 
+        : activeAcademicStep === "discover"
+          ? `O client descobriu ${academicMcpResources.length} capacidades acadêmicas e sugeriu o resource ${activeAcademicResourceData.type}.`
+          : `O servidor retornou contexto ${retrievalHealth}, com perfil ${temperatureProfile} e conexão ${connectionReadiness}. A resposta já pode citar o acervo selecionado.`;
+
+    const tutorFeedback =
+      activeAcademicStep === "call_tool"
+        ? `Para esta configuração, o tutor recomendaria top-k ${activeAcademicResourceData.recommendedTopK}, temperatura até 0.4 e justificativa explícita de proveniência ao responder: “${activeAcademicResourceData.sampleQuestion}”.`
+        : "Avance o fluxo para observar como o mesmo servidor muda de papel entre handshake, descoberta e execução orientada por evidências.";
+
+    return {
+      retrievalHealth,
+      temperatureProfile,
+      connectionReadiness,
+      evidenceSummary,
+      tutorFeedback,
+      progressLabel: `${completedAcademicExercises.length}/${academicMcpExercises.length} exercícios assinalados`,
+    };
+  }, [activeAcademicResourceData, activeAcademicStep, chunkSize, completedAcademicExercises.length, overlap, temperature, topK]);
+
+  const toggleAcademicExercise = (exerciseId: string) => {
+    setCompletedAcademicExercises((current) =>
+      current.includes(exerciseId) ? current.filter((item) => item !== exerciseId) : [...current, exerciseId],
+    );
+  };
 
   const handleOpenCertificate = () => {
     const certificateUrl = statusQuery.data?.certificateUrl;
@@ -986,6 +1096,160 @@ export default function GiselleCourses({ view = "overview" }: GiselleCoursesProp
                       <p className="mt-2">{item.text}</p>
                     </div>
                   ))}
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-8 rounded-[1.8rem] border border-emerald-300/15 bg-[linear-gradient(180deg,rgba(10,22,28,0.96),rgba(9,13,24,0.98))] p-6 shadow-[0_24px_80px_rgba(16,185,129,0.08)]">
+              <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
+                <div>
+                  <p className="text-[0.68rem] font-semibold uppercase tracking-[0.28em] text-emerald-200">MCP Academic Sandbox</p>
+                  <h3 className="mt-3 text-3xl font-semibold text-white">Simulação guiada de conexão com um servidor MCP acadêmico</h3>
+                  <p className="mt-3 max-w-3xl text-sm leading-7 text-slate-300">
+                    Este exercício reproduz o fluxo de uma aplicação educacional que consulta um servidor MCP para acessar acervos, rubricas e apoio tutorial. O objetivo é fazer o aluno sentir a diferença entre iniciar a sessão, descobrir capacidades e chamar uma ferramenta com contexto confiável.
+                  </p>
+                </div>
+                <div className="rounded-full border border-emerald-300/20 bg-emerald-400/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] text-emerald-100">
+                  {academicMcpSimulation.progressLabel}
+                </div>
+              </div>
+
+              <div className="mt-6 grid gap-5 xl:grid-cols-[1.1fr_0.9fr]">
+                <div className="space-y-5">
+                  <div className="grid gap-3 md:grid-cols-3">
+                    {academicMcpSteps.map((step) => {
+                      const isActive = step.id === activeAcademicStep;
+
+                      return (
+                        <button
+                          key={step.id}
+                          type="button"
+                          aria-pressed={isActive}
+                          onClick={() => setActiveAcademicStep(step.id)}
+                          className={cn(
+                            "rounded-[1.25rem] border px-4 py-4 text-left transition",
+                            isActive
+                              ? "border-emerald-300/35 bg-emerald-400/10 text-white shadow-[0_16px_40px_rgba(16,185,129,0.12)]"
+                              : "border-white/10 bg-white/[0.03] text-slate-200 hover:border-white/20 hover:bg-white/[0.06]",
+                          )}
+                        >
+                          <p className="text-[0.65rem] font-semibold uppercase tracking-[0.24em] text-emerald-200/90">{step.short}</p>
+                          <p className="mt-3 text-base font-semibold">{step.title}</p>
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  <div className="rounded-[1.4rem] border border-white/10 bg-black/20 p-5">
+                    <div className="flex flex-wrap items-center justify-between gap-3">
+                      <div>
+                        <p className="text-[0.68rem] font-semibold uppercase tracking-[0.28em] text-slate-400">Etapa ativa</p>
+                        <h4 className="mt-2 text-xl font-semibold text-white">{activeAcademicStepData.title}</h4>
+                      </div>
+                      <Badge className="border border-emerald-300/20 bg-emerald-400/10 text-emerald-100 hover:bg-emerald-400/10">
+                        {activeAcademicStepData.short}
+                      </Badge>
+                    </div>
+                    <p className="mt-4 text-sm leading-7 text-slate-300">{activeAcademicStepData.detail}</p>
+                    <div className="mt-5 rounded-[1.2rem] border border-emerald-300/15 bg-emerald-400/10 px-4 py-4 text-sm leading-7 text-slate-200">
+                      <p className="font-medium text-white">Saída esperada desta etapa</p>
+                      <p className="mt-2">{activeAcademicStepData.outcome}</p>
+                    </div>
+                  </div>
+
+                  <div className="grid gap-3">
+                    {academicMcpResources.map((resource) => {
+                      const isSelected = resource.id === activeAcademicResource;
+                      return (
+                        <button
+                          key={resource.id}
+                          type="button"
+                          aria-pressed={isSelected}
+                          onClick={() => setActiveAcademicResource(resource.id)}
+                          className={cn(
+                            "rounded-[1.3rem] border px-5 py-4 text-left transition",
+                            isSelected
+                              ? "border-cyan-300/35 bg-cyan-400/10 shadow-[0_16px_40px_rgba(34,211,238,0.12)]"
+                              : "border-white/10 bg-white/[0.03] hover:border-white/20 hover:bg-white/[0.06]",
+                          )}
+                        >
+                          <div className="flex flex-wrap items-center justify-between gap-3">
+                            <div>
+                              <p className="text-sm font-semibold text-white">{resource.title}</p>
+                              <p className="mt-2 text-xs uppercase tracking-[0.24em] text-cyan-200">{resource.type}</p>
+                            </div>
+                            <Badge className="border border-white/10 bg-black/20 text-slate-200 hover:bg-black/20">top-k ideal {resource.recommendedTopK}</Badge>
+                          </div>
+                          <p className="mt-3 text-sm leading-7 text-slate-300">{resource.description}</p>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                <div className="space-y-5">
+                  <div className="rounded-[1.5rem] border border-cyan-300/15 bg-[linear-gradient(180deg,rgba(18,29,41,0.88),rgba(9,14,24,0.98))] p-5">
+                    <p className="text-[0.68rem] font-semibold uppercase tracking-[0.28em] text-cyan-200">Console do exercício</p>
+                    <div className="mt-5 space-y-4 text-sm leading-7 text-slate-200">
+                      <div className="rounded-[1.1rem] border border-white/8 bg-black/20 px-4 py-4">
+                        <p className="font-medium text-white">Pergunta simulada do aluno</p>
+                        <p className="mt-2">{activeAcademicResourceData.sampleQuestion}</p>
+                      </div>
+                      <div className="rounded-[1.1rem] border border-white/8 bg-black/20 px-4 py-4">
+                        <p className="font-medium text-white">Leitura do servidor</p>
+                        <p className="mt-2">{academicMcpSimulation.evidenceSummary}</p>
+                      </div>
+                      <div className="rounded-[1.1rem] border border-white/8 bg-black/20 px-4 py-4">
+                        <p className="font-medium text-white">Feedback tutor-orquestrador</p>
+                        <p className="mt-2">{academicMcpSimulation.tutorFeedback}</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="rounded-[1.5rem] border border-fuchsia-300/15 bg-[linear-gradient(180deg,rgba(49,17,83,0.3),rgba(9,14,24,0.98))] p-5">
+                    <p className="text-[0.68rem] font-semibold uppercase tracking-[0.28em] text-fuchsia-200">Atividades de avaliação prática</p>
+                    <div className="mt-5 space-y-3">
+                      {academicMcpExercises.map((exercise) => {
+                        const checked = completedAcademicExercises.includes(exercise.id);
+                        return (
+                          <button
+                            key={exercise.id}
+                            type="button"
+                            aria-pressed={checked}
+                            onClick={() => toggleAcademicExercise(exercise.id)}
+                            className={cn(
+                              "w-full rounded-[1.2rem] border px-4 py-4 text-left transition",
+                              checked
+                                ? "border-fuchsia-300/35 bg-fuchsia-400/12 text-white"
+                                : "border-white/10 bg-black/20 text-slate-200 hover:border-white/20 hover:bg-white/[0.05]",
+                            )}
+                          >
+                            <div className="flex items-start justify-between gap-4">
+                              <div>
+                                <p className="font-medium text-white">{exercise.title}</p>
+                                <p className="mt-2 text-sm leading-7 text-slate-300">{exercise.instruction}</p>
+                              </div>
+                              <CheckCircle2 className={cn("mt-1 h-5 w-5 shrink-0", checked ? "text-fuchsia-200" : "text-slate-500")} />
+                            </div>
+                          </button>
+                        );
+                      })}
+                    </div>
+                    <div className="mt-5 grid gap-3 sm:grid-cols-3">
+                      <div className="rounded-[1.1rem] border border-white/8 bg-black/20 px-4 py-4 text-sm leading-7 text-slate-200">
+                        <p className="font-medium text-white">Recuperação</p>
+                        <p className="mt-2">{academicMcpSimulation.retrievalHealth}</p>
+                      </div>
+                      <div className="rounded-[1.1rem] border border-white/8 bg-black/20 px-4 py-4 text-sm leading-7 text-slate-200">
+                        <p className="font-medium text-white">Perfil de geração</p>
+                        <p className="mt-2">{academicMcpSimulation.temperatureProfile}</p>
+                      </div>
+                      <div className="rounded-[1.1rem] border border-white/8 bg-black/20 px-4 py-4 text-sm leading-7 text-slate-200">
+                        <p className="font-medium text-white">Conexão didática</p>
+                        <p className="mt-2">{academicMcpSimulation.connectionReadiness}</p>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
