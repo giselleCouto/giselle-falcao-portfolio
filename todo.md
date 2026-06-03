@@ -59,3 +59,5 @@
 - [x] Verificar se a trilha atual já possui um módulo dedicado a MCP e mapear lacunas de conteúdo
 - [x] Criar ou expandir um módulo sobre MCP com explicação passo a passo de funcionamento, práticas guiadas e atividades de avaliação
 - [x] Validar a integração do novo módulo MCP na área de cursos com testes, build e consistência pedagógica
+- [x] Adicionar um diagrama visual interativo do fluxo host-client-server ao módulo MCP para facilitar o entendimento
+- [x] Validar a nova experiência visual do módulo MCP com testes e build

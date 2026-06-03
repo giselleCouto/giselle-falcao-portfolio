@@ -116,4 +116,23 @@ describe("GiselleCourses resume by lesson", () => {
     expect(highlightedLesson).toHaveLength(1);
     expect(screen.getByText(/Aula ativa para retomada:/).textContent).toContain("Ferramentas da camada de extração");
   });
+
+  it("exibe um diagrama interativo no módulo MCP e atualiza a explicação ao trocar a camada em foco", async () => {
+    const user = userEvent.setup();
+    render(<GiselleCourses />);
+
+    await user.click(screen.getAllByText(/MCP na prática: conectando LLMs, ferramentas e contexto externo/i)[0]!.closest("button")!);
+
+    expect(await screen.findByText("Fluxo host-client-server do MCP")).toBeTruthy();
+    expect(screen.getByText("1. Initialize e negociação de versão")).toBeTruthy();
+    expect(screen.getByText(/É a aplicação principal onde o usuário conversa com a IA/i)).toBeTruthy();
+
+    const serverButton = screen.getAllByText("Server")[0]!.closest("button")!;
+    expect(serverButton.getAttribute("aria-pressed")).toBe("false");
+
+    await user.click(serverButton);
+
+    expect(screen.getByText("Camada em foco")).toBeTruthy();
+    expect(serverButton.getAttribute("aria-pressed")).toBe("true");
+  });
 });

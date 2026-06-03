@@ -15,6 +15,11 @@ import {
   Rocket,
   Sparkles,
   TimerReset,
+  AppWindow,
+  Cable,
+  Database,
+  ShieldCheck,
+  Workflow,
 } from "lucide-react";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { getLoginUrl } from "@/const";
@@ -63,6 +68,43 @@ function getLessonKey(moduleId: string, lessonIndex: number) {
   return `${moduleId}::lesson-${lessonIndex}`;
 }
 
+const mcpDiagramNodes = [
+  {
+    id: "host",
+    title: "Host",
+    eyebrow: "Onde a experiência começa",
+    icon: AppWindow,
+    description:
+      "É a aplicação principal onde o usuário conversa com a IA. O host decide quando consultar contexto externo, quando pedir confirmação e quais clientes MCP devem ser acionados.",
+    accent: "from-fuchsia-500/20 via-fuchsia-500/5 to-transparent",
+  },
+  {
+    id: "client",
+    title: "Client",
+    eyebrow: "Camada de negociação",
+    icon: Cable,
+    description:
+      "O client traduz a intenção do host para o protocolo MCP, faz handshake com os servidores, descobre capacidades e encaminha chamadas de forma padronizada.",
+    accent: "from-cyan-500/20 via-cyan-500/5 to-transparent",
+  },
+  {
+    id: "server",
+    title: "Server",
+    eyebrow: "Capacidades expostas",
+    icon: Database,
+    description:
+      "O server publica tools, resources e prompts. Ele oferece acesso controlado a documentos, sistemas e automações, sem obrigar o host a criar integrações ad hoc para cada fonte.",
+    accent: "from-emerald-500/20 via-emerald-500/5 to-transparent",
+  },
+] as const;
+
+const mcpFlowStages = [
+  "1. Initialize e negociação de versão",
+  "2. Descoberta de tools, resources e prompts",
+  "3. Leitura de contexto e chamada de capacidades",
+  "4. Confirmação de ações sensíveis e observabilidade",
+] as const;
+
 export default function GiselleCourses({ view = "overview" }: GiselleCoursesProps) {
   const [location] = useLocation();
   const { user, isAuthenticated } = useAuth();
@@ -74,6 +116,7 @@ export default function GiselleCourses({ view = "overview" }: GiselleCoursesProp
   const [temperature, setTemperature] = useState(0.3);
   const [checkoutSearch, setCheckoutSearch] = useState("");
   const [certificateAutoOpened, setCertificateAutoOpened] = useState(false);
+  const [activeMcpNode, setActiveMcpNode] = useState<(typeof mcpDiagramNodes)[number]["id"]>("host");
 
   const statusQuery = trpc.course.status.useQuery(undefined, {
     retry: false,
@@ -94,6 +137,8 @@ export default function GiselleCourses({ view = "overview" }: GiselleCoursesProp
       toast.error("Não foi possível iniciar o checkout agora. Tente novamente em instantes.");
     },
   });
+
+  const activeMcpDiagramNode = mcpDiagramNodes.find((node) => node.id === activeMcpNode) ?? mcpDiagramNodes[0];
 
   const progressMutation = trpc.course.progress.useMutation({
     onSuccess: (result) => {
@@ -742,6 +787,101 @@ export default function GiselleCourses({ view = "overview" }: GiselleCoursesProp
                     })}
                   </div>
                 </div>
+
+                {activeModule.id === "modulo-8" ? (
+                  <div className="rounded-[1.9rem] border border-white/10 bg-[linear-gradient(180deg,rgba(11,18,32,0.92),rgba(7,11,23,0.98))] p-6 shadow-[0_30px_90px_rgba(6,182,212,0.08)]">
+                    <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
+                      <div>
+                        <p className="text-[0.68rem] font-semibold uppercase tracking-[0.28em] text-cyan-200">Diagrama visual interativo</p>
+                        <h4 className="mt-3 text-2xl font-semibold text-white">Fluxo host-client-server do MCP</h4>
+                        <p className="mt-3 max-w-3xl text-sm leading-7 text-slate-300">
+                          Clique em cada camada para entender como o protocolo conecta a experiência do usuário às capacidades externas, preservando descoberta, contexto e segurança operacional.
+                        </p>
+                      </div>
+                      <div className="rounded-full border border-emerald-300/20 bg-emerald-400/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] text-emerald-200">
+                        Interativo e orientado por fluxo
+                      </div>
+                    </div>
+
+                    <div className="mt-6 grid gap-4 lg:grid-cols-[1.35fr_0.95fr]">
+                      <div className="space-y-4">
+                        <div className="grid gap-3 md:grid-cols-3">
+                          {mcpDiagramNodes.map((node, index) => {
+                            const Icon = node.icon;
+                            const isActive = node.id === activeMcpNode;
+
+                            return (
+                              <button
+                                key={node.id}
+                                type="button"
+                                aria-pressed={isActive}
+                                onClick={() => setActiveMcpNode(node.id)}
+                                className={cn(
+                                  "group relative overflow-hidden rounded-[1.5rem] border px-5 py-5 text-left transition duration-200",
+                                  isActive
+                                    ? "border-cyan-300/40 bg-white/10 shadow-[0_20px_60px_rgba(34,211,238,0.14)]"
+                                    : "border-white/10 bg-white/[0.03] hover:border-white/20 hover:bg-white/[0.06]",
+                                )}
+                              >
+                                <div className={cn("absolute inset-0 bg-gradient-to-br opacity-80", node.accent)} />
+                                <div className="relative flex items-start justify-between gap-4">
+                                  <div>
+                                    <p className="text-[0.65rem] font-semibold uppercase tracking-[0.28em] text-slate-300">{node.eyebrow}</p>
+                                    <h5 className="mt-3 text-xl font-semibold text-white">{node.title}</h5>
+                                  </div>
+                                  <div className={cn("rounded-2xl border p-3", isActive ? "border-cyan-300/40 bg-cyan-300/10 text-cyan-100" : "border-white/10 bg-black/20 text-slate-200")}>
+                                    <Icon className="h-5 w-5" />
+                                  </div>
+                                </div>
+                                {index < mcpDiagramNodes.length - 1 ? (
+                                  <div className="pointer-events-none absolute -right-5 top-1/2 hidden -translate-y-1/2 lg:flex items-center gap-2 text-cyan-200/70">
+                                    <ArrowRight className="h-4 w-4" />
+                                  </div>
+                                ) : null}
+                              </button>
+                            );
+                          })}
+                        </div>
+
+                        <div className="rounded-[1.5rem] border border-white/10 bg-black/20 p-5">
+                          <div className="flex items-start justify-between gap-4">
+                            <div>
+                              <p className="text-[0.68rem] font-semibold uppercase tracking-[0.28em] text-fuchsia-200">Camada em foco</p>
+                              <h5 className="mt-3 text-xl font-semibold text-white">{activeMcpDiagramNode.title}</h5>
+                            </div>
+                            <div className="rounded-2xl border border-white/10 bg-white/5 p-3 text-cyan-100">
+                              <activeMcpDiagramNode.icon className="h-5 w-5" />
+                            </div>
+                          </div>
+                          <p className="mt-4 text-sm leading-7 text-slate-300">{activeMcpDiagramNode.description}</p>
+                        </div>
+                      </div>
+
+                      <div className="rounded-[1.5rem] border border-white/10 bg-white/[0.04] p-5">
+                        <div className="flex items-center gap-3 text-emerald-200">
+                          <Workflow className="h-5 w-5" />
+                          <p className="text-[0.68rem] font-semibold uppercase tracking-[0.28em]">Sequência operacional</p>
+                        </div>
+                        <div className="mt-5 space-y-3">
+                          {mcpFlowStages.map((stage) => (
+                            <div key={stage} className="rounded-[1.1rem] border border-white/8 bg-black/20 px-4 py-3 text-sm leading-7 text-slate-200">
+                              {stage}
+                            </div>
+                          ))}
+                        </div>
+                        <div className="mt-5 rounded-[1.2rem] border border-emerald-300/15 bg-emerald-400/10 px-4 py-4 text-sm leading-7 text-slate-200">
+                          <div className="flex items-center gap-2 text-emerald-100">
+                            <ShieldCheck className="h-4 w-4" />
+                            <span className="font-semibold">Leitura pedagógica</span>
+                          </div>
+                          <p className="mt-2">
+                            O entendimento mais importante é que o usuário conversa com o <span className="font-semibold text-white">host</span>, mas quem garante integração padronizada é o <span className="font-semibold text-white">client</span>, enquanto o <span className="font-semibold text-white">server</span> expõe contexto e ações com escopo controlado.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ) : null}
 
                 <div className="space-y-5">
                   <div className="rounded-[1.6rem] border border-cyan-300/15 bg-[linear-gradient(180deg,rgba(16,30,43,0.82),rgba(10,12,23,0.92))] p-6">
