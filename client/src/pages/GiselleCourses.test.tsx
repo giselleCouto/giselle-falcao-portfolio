@@ -173,5 +173,10 @@ describe("GiselleCourses resume by lesson", () => {
 
     expect(screen.getByText(/Resultado do quiz: 3 de 3 respostas corretas/i)).toBeTruthy();
     expect(screen.getAllByText(/Resposta correta/i).length).toBeGreaterThan(0);
+
+    await user.click(screen.getAllByRole("button", { name: /Nova tentativa com novas perguntas/i })[0]!);
+
+    expect(screen.getAllByText(/Tentativa 2 · 0\/3 respondidas/i).length).toBeGreaterThan(0);
+    expect(screen.getByText(/Qual etapa do fluxo MCP revela resources, prompts e tools disponíveis antes da execução/i)).toBeTruthy();
   });
 });

@@ -67,3 +67,6 @@
 - [x] Adicionar um quiz com correção automática ao final da simulação do laboratório MCP
 - [x] Integrar pontuação, feedback pedagógico e estados visuais de acerto/erro ao quiz da simulação MCP
 - [x] Validar a nova avaliação automática do laboratório MCP com testes e build
+- [x] Criar um banco de questões para o quiz do laboratório MCP com sorteio diferente a cada nova tentativa
+- [x] Integrar reinício de tentativa, nova seleção de perguntas e correção consistente na interface do quiz
+- [x] Validar a avaliação dinâmica do quiz MCP com testes e build

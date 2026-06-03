@@ -177,7 +177,7 @@ const academicMcpExercises = [
   },
 ] as const;
 
-const academicMcpQuizQuestions = [
+const academicMcpQuizBank = [
   {
     id: "mcp-role",
     prompt: "No fluxo MCP, qual camada negocia capacidades com o servidor e encaminha chamadas padronizadas?",
@@ -211,12 +211,57 @@ const academicMcpQuizQuestions = [
     correctOptionId: "citation",
     explanation: "A confiabilidade aumenta quando o host devolve a resposta com proveniência clara, recurso consultado e justificativa metodológica explícita.",
   },
+  {
+    id: "mcp-discovery",
+    prompt: "Qual etapa do fluxo MCP revela resources, prompts e tools disponíveis antes da execução?",
+    options: [
+      { id: "initialize", label: "Initialize, porque já responde à pergunta final do aluno." },
+      { id: "discover", label: "Discover, porque lista capacidades e contratos disponíveis." },
+      { id: "call_tool", label: "Call tool, porque substitui a descoberta inicial." },
+    ],
+    correctOptionId: "discover",
+    explanation: "A etapa de discovery expõe as capacidades negociadas, permitindo ao client decidir o que consultar antes da chamada efetiva.",
+  },
+  {
+    id: "mcp-topk",
+    prompt: "Quando o servidor recomenda top-k 3 para um resource acadêmico, qual decisão tende a preservar foco sem perder contexto?",
+    options: [
+      { id: "lower", label: "Usar top-k próximo do recomendado e justificar o equilíbrio entre precisão e abrangência." },
+      { id: "zero", label: "Reduzir top-k para zero e responder apenas com memória paramétrica." },
+      { id: "max", label: "Elevar top-k ao máximo possível, independentemente do ruído adicional." },
+    ],
+    correctOptionId: "lower",
+    explanation: "Seguir um top-k próximo do recomendado ajuda a equilibrar cobertura e ruído, especialmente em acervos acadêmicos mais especializados.",
+  },
+  {
+    id: "mcp-evidence",
+    prompt: "Na devolutiva final ao aluno, o que demonstra melhor uso de evidência recuperada via MCP?",
+    options: [
+      { id: "generic", label: "Responder de forma genérica, sem citar o resource para não alongar a resposta." },
+      { id: "traceable", label: "Explicar a conclusão e indicar o acervo ou ferramenta que sustentou a resposta." },
+      { id: "creative", label: "Misturar hipóteses adicionais sem distinguir o que veio do acervo consultado." },
+    ],
+    correctOptionId: "traceable",
+    explanation: "Uma boa devolutiva distingue inferência e evidência, tornando a resposta auditável e pedagogicamente confiável.",
+  },
 ] as const;
 
-function buildAcademicQuizResult(answers: Record<string, string>) {
-  const total = academicMcpQuizQuestions.length;
-  const correctCount = academicMcpQuizQuestions.filter((question) => answers[question.id] === question.correctOptionId).length;
-  const answeredCount = academicMcpQuizQuestions.filter((question) => Boolean(answers[question.id])).length;
+const ACADEMIC_QUIZ_SIZE = 3;
+
+function getAcademicQuizQuestionsForAttempt(attempt: number) {
+  const total = academicMcpQuizBank.length;
+  const size = Math.min(ACADEMIC_QUIZ_SIZE, total);
+
+  return Array.from({ length: size }, (_, index) => academicMcpQuizBank[(attempt + index) % total]!);
+}
+
+function buildAcademicQuizResult(
+  questions: ReadonlyArray<(typeof academicMcpQuizBank)[number]>,
+  answers: Record<string, string>,
+) {
+  const total = questions.length;
+  const correctCount = questions.filter((question) => answers[question.id] === question.correctOptionId).length;
+  const answeredCount = questions.filter((question) => Boolean(answers[question.id])).length;
   const scorePercent = Math.round((correctCount / total) * 100);
   const allAnswered = answeredCount === total;
 
@@ -244,6 +289,7 @@ export default function GiselleCourses({ view = "overview" }: GiselleCoursesProp
   const [activeAcademicStep, setActiveAcademicStep] = useState<(typeof academicMcpSteps)[number]["id"]>("initialize");
   const [activeAcademicResource, setActiveAcademicResource] = useState<(typeof academicMcpResources)[number]["id"]>("thesis_archive");
   const [completedAcademicExercises, setCompletedAcademicExercises] = useState<string[]>([]);
+  const [academicQuizAttempt, setAcademicQuizAttempt] = useState(0);
   const [academicQuizAnswers, setAcademicQuizAnswers] = useState<Record<string, string>>({});
   const [academicQuizSubmitted, setAcademicQuizSubmitted] = useState(false);
 
@@ -426,7 +472,8 @@ export default function GiselleCourses({ view = "overview" }: GiselleCoursesProp
     };
   }, [activeAcademicResourceData, activeAcademicStep, chunkSize, completedAcademicExercises.length, overlap, temperature, topK]);
 
-  const academicQuizResult = useMemo(() => buildAcademicQuizResult(academicQuizAnswers), [academicQuizAnswers]);
+  const academicQuizQuestions = useMemo(() => getAcademicQuizQuestionsForAttempt(academicQuizAttempt), [academicQuizAttempt]);
+  const academicQuizResult = useMemo(() => buildAcademicQuizResult(academicQuizQuestions, academicQuizAnswers), [academicQuizAnswers, academicQuizQuestions]);
 
   const toggleAcademicExercise = (exerciseId: string) => {
     setCompletedAcademicExercises((current) =>
@@ -457,6 +504,13 @@ export default function GiselleCourses({ view = "overview" }: GiselleCoursesProp
     }
 
     toast.message(`Quiz corrigido: ${academicQuizResult.correctCount} de ${academicQuizResult.total} respostas corretas.`);
+  };
+
+  const handleResetAcademicQuiz = () => {
+    setAcademicQuizAttempt((current) => current + 1);
+    setAcademicQuizAnswers({});
+    setAcademicQuizSubmitted(false);
+    toast.message("Nova tentativa iniciada com perguntas diferentes do banco de questões.");
   };
 
   const handleOpenCertificate = () => {
@@ -1342,13 +1396,13 @@ export default function GiselleCourses({ view = "overview" }: GiselleCoursesProp
                         </div>
                         <div className="rounded-full border border-amber-300/20 bg-amber-400/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] text-amber-100">
                           {academicQuizSubmitted
-                            ? `${academicQuizResult.correctCount}/${academicQuizResult.total} corretas · ${academicQuizResult.scorePercent}%`
-                            : `${academicQuizResult.answeredCount}/${academicQuizResult.total} respondidas`}
+                            ? `Tentativa ${academicQuizAttempt + 1} · ${academicQuizResult.correctCount}/${academicQuizResult.total} corretas · ${academicQuizResult.scorePercent}%`
+                            : `Tentativa ${academicQuizAttempt + 1} · ${academicQuizResult.answeredCount}/${academicQuizResult.total} respondidas`}
                         </div>
                       </div>
 
                       <div className="mt-5 space-y-4">
-                        {academicMcpQuizQuestions.map((question, questionIndex) => {
+                        {academicQuizQuestions.map((question, questionIndex) => {
                           const selectedOption = academicQuizAnswers[question.id];
                           const isQuestionCorrect = selectedOption === question.correctOptionId;
 
@@ -1408,8 +1462,16 @@ export default function GiselleCourses({ view = "overview" }: GiselleCoursesProp
                         >
                           Corrigir quiz automaticamente
                         </Button>
+                        <Button
+                          type="button"
+                          variant="outline"
+                          onClick={handleResetAcademicQuiz}
+                          className="rounded-full border-amber-300/20 bg-transparent text-amber-100 hover:bg-amber-400/10"
+                        >
+                          Nova tentativa com novas perguntas
+                        </Button>
                         <p className="text-sm leading-7 text-slate-300">
-                          Primeiro conclua os {academicMcpExercises.length} exercícios guiados e responda todas as perguntas para liberar a correção automática.
+                          Primeiro conclua os {academicMcpExercises.length} exercícios guiados e responda todas as perguntas para liberar a correção automática. Cada nova tentativa sorteia outro conjunto do banco de questões.
                         </p>
                       </div>
 
