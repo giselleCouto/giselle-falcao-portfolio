@@ -1,0 +1,5 @@
+Revisão visual da peça consultoria-ia-poster.png:
+- A segunda versão corrigiu os cortes mais graves do headline e da área de CTA.
+- A hierarquia principal está adequada: headline, sintomas, posicionamento, prova e CTA estão visíveis.
+- O bloco "Setores-foco" ainda apresenta extrapolação da última linha (Supply Chain) para fora do painel.
+- Ajuste recomendado: reduzir ligeiramente a tipografia do bloco de setores e reposicionar o espaçamento vertical para manter tudo dentro da caixa.

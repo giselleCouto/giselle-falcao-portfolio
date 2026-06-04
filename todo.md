@@ -70,3 +70,7 @@
 - [x] Criar um banco de questões para o quiz do laboratório MCP com sorteio diferente a cada nova tentativa
 - [x] Integrar reinício de tentativa, nova seleção de perguntas e correção consistente na interface do quiz
 - [x] Validar a avaliação dinâmica do quiz MCP com testes e build
+- [x] Estruturar a mensagem principal da peça de captação de leads para consultoria especializada em IA
+- [x] Produzir uma peça visual de alta conversão para divulgação da consultoria de IA
+- [x] Redigir um documento curto de apoio comercial com CTA e canais de contato
+- [x] Revisar os materiais finais de captação e entregar os arquivos prontos para uso
