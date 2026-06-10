@@ -18,11 +18,12 @@ export const assets = {
 export const navItems = [
   { href: "#home", section: "home", label: { pt: "Home", en: "Home" } },
   { href: "#sobre", section: "sobre", label: { pt: "Sobre", en: "About" } },
+  { href: "#servicos", section: "servicos", label: { pt: "Consultoria", en: "Consulting" } },
   { href: "#projetos", section: "projetos", label: { pt: "Projetos", en: "Projects" } },
   { href: "#publicacoes", section: "publicacoes", label: { pt: "Publicações", en: "Publications" } },
   { href: "#experiencia", section: "experiencia", label: { pt: "Experiência", en: "Experience" } },
   { href: "#formacao", section: "formacao", label: { pt: "Formação", en: "Education" } },
-  { href: "#palestras", section: "palestras", label: { pt: "Palestras & Mídia", en: "Speaking & Media" } },
+  { href: "#faq", section: "faq", label: { pt: "FAQ", en: "FAQ" } },
   { href: "#contato", section: "contato", label: { pt: "Contato", en: "Contact" } },
 ] as const;
 
@@ -777,6 +778,115 @@ export const speaking = {
     ],
   },
 };
+
+export const consultingServices = [
+  {
+    key: "ia-strategy",
+    title: { pt: "Consultoria em Inteligência Artificial e IA Generativa", en: "Artificial Intelligence and Generative AI Consulting" },
+    summary: {
+      pt: "Estruturação de casos de uso, arquitetura analítica, desenho de jornadas de adoção e definição de prioridades para transformar IA em resultado operacional e estratégico.",
+      en: "Use-case structuring, analytical architecture, adoption roadmap design, and prioritization to turn AI into operational and strategic results.",
+    },
+    deliverables: {
+      pt: "Diagnóstico, roadmap, desenho de arquitetura, governança e plano de implementação.",
+      en: "Diagnosis, roadmap, architecture design, governance, and implementation plan.",
+    },
+  },
+  {
+    key: "innovation-industrial",
+    title: { pt: "Inovação tecnológica para indústria, logística e supply chain", en: "Technology innovation for industry, logistics, and supply chain" },
+    summary: {
+      pt: "Soluções sob medida para otimização operacional, previsão, redução de perdas, monitoramento inteligente e maior previsibilidade em operações críticas.",
+      en: "Tailored solutions for operational optimization, forecasting, waste reduction, intelligent monitoring, and greater predictability in critical operations.",
+    },
+    deliverables: {
+      pt: "Modelos preditivos, regras de decisão, protótipos operacionais e desenho de fluxos analíticos.",
+      en: "Predictive models, decision rules, operational prototypes, and analytical workflow design.",
+    },
+  },
+  {
+    key: "math-modeling",
+    title: { pt: "Modelagem matemática computacional para decisão", en: "Computational mathematical modeling for decision-making" },
+    summary: {
+      pt: "Formulação de problemas complexos, otimização, simulação e algoritmos aplicados a cenários onde a decisão precisa de rigor, escala e robustez metodológica.",
+      en: "Formulation of complex problems, optimization, simulation, and algorithms for scenarios where decision-making demands rigor, scale, and methodological robustness.",
+    },
+    deliverables: {
+      pt: "Modelos, heurísticas, cenários, testes experimentais e suporte técnico à decisão executiva.",
+      en: "Models, heuristics, scenarios, experimental tests, and technical support for executive decision-making.",
+    },
+  },
+  {
+    key: "leadership",
+    title: { pt: "Liderança técnica, inovação orientada a dados e desenho de produtos analíticos", en: "Technical leadership, data-driven innovation, and analytical product design" },
+    summary: {
+      pt: "Apoio a organizações que precisam alinhar times, dados, tecnologia e execução em projetos de alto impacto com clareza metodológica.",
+      en: "Support for organizations that need to align teams, data, technology, and execution in high-impact projects with methodological clarity.",
+    },
+    deliverables: {
+      pt: "Direção técnica, estruturação de backlog, critérios de priorização e tradução executiva do projeto.",
+      en: "Technical direction, backlog structuring, prioritization criteria, and executive translation of the project.",
+    },
+  },
+];
+
+export const consultingSectors = {
+  pt: ["Indústria", "Logística", "Supply Chain", "Educação", "Setor público", "Pesquisa aplicada"],
+  en: ["Industry", "Logistics", "Supply chain", "Education", "Public sector", "Applied research"],
+};
+
+export const faqItems = [
+  {
+    question: {
+      pt: "Que tipo de consultoria Giselle Couto Falcão oferece?",
+      en: "What type of consulting does Giselle Couto Falcão offer?",
+    },
+    answer: {
+      pt: "Giselle atua com consultoria estratégica em tecnologia, inovação e inteligência artificial, incluindo IA generativa, machine learning, analytics, modelagem matemática computacional e desenho de soluções para operações, negócios, educação e setor público.",
+      en: "Giselle provides strategic consulting in technology, innovation, and artificial intelligence, including generative AI, machine learning, analytics, computational mathematical modeling, and solution design for operations, business, education, and the public sector.",
+    },
+  },
+  {
+    question: {
+      pt: "Para quais setores a consultoria é mais aderente?",
+      en: "Which sectors are the best fit for this consulting work?",
+    },
+    answer: {
+      pt: "A atuação é especialmente aderente a indústria, logística, supply chain, educação, ecossistemas de inovação, universidades, organizações intensivas em dados e instituições públicas que precisam de decisões mais precisas e arquitetura analítica mais madura.",
+      en: "The work is especially relevant to industry, logistics, supply chain, education, innovation ecosystems, universities, data-intensive organizations, and public institutions that need more precise decisions and a more mature analytical architecture.",
+    },
+  },
+  {
+    question: {
+      pt: "Quais problemas podem ser priorizados em um projeto de IA aplicada?",
+      en: "Which problems can be prioritized in an applied AI project?",
+    },
+    answer: {
+      pt: "Normalmente são priorizados problemas ligados a previsão de demanda, otimização operacional, redução de perdas, detecção de risco, apoio à decisão, governança analítica e transformação de dados dispersos em inteligência acionável.",
+      en: "Typical priorities include demand forecasting, operational optimization, waste reduction, risk detection, decision support, analytical governance, and turning fragmented data into actionable intelligence.",
+    },
+  },
+  {
+    question: {
+      pt: "Como funciona a metodologia de consultoria?",
+      en: "How does the consulting methodology work?",
+    },
+    answer: {
+      pt: "A metodologia combina diagnóstico do problema, leitura estratégica do contexto, estruturação matemática ou analítica, priorização de casos de uso, desenho de arquitetura e validação orientada a impacto. O objetivo é evitar pilotos sem direção e construir soluções com valor claro para o negócio.",
+      en: "The methodology combines problem diagnosis, strategic context reading, mathematical or analytical structuring, use-case prioritization, architecture design, and impact-oriented validation. The goal is to avoid directionless pilots and build solutions with clear business value.",
+    },
+  },
+  {
+    question: {
+      pt: "Como entrar em contato para uma conversa estratégica?",
+      en: "How can someone get in touch for a strategic conversation?",
+    },
+    answer: {
+      pt: "A forma mais direta é usar o formulário desta página ou os links de contato institucionais, detalhando contexto, setor, desafio e objetivo esperado. Isso acelera um primeiro diagnóstico qualificado.",
+      en: "The most direct path is to use the contact form on this page or the institutional contact links, describing context, sector, challenge, and expected outcome. That speeds up a more qualified first diagnosis.",
+    },
+  },
+];
 
 export const valueBlocks = [
   {

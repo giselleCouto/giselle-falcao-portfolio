@@ -25,8 +25,9 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { trpc } from "@/lib/trpc";
-import { assets, authorityMetrics, contact, educationTimeline, experienceTimeline, expertiseCards, heroCopy, impactStats, keyAreas, navItems, placeholderPrompt, projectCategories, projects, publications, speaking, stack, certifications, t, type Locale, aboutSection, valueBlocks, linkedinBadge } from "@/lib/portfolioData";
+import { aboutSection, assets, authorityMetrics, certifications, consultingSectors, consultingServices, contact, educationTimeline, experienceTimeline, expertiseCards, faqItems, heroCopy, impactStats, keyAreas, linkedinBadge, navItems, placeholderPrompt, projectCategories, projects, publications, speaking, stack, t, type Locale, valueBlocks } from "@/lib/portfolioData";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 
@@ -34,6 +35,7 @@ type SectionId =
   | "home"
   | "sobre"
   | "expertise"
+  | "servicos"
   | "projetos"
   | "impacto"
   | "experiencia"
@@ -42,6 +44,7 @@ type SectionId =
   | "credenciais"
   | "palestras"
   | "valor"
+  | "faq"
   | "contato";
 
 type PortfolioSiteProps = {
@@ -547,6 +550,65 @@ export default function PortfolioSite({ initialLocale = "pt", page = "home" }: P
           </div>
         </section>
 
+        <section id="servicos" className="scroll-mt-28 border-b border-white/6 py-24">
+          <div className="container">
+            <SectionHeading
+              eyebrow={locale === "pt" ? "Consultoria & serviços" : "Consulting & services"}
+              title={locale === "pt" ? "Ofertas desenhadas para transformar dados, tecnologia e IA em decisão aplicada" : "Offers designed to turn data, technology, and AI into applied decision systems"}
+              text={locale === "pt" ? "Esta seção organiza com clareza como a consultoria pode apoiar empresas e instituições: do diagnóstico ao desenho de arquitetura, da modelagem à implantação orientada a impacto. A leitura foi construída para humanos, buscadores e sistemas de IA compreenderem exatamente a natureza da atuação." : "This section clarifies how the consulting work supports companies and institutions: from diagnosis to architecture design, from modeling to impact-oriented implementation. The structure was written so that people, search engines, and AI systems can clearly understand the scope of the work."}
+            />
+
+            <div className="mt-10 rounded-[2rem] border border-[rgba(37,167,167,0.18)] bg-[linear-gradient(135deg,rgba(10,24,34,0.95),rgba(7,17,26,0.85))] p-7 shadow-[0_30px_100px_rgba(0,0,0,0.28)] sm:p-9">
+              <div className="grid gap-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
+                <div>
+                  <p className="text-xs uppercase tracking-[0.28em] text-teal-200">{locale === "pt" ? "Escopo consultivo" : "Consulting scope"}</p>
+                  <h3 className="mt-4 font-display text-3xl leading-tight text-white sm:text-4xl">
+                    {locale === "pt" ? "Consultoria estratégica em tecnologia, inovação e inteligência artificial com profundidade técnica e leitura executiva" : "Strategic consulting in technology, innovation, and artificial intelligence with technical depth and executive clarity"}
+                  </h3>
+                  <p className="mt-5 max-w-2xl text-base leading-8 text-slate-300">
+                    {locale === "pt" ? "Giselle atua em frentes onde dados, operação e decisão precisam deixar de ser dispersos e passar a compor uma arquitetura analítica coerente. O foco está em casos de uso com impacto mensurável, governança mais madura e priorização correta do problema." : "Giselle works in contexts where data, operations, and decision-making need to stop being fragmented and start forming a coherent analytical architecture. The focus is on use cases with measurable impact, stronger governance, and proper problem prioritization."}
+                  </p>
+                </div>
+
+                <div className="rounded-[1.6rem] border border-white/10 bg-white/[0.04] p-6">
+                  <p className="text-xs uppercase tracking-[0.28em] text-[var(--accent-copper)]">{locale === "pt" ? "Setores-alvo" : "Target sectors"}</p>
+                  <div className="mt-5 flex flex-wrap gap-3">
+                    {(locale === "pt" ? consultingSectors.pt : consultingSectors.en).map((sector) => (
+                      <span key={sector} className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-slate-200">
+                        {sector}
+                      </span>
+                    ))}
+                  </div>
+                  <p className="mt-6 text-sm leading-7 text-slate-400">
+                    {locale === "pt" ? "A aderência é maior em ambientes com complexidade operacional, alta criticidade decisória, necessidade de previsão, otimização, governança de dados e evolução de maturidade analítica." : "The strongest fit appears in environments with operational complexity, critical decisions, forecasting needs, optimization requirements, data governance challenges, and analytical maturity goals."}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-14 grid gap-5 lg:grid-cols-2">
+              {consultingServices.map((service, index) => (
+                <motion.div key={service.key} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-120px" }} transition={{ delay: index * 0.05 }}>
+                  <Card className="h-full rounded-[1.9rem] border-white/8 bg-[linear-gradient(180deg,rgba(255,255,255,0.05),rgba(255,255,255,0.025))] text-white transition duration-300 hover:-translate-y-1 hover:border-[rgba(191,148,103,0.28)]">
+                    <CardContent className="p-7">
+                      <div className="flex items-center justify-between gap-4">
+                        <span className="h-1.5 w-14 rounded-full bg-[var(--accent-copper)]" />
+                        <BriefcaseBusiness className="size-5 text-teal-200" />
+                      </div>
+                      <h3 className="mt-6 font-display text-3xl leading-tight">{t(locale, service.title)}</h3>
+                      <p className="mt-4 text-sm leading-7 text-slate-300">{t(locale, service.summary)}</p>
+                      <div className="mt-6 border-t border-white/8 pt-6">
+                        <p className="text-xs uppercase tracking-[0.24em] text-slate-500">{locale === "pt" ? "Entregas possíveis" : "Typical deliverables"}</p>
+                        <p className="mt-3 text-sm leading-7 text-slate-200">{t(locale, service.deliverables)}</p>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+
         <section id="projetos" className="scroll-mt-28 border-b border-white/6 py-24">
           <div className="container">
             <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
@@ -879,6 +941,35 @@ export default function PortfolioSite({ initialLocale = "pt", page = "home" }: P
                 </motion.div>
               ))}
             </div>
+          </div>
+        </section>
+
+        <section id="faq" className="scroll-mt-28 border-b border-white/6 py-24">
+          <div className="container grid gap-10 xl:grid-cols-[0.82fr_1.18fr] xl:items-start">
+            <div>
+              <SectionHeading
+                eyebrow={locale === "pt" ? "FAQ semântico" : "Semantic FAQ"}
+                title={locale === "pt" ? "Perguntas frequentes para buscadores, equipes e sistemas de IA entenderem a atuação" : "Frequently asked questions so search engines, teams, and AI systems can understand the work"}
+                text={locale === "pt" ? "As respostas abaixo foram organizadas para reforçar clareza semântica, intenção de busca e entendimento contextual sobre a consultoria, os setores atendidos e a metodologia de trabalho." : "The answers below were designed to strengthen semantic clarity, search intent alignment, and contextual understanding about the consulting work, target sectors, and delivery approach."}
+              />
+            </div>
+
+            <Card className="rounded-[2rem] border-white/8 bg-[rgba(255,255,255,0.04)] text-white">
+              <CardContent className="p-7 sm:p-8">
+                <Accordion type="single" collapsible className="w-full">
+                  {faqItems.map((item, index) => (
+                    <AccordionItem key={item.question.pt} value={`faq-${index}`} className="border-white/10">
+                      <AccordionTrigger className="py-5 text-base leading-7 text-white hover:no-underline">
+                        <span className="pr-4">{t(locale, item.question)}</span>
+                      </AccordionTrigger>
+                      <AccordionContent className="text-sm leading-7 text-slate-300">
+                        {t(locale, item.answer)}
+                      </AccordionContent>
+                    </AccordionItem>
+                  ))}
+                </Accordion>
+              </CardContent>
+            </Card>
           </div>
         </section>
 

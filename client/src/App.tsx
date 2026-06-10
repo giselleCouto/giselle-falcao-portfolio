@@ -11,6 +11,7 @@ import { Link, Route, Switch, useLocation } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import PortfolioSite from "./components/PortfolioSite";
 import { ThemeProvider } from "./contexts/ThemeContext";
+import { faqItems } from "./lib/portfolioData";
 import GiselleCourses from "./pages/GiselleCourses";
 
 function upsertMeta(selector: string, attributeName: "name" | "property", attributeValue: string, content: string) {
@@ -69,6 +70,7 @@ function RouteSeo() {
       "Couto Falcão, Giselle Couto Falcão, consultoria em inteligência artificial, tecnologia, inovação, modelagem matemática, branding pessoal, Jade";
 
     removeJsonLd("giselle-person-schema");
+    removeJsonLd("giselle-faq-schema");
 
     if (location === "/giselle/cursos") {
       title = "Curso de Engenharia de Sistemas de IA Generativa | Giselle Falcão";
@@ -143,6 +145,19 @@ function RouteSeo() {
           "https://scholar.google.com.br/citations?hl=pt-BR&user=ljBj6GMAAAAJ",
           "http://lattes.cnpq.br/7661015485905669",
         ],
+      });
+
+      upsertJsonLd("giselle-faq-schema", {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        mainEntity: faqItems.map((item) => ({
+          "@type": "Question",
+          name: item.question.pt,
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: item.answer.pt,
+          },
+        })),
       });
     } else if (location === "/jade") {
       title = "Jade | Posicionamento, Narrativa e Presença de Marca";

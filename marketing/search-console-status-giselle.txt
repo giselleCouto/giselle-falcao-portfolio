@@ -1,0 +1,8 @@
+Estado atual do Google Search Console em 2026-06-10:
+- Conta autenticada: giselle@coutofalcao.com.
+- Search Console abriu inicialmente em uma propriedade já existente: sc-domain:despaxai.com.
+- Há um modal de verificação em primeiro plano solicitando a verificação da propriedade de domínio coutofalcao.com.
+- O método selecionado no modal é DNS TXT.
+- Token exibido: google-site-verification=x14lOJDVcwT2fdzGjyxyXqsdEHi1B-aEjDp4E6JOUgU
+- Sem acesso direto ao provedor DNS a partir do navegador atual.
+- Caminho alternativo sugerido pelo próprio Search Console: usar propriedade de prefixo de URL para obter mais métodos de verificação.

@@ -78,3 +78,7 @@
 - [x] Reposicionar o conteúdo da página /giselle para reforçar as buscas por consultoria em tecnologia, inovação e IA
 - [x] Implementar metadados e dados estruturados alinhados ao novo posicionamento da Giselle
 - [x] Validar a indexabilidade técnica, revisar o robots.txt e confirmar a entrega com testes
+- [ ] Criar uma seção dedicada de consultoria e serviços na página /giselle com ofertas e setores-alvo
+- [ ] Adicionar FAQs semânticas na página /giselle para buscas orgânicas e respostas de IA
+- [ ] Validar metadados, dados estruturados e cobertura de testes após a nova expansão de conteúdo
+- [ ] Conectar o domínio ao Google Search Console e solicitar reindexação da URL /giselle
