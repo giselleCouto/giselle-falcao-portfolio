@@ -74,3 +74,7 @@
 - [x] Produzir uma peça visual de alta conversão para divulgação da consultoria de IA
 - [x] Redigir um documento curto de apoio comercial com CTA e canais de contato
 - [x] Revisar os materiais finais de captação e entregar os arquivos prontos para uso
+- [x] Diagnosticar o estado atual de SEO, metadados e indexabilidade da página /giselle
+- [x] Reposicionar o conteúdo da página /giselle para reforçar as buscas por consultoria em tecnologia, inovação e IA
+- [x] Implementar metadados e dados estruturados alinhados ao novo posicionamento da Giselle
+- [x] Validar a indexabilidade técnica, revisar o robots.txt e confirmar a entrega com testes

@@ -28,12 +28,12 @@ export const navItems = [
 
 export const keyAreas = {
   pt: [
-    "Educação",
-    "AI & Machine Learning",
+    "Consultoria em IA",
+    "Tecnologia & Inovação",
     "Modelagem Matemática",
-    "Climate Math",
+    "Machine Learning",
     "Pesquisa Aplicada",
-    "Consultoria Estratégica",
+    "Estratégia Analítica",
   ],
   en: [
     "Education",
@@ -48,22 +48,22 @@ export const keyAreas = {
 export const heroCopy = {
   name: "Giselle Couto Falcão",
   role: {
-    pt: "Especialista em Inteligência Artificial, Ciência de Dados, Modelagem Matemática Computacional e Soluções de Alto Impacto para Educação, Negócios e Pesquisa",
-    en: "Specialist in Artificial Intelligence, Data Science, Computational Mathematical Modeling, and High-Impact Solutions for Education, Business, and Research",
+    pt: "Consultora de Tecnologia, Inovação e Inteligência Artificial com atuação em modelagem matemática, analytics e decisões de alto impacto",
+    en: "Technology, Innovation, and Artificial Intelligence consultant focused on mathematical modeling, analytics, and high-impact decision systems",
   },
   headline: {
-    pt: "Autoridade técnica e científica na interseção entre IA, educação, machine learning e matemática do clima",
-    en: "Technical and scientific authority at the intersection of AI, education, machine learning, and climate mathematics",
+    pt: "Consultoria estratégica em tecnologia, inovação e IA para operações, negócios e instituições que precisam decidir melhor",
+    en: "Strategic consulting in technology, innovation, and AI for operations, businesses, and institutions that need to make better decisions",
   },
   subheadline: {
-    pt: "Trajetória interdisciplinar que conecta pesquisa profunda, modelagem matemática, ciência de dados e execução estratégica para empresas, setor público, universidades e ecossistemas de inovação.",
-    en: "An interdisciplinary trajectory connecting deep research, mathematical modeling, data science, and strategic execution for companies, the public sector, universities, and innovation ecosystems.",
+    pt: "Giselle Couto Falcão conecta pesquisa profunda, modelagem matemática, ciência de dados e arquitetura de soluções para transformar dados em decisões, eficiência operacional e vantagem competitiva.",
+    en: "Giselle Couto Falcão connects deep research, mathematical modeling, data science, and solution architecture to turn data into decisions, operational efficiency, and competitive advantage.",
   },
   ctaPrimary: { pt: "Ver projetos", en: "View projects" },
   ctaSecondary: { pt: "Falar sobre parceria", en: "Discuss a partnership" },
   impactPrompt: {
-    pt: "Da modelagem teórica à implementação aplicada, com foco em impacto mensurável, robustez metodológica e leitura estratégica do problema.",
-    en: "From theoretical modeling to applied implementation, with a focus on measurable impact, methodological rigor, and strategic problem framing.",
+    pt: "Da estratégia tecnológica à implementação aplicada, com foco em impacto mensurável, robustez metodológica e priorização correta do problema.",
+    en: "From technology strategy to applied implementation, with a focus on measurable impact, methodological rigor, and correct problem prioritization.",
   },
 };
 
@@ -100,16 +100,16 @@ export const authorityMetrics = [
 
 export const aboutSection = {
   intro: {
-    pt: "Giselle Couto Falcão construiu uma trajetória singular entre matemática, computação, inteligência artificial, educação e pesquisa aplicada. Sua atuação não se limita à análise de dados: ela formula problemas complexos, modela cenários, estrutura decisões e transforma conhecimento técnico em soluções capazes de gerar impacto econômico, institucional e social.",
-    en: "Giselle Couto Falcão has built a distinctive trajectory across mathematics, computing, artificial intelligence, education, and applied research. Her work goes beyond data analysis: she frames complex problems, models scenarios, structures decisions, and turns technical knowledge into solutions capable of generating economic, institutional, and social impact.",
+    pt: "Giselle Couto Falcão atua como consultora de tecnologia, inovação e inteligência artificial para organizações que precisam estruturar melhor decisões, operações e produtos orientados por dados. Sua atuação não se limita à análise: ela formula problemas complexos, modela cenários, desenha arquitetura analítica e transforma conhecimento técnico em soluções com impacto econômico, institucional e social.",
+    en: "Giselle Couto Falcão works as a technology, innovation, and artificial intelligence consultant for organizations that need to better structure data-driven decisions, operations, and products. Her work goes beyond analysis: she frames complex problems, models scenarios, designs analytical architecture, and turns technical knowledge into solutions with economic, institutional, and social impact.",
   },
   body: {
-    pt: "Ao longo de mais de uma década, sua experiência integrou empresas, setor público, universidades, marcas e organizações de relevância institucional. Esse percurso consolidou uma combinação pouco comum entre rigor científico, visão estratégica, sensibilidade educacional e capacidade de execução. O resultado é uma profissional apta a transitar com profundidade entre machine learning, modelagem matemática computacional, IA generativa, séries temporais, educação baseada em dados e matemática do clima.",
-    en: "Over more than a decade, her experience has spanned companies, the public sector, universities, brands, and institutionally relevant organizations. This journey has consolidated an unusual combination of scientific rigor, strategic vision, educational sensitivity, and execution capacity. The result is a professional able to move with depth across machine learning, computational mathematical modeling, generative AI, time series, data-driven education, and climate mathematics.",
+    pt: "Ao longo de mais de uma década, sua experiência integrou empresas, indústria, logística, setor público, universidades e ecossistemas de inovação. Esse percurso consolidou uma combinação pouco comum entre rigor científico, visão estratégica e capacidade de implementação. O resultado é uma consultora apta a transitar com profundidade entre machine learning, IA generativa, modelagem matemática computacional, séries temporais, analytics e desenho de soluções para contextos críticos.",
+    en: "Over more than a decade, her experience has spanned companies, industry, logistics, the public sector, universities, and innovation ecosystems. This journey has consolidated an unusual combination of scientific rigor, strategic vision, and implementation capacity. The result is a consultant able to work deeply across machine learning, generative AI, computational mathematical modeling, time series, analytics, and solution design for critical contexts.",
   },
   closing: {
-    pt: "Seu posicionamento é o de uma liderança técnico-intelectual capaz de conectar pesquisa profunda e aplicações reais, apoiando projetos complexos em ambientes onde precisão analítica, reputação e impacto são decisivos. A autoria de livros, artigos e produção científica, somada à atuação com iniciativas e marcas como a AIFA, reforça uma presença pública e institucional orientada por conhecimento, inovação e autoridade.",
-    en: "Her positioning is that of a technical-intellectual leader capable of connecting deep research with real-world applications, supporting complex initiatives in environments where analytical precision, reputation, and impact are decisive. The authorship of books, articles, and scientific production, combined with work involving initiatives and brands such as AIFA, reinforces a public and institutional presence guided by knowledge, innovation, and authority.",
+    pt: "Seu posicionamento combina autoridade científica com execução consultiva, apoiando projetos em que tecnologia, inovação e inteligência artificial precisam gerar resultado concreto. A autoria de livros, artigos e produção científica, somada à atuação com iniciativas e marcas de relevância institucional, reforça uma presença pública orientada por conhecimento, inovação e credibilidade técnica.",
+    en: "Her positioning combines scientific authority with consulting execution, supporting projects in which technology, innovation, and artificial intelligence need to generate concrete results. The authorship of books, articles, and scientific production, combined with work involving institutionally relevant initiatives and brands, reinforces a public presence guided by knowledge, innovation, and technical credibility.",
   },
 };
 

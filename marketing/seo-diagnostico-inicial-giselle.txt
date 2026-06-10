@@ -1,0 +1,6 @@
+Diagnóstico inicial de SEO e indexabilidade de /giselle:
+- Título público atual da página: "Giselle Couto Falcão | IA, Educação e Modelagem Matemática".
+- O posicionamento visível atual enfatiza autoridade técnica, científica, educação e modelagem matemática, mas ainda não prioriza de forma explícita a formulação "consultora de tecnologia, inovação e IA".
+- Há conteúdo denso e rico em expertise, projetos, formação, publicações e contato, o que é positivo para profundidade semântica.
+- O topo da página e o hero ainda favorecem uma leitura mais acadêmica e institucional do que consultiva-comercial.
+- A URL https://coutofalcao.com/robots.txt retornou uma página 404, indicando ausência de robots.txt público e necessidade de corrigir esse ponto técnico.
