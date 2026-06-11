@@ -19,8 +19,10 @@ export const navItems = [
   { href: "#home", section: "home", label: { pt: "Home", en: "Home" } },
   { href: "#sobre", section: "sobre", label: { pt: "Sobre", en: "About" } },
   { href: "#servicos", section: "servicos", label: { pt: "Consultoria", en: "Consulting" } },
+  { href: "#cases", section: "cases", label: { pt: "Cases", en: "Cases" } },
   { href: "#projetos", section: "projetos", label: { pt: "Projetos", en: "Projects" } },
   { href: "#publicacoes", section: "publicacoes", label: { pt: "Publicações", en: "Publications" } },
+  { href: "#insights", section: "insights", label: { pt: "Insights", en: "Insights" } },
   { href: "#experiencia", section: "experiencia", label: { pt: "Experiência", en: "Experience" } },
   { href: "#formacao", section: "formacao", label: { pt: "Formação", en: "Education" } },
   { href: "#faq", section: "faq", label: { pt: "FAQ", en: "FAQ" } },
@@ -834,6 +836,114 @@ export const consultingSectors = {
   pt: ["Indústria", "Logística", "Supply Chain", "Educação", "Setor público", "Pesquisa aplicada"],
   en: ["Industry", "Logistics", "Supply chain", "Education", "Public sector", "Applied research"],
 };
+
+export const caseStudies = [
+  {
+    key: "cabotagem",
+    sector: { pt: "Logística marítima e supply chain", en: "Maritime logistics and supply chain" },
+    metric: { pt: "R$ 8 milhões/ano em economia potencial", en: "R$ 8 million/year in potential savings" },
+    title: {
+      pt: "Otimização de cabotagem com algoritmo genético e roteirização executiva",
+      en: "Cabotage optimization with genetic algorithm and executive routing",
+    },
+    result: {
+      pt: "Estruturação de um motor meta-heurístico para roteirização naval, com redução de bunker, simulação multicenário, mapa operacional e leitura executiva de ganho econômico.",
+      en: "Structuring of a meta-heuristic engine for naval routing, with bunker reduction, multi-scenario simulation, operational mapping, and executive visibility into economic gains.",
+    },
+    proof: {
+      pt: "Case em produção com algoritmo rodando e impacto financeiro anual estimado em oito milhões de reais.",
+      en: "Production case with the algorithm running and annual financial impact estimated at eight million reais.",
+    },
+    tags: ["algoritmo genético", "roteirização", "cabotagem", "redução de custos"],
+  },
+  {
+    key: "educacao-ia",
+    sector: { pt: "Educação e políticas públicas", en: "Education and public policy" },
+    metric: { pt: "Escala diagnóstica e priorização pedagógica em larga escala", en: "Diagnostic scale and pedagogical prioritization at scale" },
+    title: {
+      pt: "IA aplicada à recomposição da aprendizagem com taxonomias e BNCC",
+      en: "AI applied to learning recovery with taxonomies and BNCC alignment",
+    },
+    result: {
+      pt: "Desenho de plataforma orientada por IA para identificar lacunas, apoiar personalização e fortalecer decisões pedagógicas e institucionais com base em dados.",
+      en: "Design of an AI-oriented platform to identify learning gaps, support personalization, and strengthen pedagogical and institutional decisions based on data.",
+    },
+    proof: {
+      pt: "Integração entre evidência educacional, modelagem analítica e aplicação prática para redes, escolas e organizações educacionais.",
+      en: "Integration of educational evidence, analytical modeling, and practical application for school systems, schools, and education organizations.",
+    },
+    tags: ["edtech", "BNCC", "analytics educacional", "personalização"],
+  },
+  {
+    key: "industria-preditiva",
+    sector: { pt: "Indústria e operações críticas", en: "Industry and critical operations" },
+    metric: { pt: "Menos perdas, mais previsibilidade e maior maturidade analítica", en: "Lower losses, more predictability, and stronger analytical maturity" },
+    title: {
+      pt: "Modelos preditivos e arquitetura analítica para decisões operacionais críticas",
+      en: "Predictive models and analytical architecture for critical operational decisions",
+    },
+    result: {
+      pt: "Aplicação de analytics, modelagem e priorização para reduzir desperdícios, antecipar falhas e orientar ações em ambientes de alta exigência operacional.",
+      en: "Application of analytics, modeling, and prioritization to reduce waste, anticipate failures, and guide actions in high-demand operational environments.",
+    },
+    proof: {
+      pt: "Atuação desenhada para contextos em que previsão, manutenção, qualidade e eficiência precisam sair do discurso e entrar na operação.",
+      en: "Work designed for contexts in which forecasting, maintenance, quality, and efficiency need to move from discourse into operations.",
+    },
+    tags: ["indústria", "manutenção preditiva", "qualidade", "eficiência operacional"],
+  },
+];
+
+export const insightArticles = [
+  {
+    slug: "ia-aplicada-onde-comecar",
+    category: { pt: "Estratégia de IA", en: "AI Strategy" },
+    title: {
+      pt: "IA aplicada: por onde começar quando a empresa já tem dados, mas ainda não tem decisão",
+      en: "Applied AI: where to start when a company has data but still lacks decision power",
+    },
+    excerpt: {
+      pt: "Um guia executivo sobre priorização de casos de uso, maturidade analítica e escolha dos primeiros problemas que realmente justificam investimento em IA.",
+      en: "An executive guide to use-case prioritization, analytical maturity, and selecting the first problems that truly justify AI investment.",
+    },
+    audience: {
+      pt: "Diretoria, operações, supply chain e lideranças que querem evitar pilotos sem ROI.",
+      en: "Leadership, operations, and supply chain teams seeking to avoid pilots without ROI.",
+    },
+  },
+  {
+    slug: "inovacao-com-relevancia-operacional",
+    category: { pt: "Inovação orientada a negócio", en: "Business-led innovation" },
+    title: {
+      pt: "Inovação com relevância operacional: como transformar tecnologia em vantagem competitiva",
+      en: "Innovation with operational relevance: how to turn technology into competitive advantage",
+    },
+    excerpt: {
+      pt: "Reflexões sobre arquitetura, governança, priorização e desenho de solução para empresas que precisam conectar tecnologia, operação e resultado.",
+      en: "Reflections on architecture, governance, prioritization, and solution design for companies that need to connect technology, operations, and outcomes.",
+    },
+    audience: {
+      pt: "Executivos, gestores de transformação e times que buscam inovação com clareza metodológica.",
+      en: "Executives, transformation managers, and teams seeking innovation with methodological clarity.",
+    },
+  },
+  {
+    slug: "modelagem-matematica-e-negocio",
+    category: { pt: "Modelagem e decisão", en: "Modeling and decision-making" },
+    title: {
+      pt: "Modelagem matemática para negócio: quando otimização, previsão e decisão deixam de ser abstração",
+      en: "Mathematical modeling for business: when optimization, forecasting, and decision-making stop being abstract",
+    },
+    excerpt: {
+      pt: "Uma leitura aplicada sobre como heurísticas, algoritmos e simulação podem destravar eficiência, escala e inteligência operacional em setores complexos.",
+      en: "An applied perspective on how heuristics, algorithms, and simulation can unlock efficiency, scale, and operational intelligence in complex sectors.",
+    },
+    audience: {
+      pt: "Indústria, logística, planejamento e organizações intensivas em decisão.",
+      en: "Industry, logistics, planning, and decision-intensive organizations.",
+    },
+  },
+];
 
 export const faqItems = [
   {

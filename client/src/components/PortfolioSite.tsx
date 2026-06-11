@@ -27,7 +27,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { trpc } from "@/lib/trpc";
-import { aboutSection, assets, authorityMetrics, certifications, consultingSectors, consultingServices, contact, educationTimeline, experienceTimeline, expertiseCards, faqItems, heroCopy, impactStats, keyAreas, linkedinBadge, navItems, placeholderPrompt, projectCategories, projects, publications, speaking, stack, t, type Locale, valueBlocks } from "@/lib/portfolioData";
+import { aboutSection, assets, authorityMetrics, caseStudies, certifications, consultingSectors, consultingServices, contact, educationTimeline, experienceTimeline, expertiseCards, faqItems, heroCopy, impactStats, insightArticles, keyAreas, linkedinBadge, navItems, placeholderPrompt, projectCategories, projects, publications, speaking, stack, t, type Locale, valueBlocks } from "@/lib/portfolioData";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 
@@ -36,11 +36,13 @@ type SectionId =
   | "sobre"
   | "expertise"
   | "servicos"
+  | "cases"
   | "projetos"
   | "impacto"
   | "experiencia"
   | "formacao"
   | "publicacoes"
+  | "insights"
   | "credenciais"
   | "palestras"
   | "valor"
@@ -609,6 +611,45 @@ export default function PortfolioSite({ initialLocale = "pt", page = "home" }: P
           </div>
         </section>
 
+        <section id="cases" className="scroll-mt-28 border-b border-white/6 py-24">
+          <div className="container">
+            <SectionHeading
+              eyebrow={locale === "pt" ? "Cases e resultados" : "Case studies and outcomes"}
+              title={locale === "pt" ? "Provas de execução com métricas, setores e resultado de negócio" : "Proof of execution with metrics, sectors, and business outcomes"}
+              text={locale === "pt" ? "Esta seção transforma autoridade abstrata em evidência concreta. Os cases destacam setores, natureza do problema, resultado percebido e sinais objetivos de impacto para fortalecer conversão, entendimento semântico e confiança de buscadores, clientes e sistemas de IA." : "This section turns abstract authority into concrete evidence. The case studies highlight sectors, problem types, perceived outcomes, and objective signs of impact to strengthen conversion, semantic understanding, and trust for search engines, clients, and AI systems."}
+            />
+
+            <div className="mt-14 grid gap-6 xl:grid-cols-3">
+              {caseStudies.map((caseItem, index) => (
+                <motion.div key={caseItem.key} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} transition={{ delay: index * 0.05 }}>
+                  <Card className="h-full rounded-[2rem] border-white/8 bg-[linear-gradient(180deg,rgba(255,255,255,0.05),rgba(255,255,255,0.025))] text-white">
+                    <CardContent className="flex h-full flex-col p-7">
+                      <div className="flex items-start justify-between gap-4">
+                        <Badge className="rounded-full border border-teal-300/20 bg-teal-300/10 text-teal-100">{t(locale, caseItem.sector)}</Badge>
+                        <BriefcaseBusiness className="mt-1 size-5 text-[var(--accent-copper)]" />
+                      </div>
+                      <p className="mt-5 text-xs uppercase tracking-[0.24em] text-[var(--accent-copper)]">{t(locale, caseItem.metric)}</p>
+                      <h3 className="mt-4 font-display text-3xl leading-tight">{t(locale, caseItem.title)}</h3>
+                      <p className="mt-4 text-sm leading-7 text-slate-300">{t(locale, caseItem.result)}</p>
+                      <div className="mt-6 rounded-[1.4rem] border border-white/10 bg-white/[0.04] p-4">
+                        <p className="text-xs uppercase tracking-[0.24em] text-slate-500">{locale === "pt" ? "Sinal de resultado" : "Outcome signal"}</p>
+                        <p className="mt-2 text-sm leading-7 text-slate-200">{t(locale, caseItem.proof)}</p>
+                      </div>
+                      <div className="mt-6 flex flex-wrap gap-2">
+                        {caseItem.tags.map((tag) => (
+                          <span key={tag} className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-slate-300">
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+
         <section id="projetos" className="scroll-mt-28 border-b border-white/6 py-24">
           <div className="container">
             <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
@@ -848,6 +889,37 @@ export default function PortfolioSite({ initialLocale = "pt", page = "home" }: P
                             <span className="ml-2 text-xs text-slate-400">{item.doi.replace("https://doi.org/", "")}</span>
                           </a>
                         ) : null}
+                      </div>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section id="insights" className="scroll-mt-28 border-b border-white/6 py-24">
+          <div className="container">
+            <SectionHeading
+              eyebrow={locale === "pt" ? "Artigos e insights" : "Articles and insights"}
+              title={locale === "pt" ? "Bloco editorial recorrente para consolidar autoridade orgânica em tecnologia, inovação e IA" : "Recurring editorial block to consolidate organic authority in technology, innovation, and AI"}
+              text={locale === "pt" ? "Os temas abaixo funcionam como base para uma linha editorial contínua. Eles ajudam Google, modelos de IA e potenciais clientes a reconhecer padrões de especialidade, repertório executivo e profundidade analítica." : "The themes below act as a foundation for an ongoing editorial line. They help Google, AI models, and potential clients recognize patterns of expertise, executive repertoire, and analytical depth."}
+            />
+
+            <div className="mt-12 grid gap-5 xl:grid-cols-3">
+              {insightArticles.map((article, index) => (
+                <motion.div key={article.slug} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} transition={{ delay: index * 0.05 }}>
+                  <Card className="h-full rounded-[1.9rem] border-white/8 bg-white/5 text-white transition duration-300 hover:-translate-y-1 hover:border-teal-300/20">
+                    <CardContent className="flex h-full flex-col p-7">
+                      <div className="flex items-center justify-between gap-4">
+                        <Badge className="rounded-full border border-white/10 bg-white/5 text-slate-200">{t(locale, article.category)}</Badge>
+                        <Newspaper className="size-5 text-teal-200" />
+                      </div>
+                      <h3 className="mt-6 font-display text-3xl leading-tight">{t(locale, article.title)}</h3>
+                      <p className="mt-4 text-sm leading-7 text-slate-300">{t(locale, article.excerpt)}</p>
+                      <div className="mt-6 border-t border-white/8 pt-5">
+                        <p className="text-xs uppercase tracking-[0.24em] text-[var(--accent-copper)]">{locale === "pt" ? "Leitura recomendada para" : "Recommended reading for"}</p>
+                        <p className="mt-2 text-sm leading-7 text-slate-200">{t(locale, article.audience)}</p>
                       </div>
                     </CardContent>
                   </Card>

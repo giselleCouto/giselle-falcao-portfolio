@@ -1,0 +1,9 @@
+Verificação de domínio no Google Search Console
+
+Domínio: coutofalcao.com
+Método selecionado: DNS TXT
+Valor do registro TXT:
+google-site-verification=x14lOJDVcwT2fdzGjyxyXqsdEHi1B-aEjDp4E6JOUgU
+
+Observação operacional:
+A conta giselle@coutofalcao.com não tem acesso atual à propriedade de domínio já validada no Search Console. O Google oferece a alternativa de verificar a propriedade adicionando o TXT acima no provedor DNS do domínio e, depois, clicando em "Verificar".

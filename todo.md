@@ -82,3 +82,7 @@
 - [x] Adicionar FAQs semânticas na página /giselle para buscas orgânicas e respostas de IA
 - [x] Validar metadados, dados estruturados e cobertura de testes após a nova expansão de conteúdo
 - [x] Conectar o domínio ao Google Search Console e solicitar reindexação da URL /giselle
+- [x] Verificar a propriedade de domínio coutofalcao.com no Google Search Console via DNS TXT
+- [x] Criar uma seção de cases na página /giselle com métricas, setores atendidos e resultados de negócio
+- [x] Publicar um bloco de artigos e insights recorrentes na página /giselle para fortalecer autoridade orgânica
+- [x] Validar metadados, dados estruturados, testes e build após a expansão de cases e conteúdo editorial

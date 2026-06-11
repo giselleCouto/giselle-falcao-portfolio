@@ -11,7 +11,7 @@ import { Link, Route, Switch, useLocation } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import PortfolioSite from "./components/PortfolioSite";
 import { ThemeProvider } from "./contexts/ThemeContext";
-import { faqItems } from "./lib/portfolioData";
+import { caseStudies, faqItems, insightArticles } from "./lib/portfolioData";
 import GiselleCourses from "./pages/GiselleCourses";
 
 function upsertMeta(selector: string, attributeName: "name" | "property", attributeValue: string, content: string) {
@@ -71,6 +71,8 @@ function RouteSeo() {
 
     removeJsonLd("giselle-person-schema");
     removeJsonLd("giselle-faq-schema");
+    removeJsonLd("giselle-case-studies-schema");
+    removeJsonLd("giselle-insights-schema");
 
     if (location === "/giselle/cursos") {
       title = "Curso de Engenharia de Sistemas de IA Generativa | Giselle Falcão";
@@ -156,6 +158,44 @@ function RouteSeo() {
           acceptedAnswer: {
             "@type": "Answer",
             text: item.answer.pt,
+          },
+        })),
+      });
+
+      upsertJsonLd("giselle-case-studies-schema", {
+        "@context": "https://schema.org",
+        "@type": "ItemList",
+        name: "Cases de consultoria em tecnologia, inovação e inteligência artificial de Giselle Couto Falcão",
+        itemListElement: caseStudies.map((item, index) => ({
+          "@type": "ListItem",
+          position: index + 1,
+          item: {
+            "@type": "CreativeWork",
+            name: item.title.pt,
+            description: `${item.result.pt} ${item.proof.pt}`,
+            about: item.sector.pt,
+            keywords: item.tags.join(", "),
+          },
+        })),
+      });
+
+      upsertJsonLd("giselle-insights-schema", {
+        "@context": "https://schema.org",
+        "@type": "ItemList",
+        name: "Insights editoriais de Giselle Couto Falcão sobre tecnologia, inovação e inteligência artificial",
+        itemListElement: insightArticles.map((item, index) => ({
+          "@type": "ListItem",
+          position: index + 1,
+          item: {
+            "@type": "Article",
+            headline: item.title.pt,
+            description: item.excerpt.pt,
+            articleSection: item.category.pt,
+            audience: item.audience.pt,
+            author: {
+              "@type": "Person",
+              name: "Giselle Couto Falcão",
+            },
           },
         })),
       });
