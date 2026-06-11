@@ -6,7 +6,7 @@ export type Locale = "pt" | "en";
 
 export const assets = {
   logo: "https://d2xsxph8kpxj0f.cloudfront.net/310519663156393333/6sAjL87Dgs7zQfqq7pYXKz/logo_preta_aa73ef4c.webp",
-  portrait: "https://d2xsxph8kpxj0f.cloudfront.net/310519663156393333/6sAjL87Dgs7zQfqq7pYXKz/giselle-business-portrait-1_71af2cf6.png",
+  portrait: "/manus-storage/foto_autora_11ba5989.jpeg",
   heroAtlas:
     "https://d2xsxph8kpxj0f.cloudfront.net/310519663156393333/6sAjL87Dgs7zQfqq7pYXKz/giselle-hero-atlas-9rA6i749UYThtL9Lh5ZSxA.webp",
   climatePanel:

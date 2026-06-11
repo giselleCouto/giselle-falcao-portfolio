@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { contact, experienceTimeline, projects, publications } from "./portfolioData";
+import { assets, contact, experienceTimeline, projects, publications } from "./portfolioData";
 
 describe("portfolio publications", () => {
   it("expõe links públicos e DOI para todas as publicações listadas", () => {
@@ -33,6 +33,12 @@ describe("portfolio logistics experience", () => {
     expect(logisticsProject?.stack).toContain("multitenancy");
     expect(logisticsExperience?.focus.pt).toContain("roteirização naval");
     expect(logisticsExperience?.focus.pt).toContain("SVG");
+  });
+});
+
+describe("portfolio portrait asset", () => {
+  it("usa o novo retrato enviado para a página /giselle", () => {
+    expect(assets.portrait).toBe("/manus-storage/foto_autora_11ba5989.jpeg");
   });
 });
 

@@ -86,3 +86,4 @@
 - [x] Criar uma seção de cases na página /giselle com métricas, setores atendidos e resultados de negócio
 - [x] Publicar um bloco de artigos e insights recorrentes na página /giselle para fortalecer autoridade orgânica
 - [x] Validar metadados, dados estruturados, testes e build após a expansão de cases e conteúdo editorial
+- [x] Substituir a foto exibida na página /giselle pela imagem anexada pela usuária e validar a renderização final
