@@ -87,3 +87,8 @@
 - [x] Publicar um bloco de artigos e insights recorrentes na página /giselle para fortalecer autoridade orgânica
 - [x] Validar metadados, dados estruturados, testes e build após a expansão de cases e conteúdo editorial
 - [x] Substituir a foto exibida na página /giselle pela imagem anexada pela usuária e validar a renderização final
+- [x] Definir a estrutura editorial do kit de mídia para marcas com foco em diferencial e proposta de valor
+- [x] Organizar provas, posicionamento, temas de parceria e contatos para o kit de mídia
+- [x] Produzir um kit de mídia completo em PDF e uma versão resumida em PDF sem espaços no nome do arquivo
+- [x] Revisar os arquivos finais e entregar os PDFs prontos para envio a marcas
+- [x] Substituir o favicon do site pela imagem anexada pela usuária e validar o carregamento final
