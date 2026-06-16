@@ -215,6 +215,11 @@ export default function PortfolioSite({ initialLocale = "pt", page = "home" }: P
     return publications.filter((item) => item.theme === publicationFilter);
   }, [publicationFilter]);
 
+  const featuredNavItems = useMemo(
+    () => navItems.filter((item) => ["#home", "#provas", "#servicos", "#cases", "#insights", "#contato"].includes(item.href)),
+    [],
+  );
+
   useEffect(() => {
     setPublicationFilter(locale === "pt" ? "Todos" : "All");
   }, [locale]);
@@ -287,24 +292,22 @@ export default function PortfolioSite({ initialLocale = "pt", page = "home" }: P
   return (
     <div className="relative overflow-hidden bg-[var(--bg-obsidian)] text-slate-100">
       <div className="pointer-events-none absolute inset-0 opacity-50">
-        <div className="absolute inset-x-0 top-0 h-[720px] bg-[radial-gradient(circle_at_top_left,_rgba(37,167,167,0.16),_transparent_35%),radial-gradient(circle_at_top_right,_rgba(187,123,72,0.18),_transparent_30%),linear-gradient(180deg,_rgba(7,17,26,0.94),_rgba(7,17,26,1))]" />
+        <div className="absolute inset-x-0 top-0 h-[720px] bg-[radial-gradient(circle_at_top_left,_rgba(32,211,194,0.14),_transparent_32%),radial-gradient(circle_at_top_right,_rgba(255,107,74,0.14),_transparent_28%),linear-gradient(180deg,_rgba(6,7,10,0.96),_rgba(6,7,10,1))]" />
         <div className="grid-overlay absolute inset-0" />
       </div>
 
-      <header className="sticky top-0 z-50 border-b border-white/8 bg-[rgba(6,16,24,0.78)] backdrop-blur-xl">
-        <div className="container flex items-center justify-between gap-6 py-3">
-          <Link href="/" className="flex shrink-0 items-center gap-4 xl:gap-5">
+      <header className="sticky top-0 z-50 border-b border-white/8 bg-[rgba(6,7,10,0.82)] backdrop-blur-2xl">
+        <div className="container flex items-center justify-between gap-6 py-4">
+          <Link href="/" className="flex shrink-0 items-center gap-4">
             <img src={assets.logo} alt="Logo Giselle Falcão" className="h-10 w-auto object-contain xl:h-11" />
-            <div className="hidden 2xl:block">
-              <p className="font-display text-base leading-tight text-white">Giselle Couto Falcão</p>
-              <p className="mt-1 text-[0.65rem] uppercase tracking-[0.24em] text-slate-400">
-                Industrial AI · Mathematical Modeling · Decision Systems
-              </p>
+            <div className="hidden xl:block">
+              <p className="font-display text-base font-bold uppercase tracking-[0.18em] text-white">Giselle Couto Falcão</p>
+              <p className="mt-1 text-[0.68rem] uppercase tracking-[0.3em] text-slate-500">Industrial AI · Mathematical Modeling · Data Science</p>
             </div>
           </Link>
 
-          <nav className="hidden items-center gap-4 xl:gap-5 lg:flex">
-            {navItems.map((item) => {
+          <nav className="hidden items-center gap-7 lg:flex">
+            {featuredNavItems.map((item) => {
               const active =
                 (item.href === "#home" && (location === "/" || location === "")) ||
                 (typeof window !== "undefined" && window.location.hash === item.href);
@@ -315,7 +318,7 @@ export default function PortfolioSite({ initialLocale = "pt", page = "home" }: P
                   href={item.href}
                   onClick={handleAnchorNavigation(item.href)}
                   className={cn(
-                    "text-[0.95rem] font-medium text-slate-300 transition-colors hover:text-white xl:text-sm",
+                    "text-sm font-medium uppercase tracking-[0.18em] text-slate-400 transition-colors hover:text-white",
                     active && "text-white",
                   )}
                 >
@@ -326,10 +329,7 @@ export default function PortfolioSite({ initialLocale = "pt", page = "home" }: P
           </nav>
 
           <div className="hidden items-center gap-3 lg:flex">
-            <Link href="/" className="inline-flex items-center rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-xs font-medium uppercase tracking-[0.2em] text-slate-300 transition hover:border-white/20 hover:bg-white/10 hover:text-white">
-              Couto Falcão Hub
-            </Link>
-            <div className="inline-flex items-center rounded-full border border-white/10 bg-white/5 p-1 text-xs">
+            <div className="inline-flex items-center rounded-full border border-white/10 bg-white/[0.03] p-1 text-xs">
               <button
                 className={cn("rounded-full px-3 py-1.5 transition", locale === "pt" && "bg-white text-slate-950")}
                 onClick={() => setLocale("pt")}
@@ -343,24 +343,22 @@ export default function PortfolioSite({ initialLocale = "pt", page = "home" }: P
                 EN
               </button>
             </div>
-            <div className="flex flex-wrap items-center gap-3">
-              <Link href="/giselle/cursos" className="group inline-flex items-center rounded-full border border-cyan-300/20 bg-cyan-400/10 px-5 py-2.5 text-sm font-medium text-cyan-50 transition hover:bg-cyan-400/20">
-                {locale === "pt" ? "Cursos de IA" : "AI Courses"}
-                <ChevronRight className="ml-2 size-4 transition-transform group-hover:translate-x-1" />
-              </Link>
-              <a
-                href="#contato"
-                onClick={handleAnchorNavigation("#contato")}
-                className="group inline-flex items-center rounded-full bg-white px-5 py-2.5 text-sm font-medium text-slate-950 transition hover:bg-[var(--accent-copper)] hover:text-slate-950"
-              >
-                {t(locale, heroCopy.ctaSecondary)}
-                <ArrowRight className="ml-2 size-4 transition-transform group-hover:translate-x-1" />
-              </a>
-            </div>
+            <Link href="/giselle/cursos" className="inline-flex items-center rounded-full border border-[var(--accent-teal)]/25 bg-[var(--accent-teal)]/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-teal-50 transition hover:bg-[var(--accent-teal)]/20">
+              {locale === "pt" ? "Cursos" : "Courses"}
+              <ChevronRight className="ml-2 size-4" />
+            </Link>
+            <a
+              href="#contato"
+              onClick={handleAnchorNavigation("#contato")}
+              className="inline-flex items-center rounded-full bg-[var(--accent-copper)] px-5 py-2.5 text-xs font-semibold uppercase tracking-[0.22em] text-slate-950 transition hover:bg-white"
+            >
+              {locale === "pt" ? "Agendar conversa" : "Book a conversation"}
+              <ArrowRight className="ml-2 size-4" />
+            </a>
           </div>
 
           <button
-            className="inline-flex size-11 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white lg:hidden"
+            className="inline-flex size-11 items-center justify-center rounded-full border border-white/10 bg-white/[0.03] text-white lg:hidden"
             onClick={() => setMenuOpen((prev) => !prev)}
             aria-label="Abrir navegação"
           >
@@ -369,35 +367,32 @@ export default function PortfolioSite({ initialLocale = "pt", page = "home" }: P
         </div>
 
         {menuOpen && (
-          <div className="border-t border-white/8 bg-[rgba(8,19,29,0.96)] lg:hidden">
+          <div className="border-t border-white/8 bg-[rgba(6,7,10,0.96)] lg:hidden">
             <div className="container flex flex-col gap-3 py-4">
-              {navItems.map((item) => (
+              {featuredNavItems.map((item) => (
                 <a
                   key={item.href}
                   href={item.href}
-                  className="py-2 text-left text-base text-slate-200"
+                  className="py-2 text-left text-sm font-medium uppercase tracking-[0.18em] text-slate-200"
                   onClick={handleAnchorNavigation(item.href)}
                 >
                   {t(locale, item.label)}
                 </a>
               ))}
-              <div className="mt-2 flex flex-col gap-2 sm:flex-row sm:items-center">
-                <Link href="/" className="inline-flex items-center justify-center rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-white transition hover:bg-white/10">
-                  Voltar ao hub
-                </Link>
-                <Button variant="outline" className="rounded-full border-white/10 bg-transparent text-white hover:bg-white/10" onClick={() => setLocale(locale === "pt" ? "en" : "pt")}> 
+              <div className="mt-2 flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center">
+                <Button variant="outline" className="rounded-full border-white/10 bg-transparent text-white hover:bg-white/10" onClick={() => setLocale(locale === "pt" ? "en" : "pt")}>
                   <Languages className="mr-2 size-4" />
                   {locale === "pt" ? "Switch to English" : "Mudar para português"}
                 </Button>
-                <Link href="/giselle/cursos" className="inline-flex items-center justify-center rounded-full border border-cyan-300/20 bg-cyan-400/10 px-4 py-2 text-sm font-medium text-cyan-50 transition hover:bg-cyan-400/20">
+                <Link href="/giselle/cursos" className="inline-flex items-center justify-center rounded-full border border-[var(--accent-teal)]/25 bg-[var(--accent-teal)]/10 px-4 py-2 text-sm font-medium text-teal-50 transition hover:bg-[var(--accent-teal)]/20">
                   {locale === "pt" ? "Cursos de IA" : "AI Courses"}
                 </Link>
                 <a
                   href="#contato"
-                  className="inline-flex items-center justify-center rounded-full bg-white px-4 py-2 text-sm font-medium text-slate-950 transition hover:bg-[var(--accent-copper)]"
+                  className="inline-flex items-center justify-center rounded-full bg-[var(--accent-copper)] px-4 py-2 text-sm font-semibold text-slate-950 transition hover:bg-white"
                   onClick={handleAnchorNavigation("#contato")}
                 >
-                  {t(locale, heroCopy.ctaSecondary)}
+                  {locale === "pt" ? "Agendar conversa" : "Book a conversation"}
                 </a>
               </div>
             </div>
@@ -406,61 +401,74 @@ export default function PortfolioSite({ initialLocale = "pt", page = "home" }: P
       </header>
 
       <main>
-        <section id="home" className="relative scroll-mt-28 border-b border-white/6 pt-6 sm:pt-10">
-          <div className="container grid items-center gap-12 pb-20 pt-8 lg:grid-cols-[1.08fr_0.92fr] lg:gap-16 lg:pb-28">
-            <motion.div initial="hidden" animate="visible" variants={fadeUp} className="relative z-10">
-              <Badge className="rounded-full border border-teal-300/30 bg-teal-300/10 px-4 py-1.5 text-[0.68rem] uppercase tracking-[0.3em] text-teal-200">
-                {t(locale, pageTitles[page])}
-              </Badge>
-              <h1 className="mt-6 max-w-4xl font-display text-5xl leading-[0.94] text-white sm:text-6xl lg:text-[4.85rem]">
-                {heroCopy.name}
-              </h1>
-              <p className="mt-6 max-w-3xl text-lg leading-8 text-slate-300 sm:text-[1.4rem] sm:leading-9">{t(locale, heroCopy.headline)}</p>
-              <p className="mt-6 max-w-2xl text-base leading-8 text-slate-400 sm:text-lg">{t(locale, heroCopy.subheadline)}</p>
+        <section id="home" className="relative scroll-mt-28 border-b border-white/6 pt-6 sm:pt-8">
+          <div className="container pb-20 pt-8 lg:pb-28">
+            <div className="grid items-start gap-10 lg:grid-cols-[1.08fr_0.92fr] lg:gap-16">
+              <motion.div initial="hidden" animate="visible" variants={fadeUp} className="relative z-10">
+                <div className="h-1.5 w-28 bg-[var(--accent-copper)]" />
+                <Badge className="mt-6 rounded-full border border-white/12 bg-white/[0.04] px-4 py-1.5 text-[0.68rem] uppercase tracking-[0.28em] text-teal-200">
+                  {t(locale, pageTitles[page])}
+                </Badge>
+                <h1 className="mt-6 max-w-5xl font-display text-5xl font-bold uppercase leading-[0.9] text-white sm:text-6xl lg:text-[5.3rem]">
+                  {heroCopy.name}
+                </h1>
+                <p className="mt-8 max-w-3xl text-xl font-medium leading-9 text-slate-200 sm:text-[1.55rem] sm:leading-10">{t(locale, heroCopy.headline)}</p>
+                <p className="mt-6 max-w-2xl text-base leading-8 text-slate-400 sm:text-lg">{t(locale, heroCopy.subheadline)}</p>
 
-              <div className="mt-8 flex flex-wrap gap-4">
-                <a href="#provas" onClick={handleAnchorNavigation("#provas")} className="group inline-flex items-center rounded-full bg-white px-6 py-3 text-sm font-medium text-slate-950 transition hover:bg-[var(--accent-copper)]">
-                  {t(locale, heroCopy.ctaPrimary)}
-                  <ArrowRight className="ml-2 size-4 transition-transform group-hover:translate-x-1" />
-                </a>
-                <Link href="/giselle/cursos" className="inline-flex items-center rounded-full border border-cyan-300/18 bg-cyan-400/10 px-6 py-3 text-sm font-medium text-cyan-50 transition hover:bg-cyan-400/20">
-                  {locale === "pt" ? "Explorar cursos" : "Explore courses"}
-                </Link>
-                <a href="#contato" onClick={handleAnchorNavigation("#contato")} className="inline-flex items-center rounded-full border border-white/12 bg-white/5 px-6 py-3 text-sm font-medium text-white transition hover:bg-white/10">
-                  {t(locale, heroCopy.ctaSecondary)}
-                </a>
-              </div>
-
-              <div className="mt-10 grid gap-3 rounded-[1.6rem] border border-white/10 bg-white/[0.04] p-4 backdrop-blur sm:grid-cols-2 xl:grid-cols-3">
-                {keyAreas[locale].map((item) => (
-                  <div key={item} className="rounded-2xl border border-white/6 bg-[rgba(255,255,255,0.04)] px-4 py-3 text-sm text-slate-200">
-                    {item}
-                  </div>
-                ))}
-              </div>
-
-              <div className="mt-10 max-w-3xl rounded-[1.6rem] border border-cyan-300/18 bg-[linear-gradient(135deg,rgba(18,32,44,0.96),rgba(8,18,28,0.92))] p-6">
-                <p className="text-xs uppercase tracking-[0.3em] text-cyan-200">Decision architecture</p>
-                <p className="mt-3 text-base leading-8 text-slate-200">{t(locale, heroCopy.impactPrompt)}</p>
-              </div>
-            </motion.div>
-
-            <motion.div initial="hidden" animate="visible" variants={fadeUp} transition={{ delay: 0.12 }} className="relative mx-auto w-full max-w-[540px] lg:justify-self-end">
-              <div className="absolute -left-10 top-8 hidden h-52 w-52 rounded-full bg-teal-400/15 blur-3xl md:block" />
-              <div className="absolute -right-4 bottom-6 hidden h-56 w-56 rounded-full bg-amber-500/12 blur-3xl md:block" />
-              <div className="portrait-frame relative overflow-hidden rounded-[2.4rem] border border-white/10 bg-[rgba(255,255,255,0.04)] p-3 shadow-[0_35px_120px_rgba(0,0,0,0.45)]">
-                <div className="absolute inset-0 bg-[url('https://d2xsxph8kpxj0f.cloudfront.net/310519663156393333/6sAjL87Dgs7zQfqq7pYXKz/giselle-hero-atlas-9rA6i749UYThtL9Lh5ZSxA.webp')] bg-cover bg-center opacity-18 mix-blend-screen" />
-                <img src={assets.portrait} alt="Retrato institucional de Giselle Couto Falcão" className="relative z-10 h-full w-full rounded-[2rem] object-cover" />
-                <div className="absolute inset-x-6 bottom-6 z-20 rounded-[1.6rem] border border-white/10 bg-[rgba(6,16,24,0.76)] p-5 backdrop-blur-xl">
-                  <p className="text-[0.65rem] uppercase tracking-[0.28em] text-slate-400">INDUSTRIAL AI · DIGITAL TWINS · APPLIED RESEARCH</p>
-                  <p className="mt-3 font-display text-[1.65rem] leading-tight text-white">{t(locale, heroCopy.role)}</p>
+                <div className="mt-10 flex flex-wrap gap-4">
+                  <a href="#provas" onClick={handleAnchorNavigation("#provas")} className="group inline-flex items-center rounded-full bg-[var(--accent-copper)] px-6 py-3 text-sm font-semibold uppercase tracking-[0.2em] text-slate-950 transition hover:bg-white">
+                    {t(locale, heroCopy.ctaPrimary)}
+                    <ArrowRight className="ml-2 size-4 transition-transform group-hover:translate-x-1" />
+                  </a>
+                  <Link href="/giselle/cursos" className="inline-flex items-center rounded-full border border-[var(--accent-teal)]/20 bg-[var(--accent-teal)]/10 px-6 py-3 text-sm font-semibold uppercase tracking-[0.2em] text-teal-50 transition hover:bg-[var(--accent-teal)]/20">
+                    {locale === "pt" ? "Explorar cursos" : "Explore courses"}
+                  </Link>
+                  <a href="#contato" onClick={handleAnchorNavigation("#contato")} className="inline-flex items-center rounded-full border border-white/12 bg-white/[0.03] px-6 py-3 text-sm font-semibold uppercase tracking-[0.2em] text-white transition hover:bg-white/10">
+                    {t(locale, heroCopy.ctaSecondary)}
+                  </a>
                 </div>
-              </div>
-            </motion.div>
-          </div>
 
-          <div className="container pb-18">
-            <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+                <div className="mt-12 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+                  {keyAreas[locale].map((item) => (
+                    <div key={item} className="thoughtworks-card px-4 py-4 text-sm font-medium leading-7 text-slate-200">
+                      {item}
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+
+              <motion.div initial="hidden" animate="visible" variants={fadeUp} transition={{ delay: 0.12 }} className="relative mx-auto w-full max-w-[560px] lg:justify-self-end">
+                <div className="editorial-shell rounded-[2rem] p-4 sm:p-5">
+                  <div className="relative z-10 grid gap-5">
+                    <div className="portrait-frame relative overflow-hidden rounded-[1.7rem] border border-white/10 bg-black/30 p-3 shadow-[0_35px_120px_rgba(0,0,0,0.42)]">
+                      <div className="absolute inset-0 bg-[url('https://d2xsxph8kpxj0f.cloudfront.net/310519663156393333/6sAjL87Dgs7zQfqq7pYXKz/giselle-hero-atlas-9rA6i749UYThtL9Lh5ZSxA.webp')] bg-cover bg-center opacity-15 mix-blend-screen" />
+                      <img src={assets.portrait} alt="Retrato institucional de Giselle Couto Falcão" className="relative z-10 h-full w-full rounded-[1.35rem] object-cover" />
+                    </div>
+                    <div className="story-divider relative z-10 grid gap-5 pb-5 lg:grid-cols-[1.05fr_0.95fr] lg:items-end">
+                      <div>
+                        <p className="text-[0.68rem] uppercase tracking-[0.32em] text-[var(--accent-copper)]">Industrial AI · Computer Vision · Digital Twins</p>
+                        <p className="mt-4 font-display text-3xl font-bold uppercase leading-[1.02] text-white">{t(locale, heroCopy.role)}</p>
+                      </div>
+                      <div className="border-l-0 border-white/10 pl-0 text-sm leading-7 text-slate-300 lg:border-l lg:pl-5">
+                        {t(locale, heroCopy.impactPrompt)}
+                      </div>
+                    </div>
+                    <div className="relative z-10 grid gap-4 sm:grid-cols-2">
+                      <div className="border border-white/8 bg-black/20 p-5">
+                        <p className="text-[0.68rem] uppercase tracking-[0.28em] text-slate-500">Positioning</p>
+                        <p className="mt-3 text-sm leading-7 text-slate-200">{locale === "pt" ? "Consultoria e pesquisa aplicada para operações, sistemas críticos e tomada de decisão tecnicamente defensável." : "Consulting and applied research for operations, critical systems, and technically defensible decision-making."}</p>
+                      </div>
+                      <div className="border border-white/8 bg-black/20 p-5">
+                        <p className="text-[0.68rem] uppercase tracking-[0.28em] text-slate-500">Focus sectors</p>
+                        <p className="mt-3 text-sm leading-7 text-slate-200">{(locale === "pt" ? consultingSectors.pt : consultingSectors.en).slice(0, 4).join(" · ")}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            </div>
+
+            <div className="mt-14 grid gap-px overflow-hidden border border-white/8 bg-white/8 md:grid-cols-2 xl:grid-cols-4">
               {authorityMetrics.map((metric, index) => (
                 <motion.div
                   key={metric.value}
@@ -469,10 +477,10 @@ export default function PortfolioSite({ initialLocale = "pt", page = "home" }: P
                   whileInView="visible"
                   viewport={{ once: true, margin: "-100px" }}
                   transition={{ delay: index * 0.05 }}
-                  className="metric-panel rounded-[1.8rem] border border-white/8 bg-[rgba(255,255,255,0.04)] p-6"
+                  className="bg-[rgba(7,10,14,0.9)] px-6 py-7"
                 >
-                  <p className="font-display text-3xl text-white">{metric.value}</p>
-                  <p className="mt-3 text-sm leading-7 text-slate-300">{t(locale, metric.label)}</p>
+                  <p className="font-display text-4xl font-bold uppercase text-white">{metric.value}</p>
+                  <p className="mt-3 max-w-xs text-sm leading-7 text-slate-300">{t(locale, metric.label)}</p>
                 </motion.div>
               ))}
             </div>
@@ -481,35 +489,42 @@ export default function PortfolioSite({ initialLocale = "pt", page = "home" }: P
 
         <section id="provas" className="scroll-mt-28 border-b border-white/6 py-24">
           <div className="container">
-            <SectionHeading
-              eyebrow={locale === "pt" ? "Provas de autoridade" : "Authority proof"}
-              title={locale === "pt" ? "Provas de autoridade para reduzir atrito e aumentar confiança logo no início" : "Authority signals designed to reduce friction and build trust up front"}
-              text={locale === "pt" ? "A leitura foi simplificada para que marcas, clientes, universidades e instituições identifiquem rapidamente formação, produção científica, repertório técnico, cases e presença pública verificável." : "The page was simplified so brands, clients, universities, and institutions can quickly identify education, scientific output, technical repertoire, case studies, and verifiable public presence."}
-            />
+            <div className="editorial-shell rounded-[2.2rem] px-6 py-8 sm:px-8 sm:py-10 lg:px-10">
+              <div className="relative z-10 grid gap-10 lg:grid-cols-[0.82fr_1.18fr]">
+                <SectionHeading
+                  eyebrow={locale === "pt" ? "Provas de autoridade" : "Authority proof"}
+                  title={locale === "pt" ? "Autoridade técnica exposta no início para reduzir atrito comercial e elevar confiança" : "Technical authority surfaced early to reduce commercial friction and increase trust"}
+                  text={locale === "pt" ? "A primeira leitura da página agora funciona como uma mesa editorial: formação, produção científica, presença pública, casos e ativos verificáveis aparecem com mais clareza e hierarquia." : "The opening read now behaves like an editorial desk: education, scientific output, public presence, case studies, and verifiable assets appear with greater clarity and hierarchy."}
+                />
+                <div className="grid gap-px overflow-hidden border border-white/8 bg-white/8 md:grid-cols-2">
+                  {authorityProofs.map((proof, index) => {
+                    const isExternal = proof.kind === "external";
 
-            <div className="mt-12 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
-              {authorityProofs.map((proof, index) => {
-                const isExternal = proof.kind === "external";
-
-                return (
-                  <motion.div key={proof.key} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-120px" }} transition={{ delay: index * 0.04 }}>
-                    <a
-                      href={proof.href}
-                      onClick={isExternal ? undefined : handleAnchorNavigation(proof.href)}
-                      target={isExternal ? "_blank" : undefined}
-                      rel={isExternal ? "noreferrer" : undefined}
-                      className="group block h-full rounded-[1.9rem] border border-white/8 bg-[linear-gradient(180deg,rgba(255,255,255,0.05),rgba(255,255,255,0.02))] p-6 transition duration-300 hover:-translate-y-1 hover:border-teal-300/25 hover:bg-[linear-gradient(180deg,rgba(37,167,167,0.10),rgba(255,255,255,0.03))]"
-                    >
-                      <div className="flex items-center justify-between gap-4">
-                        <span className="text-[0.68rem] uppercase tracking-[0.28em] text-[var(--accent-copper)]">{locale === "pt" ? "Verificável" : "Verifiable"}</span>
-                        <ArrowRight className="size-4 text-teal-300 transition-transform group-hover:translate-x-1" />
-                      </div>
-                      <h3 className="mt-5 font-display text-2xl leading-tight text-white">{t(locale, proof.title)}</h3>
-                      <p className="mt-4 text-sm leading-7 text-slate-300">{t(locale, proof.description)}</p>
-                    </a>
-                  </motion.div>
-                );
-              })}
+                    return (
+                      <motion.a
+                        key={proof.key}
+                        href={proof.href}
+                        onClick={isExternal ? undefined : handleAnchorNavigation(proof.href)}
+                        target={isExternal ? "_blank" : undefined}
+                        rel={isExternal ? "noreferrer" : undefined}
+                        variants={fadeUp}
+                        initial="hidden"
+                        whileInView="visible"
+                        viewport={{ once: true, margin: "-120px" }}
+                        transition={{ delay: index * 0.04 }}
+                        className="group bg-[rgba(8,10,14,0.92)] p-6 transition duration-300 hover:bg-[rgba(12,16,22,0.96)]"
+                      >
+                        <div className="flex items-center justify-between gap-4">
+                          <span className="text-[0.66rem] font-semibold uppercase tracking-[0.3em] text-[var(--accent-copper)]">{locale === "pt" ? "Verificável" : "Verifiable"}</span>
+                          <ArrowRight className="size-4 text-[var(--accent-teal)] transition-transform group-hover:translate-x-1" />
+                        </div>
+                        <h3 className="mt-5 font-display text-2xl font-bold uppercase leading-tight text-white">{t(locale, proof.title)}</h3>
+                        <p className="mt-4 text-sm leading-7 text-slate-300">{t(locale, proof.description)}</p>
+                      </motion.a>
+                    );
+                  })}
+                </div>
+              </div>
             </div>
           </div>
         </section>
@@ -527,7 +542,7 @@ export default function PortfolioSite({ initialLocale = "pt", page = "home" }: P
               <p>{t(locale, aboutSection.body)}</p>
               <p>{t(locale, aboutSection.closing)}</p>
               <div className="grid gap-4 sm:grid-cols-2">
-                <Card className="rounded-[1.8rem] border-white/8 bg-white/5 text-white">
+                <Card className="rounded-[1.35rem] border-white/8 bg-white/[0.03] text-white">
                   <CardContent className="p-6">
                     <Microscope className="size-8 text-teal-300" />
                     <h3 className="mt-5 font-display text-2xl">{locale === "pt" ? "Pesquisa profunda" : "Deep research"}</h3>
@@ -538,7 +553,7 @@ export default function PortfolioSite({ initialLocale = "pt", page = "home" }: P
                     </p>
                   </CardContent>
                 </Card>
-                <Card className="rounded-[1.8rem] border-white/8 bg-white/5 text-white">
+                <Card className="rounded-[1.35rem] border-white/8 bg-white/[0.03] text-white">
                   <CardContent className="p-6">
                     <BriefcaseBusiness className="size-8 text-[var(--accent-copper)]" />
                     <h3 className="mt-5 font-display text-2xl">{locale === "pt" ? "Aplicação estratégica" : "Strategic application"}</h3>
@@ -571,7 +586,7 @@ export default function PortfolioSite({ initialLocale = "pt", page = "home" }: P
                   viewport={{ once: true, margin: "-120px" }}
                   transition={{ delay: index * 0.04 }}
                 >
-                  <Card className="group h-full rounded-[1.9rem] border-white/8 bg-[linear-gradient(180deg,rgba(255,255,255,0.05),rgba(255,255,255,0.02))] text-white transition duration-300 hover:-translate-y-1 hover:border-teal-300/20 hover:bg-[linear-gradient(180deg,rgba(37,167,167,0.12),rgba(255,255,255,0.03))]">
+                  <Card className="group h-full rounded-[1.9rem] border-white/8 bg-[linear-gradient(180deg,rgba(255,255,255,0.05),rgba(255,255,255,0.02))] text-white transition duration-300 hover:-translate-y-1 hover:border-teal-300/20 hover:bg-[linear-gradient(180deg,rgba(32,211,194,0.12),rgba(255,255,255,0.03))]">
                     <CardContent className="flex h-full flex-col p-6">
                       <div className="mb-5 flex items-center justify-between">
                         <span className="h-1.5 w-12 rounded-full bg-[var(--accent-copper)]" />
@@ -597,7 +612,7 @@ export default function PortfolioSite({ initialLocale = "pt", page = "home" }: P
 
             />
 
-            <div className="mt-10 rounded-[2rem] border border-[rgba(37,167,167,0.18)] bg-[linear-gradient(135deg,rgba(10,24,34,0.95),rgba(7,17,26,0.85))] p-7 shadow-[0_30px_100px_rgba(0,0,0,0.28)] sm:p-9">
+            <div className="mt-10 rounded-[2rem] border border-[rgba(32,211,194,0.18)] bg-[linear-gradient(135deg,rgba(10,24,34,0.95),rgba(7,17,26,0.85))] p-7 shadow-[0_30px_100px_rgba(0,0,0,0.28)] sm:p-9">
               <div className="grid gap-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
                 <div>
                   <p className="text-xs uppercase tracking-[0.28em] text-teal-200">{locale === "pt" ? "Escopo consultivo" : "Consulting scope"}</p>
@@ -613,7 +628,7 @@ export default function PortfolioSite({ initialLocale = "pt", page = "home" }: P
                   <p className="text-xs uppercase tracking-[0.28em] text-[var(--accent-copper)]">{locale === "pt" ? "Setores-alvo" : "Target sectors"}</p>
                   <div className="mt-5 flex flex-wrap gap-3">
                     {(locale === "pt" ? consultingSectors.pt : consultingSectors.en).map((sector) => (
-                      <span key={sector} className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-slate-200">
+                      <span key={sector} className="rounded-full border border-white/10 bg-white/[0.03] px-4 py-2 text-sm text-slate-200">
                         {sector}
                       </span>
                     ))}
@@ -628,7 +643,7 @@ export default function PortfolioSite({ initialLocale = "pt", page = "home" }: P
             <div className="mt-14 grid gap-5 lg:grid-cols-2">
               {consultingServices.map((service, index) => (
                 <motion.div key={service.key} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-120px" }} transition={{ delay: index * 0.05 }}>
-                  <Card className="h-full rounded-[1.9rem] border-white/8 bg-[linear-gradient(180deg,rgba(255,255,255,0.05),rgba(255,255,255,0.025))] text-white transition duration-300 hover:-translate-y-1 hover:border-[rgba(191,148,103,0.28)]">
+                  <Card className="h-full rounded-[1.9rem] border-white/8 bg-[linear-gradient(180deg,rgba(255,255,255,0.05),rgba(255,255,255,0.025))] text-white transition duration-300 hover:-translate-y-1 hover:border-[rgba(255,107,74,0.28)]">
                     <CardContent className="p-7">
                       <div className="flex items-center justify-between gap-4">
                         <span className="h-1.5 w-14 rounded-full bg-[var(--accent-copper)]" />
@@ -674,7 +689,7 @@ export default function PortfolioSite({ initialLocale = "pt", page = "home" }: P
                       </div>
                       <div className="mt-6 flex flex-wrap gap-2">
                         {caseItem.tags.map((tag) => (
-                          <span key={tag} className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-slate-300">
+                          <span key={tag} className="rounded-full border border-white/10 bg-white/[0.03] px-3 py-1 text-xs text-slate-300">
                             {tag}
                           </span>
                         ))}
@@ -704,7 +719,7 @@ export default function PortfolioSite({ initialLocale = "pt", page = "home" }: P
                       "rounded-full border px-4 py-2 text-sm transition",
                       projectFilter === category
                         ? "border-transparent bg-white text-slate-950"
-                        : "border-white/10 bg-white/5 text-slate-300 hover:bg-white/10 hover:text-white",
+                        : "border-white/10 bg-white/[0.03] text-slate-300 hover:bg-white/10 hover:text-white",
                     )}
                   >
                     {category}
@@ -752,7 +767,7 @@ export default function PortfolioSite({ initialLocale = "pt", page = "home" }: P
                           <p className="mt-2 text-sm leading-7 text-slate-200">{t(locale, project.impact)}</p>
                           <div className="mt-5 flex flex-wrap gap-2">
                             {project.tags.map((tag) => (
-                              <span key={tag} className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-slate-300">
+                              <span key={tag} className="rounded-full border border-white/10 bg-white/[0.03] px-3 py-1 text-xs text-slate-300">
                                 {tag}
                               </span>
                             ))}
@@ -763,7 +778,7 @@ export default function PortfolioSite({ initialLocale = "pt", page = "home" }: P
                                 href={project.link}
                                 target="_blank"
                                 rel="noreferrer"
-                                className="inline-flex items-center gap-2 rounded-full border border-[rgba(191,148,103,0.28)] bg-[rgba(191,148,103,0.08)] px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-[var(--accent-copper)] transition hover:border-[rgba(191,148,103,0.45)] hover:bg-[rgba(191,148,103,0.16)]"
+                                className="inline-flex items-center gap-2 rounded-full border border-[rgba(255,107,74,0.28)] bg-[rgba(255,107,74,0.08)] px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-[var(--accent-copper)] transition hover:border-[rgba(255,107,74,0.45)] hover:bg-[rgba(255,107,74,0.16)]"
                               >
                                 {locale === "pt" ? "Abrir projeto" : "Open project"}
                                 <ArrowRight className="size-4" />
@@ -815,8 +830,8 @@ export default function PortfolioSite({ initialLocale = "pt", page = "home" }: P
             <div className="relative space-y-6 before:absolute before:bottom-0 before:left-3 before:top-0 before:w-px before:bg-gradient-to-b before:from-[var(--accent-copper)] before:to-teal-300/20 sm:before:left-4">
               {experienceTimeline.map((item, index) => (
                 <motion.div key={item.org} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} transition={{ delay: index * 0.04 }} className="relative pl-10 sm:pl-14">
-                  <span className="absolute left-0 top-2 h-7 w-7 rounded-full border border-[color:rgba(191,148,103,0.4)] bg-[var(--bg-obsidian)] shadow-[0_0_0_6px_rgba(7,17,26,0.8)] sm:left-1" />
-                  <Card className="rounded-[1.7rem] border-white/8 bg-white/5 text-white">
+                  <span className="absolute left-0 top-2 h-7 w-7 rounded-full border border-[color:rgba(255,107,74,0.4)] bg-[var(--bg-obsidian)] shadow-[0_0_0_6px_rgba(7,17,26,0.8)] sm:left-1" />
+                  <Card className="rounded-[1.35rem] border-white/8 bg-white/[0.03] text-white">
                     <CardContent className="p-6">
                       <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
                         <div>
@@ -849,7 +864,7 @@ export default function PortfolioSite({ initialLocale = "pt", page = "home" }: P
                   <Card className="rounded-[1.8rem] border-white/8 bg-[rgba(255,255,255,0.04)] text-white">
                     <CardContent className="p-6">
                       <div className="flex items-start gap-4">
-                        <div className="mt-1 flex size-11 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-white/5">
+                        <div className="mt-1 flex size-11 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.03]">
                           <GraduationCap className="size-5 text-[var(--accent-copper)]" />
                         </div>
                         <div>
@@ -882,7 +897,7 @@ export default function PortfolioSite({ initialLocale = "pt", page = "home" }: P
                       "rounded-full border px-4 py-2 text-sm transition",
                       publicationFilter === theme
                         ? "border-transparent bg-white text-slate-950"
-                        : "border-white/10 bg-white/5 text-slate-300 hover:bg-white/10 hover:text-white",
+                        : "border-white/10 bg-white/[0.03] text-slate-300 hover:bg-white/10 hover:text-white",
                     )}
                   >
                     {theme}
@@ -894,10 +909,10 @@ export default function PortfolioSite({ initialLocale = "pt", page = "home" }: P
             <div className="mt-10 grid gap-5 xl:grid-cols-2">
               {filteredPublications.map((item, index) => (
                 <motion.div key={`${item.title.pt}-${item.year}`} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} transition={{ delay: index * 0.04 }}>
-                  <Card className="h-full rounded-[1.8rem] border-white/8 bg-white/5 text-white">
+                  <Card className="h-full rounded-[1.35rem] border-white/8 bg-white/[0.03] text-white">
                     <CardContent className="p-6">
                       <div className="flex flex-wrap items-center gap-3">
-                        <Badge className="rounded-full border border-white/10 bg-white/5 text-slate-200">{t(locale, item.type)}</Badge>
+                        <Badge className="rounded-full border border-white/10 bg-white/[0.03] text-slate-200">{t(locale, item.type)}</Badge>
                         <span className="text-xs uppercase tracking-[0.22em] text-slate-500">{item.year}</span>
                       </div>
                       <h3 className="mt-5 font-display text-2xl leading-tight">{t(locale, item.title)}</h3>
@@ -920,7 +935,7 @@ export default function PortfolioSite({ initialLocale = "pt", page = "home" }: P
                             href={item.doi}
                             target="_blank"
                             rel="noreferrer"
-                            className="inline-flex items-center rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-slate-200 transition hover:border-white/20 hover:bg-white/10 hover:text-white"
+                            className="inline-flex items-center rounded-full border border-white/10 bg-white/[0.03] px-4 py-2 text-sm text-slate-200 transition hover:border-white/20 hover:bg-white/10 hover:text-white"
                           >
                             DOI
                             <span className="ml-2 text-xs text-slate-400">{item.doi.replace("https://doi.org/", "")}</span>
@@ -943,7 +958,7 @@ export default function PortfolioSite({ initialLocale = "pt", page = "home" }: P
               text={t(locale, editorialPositioning.body)}
             />
 
-            <div className="mt-10 rounded-[2rem] border border-[rgba(191,148,103,0.22)] bg-[linear-gradient(135deg,rgba(191,148,103,0.14),rgba(7,17,26,0.8))] p-7 sm:p-8">
+            <div className="mt-10 rounded-[2rem] border border-[rgba(255,107,74,0.22)] bg-[linear-gradient(135deg,rgba(255,107,74,0.14),rgba(7,17,26,0.8))] p-7 sm:p-8">
               <p className="text-xs uppercase tracking-[0.28em] text-[var(--accent-copper)]">{locale === "pt" ? "Interseção editorial a dominar" : "Editorial intersection to own"}</p>
               <p className="mt-4 max-w-4xl font-display text-3xl leading-tight text-white sm:text-[2.5rem]">{t(locale, editorialPositioning.title)}</p>
               <p className="mt-5 max-w-3xl text-base leading-8 text-slate-200">{t(locale, editorialPositioning.body)}</p>
@@ -952,10 +967,10 @@ export default function PortfolioSite({ initialLocale = "pt", page = "home" }: P
             <div className="mt-12 grid gap-5 xl:grid-cols-3">
               {editorialSeries.map((series, index) => (
                 <motion.div key={series.key} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} transition={{ delay: index * 0.05 }}>
-                  <Card className="h-full rounded-[1.9rem] border-white/8 bg-white/5 text-white transition duration-300 hover:-translate-y-1 hover:border-teal-300/20">
+                  <Card className="h-full rounded-[1.35rem] border-white/8 bg-white/[0.03] text-white transition duration-300 hover:-translate-y-1 hover:border-teal-300/20">
                     <CardContent className="flex h-full flex-col p-7">
                       <div className="flex items-center justify-between gap-4">
-                        <Badge className="rounded-full border border-white/10 bg-white/5 text-slate-200">{locale === "pt" ? "Série editorial" : "Editorial series"}</Badge>
+                        <Badge className="rounded-full border border-white/10 bg-white/[0.03] text-slate-200">{locale === "pt" ? "Série editorial" : "Editorial series"}</Badge>
                         <Newspaper className="size-5 text-teal-200" />
                       </div>
                       <h3 className="mt-6 font-display text-3xl leading-tight">{t(locale, series.title)}</h3>
@@ -991,7 +1006,7 @@ export default function PortfolioSite({ initialLocale = "pt", page = "home" }: P
               />
             </div>
             <div className="grid gap-6">
-              <Card className="rounded-[2rem] border-white/8 bg-white/5 text-white">
+              <Card className="rounded-[2rem] border-white/8 bg-white/[0.03] text-white">
                 <CardContent className="p-6">
                   <p className="text-xs uppercase tracking-[0.26em] text-slate-400">{locale === "pt" ? "Certificações" : "Certifications"}</p>
                   <div className="mt-5 flex flex-wrap gap-3">
@@ -1003,7 +1018,7 @@ export default function PortfolioSite({ initialLocale = "pt", page = "home" }: P
                   </div>
                 </CardContent>
               </Card>
-              <Card className="rounded-[2rem] border-white/8 bg-[linear-gradient(180deg,rgba(37,167,167,0.08),rgba(255,255,255,0.03))] text-white">
+              <Card className="rounded-[2rem] border-white/8 bg-[linear-gradient(180deg,rgba(32,211,194,0.08),rgba(255,255,255,0.03))] text-white">
                 <CardContent className="p-6">
                   <p className="text-xs uppercase tracking-[0.26em] text-slate-400">{locale === "pt" ? "Ferramentas e tecnologias" : "Tools and technologies"}</p>
                   <div className="mt-5 flex flex-wrap gap-3">
@@ -1021,7 +1036,7 @@ export default function PortfolioSite({ initialLocale = "pt", page = "home" }: P
 
         <section id="palestras" className="scroll-mt-28 border-b border-white/6 py-24">
           <div className="container grid gap-14 lg:grid-cols-[1fr_1fr]">
-            <div className="overflow-hidden rounded-[2rem] border border-white/8 bg-white/5">
+            <div className="overflow-hidden rounded-[2rem] border border-white/8 bg-white/[0.03]">
               <img src={assets.climatePanel} alt="Painel visual sobre clima, modelagem e análise" className="h-full min-h-[320px] w-full object-cover opacity-85" />
             </div>
             <div>
@@ -1032,7 +1047,7 @@ export default function PortfolioSite({ initialLocale = "pt", page = "home" }: P
               />
               <div className="mt-8 space-y-4">
                 {speaking.themes[locale].map((item) => (
-                  <div key={item} className="flex items-start gap-4 rounded-[1.5rem] border border-white/8 bg-white/5 p-5">
+                  <div key={item} className="flex items-start gap-4 rounded-[1.5rem] border border-white/8 bg-white/[0.03] p-5">
                     <BookOpen className="mt-1 size-5 text-[var(--accent-copper)]" />
                     <p className="text-sm leading-7 text-slate-300">{item}</p>
                   </div>
@@ -1053,7 +1068,7 @@ export default function PortfolioSite({ initialLocale = "pt", page = "home" }: P
             <div className="mt-14 grid gap-5 md:grid-cols-2">
               {valueBlocks.map((item, index) => (
                 <motion.div key={item.title.pt} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} transition={{ delay: index * 0.05 }}>
-                  <Card className="h-full rounded-[1.9rem] border-white/8 bg-white/5 text-white">
+                  <Card className="h-full rounded-[1.35rem] border-white/8 bg-white/[0.03] text-white">
                     <CardContent className="p-6">
                       <h3 className="font-display text-2xl">{t(locale, item.title)}</h3>
                       <p className="mt-5 text-xs uppercase tracking-[0.24em] text-slate-500">{locale === "pt" ? "Dores que resolve" : "Problems solved"}</p>
@@ -1118,7 +1133,7 @@ export default function PortfolioSite({ initialLocale = "pt", page = "home" }: P
                       );
                     }
                     return (
-                      <a key={item.label} href={item.href} target={item.href.startsWith("http") ? "_blank" : undefined} rel={item.href.startsWith("http") ? "noreferrer" : undefined} className="group flex items-center justify-between rounded-[1.4rem] border border-white/10 bg-white/5 px-5 py-4 text-sm text-slate-200 transition hover:bg-white/10 hover:text-white">
+                      <a key={item.label} href={item.href} target={item.href.startsWith("http") ? "_blank" : undefined} rel={item.href.startsWith("http") ? "noreferrer" : undefined} className="group flex items-center justify-between rounded-[1.4rem] border border-white/10 bg-white/[0.03] px-5 py-4 text-sm text-slate-200 transition hover:bg-white/10 hover:text-white">
                         <span>{item.label}</span>
                         <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
                       </a>
@@ -1126,7 +1141,7 @@ export default function PortfolioSite({ initialLocale = "pt", page = "home" }: P
                   })}
                 </div>
 
-                <div className="mt-10 rounded-[1.7rem] border border-[color:rgba(191,148,103,0.25)] bg-[linear-gradient(135deg,rgba(191,148,103,0.12),rgba(37,167,167,0.04))] p-6">
+                <div className="mt-10 rounded-[1.7rem] border border-[color:rgba(255,107,74,0.25)] bg-[linear-gradient(135deg,rgba(255,107,74,0.12),rgba(32,211,194,0.04))] p-6">
                   <p className="text-xs uppercase tracking-[0.26em] text-[var(--accent-copper)]">Future-ready prompt</p>
                   <p className="mt-3 text-sm leading-7 text-slate-300">{placeholderPrompt[locale]}</p>
                 </div>
@@ -1157,7 +1172,7 @@ export default function PortfolioSite({ initialLocale = "pt", page = "home" }: P
               </CardContent>
             </Card>
 
-            <Card className="self-start rounded-[2.2rem] border-white/8 bg-white/5 text-white">
+            <Card className="self-start rounded-[2.2rem] border-white/8 bg-white/[0.03] text-white">
               <CardContent className="p-8 sm:p-10">
                 <p className="text-xs uppercase tracking-[0.26em] text-slate-400">{locale === "pt" ? "Formulário de contato" : "Contact form"}</p>
                 <h3 className="mt-4 font-display text-3xl">{locale === "pt" ? "Captação ativa de leads qualificados" : "Active qualified lead capture"}</h3>
@@ -1171,7 +1186,7 @@ export default function PortfolioSite({ initialLocale = "pt", page = "home" }: P
                     value={leadForm.name}
                     onChange={handleLeadFieldChange("name")}
                     placeholder={locale === "pt" ? "Nome" : "Name"}
-                    className="h-12 rounded-2xl border-white/10 bg-white/5 text-white placeholder:text-slate-500"
+                    className="h-12 rounded-2xl border-white/10 bg-white/[0.03] text-white placeholder:text-slate-500"
                     required
                   />
                   <Input
@@ -1179,26 +1194,26 @@ export default function PortfolioSite({ initialLocale = "pt", page = "home" }: P
                     value={leadForm.email}
                     onChange={handleLeadFieldChange("email")}
                     placeholder="E-mail"
-                    className="h-12 rounded-2xl border-white/10 bg-white/5 text-white placeholder:text-slate-500"
+                    className="h-12 rounded-2xl border-white/10 bg-white/[0.03] text-white placeholder:text-slate-500"
                     required
                   />
                   <Input
                     value={leadForm.organization}
                     onChange={handleLeadFieldChange("organization")}
                     placeholder={locale === "pt" ? "Organização, empresa ou instituição" : "Organization, company, or institution"}
-                    className="h-12 rounded-2xl border-white/10 bg-white/5 text-white placeholder:text-slate-500"
+                    className="h-12 rounded-2xl border-white/10 bg-white/[0.03] text-white placeholder:text-slate-500"
                   />
                   <Input
                     value={leadForm.interest}
                     onChange={handleLeadFieldChange("interest")}
                     placeholder={locale === "pt" ? "Interesse principal: parceria, consultoria, palestra, projeto" : "Primary interest: partnership, consulting, speaking, project"}
-                    className="h-12 rounded-2xl border-white/10 bg-white/5 text-white placeholder:text-slate-500"
+                    className="h-12 rounded-2xl border-white/10 bg-white/[0.03] text-white placeholder:text-slate-500"
                   />
                   <Textarea
                     value={leadForm.message}
                     onChange={handleLeadFieldChange("message")}
                     placeholder={locale === "pt" ? "Descreva o contexto do projeto, parceria, convite ou demanda institucional" : "Describe the context of the project, partnership, invitation, or institutional demand"}
-                    className="min-h-36 rounded-2xl border-white/10 bg-white/5 text-white placeholder:text-slate-500"
+                    className="min-h-36 rounded-2xl border-white/10 bg-white/[0.03] text-white placeholder:text-slate-500"
                     required
                   />
                   <Button

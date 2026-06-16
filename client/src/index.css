@@ -5,8 +5,8 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  --font-display: "Libre Caslon Display", serif;
-  --font-sans: "Manrope", sans-serif;
+  --font-display: "Space Grotesk", sans-serif;
+  --font-sans: "Inter", sans-serif;
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -47,14 +47,14 @@
 
 :root {
   --radius: 1.35rem;
-  --bg-obsidian: #07111a;
-  --bg-deep: #0c1c29;
-  --bg-panel: rgba(255, 255, 255, 0.05);
+  --bg-obsidian: #06070a;
+  --bg-deep: #0d1117;
+  --bg-panel: rgba(255, 255, 255, 0.04);
   --bg-panel-strong: rgba(255, 255, 255, 0.08);
-  --accent-teal: #4fd1c5;
-  --accent-copper: #bf9467;
-  --accent-ice: #edf1eb;
-  --accent-line: rgba(255, 255, 255, 0.09);
+  --accent-teal: #20d3c2;
+  --accent-copper: #ff6b4a;
+  --accent-ice: #f6f7fb;
+  --accent-line: rgba(255, 255, 255, 0.1);
   --primary: oklch(0.82 0.08 201);
   --primary-foreground: oklch(0.17 0.02 250);
   --sidebar-primary: oklch(0.74 0.08 201);
@@ -119,9 +119,9 @@
   body {
     @apply bg-background text-foreground font-sans antialiased;
     background:
-      radial-gradient(circle at top left, rgba(37, 167, 167, 0.08), transparent 25%),
-      radial-gradient(circle at top right, rgba(191, 148, 103, 0.08), transparent 28%),
-      linear-gradient(180deg, #061019 0%, #07111a 36%, #081723 100%);
+      radial-gradient(circle at top left, rgba(32, 211, 194, 0.08), transparent 22%),
+      radial-gradient(circle at top right, rgba(255, 107, 74, 0.08), transparent 24%),
+      linear-gradient(180deg, #050608 0%, #090c11 38%, #0d1117 100%);
   }
 
   ::selection {
@@ -183,10 +183,47 @@
 
   .grid-overlay {
     background-image:
-      linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
-    background-size: 92px 92px;
-    mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.75), transparent 80%);
+      linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+    background-size: 88px 88px;
+    mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.82), transparent 82%);
+  }
+
+  .editorial-shell {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.02));
+    box-shadow: 0 28px 90px rgba(0, 0, 0, 0.22);
+  }
+
+  .editorial-shell::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(135deg, rgba(32, 211, 194, 0.08), transparent 38%, rgba(255, 107, 74, 0.08));
+    opacity: 0.9;
+  }
+
+  .story-divider {
+    position: relative;
+  }
+
+  .story-divider::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -1px;
+    height: 1px;
+    width: 100%;
+    background: linear-gradient(90deg, rgba(255,255,255,0.14), rgba(255,255,255,0.02));
+  }
+
+  .thoughtworks-card {
+    background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.025));
+    border: 1px solid rgba(255,255,255,0.08);
+    box-shadow: 0 24px 80px rgba(0,0,0,0.18);
   }
 
   .portrait-frame::before {

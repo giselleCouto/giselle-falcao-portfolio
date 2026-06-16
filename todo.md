@@ -102,3 +102,7 @@
 - [x] Revisar a estrutura atual da página /giselle para aplicar os novos ajustes de forma consistente
 - [x] Atualizar hero, provas de autoridade, seções centrais e linha editorial da página /giselle conforme o novo anexo
 - [x] Validar SEO, testes e consistência final após a atualização completa da página /giselle
+- [x] Analisar a referência visual da Thoughtworks e mapear princípios aplicáveis à página /giselle
+- [x] Replanejar a arquitetura visual, a hierarquia e a narrativa da página /giselle para um layout mais inovador
+- [x] Implementar um novo layout para /giselle com linguagem visual mais contemporânea, editorial e tecnológica
+- [x] Validar responsividade, SEO, testes e build após a reformulação visual da página /giselle
