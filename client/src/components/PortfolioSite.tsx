@@ -298,7 +298,7 @@ export default function PortfolioSite({ initialLocale = "pt", page = "home" }: P
             <div className="hidden 2xl:block">
               <p className="font-display text-base leading-tight text-white">Giselle Couto Falcão</p>
               <p className="mt-1 text-[0.65rem] uppercase tracking-[0.24em] text-slate-400">
-                AI Strategy · Mathematical Modeling · Education
+                Industrial AI · Mathematical Modeling · Decision Systems
               </p>
             </div>
           </Link>
@@ -412,7 +412,7 @@ export default function PortfolioSite({ initialLocale = "pt", page = "home" }: P
               <Badge className="rounded-full border border-teal-300/30 bg-teal-300/10 px-4 py-1.5 text-[0.68rem] uppercase tracking-[0.3em] text-teal-200">
                 {t(locale, pageTitles[page])}
               </Badge>
-              <h1 className="mt-6 max-w-4xl font-display text-5xl leading-[0.94] text-white sm:text-6xl lg:text-[5.25rem]">
+              <h1 className="mt-6 max-w-4xl font-display text-5xl leading-[0.94] text-white sm:text-6xl lg:text-[4.85rem]">
                 {heroCopy.name}
               </h1>
               <p className="mt-6 max-w-3xl text-lg leading-8 text-slate-300 sm:text-[1.4rem] sm:leading-9">{t(locale, heroCopy.headline)}</p>
@@ -431,7 +431,7 @@ export default function PortfolioSite({ initialLocale = "pt", page = "home" }: P
                 </a>
               </div>
 
-              <div className="mt-10 grid gap-3 rounded-[2rem] border border-white/10 bg-white/5 p-4 backdrop-blur sm:grid-cols-2 xl:grid-cols-3">
+              <div className="mt-10 grid gap-3 rounded-[1.6rem] border border-white/10 bg-white/[0.04] p-4 backdrop-blur sm:grid-cols-2 xl:grid-cols-3">
                 {keyAreas[locale].map((item) => (
                   <div key={item} className="rounded-2xl border border-white/6 bg-[rgba(255,255,255,0.04)] px-4 py-3 text-sm text-slate-200">
                     {item}
@@ -439,8 +439,8 @@ export default function PortfolioSite({ initialLocale = "pt", page = "home" }: P
                 ))}
               </div>
 
-              <div className="mt-10 max-w-3xl rounded-[2rem] border border-[rgba(191,148,103,0.3)] bg-[linear-gradient(135deg,rgba(191,148,103,0.14),rgba(11,21,34,0.1))] p-6">
-                <p className="text-xs uppercase tracking-[0.3em] text-[var(--accent-copper)]">Positioning</p>
+              <div className="mt-10 max-w-3xl rounded-[1.6rem] border border-cyan-300/18 bg-[linear-gradient(135deg,rgba(18,32,44,0.96),rgba(8,18,28,0.92))] p-6">
+                <p className="text-xs uppercase tracking-[0.3em] text-cyan-200">Decision architecture</p>
                 <p className="mt-3 text-base leading-8 text-slate-200">{t(locale, heroCopy.impactPrompt)}</p>
               </div>
             </motion.div>
@@ -452,7 +452,7 @@ export default function PortfolioSite({ initialLocale = "pt", page = "home" }: P
                 <div className="absolute inset-0 bg-[url('https://d2xsxph8kpxj0f.cloudfront.net/310519663156393333/6sAjL87Dgs7zQfqq7pYXKz/giselle-hero-atlas-9rA6i749UYThtL9Lh5ZSxA.webp')] bg-cover bg-center opacity-18 mix-blend-screen" />
                 <img src={assets.portrait} alt="Retrato institucional de Giselle Couto Falcão" className="relative z-10 h-full w-full rounded-[2rem] object-cover" />
                 <div className="absolute inset-x-6 bottom-6 z-20 rounded-[1.6rem] border border-white/10 bg-[rgba(6,16,24,0.76)] p-5 backdrop-blur-xl">
-                  <p className="text-[0.65rem] uppercase tracking-[0.28em] text-slate-400">AI STRATEGY · APPLIED RESEARCH</p>
+                  <p className="text-[0.65rem] uppercase tracking-[0.28em] text-slate-400">INDUSTRIAL AI · DIGITAL TWINS · APPLIED RESEARCH</p>
                   <p className="mt-3 font-display text-[1.65rem] leading-tight text-white">{t(locale, heroCopy.role)}</p>
                 </div>
               </div>
@@ -483,8 +483,8 @@ export default function PortfolioSite({ initialLocale = "pt", page = "home" }: P
           <div className="container">
             <SectionHeading
               eyebrow={locale === "pt" ? "Provas de autoridade" : "Authority proof"}
-              title={locale === "pt" ? "Os sinais que ajudam uma marca, cliente ou instituição a confiar rápido" : "The signals that help brands, clients, and institutions trust quickly"}
-              text={locale === "pt" ? "Em vez de exigir leitura longa para transmitir densidade, esta seção organiza os sinais objetivos de autoridade logo no início: formação, produção científica, presença pública, repositórios, cases e canais verificáveis." : "Instead of requiring a long read to communicate depth, this section organizes objective signals of authority up front: education, scientific production, public presence, repositories, case studies, and verifiable channels."}
+              title={locale === "pt" ? "Provas de autoridade para reduzir atrito e aumentar confiança logo no início" : "Authority signals designed to reduce friction and build trust up front"}
+              text={locale === "pt" ? "A leitura foi simplificada para que marcas, clientes, universidades e instituições identifiquem rapidamente formação, produção científica, repertório técnico, cases e presença pública verificável." : "The page was simplified so brands, clients, universities, and institutions can quickly identify education, scientific output, technical repertoire, case studies, and verifiable public presence."}
             />
 
             <div className="mt-12 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
@@ -519,7 +519,7 @@ export default function PortfolioSite({ initialLocale = "pt", page = "home" }: P
             <div>
               <SectionHeading
                 eyebrow={locale === "pt" ? "Posicionamento" : "Positioning"}
-                title={locale === "pt" ? "Uma identidade intelectual construída entre ciência, estratégia e execução" : "An intellectual identity built across science, strategy, and execution"}
+                title={locale === "pt" ? "Uma atuação construída entre ciência rigorosa, arquitetura técnica e implementação real" : "A practice built across rigorous science, technical architecture, and real implementation"}
                 text={t(locale, aboutSection.intro)}
               />
             </div>
@@ -591,9 +591,10 @@ export default function PortfolioSite({ initialLocale = "pt", page = "home" }: P
         <section id="servicos" className="scroll-mt-28 border-b border-white/6 py-24">
           <div className="container">
             <SectionHeading
-              eyebrow={locale === "pt" ? "Consultoria & serviços" : "Consulting & services"}
-              title={locale === "pt" ? "Ofertas desenhadas para transformar dados, tecnologia e IA em decisão aplicada" : "Offers designed to turn data, technology, and AI into applied decision systems"}
-              text={locale === "pt" ? "Esta seção organiza com clareza como a consultoria pode apoiar empresas e instituições: do diagnóstico ao desenho de arquitetura, da modelagem à implantação orientada a impacto. A leitura foi construída para humanos, buscadores e sistemas de IA compreenderem exatamente a natureza da atuação." : "This section clarifies how the consulting work supports companies and institutions: from diagnosis to architecture design, from modeling to impact-oriented implementation. The structure was written so that people, search engines, and AI systems can clearly understand the scope of the work."}
+                              eyebrow={locale === "pt" ? "Soluções e frentes de atuação" : "Solutions and service lines"}
+              title={locale === "pt" ? "Consultoria desenhada para problemas industriais, operacionais e institucionais de alta complexidade" : "Consulting designed for industrial, operational, and institutional problems with high complexity"}
+              text={locale === "pt" ? "A seção abaixo organiza com clareza onde a atuação gera valor: IA industrial, visão computacional, digital twins, modelagem matemática e estratégia analítica para ambientes em que a decisão precisa ser tecnicamente defensável." : "The section below clarifies where the work creates value: industrial AI, computer vision, digital twins, mathematical modeling, and analytical strategy for environments in which decisions must be technically defensible."}
+
             />
 
             <div className="mt-10 rounded-[2rem] border border-[rgba(37,167,167,0.18)] bg-[linear-gradient(135deg,rgba(10,24,34,0.95),rgba(7,17,26,0.85))] p-7 shadow-[0_30px_100px_rgba(0,0,0,0.28)] sm:p-9">
@@ -601,10 +602,10 @@ export default function PortfolioSite({ initialLocale = "pt", page = "home" }: P
                 <div>
                   <p className="text-xs uppercase tracking-[0.28em] text-teal-200">{locale === "pt" ? "Escopo consultivo" : "Consulting scope"}</p>
                   <h3 className="mt-4 font-display text-3xl leading-tight text-white sm:text-4xl">
-                    {locale === "pt" ? "Consultoria estratégica em tecnologia, inovação e inteligência artificial com profundidade técnica e leitura executiva" : "Strategic consulting in technology, innovation, and artificial intelligence with technical depth and executive clarity"}
+                    {locale === "pt" ? "Da hipótese técnica ao sistema em operação: IA, modelagem e arquitetura analítica para decisões críticas" : "From technical hypothesis to operating system: AI, modeling, and analytical architecture for critical decisions"}
                   </h3>
                   <p className="mt-5 max-w-2xl text-base leading-8 text-slate-300">
-                    {locale === "pt" ? "Giselle atua em frentes onde dados, operação e decisão precisam deixar de ser dispersos e passar a compor uma arquitetura analítica coerente. O foco está em casos de uso com impacto mensurável, governança mais madura e priorização correta do problema." : "Giselle works in contexts where data, operations, and decision-making need to stop being fragmented and start forming a coherent analytical architecture. The focus is on use cases with measurable impact, stronger governance, and proper problem prioritization."}
+                    {locale === "pt" ? "Giselle atua onde dados, sensores, processos e restrições precisam deixar de ser fragmentados para compor uma arquitetura decisória robusta. O foco está em problemas reais com impacto operacional, econômico ou institucional mensurável." : "Giselle works where data, sensors, processes, and constraints need to stop being fragmented and become part of a robust decision architecture. The focus is on real problems with measurable operational, economic, or institutional impact."}
                   </p>
                 </div>
 
@@ -618,7 +619,7 @@ export default function PortfolioSite({ initialLocale = "pt", page = "home" }: P
                     ))}
                   </div>
                   <p className="mt-6 text-sm leading-7 text-slate-400">
-                    {locale === "pt" ? "A aderência é maior em ambientes com complexidade operacional, alta criticidade decisória, necessidade de previsão, otimização, governança de dados e evolução de maturidade analítica." : "The strongest fit appears in environments with operational complexity, critical decisions, forecasting needs, optimization requirements, data governance challenges, and analytical maturity goals."}
+                    {locale === "pt" ? "A aderência é maior em ambientes com complexidade operacional, dados sensíveis, necessidade de prever cenários, otimizar recursos, interpretar sinais visuais ou construir gêmeos digitais e sistemas de resposta." : "The strongest fit appears in environments with operational complexity, sensitive data, forecasting needs, resource-optimization requirements, visual-signal interpretation, or the need to build digital twins and response systems."}
                   </p>
                 </div>
               </div>
@@ -651,8 +652,8 @@ export default function PortfolioSite({ initialLocale = "pt", page = "home" }: P
           <div className="container">
             <SectionHeading
               eyebrow={locale === "pt" ? "Cases e resultados" : "Case studies and outcomes"}
-              title={locale === "pt" ? "Provas de execução com métricas, setores e resultado de negócio" : "Proof of execution with metrics, sectors, and business outcomes"}
-              text={locale === "pt" ? "Esta seção transforma autoridade abstrata em evidência concreta. Os cases destacam setores, natureza do problema, resultado percebido e sinais objetivos de impacto para fortalecer conversão, entendimento semântico e confiança de buscadores, clientes e sistemas de IA." : "This section turns abstract authority into concrete evidence. The case studies highlight sectors, problem types, perceived outcomes, and objective signs of impact to strengthen conversion, semantic understanding, and trust for search engines, clients, and AI systems."}
+              title={locale === "pt" ? "Cases com arquitetura técnica, contexto operacional e resultado observável" : "Case studies with technical architecture, operational context, and observable outcomes"}
+              text={locale === "pt" ? "Os estudos de caso abaixo organizam setor, problema, lógica de solução e sinal de impacto para demonstrar profundidade técnica sem depender de discurso genérico. É a seção em que autoridade vira evidência." : "The case studies below organize sector, problem, solution logic, and impact signal to demonstrate technical depth without relying on generic rhetoric. This is where authority becomes evidence."}
             />
 
             <div className="mt-14 grid gap-6 xl:grid-cols-3">
@@ -869,8 +870,8 @@ export default function PortfolioSite({ initialLocale = "pt", page = "home" }: P
             <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
               <SectionHeading
                 eyebrow={locale === "pt" ? "Publicações e produção intelectual" : "Publications and intellectual production"}
-                title={locale === "pt" ? "Pesquisa, papers e escrita técnica como extensão natural da autoridade" : "Research, papers, and technical writing as a natural extension of authority"}
-                text={locale === "pt" ? "A seção está estruturada para receber links externos, DOI, repositórios e acervos acadêmicos. O desenho editorial ajuda a valorizar produção científica, dissertações, teses e trabalhos técnicos." : "This section is structured to receive external links, DOI references, repositories, and academic archives. Its editorial design helps elevate scientific production, dissertations, theses, and technical papers."}
+                title={locale === "pt" ? "Pesquisa, artigos e escrita técnica como base da autoridade pública" : "Research, articles, and technical writing as the foundation of public authority"}
+                text={locale === "pt" ? "A seção valoriza produção científica, DOI, repositórios e escrita técnica para deixar claro que a atuação nasce de pesquisa aplicada e não apenas de repertório comercial." : "This section highlights scientific production, DOI references, repositories, and technical writing to show that the practice is rooted in applied research rather than commercial rhetoric alone."}
               />
               <div className="flex flex-wrap gap-2">
                 {publicationThemes.map((theme) => (
@@ -943,7 +944,7 @@ export default function PortfolioSite({ initialLocale = "pt", page = "home" }: P
             />
 
             <div className="mt-10 rounded-[2rem] border border-[rgba(191,148,103,0.22)] bg-[linear-gradient(135deg,rgba(191,148,103,0.14),rgba(7,17,26,0.8))] p-7 sm:p-8">
-              <p className="text-xs uppercase tracking-[0.28em] text-[var(--accent-copper)]">{locale === "pt" ? "Interseção pública a dominar" : "Public intersection to own"}</p>
+              <p className="text-xs uppercase tracking-[0.28em] text-[var(--accent-copper)]">{locale === "pt" ? "Interseção editorial a dominar" : "Editorial intersection to own"}</p>
               <p className="mt-4 max-w-4xl font-display text-3xl leading-tight text-white sm:text-[2.5rem]">{t(locale, editorialPositioning.title)}</p>
               <p className="mt-5 max-w-3xl text-base leading-8 text-slate-200">{t(locale, editorialPositioning.body)}</p>
             </div>
@@ -1026,7 +1027,7 @@ export default function PortfolioSite({ initialLocale = "pt", page = "home" }: P
             <div>
               <SectionHeading
                 eyebrow={locale === "pt" ? "Palestras, docência e liderança" : "Speaking, teaching, and leadership"}
-                title={locale === "pt" ? "Autoridade pública e acadêmica para formação, debate e influência técnica" : "Public and academic authority for education, debate, and technical influence"}
+                title={locale === "pt" ? "Autoridade pública para formar equipes, influenciar debate e sustentar decisões técnicas" : "Public authority to educate teams, influence debate, and sustain technical decisions"}
                 text={t(locale, speaking.intro)}
               />
               <div className="mt-8 space-y-4">
@@ -1045,7 +1046,7 @@ export default function PortfolioSite({ initialLocale = "pt", page = "home" }: P
           <div className="container">
             <SectionHeading
               eyebrow={locale === "pt" ? "Para quem eu entrego valor" : "Where I create value"}
-              title={locale === "pt" ? "Diferentes organizações, um mesmo padrão de exigência: profundidade, clareza e impacto" : "Different organizations, one common standard of demand: depth, clarity, and impact"}
+              title={locale === "pt" ? "Diferentes setores, um mesmo padrão de exigência: rigor, clareza e impacto operacional" : "Different sectors, one common standard of demand: rigor, clarity, and operational impact"}
               text={locale === "pt" ? "Esta arquitetura de valor ajuda empresas, organizações educacionais, setor público e centros de pesquisa a reconhecer rapidamente quais dores podem ser endereçadas e como a atuação se converte em resultado." : "This value architecture helps companies, education organizations, the public sector, and research centers quickly recognize which pains can be addressed and how the work translates into outcomes."}
               align="center"
             />
@@ -1072,8 +1073,8 @@ export default function PortfolioSite({ initialLocale = "pt", page = "home" }: P
             <div>
               <SectionHeading
                 eyebrow={locale === "pt" ? "FAQ semântico" : "Semantic FAQ"}
-                title={locale === "pt" ? "Perguntas frequentes para buscadores, equipes e sistemas de IA entenderem a atuação" : "Frequently asked questions so search engines, teams, and AI systems can understand the work"}
-                text={locale === "pt" ? "As respostas abaixo foram organizadas para reforçar clareza semântica, intenção de busca e entendimento contextual sobre a consultoria, os setores atendidos e a metodologia de trabalho." : "The answers below were designed to strengthen semantic clarity, search intent alignment, and contextual understanding about the consulting work, target sectors, and delivery approach."}
+                title={locale === "pt" ? "Perguntas frequentes para explicar com clareza a atuação, os setores e a abordagem técnica" : "Frequently asked questions clarifying the work, sectors, and technical approach"}
+                text={locale === "pt" ? "As respostas abaixo reforçam clareza semântica e ajudam clientes, buscadores e sistemas de IA a compreender exatamente como a consultoria opera e em que contextos gera valor." : "The answers below reinforce semantic clarity and help clients, search engines, and AI systems understand exactly how the consulting work operates and where it creates value."}
               />
             </div>
 

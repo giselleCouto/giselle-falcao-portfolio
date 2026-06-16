@@ -27,72 +27,72 @@ export const navItems = [
 
 export const keyAreas = {
   pt: [
-    "IA aplicada",
+    "IA industrial",
+    "Visão computacional",
+    "Digital twins",
     "Modelagem matemática",
-    "Ciência de dados",
-    "Decisões complexas",
-    "Logística e operações",
-    "Educação baseada em dados",
+    "Otimização operacional",
+    "Ciência de dados aplicada",
   ],
   en: [
-    "Applied AI",
+    "Industrial AI",
+    "Computer vision",
+    "Digital twins",
     "Mathematical modeling",
-    "Data science",
-    "Complex decisions",
-    "Logistics and operations",
-    "Data-driven education",
+    "Operational optimization",
+    "Applied data science",
   ],
 };
 
 export const heroCopy = {
   name: "Giselle Couto Falcão",
   role: {
-    pt: "Pesquisadora, consultora e PhD em IA aplicada, modelagem matemática e ciência de dados",
-    en: "Researcher, consultant, and PhD in applied AI, mathematical modeling, and data science",
+    pt: "Pesquisadora, consultora e PhD em IA industrial, modelagem matemática e ciência de dados aplicada",
+    en: "Researcher, consultant, and PhD in industrial AI, mathematical modeling, and applied data science",
   },
   headline: {
-    pt: "IA aplicada, modelagem matemática e ciência de dados para decisões complexas.",
-    en: "Applied AI, mathematical modeling, and data science for complex decisions.",
+    pt: "IA industrial, modelagem matemática e ciência de dados para decisões críticas.",
+    en: "Industrial AI, mathematical modeling, and data science for critical decisions.",
   },
   subheadline: {
-    pt: "Pesquisadora e consultora PhD que desenvolve modelos, sistemas e estratégias analíticas para educação, logística, saúde, indústria e setor público.",
-    en: "PhD researcher and consultant who develops models, systems, and analytical strategies for education, logistics, healthcare, industry, and the public sector.",
+    pt: "Pesquisadora e consultora PhD que desenvolve modelos, sistemas analíticos e estratégias técnicas para indústria, logística, saúde, educação e setor público — com foco em visão computacional, digital twins e inteligência operacional.",
+    en: "PhD researcher and consultant who designs models, analytical systems, and technical strategies for industry, logistics, healthcare, education, and the public sector — with a focus on computer vision, digital twins, and operational intelligence.",
   },
   ctaPrimary: { pt: "Ver provas de autoridade", en: "View authority proof" },
   ctaSecondary: { pt: "Falar sobre projeto", en: "Discuss a project" },
   impactPrompt: {
-    pt: "IA aplicada com rigor matemático para decisões complexas.",
-    en: "Applied AI with mathematical rigor for complex decisions.",
+    pt: "Do rigor científico à implementação: sistemas analíticos para operar melhor, prever antes e decidir com mais segurança.",
+    en: "From scientific rigor to implementation: analytical systems that help organizations operate better, forecast earlier, and decide more confidently.",
   },
 };
 
 export const authorityMetrics = [
   {
-    value: "2",
+    value: "2 PhDs",
     label: {
-      pt: "doutorados que sustentam uma leitura rara entre ciência, dados e decisão",
-      en: "doctorates supporting a rare perspective across science, data, and decision-making",
+      pt: "doutorados que conectam matemática, clima, modelagem computacional e inteligência aplicada",
+      en: "doctorates connecting mathematics, climate science, computational modeling, and applied intelligence",
     },
   },
   {
-    value: "+10",
+    value: "Scholar",
     label: {
-      pt: "anos conectando matemática aplicada, pesquisa, educação e inovação",
-      en: "years connecting applied mathematics, research, education, and innovation",
+      pt: "produção científica verificável e leitura técnica com base acadêmica sólida",
+      en: "verifiable scientific output and technical reasoning grounded in strong academic foundations",
     },
   },
   {
     value: "DOI",
     label: {
-      pt: "artigos, produção científica e escrita técnica com lastro verificável",
-      en: "articles, scientific production, and technical writing with verifiable grounding",
+      pt: "artigos, pesquisa aplicada e escrita técnica com rastreabilidade pública",
+      en: "articles, applied research, and technical writing with public traceability",
     },
   },
   {
-    value: "ROI",
+    value: "Impacto",
     label: {
-      pt: "cases e sistemas orientados a impacto real, não apenas apresentação",
-      en: "cases and systems oriented toward real impact, not just presentations",
+      pt: "cases em produção e sistemas desenhados para resultado operacional mensurável",
+      en: "production cases and systems designed for measurable operational outcomes",
     },
   },
 ];
@@ -102,8 +102,8 @@ export const authorityProofs = [
     key: "phd",
     title: { pt: "PhD e formação", en: "PhD and education" },
     description: {
-      pt: "Doutorados e formação avançada em modelagem matemática, matemática do clima e ciência de dados aplicada.",
-      en: "Doctorates and advanced training in mathematical modeling, climate mathematics, and applied data science.",
+      pt: "Formação avançada em modelagem matemática, matemática do clima, ciência de dados e pesquisa aplicada para problemas complexos.",
+      en: "Advanced training in mathematical modeling, climate mathematics, data science, and applied research for complex problems.",
     },
     href: "#formacao",
     kind: "internal",
@@ -112,8 +112,8 @@ export const authorityProofs = [
     key: "scholar",
     title: { pt: "Google Scholar", en: "Google Scholar" },
     description: {
-      pt: "Produção acadêmica indexada e facilmente verificável em ambiente científico internacional.",
-      en: "Indexed academic production that is easily verifiable in an international scientific environment.",
+      pt: "Produção científica indexada para validar repertório técnico, rigor metodológico e presença acadêmica internacional.",
+      en: "Indexed scientific output that validates technical repertoire, methodological rigor, and international academic presence.",
     },
     href: "https://scholar.google.com.br/citations?hl=pt-BR&user=ljBj6GMAAAAJ",
     kind: "external",
@@ -122,7 +122,7 @@ export const authorityProofs = [
     key: "lattes",
     title: { pt: "Lattes", en: "Lattes" },
     description: {
-      pt: "Histórico acadêmico, institucional e técnico consolidado em currículo público oficial.",
+      pt: "Trajetória acadêmica, institucional e técnica consolidada em currículo público oficial.",
       en: "Academic, institutional, and technical trajectory consolidated in an official public CV.",
     },
     href: "http://lattes.cnpq.br/7661015485905669",
@@ -132,8 +132,8 @@ export const authorityProofs = [
     key: "doi",
     title: { pt: "Artigos com DOI", en: "Articles with DOI" },
     description: {
-      pt: "Publicações com DOI em educação, clima, séries temporais e análise aplicada.",
-      en: "Publications with DOI in education, climate, time series, and applied analysis.",
+      pt: "Publicações em educação, clima, séries temporais, matemática aplicada e problemas reais de decisão.",
+      en: "Publications in education, climate, time series, applied mathematics, and real-world decision problems.",
     },
     href: "#publicacoes",
     kind: "internal",
@@ -142,8 +142,8 @@ export const authorityProofs = [
     key: "cases",
     title: { pt: "Cases com impacto", en: "Impactful case studies" },
     description: {
-      pt: "Projetos com efeito mensurável em decisão, eficiência operacional e arquitetura analítica.",
-      en: "Projects with measurable effect on decision-making, operational efficiency, and analytical architecture.",
+      pt: "Resultados que conectam modelagem, IA, otimização e desenho de sistemas com impacto operacional concreto.",
+      en: "Results that connect modeling, AI, optimization, and systems design with concrete operational impact.",
     },
     href: "#cases",
     kind: "internal",
@@ -152,8 +152,8 @@ export const authorityProofs = [
     key: "github",
     title: { pt: "GitHub", en: "GitHub" },
     description: {
-      pt: "Repositórios e presença técnica que reforçam profundidade prática e raciocínio estruturado.",
-      en: "Repositories and technical presence reinforcing practical depth and structured reasoning.",
+      pt: "Presença técnica pública para reforçar profundidade de implementação, prototipagem e pensamento estruturado.",
+      en: "Public technical presence reinforcing implementation depth, prototyping capability, and structured thinking.",
     },
     href: "https://github.com/giselleCouto",
     kind: "external",
@@ -162,8 +162,8 @@ export const authorityProofs = [
     key: "medium",
     title: { pt: "Medium", en: "Medium" },
     description: {
-      pt: "Ensaios aplicados sobre IA, modelagem matemática, logística e recomposição da aprendizagem.",
-      en: "Applied essays on AI, mathematical modeling, logistics, and learning recovery.",
+      pt: "Ensaios sobre IA aplicada, modelos matemáticos, educação, logística e inteligência operacional sem discurso inflado.",
+      en: "Essays on applied AI, mathematical models, education, logistics, and operational intelligence without inflated discourse.",
     },
     href: "https://medium.com/@giselle_9978",
     kind: "external",
@@ -172,8 +172,8 @@ export const authorityProofs = [
     key: "speaking",
     title: { pt: "Palestras e aulas", en: "Speaking and teaching" },
     description: {
-      pt: "Docência, formação e presença pública em temas de IA aplicada, matemática e educação baseada em dados.",
-      en: "Teaching, training, and public presence around applied AI, mathematics, and data-driven education.",
+      pt: "Docência, formação e presença pública em IA, modelagem, educação, decisão e sistemas analíticos.",
+      en: "Teaching, training, and public presence on AI, modeling, education, decision-making, and analytical systems.",
     },
     href: "#palestras",
     kind: "internal",
@@ -182,12 +182,12 @@ export const authorityProofs = [
 
 export const editorialPositioning = {
   title: {
-    pt: "IA aplicada com rigor matemático para decisões complexas.",
-    en: "Applied AI with mathematical rigor for complex decisions.",
+    pt: "IA industrial com rigor matemático para decisões complexas.",
+    en: "Industrial AI with mathematical rigor for complex decisions.",
   },
   body: {
-    pt: "A linha editorial pública de Giselle deve ser reconhecida pela capacidade de transformar matemática, ciência de dados e inteligência artificial em leitura estratégica, arquitetura analítica e decisão executiva em problemas reais.",
-    en: "Giselle's public editorial line should be recognized by the ability to turn mathematics, data science, and artificial intelligence into strategic reading, analytical architecture, and executive decision-making for real problems.",
+    pt: "A linha editorial pública de Giselle deve ser reconhecida por traduzir matemática, ciência de dados, visão computacional, digital twins e inteligência artificial em arquitetura técnica, leitura estratégica e decisão executiva para operações reais.",
+    en: "Giselle's public editorial line should be recognized for translating mathematics, data science, computer vision, digital twins, and artificial intelligence into technical architecture, strategic reading, and executive decision-making for real operations.",
   },
 };
 
@@ -196,64 +196,64 @@ export const editorialSeries = [
     key: "matematica-que-vira-decisao",
     title: { pt: "Matemática que vira decisão", en: "Mathematics that becomes decision" },
     description: {
-      pt: "Série para traduzir raciocínio matemático em escolhas concretas de operação, política, produto e gestão.",
-      en: "Series translating mathematical reasoning into concrete choices for operations, policy, product, and management.",
+      pt: "Série para mostrar como modelagem, estatística e otimização se tornam escolhas operacionais, políticas e estratégicas.",
+      en: "A series showing how modeling, statistics, and optimization become operational, policy, and strategic choices.",
     },
   },
   {
-    key: "ia-aplicada-sem-espuma",
-    title: { pt: "IA aplicada sem espuma", en: "Applied AI without hype" },
+    key: "ia-industrial-sem-espuma",
+    title: { pt: "IA industrial sem espuma", en: "Industrial AI without hype" },
     description: {
-      pt: "Leituras críticas sobre como sair do discurso inflado e construir aplicações de IA com critério, governança e impacto.",
-      en: "Critical readings on how to move beyond inflated discourse and build AI applications with judgment, governance, and impact.",
+      pt: "Leituras críticas sobre como sair do marketing da IA e construir sistemas úteis, auditáveis e economicamente defensáveis.",
+      en: "Critical readings on how to move beyond AI marketing and build useful, auditable, economically defensible systems.",
     },
   },
   {
     key: "modelos-matematicos-problemas-reais",
     title: { pt: "Modelos matemáticos para problemas reais", en: "Mathematical models for real problems" },
     description: {
-      pt: "Conteúdos sobre modelagem, otimização, previsão e sistemas de decisão em cenários complexos e operacionais.",
-      en: "Content on modeling, optimization, forecasting, and decision systems in complex operational scenarios.",
+      pt: "Conteúdos sobre modelagem, simulação, otimização e estruturas de decisão para ambientes críticos e multirrestritos.",
+      en: "Content on modeling, simulation, optimization, and decision structures for critical, multi-constrained environments.",
     },
   },
   {
-    key: "educacao-dados-recomposicao",
-    title: { pt: "Educação, dados e recomposição da aprendizagem", en: "Education, data, and learning recovery" },
+    key: "visao-computacional-operacao",
+    title: { pt: "Visão computacional que entra na operação", en: "Computer vision that reaches operations" },
     description: {
-      pt: "Discussões aplicadas sobre evidência educacional, taxonomias, BNCC, machine learning e recomposição da aprendizagem.",
-      en: "Applied discussions on educational evidence, taxonomies, BNCC, machine learning, and learning recovery.",
+      pt: "Série sobre inspeção, qualidade, segurança, leitura visual e automação aplicada a contextos industriais e de infraestrutura.",
+      en: "A series on inspection, quality, safety, visual interpretation, and automation applied to industrial and infrastructure settings.",
     },
   },
   {
-    key: "logistica-otimizacao-inteligencia-operacional",
-    title: { pt: "Logística, otimização e inteligência operacional", en: "Logistics, optimization, and operational intelligence" },
+    key: "digital-twins-decisao",
+    title: { pt: "Digital twins para decisão operacional", en: "Digital twins for operational decision-making" },
     description: {
-      pt: "Análises sobre roteirização, supply chain, predição, heurísticas e ganhos econômicos orientados por decisão.",
-      en: "Analyses on routing, supply chain, forecasting, heuristics, and economic gains driven by decision systems.",
+      pt: "Discussões sobre gêmeos digitais, simulação de cenários, sensores, previsibilidade e desenho de sistemas de resposta.",
+      en: "Discussions on digital twins, scenario simulation, sensors, predictability, and responsive system design.",
     },
   },
   {
     key: "avaliar-modelos-ia-rigor",
     title: { pt: "Como avaliar modelos de IA com rigor", en: "How to evaluate AI models rigorously" },
     description: {
-      pt: "Reflexões sobre critérios, validação, vieses, performance e leitura responsável de modelos em contextos críticos.",
-      en: "Reflections on criteria, validation, bias, performance, and responsible interpretation of models in critical contexts.",
+      pt: "Reflexões sobre critérios, validação, viés, robustez, monitoramento e confiabilidade de modelos em contextos sensíveis.",
+      en: "Reflections on criteria, validation, bias, robustness, monitoring, and model reliability in sensitive contexts.",
     },
   },
 ];
 
 export const aboutSection = {
   intro: {
-    pt: "Giselle Couto Falcão atua na interseção entre IA aplicada, modelagem matemática e ciência de dados para estruturar problemas complexos e apoiar decisões de alto impacto.",
-    en: "Giselle Couto Falcão works at the intersection of applied AI, mathematical modeling, and data science to structure complex problems and support high-impact decisions.",
+    pt: "Giselle Couto Falcão atua na interseção entre IA industrial, modelagem matemática, visão computacional, digital twins e ciência de dados aplicada para estruturar problemas complexos e apoiar decisões de alto impacto.",
+    en: "Giselle Couto Falcão works at the intersection of industrial AI, mathematical modeling, computer vision, digital twins, and applied data science to structure complex problems and support high-impact decisions.",
   },
   body: {
-    pt: "Sua atuação combina pesquisa, consultoria e desenvolvimento de sistemas analíticos para organizações que precisam sair de dados dispersos e chegar a critérios mais sólidos de previsão, priorização, otimização e escolha estratégica.",
-    en: "Her work combines research, consulting, and analytical system development for organizations that need to move from scattered data toward stronger criteria for forecasting, prioritization, optimization, and strategic choice.",
+    pt: "Sua atuação combina pesquisa, consultoria e desenvolvimento de sistemas analíticos para organizações que precisam sair de sinais dispersos e construir critérios mais sólidos de previsão, priorização, otimização, monitoramento e escolha estratégica.",
+    en: "Her work combines research, consulting, and analytical-system development for organizations that need to move from scattered signals toward stronger criteria for forecasting, prioritization, optimization, monitoring, and strategic choice.",
   },
   closing: {
-    pt: "O diferencial está em unir rigor acadêmico, clareza executiva e aplicação prática em setores como educação, logística, saúde, indústria e setor público, sem depender de discurso inflado ou transformação genérica.",
-    en: "The differentiator lies in combining academic rigor, executive clarity, and practical application across sectors such as education, logistics, healthcare, industry, and the public sector, without relying on inflated discourse or generic transformation claims.",
+    pt: "O diferencial está em unir rigor acadêmico, profundidade computacional e clareza executiva em setores como indústria, logística, saúde, educação e setor público, sem depender de promessas genéricas ou hype tecnológico.",
+    en: "The differentiator lies in combining academic rigor, computational depth, and executive clarity across sectors such as industry, logistics, healthcare, education, and the public sector, without relying on generic promises or technology hype.",
   },
 };
 
@@ -924,114 +924,114 @@ export const speaking = {
 
 export const consultingServices = [
   {
-    key: "ia-strategy",
-    title: { pt: "Consultoria em Inteligência Artificial e IA Generativa", en: "Artificial Intelligence and Generative AI Consulting" },
+    key: "industrial-ai",
+    title: { pt: "IA industrial, visão computacional e automação analítica", en: "Industrial AI, computer vision, and analytical automation" },
     summary: {
-      pt: "Estruturação de casos de uso, arquitetura analítica, desenho de jornadas de adoção e definição de prioridades para transformar IA em resultado operacional e estratégico.",
-      en: "Use-case structuring, analytical architecture, adoption roadmap design, and prioritization to turn AI into operational and strategic results.",
+      pt: "Desenho de soluções para inspeção, qualidade, segurança operacional, leitura visual e monitoramento inteligente em operações complexas.",
+      en: "Solution design for inspection, quality, operational safety, visual interpretation, and intelligent monitoring in complex operations.",
     },
     deliverables: {
-      pt: "Diagnóstico, roadmap, desenho de arquitetura, governança e plano de implementação.",
-      en: "Diagnosis, roadmap, architecture design, governance, and implementation plan.",
+      pt: "Arquitetura do caso de uso, protótipo técnico, critérios de medição, indicadores de operação e plano de implantação.",
+      en: "Use-case architecture, technical prototype, measurement criteria, operational indicators, and implementation plan.",
     },
   },
   {
-    key: "innovation-industrial",
-    title: { pt: "Inovação tecnológica para indústria, logística e supply chain", en: "Technology innovation for industry, logistics, and supply chain" },
+    key: "digital-twins",
+    title: { pt: "Digital twins e sistemas de decisão para operações críticas", en: "Digital twins and decision systems for critical operations" },
     summary: {
-      pt: "Soluções sob medida para otimização operacional, previsão, redução de perdas, monitoramento inteligente e maior previsibilidade em operações críticas.",
-      en: "Tailored solutions for operational optimization, forecasting, waste reduction, intelligent monitoring, and greater predictability in critical operations.",
+      pt: "Estruturação de gêmeos digitais, simulação multicenário, leitura de sensores e apoio à decisão para ambientes com alta variabilidade e custo operacional elevado.",
+      en: "Structuring digital twins, multi-scenario simulation, sensor interpretation, and decision support for environments with high variability and significant operating costs.",
     },
     deliverables: {
-      pt: "Modelos preditivos, regras de decisão, protótipos operacionais e desenho de fluxos analíticos.",
-      en: "Predictive models, decision rules, operational prototypes, and analytical workflow design.",
+      pt: "Modelo de simulação, cenários, lógica de decisão, painel analítico e desenho do fluxo operacional.",
+      en: "Simulation model, scenarios, decision logic, analytical dashboard, and operating-flow design.",
     },
   },
   {
     key: "math-modeling",
-    title: { pt: "Modelagem matemática computacional para decisão", en: "Computational mathematical modeling for decision-making" },
+    title: { pt: "Modelagem matemática, otimização e inteligência operacional", en: "Mathematical modeling, optimization, and operational intelligence" },
     summary: {
-      pt: "Formulação de problemas complexos, otimização, simulação e algoritmos aplicados a cenários onde a decisão precisa de rigor, escala e robustez metodológica.",
-      en: "Formulation of complex problems, optimization, simulation, and algorithms for scenarios where decision-making demands rigor, scale, and methodological robustness.",
+      pt: "Formulação de problemas complexos, heurísticas, meta-heurísticas, previsões e estruturas de otimização para reduzir perdas, melhorar ocupação e orientar alocação de recursos.",
+      en: "Formulation of complex problems, heuristics, meta-heuristics, forecasting, and optimization structures to reduce losses, improve utilization, and guide resource allocation.",
     },
     deliverables: {
-      pt: "Modelos, heurísticas, cenários, testes experimentais e suporte técnico à decisão executiva.",
-      en: "Models, heuristics, scenarios, experimental tests, and technical support for executive decision-making.",
+      pt: "Modelos, simuladores, cenários comparativos, motor de priorização e suporte técnico à decisão executiva.",
+      en: "Models, simulators, comparative scenarios, prioritization engines, and technical support for executive decision-making.",
     },
   },
   {
-    key: "leadership",
-    title: { pt: "Liderança técnica, inovação orientada a dados e desenho de produtos analíticos", en: "Technical leadership, data-driven innovation, and analytical product design" },
+    key: "strategic-analytics",
+    title: { pt: "Estratégia analítica para educação, saúde e setor público", en: "Analytical strategy for education, healthcare, and the public sector" },
     summary: {
-      pt: "Apoio a organizações que precisam alinhar times, dados, tecnologia e execução em projetos de alto impacto com clareza metodológica.",
-      en: "Support for organizations that need to align teams, data, technology, and execution in high-impact projects with methodological clarity.",
+      pt: "Projetos para organizações que precisam transformar dados dispersos em critérios robustos de diagnóstico, monitoramento, priorização e ação institucional.",
+      en: "Projects for organizations that need to turn fragmented data into robust criteria for diagnosis, monitoring, prioritization, and institutional action.",
     },
     deliverables: {
-      pt: "Direção técnica, estruturação de backlog, critérios de priorização e tradução executiva do projeto.",
-      en: "Technical direction, backlog structuring, prioritization criteria, and executive translation of the project.",
+      pt: "Diagnóstico, arquitetura de indicadores, sistema analítico, roteiro de priorização e narrativa executiva para tomada de decisão.",
+      en: "Diagnosis, indicator architecture, analytical system, prioritization roadmap, and executive narrative for decision-making.",
     },
   },
 ];
 
 export const consultingSectors = {
-  pt: ["Indústria", "Logística", "Supply Chain", "Educação", "Setor público", "Pesquisa aplicada"],
-  en: ["Industry", "Logistics", "Supply chain", "Education", "Public sector", "Applied research"],
+  pt: ["Indústria", "Logística", "Saúde", "Educação", "Setor público", "Infraestrutura"],
+  en: ["Industry", "Logistics", "Healthcare", "Education", "Public sector", "Infrastructure"],
 };
 
 export const caseStudies = [
   {
     key: "cabotagem",
     sector: { pt: "Logística marítima e supply chain", en: "Maritime logistics and supply chain" },
-    metric: { pt: "R$ 8 milhões/ano em economia potencial", en: "R$ 8 million/year in potential savings" },
+    metric: { pt: "USD 96 mil/mês de redução de custo operacional", en: "USD 96k/month reduction in operating cost" },
     title: {
-      pt: "Otimização de cabotagem com algoritmo genético e roteirização executiva",
-      en: "Cabotage optimization with genetic algorithm and executive routing",
+      pt: "Motor de otimização naval com meta-heurística, VRP e simulação multicenário",
+      en: "Naval optimization engine with meta-heuristics, VRP, and multi-scenario simulation",
     },
     result: {
-      pt: "Estruturação de um motor meta-heurístico para roteirização naval, com redução de bunker, simulação multicenário, mapa operacional e leitura executiva de ganho econômico.",
-      en: "Structuring of a meta-heuristic engine for naval routing, with bunker reduction, multi-scenario simulation, operational mapping, and executive visibility into economic gains.",
+      pt: "Estruturação de um sistema de roteirização executiva com bunker dinâmico, leitura de risco, Gantt interativo e mapa operacional para transformar complexidade logística em decisão acionável.",
+      en: "Structuring an executive routing system with dynamic bunker optimization, risk interpretation, an interactive Gantt, and operational mapping to turn logistics complexity into actionable decisions.",
     },
     proof: {
-      pt: "Case em produção com algoritmo rodando e impacto financeiro anual estimado em oito milhões de reais.",
-      en: "Production case with the algorithm running and annual financial impact estimated at eight million reais.",
+      pt: "Case em produção com aumento da ocupação de frota de 60% para 87% e redução de 22% na pegada de carbono.",
+      en: "Production case with fleet utilization increasing from 60% to 87% and a 22% reduction in carbon footprint.",
     },
-    tags: ["algoritmo genético", "roteirização", "cabotagem", "redução de custos"],
+    tags: ["VRP", "meta-heurística", "cabotagem", "simulação", "inteligência operacional"],
+  },
+  {
+    key: "auditmed",
+    sector: { pt: "Saúde, auditoria e recuperação financeira", en: "Healthcare, auditing, and financial recovery" },
+    metric: { pt: "Auditoria assistida por IA para glosas, fraudes e recuperação", en: "AI-assisted auditing for denials, fraud, and recovery" },
+    title: {
+      pt: "Plataforma de auditoria médica com IA para detectar anomalias e recuperar receita",
+      en: "Medical-auditing platform using AI to detect anomalies and recover revenue",
+    },
+    result: {
+      pt: "Desenho de plataforma SaaS multi-tenant capaz de analisar arquivos TISS, XML, Excel e CSV, identificar inconsistências e transformar auditoria médica em inteligência operacional e financeira.",
+      en: "Design of a multi-tenant SaaS platform able to analyze TISS, XML, Excel, and CSV files, identify inconsistencies, and turn medical auditing into operational and financial intelligence.",
+    },
+    proof: {
+      pt: "A solução organizou trilha auditável, cálculo de potencial recuperável, success fee e gestão do ciclo de recurso em um fluxo único de decisão.",
+      en: "The solution organized an auditable trail, recoverable-value estimation, success-fee logic, and appeal-lifecycle management in a single decision flow.",
+    },
+    tags: ["healthtech", "auditoria", "LLM", "multi-tenant", "recuperação financeira"],
   },
   {
     key: "educacao-ia",
     sector: { pt: "Educação e políticas públicas", en: "Education and public policy" },
-    metric: { pt: "Escala diagnóstica e priorização pedagógica em larga escala", en: "Diagnostic scale and pedagogical prioritization at scale" },
+    metric: { pt: "Escala diagnóstica e priorização pedagógica orientada por evidência", en: "Diagnostic scale and evidence-driven pedagogical prioritization" },
     title: {
-      pt: "IA aplicada à recomposição da aprendizagem com taxonomias e BNCC",
-      en: "AI applied to learning recovery with taxonomies and BNCC alignment",
+      pt: "Arquitetura analítica para recomposição da aprendizagem com IA e BNCC",
+      en: "Analytical architecture for learning recovery with AI and BNCC alignment",
     },
     result: {
-      pt: "Desenho de plataforma orientada por IA para identificar lacunas, apoiar personalização e fortalecer decisões pedagógicas e institucionais com base em dados.",
-      en: "Design of an AI-oriented platform to identify learning gaps, support personalization, and strengthen pedagogical and institutional decisions based on data.",
+      pt: "Desenho de sistema para identificar lacunas, orientar personalização e apoiar decisões pedagógicas e institucionais a partir de taxonomias, analytics e leitura de desempenho.",
+      en: "Design of a system to identify gaps, guide personalization, and support pedagogical and institutional decisions through taxonomies, analytics, and performance interpretation.",
     },
     proof: {
-      pt: "Integração entre evidência educacional, modelagem analítica e aplicação prática para redes, escolas e organizações educacionais.",
-      en: "Integration of educational evidence, analytical modeling, and practical application for school systems, schools, and education organizations.",
+      pt: "Integração entre evidência educacional, modelagem analítica e implementação prática para redes, escolas e organizações públicas.",
+      en: "Integration of educational evidence, analytical modeling, and practical implementation for school systems, schools, and public organizations.",
     },
-    tags: ["edtech", "BNCC", "analytics educacional", "personalização"],
-  },
-  {
-    key: "industria-preditiva",
-    sector: { pt: "Indústria e operações críticas", en: "Industry and critical operations" },
-    metric: { pt: "Menos perdas, mais previsibilidade e maior maturidade analítica", en: "Lower losses, more predictability, and stronger analytical maturity" },
-    title: {
-      pt: "Modelos preditivos e arquitetura analítica para decisões operacionais críticas",
-      en: "Predictive models and analytical architecture for critical operational decisions",
-    },
-    result: {
-      pt: "Aplicação de analytics, modelagem e priorização para reduzir desperdícios, antecipar falhas e orientar ações em ambientes de alta exigência operacional.",
-      en: "Application of analytics, modeling, and prioritization to reduce waste, anticipate failures, and guide actions in high-demand operational environments.",
-    },
-    proof: {
-      pt: "Atuação desenhada para contextos em que previsão, manutenção, qualidade e eficiência precisam sair do discurso e entrar na operação.",
-      en: "Work designed for contexts in which forecasting, maintenance, quality, and efficiency need to move from discourse into operations.",
-    },
-    tags: ["indústria", "manutenção preditiva", "qualidade", "eficiência operacional"],
+    tags: ["edtech", "BNCC", "analytics educacional", "priorização", "política pública"],
   },
 ];
 
@@ -1044,8 +1044,8 @@ export const insightArticles = [
       en: "Mathematics that becomes decision",
     },
     excerpt: {
-      pt: "Conteúdos para mostrar como raciocínio matemático pode orientar estratégia, operação, política pública e decisão executiva.",
-      en: "Content showing how mathematical reasoning can guide strategy, operations, public policy, and executive decision-making.",
+      pt: "Conteúdos para mostrar como modelagem, estatística e critérios quantitativos estruturam decisões mais robustas em operação, política e estratégia.",
+      en: "Content showing how modeling, statistics, and quantitative criteria structure stronger decisions in operations, policy, and strategy.",
     },
     audience: {
       pt: "Lideranças, pesquisadores e times que precisam sair da abstração e decidir com estrutura.",
@@ -1053,19 +1053,19 @@ export const insightArticles = [
     },
   },
   {
-    slug: "ia-aplicada-sem-espuma",
-    category: { pt: "IA aplicada", en: "Applied AI" },
+    slug: "ia-industrial-sem-espuma",
+    category: { pt: "IA industrial", en: "Industrial AI" },
     title: {
-      pt: "IA aplicada sem espuma",
-      en: "Applied AI without hype",
+      pt: "IA industrial sem espuma",
+      en: "Industrial AI without hype",
     },
     excerpt: {
-      pt: "Uma linha editorial para separar hype de aplicação real, com foco em governança, priorização e valor mensurável.",
-      en: "An editorial line designed to separate hype from real application, with a focus on governance, prioritization, and measurable value.",
+      pt: "Uma linha editorial para separar discurso de resultado, com foco em sistemas úteis, governança, criticidade operacional e retorno verificável.",
+      en: "An editorial line designed to separate rhetoric from results, focusing on useful systems, governance, operational criticality, and verifiable return.",
     },
     audience: {
-      pt: "Executivos, gestores e equipes que desejam IA com critério e retorno real.",
-      en: "Executives, managers, and teams seeking AI with judgment and real return.",
+      pt: "Executivos, gestores de operação, times de inovação e lideranças técnicas que querem IA com critério.",
+      en: "Executives, operations leaders, innovation teams, and technical leadership seeking AI with judgment.",
     },
   },
   {
@@ -1076,44 +1076,44 @@ export const insightArticles = [
       en: "Mathematical models for real problems",
     },
     excerpt: {
-      pt: "Artigos sobre otimização, simulação, previsão e desenho de sistemas analíticos para contextos complexos.",
-      en: "Articles on optimization, simulation, forecasting, and analytical system design for complex contexts.",
+      pt: "Artigos sobre otimização, simulação, previsão e desenho de sistemas analíticos para contextos multirrestritos e economicamente sensíveis.",
+      en: "Articles on optimization, simulation, forecasting, and analytical-system design for multi-constrained, economically sensitive contexts.",
     },
     audience: {
-      pt: "Logística, indústria, setor público e organizações intensivas em decisão.",
-      en: "Logistics, industry, the public sector, and decision-intensive organizations.",
+      pt: "Logística, indústria, infraestrutura, setor público e organizações intensivas em decisão.",
+      en: "Logistics, industry, infrastructure, the public sector, and decision-intensive organizations.",
     },
   },
   {
-    slug: "educacao-dados-recomposicao",
-    category: { pt: "Educação baseada em dados", en: "Data-driven education" },
+    slug: "visao-computacional-operacao",
+    category: { pt: "Visão computacional", en: "Computer vision" },
     title: {
-      pt: "Educação, dados e recomposição da aprendizagem",
-      en: "Education, data, and learning recovery",
+      pt: "Visão computacional que entra na operação",
+      en: "Computer vision that reaches operations",
     },
     excerpt: {
-      pt: "Série voltada a evidência educacional, diagnóstico, BNCC, personalização e recomposição da aprendizagem.",
-      en: "Series focused on educational evidence, diagnosis, BNCC alignment, personalization, and learning recovery.",
+      pt: "Série sobre inspeção, qualidade, segurança e leitura visual aplicadas a plantas industriais, infraestrutura e ambientes críticos.",
+      en: "A series on inspection, quality, safety, and visual interpretation applied to industrial plants, infrastructure, and critical environments.",
     },
     audience: {
-      pt: "Redes de ensino, edtechs, fundações, escolas e lideranças pedagógicas.",
-      en: "School systems, edtechs, foundations, schools, and pedagogical leadership teams.",
+      pt: "Times industriais, engenharia, qualidade, segurança e inovação aplicada.",
+      en: "Industrial teams, engineering, quality, safety, and applied-innovation groups.",
     },
   },
   {
-    slug: "logistica-otimizacao-inteligencia-operacional",
-    category: { pt: "Operações e logística", en: "Operations and logistics" },
+    slug: "digital-twins-decisao",
+    category: { pt: "Digital twins", en: "Digital twins" },
     title: {
-      pt: "Logística, otimização e inteligência operacional",
-      en: "Logistics, optimization, and operational intelligence",
+      pt: "Digital twins para decisão operacional",
+      en: "Digital twins for operational decision-making",
     },
     excerpt: {
-      pt: "Conteúdos sobre roteirização, supply chain, previsão, heurísticas e eficiência operacional em ambientes críticos.",
-      en: "Content about routing, supply chain, forecasting, heuristics, and operational efficiency in critical environments.",
+      pt: "Conteúdos sobre gêmeos digitais, simulação de cenários, sensores, previsibilidade e sistemas de resposta para operações complexas.",
+      en: "Content about digital twins, scenario simulation, sensors, predictability, and response systems for complex operations.",
     },
     audience: {
-      pt: "Operações, planejamento, supply chain, indústria e logística.",
-      en: "Operations, planning, supply chain, industry, and logistics teams.",
+      pt: "Operações, planejamento, supply chain, manutenção e engenharia de processos.",
+      en: "Operations, planning, supply chain, maintenance, and process-engineering teams.",
     },
   },
   {
@@ -1124,12 +1124,12 @@ export const insightArticles = [
       en: "How to evaluate AI models rigorously",
     },
     excerpt: {
-      pt: "Reflexões sobre validação, vieses, métricas, critérios de comparação e uso responsável de modelos em contextos sensíveis.",
-      en: "Reflections on validation, bias, metrics, comparison criteria, and responsible model use in sensitive contexts.",
+      pt: "Reflexões sobre validação, vieses, robustez, monitoramento e uso responsável de modelos em contextos sensíveis.",
+      en: "Reflections on validation, bias, robustness, monitoring, and responsible model use in sensitive contexts.",
     },
     audience: {
       pt: "Times de dados, inovação, pesquisa aplicada e lideranças que precisam confiar na decisão algorítmica.",
-      en: "Data, innovation, and applied research teams that need to trust algorithmic decision-making.",
+      en: "Data, innovation, and applied-research teams that need to trust algorithmic decisions.",
     },
   },
 ];

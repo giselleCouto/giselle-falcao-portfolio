@@ -98,3 +98,7 @@
 - [x] Reorganizar a linha editorial da página /giselle para dominar publicamente a interseção entre IA aplicada, rigor matemático e decisões complexas
 - [x] Estruturar séries de conteúdo editoriais na página /giselle com os temas recomendados pela usuária
 - [x] Validar SEO, testes e consistência da versão simplificada da página /giselle
+- [x] Ler o novo anexo e mapear os ajustes editoriais necessários em toda a página /giselle
+- [x] Revisar a estrutura atual da página /giselle para aplicar os novos ajustes de forma consistente
+- [x] Atualizar hero, provas de autoridade, seções centrais e linha editorial da página /giselle conforme o novo anexo
+- [x] Validar SEO, testes e consistência final após a atualização completa da página /giselle

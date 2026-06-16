@@ -22,11 +22,12 @@ const appSource = readFileSync(path.join(projectRoot, "client", "src", "App.tsx"
 const portfolioSiteSource = readFileSync(path.join(projectRoot, "client", "src", "components", "PortfolioSite.tsx"), "utf-8");
 
 describe("SEO da rota /giselle", () => {
-  it("simplifica o topo com a nova proposta de valor e posicionamento central", () => {
-    expect(heroCopy.headline.pt).toBe("IA aplicada, modelagem matemática e ciência de dados para decisões complexas.");
-    expect(heroCopy.subheadline.pt).toContain("Pesquisadora e consultora PhD");
-    expect(heroCopy.role.pt).toContain("IA aplicada");
-    expect(aboutSection.intro.pt).toContain("interseção entre IA aplicada, modelagem matemática e ciência de dados");
+  it("reposiciona o topo com foco em IA industrial, decisões críticas e profundidade técnica", () => {
+    expect(heroCopy.headline.pt).toBe("IA industrial, modelagem matemática e ciência de dados para decisões críticas.");
+    expect(heroCopy.subheadline.pt).toContain("visão computacional");
+    expect(heroCopy.subheadline.pt).toContain("digital twins");
+    expect(heroCopy.role.pt).toContain("IA industrial");
+    expect(aboutSection.intro.pt).toContain("IA industrial, modelagem matemática, visão computacional, digital twins");
   });
 
   it("destaca provas de autoridade logo no início com sinais verificáveis", () => {
@@ -46,19 +47,21 @@ describe("SEO da rota /giselle", () => {
     expect(portfolioSiteSource).toContain('section id="provas"');
   });
 
-  it("expõe uma seção de consultoria com ofertas e setores-alvo coerentes", () => {
+  it("expõe uma seção de consultoria com frentes industriais, operacionais e setores-alvo coerentes", () => {
     expect(consultingServices).toHaveLength(4);
-    expect(consultingServices[0].title.pt).toContain("Inteligência Artificial");
+    expect(consultingServices[0].title.pt).toContain("IA industrial");
+    expect(consultingServices[1].title.pt).toContain("Digital twins");
     expect(consultingServices[2].title.pt).toContain("Modelagem matemática");
     expect(consultingSectors.pt).toContain("Indústria");
-    expect(consultingSectors.pt).toContain("Educação");
+    expect(consultingSectors.pt).toContain("Infraestrutura");
   });
 
-  it("publica cases com métricas, setores e provas de resultado", () => {
+  it("publica cases com métricas, setores e provas de resultado alinhados ao novo posicionamento", () => {
     expect(caseStudies).toHaveLength(3);
-    expect(caseStudies[0].metric.pt).toContain("R$ 8 milhões/ano");
+    expect(caseStudies[0].metric.pt).toContain("USD 96 mil/mês");
     expect(caseStudies[0].sector.pt).toContain("Logística");
-    expect(caseStudies[0].proof.pt).toContain("produção");
+    expect(caseStudies[0].proof.pt).toContain("22% na pegada de carbono");
+    expect(caseStudies[1].sector.pt).toContain("Saúde");
     expect(portfolioSiteSource).toContain('section id="cases"');
     expect(appSource).toContain("giselle-case-studies-schema");
   });
@@ -71,30 +74,32 @@ describe("SEO da rota /giselle", () => {
     expect(appSource).toContain("giselle-faq-schema");
   });
 
-  it("estrutura a linha editorial pública com séries coerentes e insights recorrentes", () => {
-    expect(editorialPositioning.title.pt).toBe("IA aplicada com rigor matemático para decisões complexas.");
+  it("estrutura a linha editorial pública com séries coerentes ao posicionamento industrial e deep tech", () => {
+    expect(editorialPositioning.title.pt).toBe("IA industrial com rigor matemático para decisões complexas.");
     expect(editorialSeries).toHaveLength(6);
     expect(editorialSeries.map((item) => item.title.pt)).toEqual(
       expect.arrayContaining([
         "Matemática que vira decisão",
-        "IA aplicada sem espuma",
+        "IA industrial sem espuma",
         "Modelos matemáticos para problemas reais",
-        "Educação, dados e recomposição da aprendizagem",
-        "Logística, otimização e inteligência operacional",
+        "Visão computacional que entra na operação",
+        "Digital twins para decisão operacional",
         "Como avaliar modelos de IA com rigor",
       ]),
     );
     expect(insightArticles).toHaveLength(6);
-    expect(insightArticles[0].title.pt).toContain("Matemática que vira decisão");
+    expect(insightArticles[1].title.pt).toContain("IA industrial sem espuma");
+    expect(insightArticles[3].title.pt).toContain("Visão computacional");
     expect(portfolioSiteSource).toContain('section id="insights"');
     expect(appSource).toContain("giselle-insights-schema");
     expect(appSource).toContain('"@type": "Article"');
   });
 
-  it("expõe metadados estáticos compatíveis com o novo posicionamento", () => {
-    expect(indexHtml).toContain("IA Aplicada, Modelagem Matemática e Ciência de Dados");
-    expect(indexHtml).toContain("decisões complexas");
-    expect(indexHtml).toContain("Pesquisadora e consultora PhD");
+  it("expõe metadados estáticos compatíveis com o novo posicionamento industrial", () => {
+    expect(indexHtml).toContain("IA Industrial, Modelagem Matemática e Ciência de Dados");
+    expect(indexHtml).toContain("decisões críticas");
+    expect(indexHtml).toContain("visão computacional");
+    expect(indexHtml).toContain("digital twins");
   });
 
   it("publica robots.txt e sitemap.xml para indexação", () => {

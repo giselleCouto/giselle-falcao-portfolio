@@ -96,30 +96,32 @@ function RouteSeo() {
         "Área autenticada dos cursos de Giselle Falcão com histórico detalhado, retomada por aula, progresso salvo e status claro de liberação pós-compra.";
       keywords = "meus cursos, área do aluno, curso de IA, Giselle Falcão";
     } else if (location === "/giselle") {
-      title = "Giselle Couto Falcão | IA Aplicada, Modelagem Matemática e Ciência de Dados";
+      title = "Giselle Couto Falcão | IA Industrial, Modelagem Matemática e Ciência de Dados";
       description =
-        "IA aplicada, modelagem matemática e ciência de dados para decisões complexas. Pesquisadora e consultora PhD com atuação em educação, logística, saúde, indústria e setor público.";
+        "IA industrial, modelagem matemática e ciência de dados para decisões críticas. Pesquisadora e consultora PhD com atuação em visão computacional, digital twins, logística, saúde, educação, indústria e setor público.";
       keywords =
-        "Giselle Couto Falcão, IA aplicada, modelagem matemática, ciência de dados, decisões complexas, consultora PhD, logística, educação baseada em dados, saúde, indústria, setor público";
+        "Giselle Couto Falcão, IA industrial, visão computacional, digital twins, modelagem matemática, ciência de dados aplicada, decisões críticas, consultora PhD, indústria, logística, saúde, educação, setor público";
 
       upsertJsonLd("giselle-person-schema", {
         "@context": "https://schema.org",
         "@type": "Person",
         name: "Giselle Couto Falcão",
         url: "https://coutofalcao.com/giselle",
-        jobTitle: "Pesquisadora e consultora PhD em IA aplicada, modelagem matemática e ciência de dados",
+        jobTitle: "Pesquisadora e consultora PhD em IA industrial, modelagem matemática e ciência de dados aplicada",
         description:
-          "Pesquisadora e consultora PhD que desenvolve modelos, sistemas e estratégias analíticas para educação, logística, saúde, indústria e setor público.",
+          "Pesquisadora e consultora PhD que desenvolve modelos, sistemas analíticos e estratégias técnicas para indústria, logística, saúde, educação e setor público, com foco em visão computacional, digital twins e inteligência operacional.",
         knowsAbout: [
-          "Inteligência Artificial Aplicada",
+          "IA Industrial",
+          "Visão Computacional",
+          "Digital Twins",
           "Modelagem Matemática",
-          "Ciência de Dados",
+          "Ciência de Dados Aplicada",
           "Machine Learning",
           "Sistemas de Decisão",
           "Otimização Operacional",
           "Logística",
-          "Educação baseada em dados",
           "Saúde orientada por dados",
+          "Educação baseada em dados",
           "Setor público",
         ],
         hasCredential: [
@@ -165,7 +167,7 @@ function RouteSeo() {
       upsertJsonLd("giselle-case-studies-schema", {
         "@context": "https://schema.org",
         "@type": "ItemList",
-        name: "Cases de consultoria em tecnologia, inovação e inteligência artificial de Giselle Couto Falcão",
+        name: "Cases de IA industrial, modelagem matemática e ciência de dados aplicada de Giselle Couto Falcão",
         itemListElement: caseStudies.map((item, index) => ({
           "@type": "ListItem",
           position: index + 1,
@@ -182,7 +184,7 @@ function RouteSeo() {
       upsertJsonLd("giselle-insights-schema", {
         "@context": "https://schema.org",
         "@type": "ItemList",
-        name: "Insights editoriais de Giselle Couto Falcão sobre tecnologia, inovação e inteligência artificial",
+        name: "Insights editoriais de Giselle Couto Falcão sobre IA industrial, modelagem matemática e ciência de dados aplicada",
         itemListElement: insightArticles.map((item, index) => ({
           "@type": "ListItem",
           position: index + 1,
@@ -262,7 +264,7 @@ function IdentityHub() {
               <div>
                 <p className="text-[0.78rem] font-semibold uppercase tracking-[0.34em] text-teal-300">Giselle</p>
                 <h2 className="mt-5 max-w-xl font-display text-4xl leading-[1.05] text-[var(--text-ivory)] sm:text-[3.75rem]">
-                  Autoridade científica, IA, educação e modelagem matemática
+                  IA industrial, modelagem matemática e ciência de dados aplicada
                 </h2>
               </div>
               <div className="mt-1 rounded-full border border-white/10 bg-white/5 p-3 text-[var(--accent-copper)]">
@@ -276,8 +278,8 @@ function IdentityHub() {
 
             <div className="mt-9 grid gap-3 sm:grid-cols-2">
               {[
-                "IA aplicada e machine learning",
-                "Educação orientada por dados",
+                "IA industrial e visão computacional",
+                "Digital twins e inteligência operacional",
                 "Modelagem matemática computacional",
                 "Publicações, experiência e credenciais",
               ].map((item) => (
