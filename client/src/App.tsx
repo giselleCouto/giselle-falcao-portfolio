@@ -13,6 +13,7 @@ import PortfolioSite from "./components/PortfolioSite";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { caseStudies, faqItems, insightArticles } from "./lib/portfolioData";
 import { minasSummitFaqItems, minasSummitFaqMeta, minasSummitSocialLinks } from "./lib/minasSummitFaqData";
+import AiOsExperience from "./pages/AiOsExperience";
 import GiselleCourses from "./pages/GiselleCourses";
 import MinasSummitFaq from "./pages/MinasSummitFaq";
 
@@ -99,6 +100,12 @@ function RouteSeo() {
       description =
         "Área autenticada dos cursos de Giselle Falcão com histórico detalhado, retomada por aula, progresso salvo e status claro de liberação pós-compra.";
       keywords = "meus cursos, área do aluno, curso de IA, Giselle Falcão";
+    } else if (location === "/ai-os") {
+      title = "AI/OS Interface Prototype | Couto Falcão";
+      description =
+        "Protótipo visual AI/OS para portfólio institucional focado em IA, inovação, dados e engenharia matemática, com hero monumental e módulo inicial de geometria de precisão.";
+      keywords =
+        "AI/OS interface, portfolio IA, inovação, dados, engenharia matemática, GSAP, Three.js, geometria de precisão";
     } else if (location === minasSummitFaqMeta.slug) {
       title = minasSummitFaqMeta.title;
       description = minasSummitFaqMeta.description;
@@ -514,6 +521,7 @@ function Router() {
         <Route path="/giselle/cursos/lab" component={() => <GiselleCourses view="lab" />} />
         <Route path="/giselle/cursos/meus-cursos" component={() => <GiselleCourses view="dashboard" />} />
         <Route path="/giselle" component={() => <PortfolioSite />} />
+        <Route path="/ai-os" component={AiOsExperience} />
         <Route path={minasSummitFaqMeta.slug} component={MinasSummitFaq} />
         <Route path="/jade" component={JadeProfile} />
         <Route path="/404" component={NotFound} />

@@ -109,3 +109,7 @@
 - [x] Criar uma página pública de FAQ para o evento Minas Summit com rota dedicada e acesso fácil por QR Code
 - [x] Integrar na página do Minas Summit os links de LinkedIn e WhatsApp da Giselle com CTAs visíveis
 - [x] Validar a nova página do Minas Summit com testes, build e preview antes da entrega
+- [x] Replanejar a direção visual da experiência com estética AI/OS inspirada em steven.com para o topo da página-alvo
+- [x] Implementar um novo Hero com tipografia monumental, grid matemático e elementos técnicos de interface
+- [x] Construir a transição inicial para o módulo Geometria de Precisão com composição visual componentizada
+- [x] Validar o redesign inicial com testes, build e revisão visual da rota afetada
