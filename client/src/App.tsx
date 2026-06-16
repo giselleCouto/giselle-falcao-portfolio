@@ -96,31 +96,31 @@ function RouteSeo() {
         "Área autenticada dos cursos de Giselle Falcão com histórico detalhado, retomada por aula, progresso salvo e status claro de liberação pós-compra.";
       keywords = "meus cursos, área do aluno, curso de IA, Giselle Falcão";
     } else if (location === "/giselle") {
-      title = "Giselle Couto Falcão | Consultora de Tecnologia, Inovação e Inteligência Artificial";
+      title = "Giselle Couto Falcão | IA Aplicada, Modelagem Matemática e Ciência de Dados";
       description =
-        "Consultoria estratégica em tecnologia, inovação e inteligência artificial aplicada a negócios, indústria, logística, educação e setor público. PhD com atuação em IA, analytics e modelagem matemática.";
+        "IA aplicada, modelagem matemática e ciência de dados para decisões complexas. Pesquisadora e consultora PhD com atuação em educação, logística, saúde, indústria e setor público.";
       keywords =
-        "Giselle Couto Falcão, consultora de tecnologia, consultora de inovação, consultora de inteligência artificial, consultoria em IA, IA aplicada, machine learning, analytics, modelagem matemática, logística, indústria";
+        "Giselle Couto Falcão, IA aplicada, modelagem matemática, ciência de dados, decisões complexas, consultora PhD, logística, educação baseada em dados, saúde, indústria, setor público";
 
       upsertJsonLd("giselle-person-schema", {
         "@context": "https://schema.org",
         "@type": "Person",
         name: "Giselle Couto Falcão",
         url: "https://coutofalcao.com/giselle",
-        jobTitle: "Consultora de Tecnologia, Inovação e Inteligência Artificial",
+        jobTitle: "Pesquisadora e consultora PhD em IA aplicada, modelagem matemática e ciência de dados",
         description:
-          "Consultora de tecnologia, inovação e inteligência artificial com atuação em modelagem matemática, analytics, machine learning e desenho de soluções para operações, negócios e instituições.",
+          "Pesquisadora e consultora PhD que desenvolve modelos, sistemas e estratégias analíticas para educação, logística, saúde, indústria e setor público.",
         knowsAbout: [
-          "Inteligência Artificial",
+          "Inteligência Artificial Aplicada",
+          "Modelagem Matemática",
+          "Ciência de Dados",
           "Machine Learning",
-          "Inovação Tecnológica",
-          "Modelagem Matemática Computacional",
-          "Data Science",
-          "Analytics",
+          "Sistemas de Decisão",
           "Otimização Operacional",
-          "Supply Chain",
           "Logística",
           "Educação baseada em dados",
+          "Saúde orientada por dados",
+          "Setor público",
         ],
         hasCredential: [
           {

@@ -92,3 +92,9 @@
 - [x] Produzir um kit de mídia completo em PDF e uma versão resumida em PDF sem espaços no nome do arquivo
 - [x] Revisar os arquivos finais e entregar os PDFs prontos para envio a marcas
 - [x] Substituir o favicon do site pela imagem anexada pela usuária e validar o carregamento final
+- [x] Simplificar a página /giselle com uma proposta de valor mais direta no topo
+- [x] Atualizar headline e subtítulo da página /giselle para enfatizar IA aplicada, modelagem matemática e ciência de dados
+- [x] Criar uma seção inicial de Provas de Autoridade com formação, perfis, artigos, cases e canais públicos
+- [x] Reorganizar a linha editorial da página /giselle para dominar publicamente a interseção entre IA aplicada, rigor matemático e decisões complexas
+- [x] Estruturar séries de conteúdo editoriais na página /giselle com os temas recomendados pela usuária
+- [x] Validar SEO, testes e consistência da versão simplificada da página /giselle

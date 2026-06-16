@@ -1,7 +1,18 @@
 import { readFileSync } from "node:fs";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
-import { aboutSection, caseStudies, consultingSectors, consultingServices, faqItems, heroCopy, insightArticles } from "@/lib/portfolioData";
+import {
+  aboutSection,
+  authorityProofs,
+  caseStudies,
+  consultingSectors,
+  consultingServices,
+  editorialPositioning,
+  editorialSeries,
+  faqItems,
+  heroCopy,
+  insightArticles,
+} from "@/lib/portfolioData";
 
 const projectRoot = path.resolve(import.meta.dirname, "..", "..");
 const indexHtml = readFileSync(path.join(projectRoot, "client", "index.html"), "utf-8");
@@ -11,18 +22,36 @@ const appSource = readFileSync(path.join(projectRoot, "client", "src", "App.tsx"
 const portfolioSiteSource = readFileSync(path.join(projectRoot, "client", "src", "components", "PortfolioSite.tsx"), "utf-8");
 
 describe("SEO da rota /giselle", () => {
-  it("reforça consultoria em tecnologia, inovação e IA no hero e na seção sobre", () => {
-    expect(heroCopy.role.pt).toContain("Consultora de Tecnologia, Inovação e Inteligência Artificial");
-    expect(heroCopy.headline.pt).toContain("Consultoria estratégica em tecnologia, inovação e IA");
-    expect(aboutSection.intro.pt).toContain("consultora de tecnologia, inovação e inteligência artificial");
+  it("simplifica o topo com a nova proposta de valor e posicionamento central", () => {
+    expect(heroCopy.headline.pt).toBe("IA aplicada, modelagem matemática e ciência de dados para decisões complexas.");
+    expect(heroCopy.subheadline.pt).toContain("Pesquisadora e consultora PhD");
+    expect(heroCopy.role.pt).toContain("IA aplicada");
+    expect(aboutSection.intro.pt).toContain("interseção entre IA aplicada, modelagem matemática e ciência de dados");
+  });
+
+  it("destaca provas de autoridade logo no início com sinais verificáveis", () => {
+    expect(authorityProofs.length).toBeGreaterThanOrEqual(8);
+    expect(authorityProofs.map((item) => item.title.pt)).toEqual(
+      expect.arrayContaining([
+        "PhD e formação",
+        "Google Scholar",
+        "Lattes",
+        "Artigos com DOI",
+        "Cases com impacto",
+        "GitHub",
+        "Medium",
+        "Palestras e aulas",
+      ]),
+    );
+    expect(portfolioSiteSource).toContain('section id="provas"');
   });
 
   it("expõe uma seção de consultoria com ofertas e setores-alvo coerentes", () => {
     expect(consultingServices).toHaveLength(4);
     expect(consultingServices[0].title.pt).toContain("Inteligência Artificial");
-    expect(consultingServices[1].title.pt).toContain("indústria, logística e supply chain");
+    expect(consultingServices[2].title.pt).toContain("Modelagem matemática");
     expect(consultingSectors.pt).toContain("Indústria");
-    expect(consultingSectors.pt).toContain("Logística");
+    expect(consultingSectors.pt).toContain("Educação");
   });
 
   it("publica cases com métricas, setores e provas de resultado", () => {
@@ -42,19 +71,30 @@ describe("SEO da rota /giselle", () => {
     expect(appSource).toContain("giselle-faq-schema");
   });
 
-  it("expõe um bloco editorial recorrente de insights com schema semântico", () => {
-    expect(insightArticles).toHaveLength(3);
-    expect(insightArticles[0].title.pt).toContain("IA aplicada");
-    expect(insightArticles[1].category.pt).toContain("Inovação");
+  it("estrutura a linha editorial pública com séries coerentes e insights recorrentes", () => {
+    expect(editorialPositioning.title.pt).toBe("IA aplicada com rigor matemático para decisões complexas.");
+    expect(editorialSeries).toHaveLength(6);
+    expect(editorialSeries.map((item) => item.title.pt)).toEqual(
+      expect.arrayContaining([
+        "Matemática que vira decisão",
+        "IA aplicada sem espuma",
+        "Modelos matemáticos para problemas reais",
+        "Educação, dados e recomposição da aprendizagem",
+        "Logística, otimização e inteligência operacional",
+        "Como avaliar modelos de IA com rigor",
+      ]),
+    );
+    expect(insightArticles).toHaveLength(6);
+    expect(insightArticles[0].title.pt).toContain("Matemática que vira decisão");
     expect(portfolioSiteSource).toContain('section id="insights"');
     expect(appSource).toContain("giselle-insights-schema");
     expect(appSource).toContain('"@type": "Article"');
   });
 
   it("expõe metadados estáticos compatíveis com o novo posicionamento", () => {
-    expect(indexHtml).toContain("Consultora de Tecnologia, Inovação e Inteligência Artificial");
-    expect(indexHtml).toContain("consultoria em IA");
-    expect(indexHtml).toContain("analytics");
+    expect(indexHtml).toContain("IA Aplicada, Modelagem Matemática e Ciência de Dados");
+    expect(indexHtml).toContain("decisões complexas");
+    expect(indexHtml).toContain("Pesquisadora e consultora PhD");
   });
 
   it("publica robots.txt e sitemap.xml para indexação", () => {

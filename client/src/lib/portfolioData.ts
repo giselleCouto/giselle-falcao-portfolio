@@ -17,102 +17,243 @@ export const assets = {
 
 export const navItems = [
   { href: "#home", section: "home", label: { pt: "Home", en: "Home" } },
-  { href: "#sobre", section: "sobre", label: { pt: "Sobre", en: "About" } },
+  { href: "#provas", section: "provas", label: { pt: "Autoridade", en: "Authority" } },
   { href: "#servicos", section: "servicos", label: { pt: "Consultoria", en: "Consulting" } },
   { href: "#cases", section: "cases", label: { pt: "Cases", en: "Cases" } },
-  { href: "#projetos", section: "projetos", label: { pt: "Projetos", en: "Projects" } },
   { href: "#publicacoes", section: "publicacoes", label: { pt: "Publicações", en: "Publications" } },
-  { href: "#insights", section: "insights", label: { pt: "Insights", en: "Insights" } },
-  { href: "#experiencia", section: "experiencia", label: { pt: "Experiência", en: "Experience" } },
-  { href: "#formacao", section: "formacao", label: { pt: "Formação", en: "Education" } },
-  { href: "#faq", section: "faq", label: { pt: "FAQ", en: "FAQ" } },
+  { href: "#insights", section: "insights", label: { pt: "Linha editorial", en: "Editorial line" } },
   { href: "#contato", section: "contato", label: { pt: "Contato", en: "Contact" } },
 ] as const;
 
 export const keyAreas = {
   pt: [
-    "Consultoria em IA",
-    "Tecnologia & Inovação",
-    "Modelagem Matemática",
-    "Machine Learning",
-    "Pesquisa Aplicada",
-    "Estratégia Analítica",
+    "IA aplicada",
+    "Modelagem matemática",
+    "Ciência de dados",
+    "Decisões complexas",
+    "Logística e operações",
+    "Educação baseada em dados",
   ],
   en: [
-    "Education",
-    "AI & Machine Learning",
-    "Mathematical Modeling",
-    "Climate Math",
-    "Applied Research",
-    "Strategic Consulting",
+    "Applied AI",
+    "Mathematical modeling",
+    "Data science",
+    "Complex decisions",
+    "Logistics and operations",
+    "Data-driven education",
   ],
 };
 
 export const heroCopy = {
   name: "Giselle Couto Falcão",
   role: {
-    pt: "Consultora de Tecnologia, Inovação e Inteligência Artificial com atuação em modelagem matemática, analytics e decisões de alto impacto",
-    en: "Technology, Innovation, and Artificial Intelligence consultant focused on mathematical modeling, analytics, and high-impact decision systems",
+    pt: "Pesquisadora, consultora e PhD em IA aplicada, modelagem matemática e ciência de dados",
+    en: "Researcher, consultant, and PhD in applied AI, mathematical modeling, and data science",
   },
   headline: {
-    pt: "Consultoria estratégica em tecnologia, inovação e IA para operações, negócios e instituições que precisam decidir melhor",
-    en: "Strategic consulting in technology, innovation, and AI for operations, businesses, and institutions that need to make better decisions",
+    pt: "IA aplicada, modelagem matemática e ciência de dados para decisões complexas.",
+    en: "Applied AI, mathematical modeling, and data science for complex decisions.",
   },
   subheadline: {
-    pt: "Giselle Couto Falcão conecta pesquisa profunda, modelagem matemática, ciência de dados e arquitetura de soluções para transformar dados em decisões, eficiência operacional e vantagem competitiva.",
-    en: "Giselle Couto Falcão connects deep research, mathematical modeling, data science, and solution architecture to turn data into decisions, operational efficiency, and competitive advantage.",
+    pt: "Pesquisadora e consultora PhD que desenvolve modelos, sistemas e estratégias analíticas para educação, logística, saúde, indústria e setor público.",
+    en: "PhD researcher and consultant who develops models, systems, and analytical strategies for education, logistics, healthcare, industry, and the public sector.",
   },
-  ctaPrimary: { pt: "Ver projetos", en: "View projects" },
-  ctaSecondary: { pt: "Falar sobre parceria", en: "Discuss a partnership" },
+  ctaPrimary: { pt: "Ver provas de autoridade", en: "View authority proof" },
+  ctaSecondary: { pt: "Falar sobre projeto", en: "Discuss a project" },
   impactPrompt: {
-    pt: "Da estratégia tecnológica à implementação aplicada, com foco em impacto mensurável, robustez metodológica e priorização correta do problema.",
-    en: "From technology strategy to applied implementation, with a focus on measurable impact, methodological rigor, and correct problem prioritization.",
+    pt: "IA aplicada com rigor matemático para decisões complexas.",
+    en: "Applied AI with mathematical rigor for complex decisions.",
   },
 };
 
 export const authorityMetrics = [
   {
-    value: "+10",
-    label: {
-      pt: "anos conectando matemática, ciência de dados, educação e inovação aplicada",
-      en: "years connecting mathematics, data science, education, and applied innovation",
-    },
-  },
-  {
-    value: "9",
-    label: {
-      pt: "setores estratégicos contemplados em projetos e pesquisas",
-      en: "strategic sectors covered through projects and research",
-    },
-  },
-  {
     value: "2",
     label: {
-      pt: "doutorados que consolidam uma identidade intelectual rara",
-      en: "doctorates consolidating a rare intellectual identity",
+      pt: "doutorados que sustentam uma leitura rara entre ciência, dados e decisão",
+      en: "doctorates supporting a rare perspective across science, data, and decision-making",
     },
   },
   {
-    value: "360°",
+    value: "+10",
     label: {
-      pt: "visão ponta a ponta: pesquisa, produto, consultoria, docência e liderança",
-      en: "end-to-end perspective: research, product, consulting, teaching, and leadership",
+      pt: "anos conectando matemática aplicada, pesquisa, educação e inovação",
+      en: "years connecting applied mathematics, research, education, and innovation",
+    },
+  },
+  {
+    value: "DOI",
+    label: {
+      pt: "artigos, produção científica e escrita técnica com lastro verificável",
+      en: "articles, scientific production, and technical writing with verifiable grounding",
+    },
+  },
+  {
+    value: "ROI",
+    label: {
+      pt: "cases e sistemas orientados a impacto real, não apenas apresentação",
+      en: "cases and systems oriented toward real impact, not just presentations",
+    },
+  },
+];
+
+export const authorityProofs = [
+  {
+    key: "phd",
+    title: { pt: "PhD e formação", en: "PhD and education" },
+    description: {
+      pt: "Doutorados e formação avançada em modelagem matemática, matemática do clima e ciência de dados aplicada.",
+      en: "Doctorates and advanced training in mathematical modeling, climate mathematics, and applied data science.",
+    },
+    href: "#formacao",
+    kind: "internal",
+  },
+  {
+    key: "scholar",
+    title: { pt: "Google Scholar", en: "Google Scholar" },
+    description: {
+      pt: "Produção acadêmica indexada e facilmente verificável em ambiente científico internacional.",
+      en: "Indexed academic production that is easily verifiable in an international scientific environment.",
+    },
+    href: "https://scholar.google.com.br/citations?hl=pt-BR&user=ljBj6GMAAAAJ",
+    kind: "external",
+  },
+  {
+    key: "lattes",
+    title: { pt: "Lattes", en: "Lattes" },
+    description: {
+      pt: "Histórico acadêmico, institucional e técnico consolidado em currículo público oficial.",
+      en: "Academic, institutional, and technical trajectory consolidated in an official public CV.",
+    },
+    href: "http://lattes.cnpq.br/7661015485905669",
+    kind: "external",
+  },
+  {
+    key: "doi",
+    title: { pt: "Artigos com DOI", en: "Articles with DOI" },
+    description: {
+      pt: "Publicações com DOI em educação, clima, séries temporais e análise aplicada.",
+      en: "Publications with DOI in education, climate, time series, and applied analysis.",
+    },
+    href: "#publicacoes",
+    kind: "internal",
+  },
+  {
+    key: "cases",
+    title: { pt: "Cases com impacto", en: "Impactful case studies" },
+    description: {
+      pt: "Projetos com efeito mensurável em decisão, eficiência operacional e arquitetura analítica.",
+      en: "Projects with measurable effect on decision-making, operational efficiency, and analytical architecture.",
+    },
+    href: "#cases",
+    kind: "internal",
+  },
+  {
+    key: "github",
+    title: { pt: "GitHub", en: "GitHub" },
+    description: {
+      pt: "Repositórios e presença técnica que reforçam profundidade prática e raciocínio estruturado.",
+      en: "Repositories and technical presence reinforcing practical depth and structured reasoning.",
+    },
+    href: "https://github.com/giselleCouto",
+    kind: "external",
+  },
+  {
+    key: "medium",
+    title: { pt: "Medium", en: "Medium" },
+    description: {
+      pt: "Ensaios aplicados sobre IA, modelagem matemática, logística e recomposição da aprendizagem.",
+      en: "Applied essays on AI, mathematical modeling, logistics, and learning recovery.",
+    },
+    href: "https://medium.com/@giselle_9978",
+    kind: "external",
+  },
+  {
+    key: "speaking",
+    title: { pt: "Palestras e aulas", en: "Speaking and teaching" },
+    description: {
+      pt: "Docência, formação e presença pública em temas de IA aplicada, matemática e educação baseada em dados.",
+      en: "Teaching, training, and public presence around applied AI, mathematics, and data-driven education.",
+    },
+    href: "#palestras",
+    kind: "internal",
+  },
+];
+
+export const editorialPositioning = {
+  title: {
+    pt: "IA aplicada com rigor matemático para decisões complexas.",
+    en: "Applied AI with mathematical rigor for complex decisions.",
+  },
+  body: {
+    pt: "A linha editorial pública de Giselle deve ser reconhecida pela capacidade de transformar matemática, ciência de dados e inteligência artificial em leitura estratégica, arquitetura analítica e decisão executiva em problemas reais.",
+    en: "Giselle's public editorial line should be recognized by the ability to turn mathematics, data science, and artificial intelligence into strategic reading, analytical architecture, and executive decision-making for real problems.",
+  },
+};
+
+export const editorialSeries = [
+  {
+    key: "matematica-que-vira-decisao",
+    title: { pt: "Matemática que vira decisão", en: "Mathematics that becomes decision" },
+    description: {
+      pt: "Série para traduzir raciocínio matemático em escolhas concretas de operação, política, produto e gestão.",
+      en: "Series translating mathematical reasoning into concrete choices for operations, policy, product, and management.",
+    },
+  },
+  {
+    key: "ia-aplicada-sem-espuma",
+    title: { pt: "IA aplicada sem espuma", en: "Applied AI without hype" },
+    description: {
+      pt: "Leituras críticas sobre como sair do discurso inflado e construir aplicações de IA com critério, governança e impacto.",
+      en: "Critical readings on how to move beyond inflated discourse and build AI applications with judgment, governance, and impact.",
+    },
+  },
+  {
+    key: "modelos-matematicos-problemas-reais",
+    title: { pt: "Modelos matemáticos para problemas reais", en: "Mathematical models for real problems" },
+    description: {
+      pt: "Conteúdos sobre modelagem, otimização, previsão e sistemas de decisão em cenários complexos e operacionais.",
+      en: "Content on modeling, optimization, forecasting, and decision systems in complex operational scenarios.",
+    },
+  },
+  {
+    key: "educacao-dados-recomposicao",
+    title: { pt: "Educação, dados e recomposição da aprendizagem", en: "Education, data, and learning recovery" },
+    description: {
+      pt: "Discussões aplicadas sobre evidência educacional, taxonomias, BNCC, machine learning e recomposição da aprendizagem.",
+      en: "Applied discussions on educational evidence, taxonomies, BNCC, machine learning, and learning recovery.",
+    },
+  },
+  {
+    key: "logistica-otimizacao-inteligencia-operacional",
+    title: { pt: "Logística, otimização e inteligência operacional", en: "Logistics, optimization, and operational intelligence" },
+    description: {
+      pt: "Análises sobre roteirização, supply chain, predição, heurísticas e ganhos econômicos orientados por decisão.",
+      en: "Analyses on routing, supply chain, forecasting, heuristics, and economic gains driven by decision systems.",
+    },
+  },
+  {
+    key: "avaliar-modelos-ia-rigor",
+    title: { pt: "Como avaliar modelos de IA com rigor", en: "How to evaluate AI models rigorously" },
+    description: {
+      pt: "Reflexões sobre critérios, validação, vieses, performance e leitura responsável de modelos em contextos críticos.",
+      en: "Reflections on criteria, validation, bias, performance, and responsible interpretation of models in critical contexts.",
     },
   },
 ];
 
 export const aboutSection = {
   intro: {
-    pt: "Giselle Couto Falcão atua como consultora de tecnologia, inovação e inteligência artificial para organizações que precisam estruturar melhor decisões, operações e produtos orientados por dados. Sua atuação não se limita à análise: ela formula problemas complexos, modela cenários, desenha arquitetura analítica e transforma conhecimento técnico em soluções com impacto econômico, institucional e social.",
-    en: "Giselle Couto Falcão works as a technology, innovation, and artificial intelligence consultant for organizations that need to better structure data-driven decisions, operations, and products. Her work goes beyond analysis: she frames complex problems, models scenarios, designs analytical architecture, and turns technical knowledge into solutions with economic, institutional, and social impact.",
+    pt: "Giselle Couto Falcão atua na interseção entre IA aplicada, modelagem matemática e ciência de dados para estruturar problemas complexos e apoiar decisões de alto impacto.",
+    en: "Giselle Couto Falcão works at the intersection of applied AI, mathematical modeling, and data science to structure complex problems and support high-impact decisions.",
   },
   body: {
-    pt: "Ao longo de mais de uma década, sua experiência integrou empresas, indústria, logística, setor público, universidades e ecossistemas de inovação. Esse percurso consolidou uma combinação pouco comum entre rigor científico, visão estratégica e capacidade de implementação. O resultado é uma consultora apta a transitar com profundidade entre machine learning, IA generativa, modelagem matemática computacional, séries temporais, analytics e desenho de soluções para contextos críticos.",
-    en: "Over more than a decade, her experience has spanned companies, industry, logistics, the public sector, universities, and innovation ecosystems. This journey has consolidated an unusual combination of scientific rigor, strategic vision, and implementation capacity. The result is a consultant able to work deeply across machine learning, generative AI, computational mathematical modeling, time series, analytics, and solution design for critical contexts.",
+    pt: "Sua atuação combina pesquisa, consultoria e desenvolvimento de sistemas analíticos para organizações que precisam sair de dados dispersos e chegar a critérios mais sólidos de previsão, priorização, otimização e escolha estratégica.",
+    en: "Her work combines research, consulting, and analytical system development for organizations that need to move from scattered data toward stronger criteria for forecasting, prioritization, optimization, and strategic choice.",
   },
   closing: {
-    pt: "Seu posicionamento combina autoridade científica com execução consultiva, apoiando projetos em que tecnologia, inovação e inteligência artificial precisam gerar resultado concreto. A autoria de livros, artigos e produção científica, somada à atuação com iniciativas e marcas de relevância institucional, reforça uma presença pública orientada por conhecimento, inovação e credibilidade técnica.",
-    en: "Her positioning combines scientific authority with consulting execution, supporting projects in which technology, innovation, and artificial intelligence need to generate concrete results. The authorship of books, articles, and scientific production, combined with work involving institutionally relevant initiatives and brands, reinforces a public presence guided by knowledge, innovation, and technical credibility.",
+    pt: "O diferencial está em unir rigor acadêmico, clareza executiva e aplicação prática em setores como educação, logística, saúde, indústria e setor público, sem depender de discurso inflado ou transformação genérica.",
+    en: "The differentiator lies in combining academic rigor, executive clarity, and practical application across sectors such as education, logistics, healthcare, industry, and the public sector, without relying on inflated discourse or generic transformation claims.",
   },
 };
 
@@ -896,51 +1037,99 @@ export const caseStudies = [
 
 export const insightArticles = [
   {
-    slug: "ia-aplicada-onde-comecar",
-    category: { pt: "Estratégia de IA", en: "AI Strategy" },
+    slug: "matematica-que-vira-decisao",
+    category: { pt: "Matemática aplicada", en: "Applied mathematics" },
     title: {
-      pt: "IA aplicada: por onde começar quando a empresa já tem dados, mas ainda não tem decisão",
-      en: "Applied AI: where to start when a company has data but still lacks decision power",
+      pt: "Matemática que vira decisão",
+      en: "Mathematics that becomes decision",
     },
     excerpt: {
-      pt: "Um guia executivo sobre priorização de casos de uso, maturidade analítica e escolha dos primeiros problemas que realmente justificam investimento em IA.",
-      en: "An executive guide to use-case prioritization, analytical maturity, and selecting the first problems that truly justify AI investment.",
+      pt: "Conteúdos para mostrar como raciocínio matemático pode orientar estratégia, operação, política pública e decisão executiva.",
+      en: "Content showing how mathematical reasoning can guide strategy, operations, public policy, and executive decision-making.",
     },
     audience: {
-      pt: "Diretoria, operações, supply chain e lideranças que querem evitar pilotos sem ROI.",
-      en: "Leadership, operations, and supply chain teams seeking to avoid pilots without ROI.",
+      pt: "Lideranças, pesquisadores e times que precisam sair da abstração e decidir com estrutura.",
+      en: "Leaders, researchers, and teams that need to move beyond abstraction and decide with structure.",
     },
   },
   {
-    slug: "inovacao-com-relevancia-operacional",
-    category: { pt: "Inovação orientada a negócio", en: "Business-led innovation" },
+    slug: "ia-aplicada-sem-espuma",
+    category: { pt: "IA aplicada", en: "Applied AI" },
     title: {
-      pt: "Inovação com relevância operacional: como transformar tecnologia em vantagem competitiva",
-      en: "Innovation with operational relevance: how to turn technology into competitive advantage",
+      pt: "IA aplicada sem espuma",
+      en: "Applied AI without hype",
     },
     excerpt: {
-      pt: "Reflexões sobre arquitetura, governança, priorização e desenho de solução para empresas que precisam conectar tecnologia, operação e resultado.",
-      en: "Reflections on architecture, governance, prioritization, and solution design for companies that need to connect technology, operations, and outcomes.",
+      pt: "Uma linha editorial para separar hype de aplicação real, com foco em governança, priorização e valor mensurável.",
+      en: "An editorial line designed to separate hype from real application, with a focus on governance, prioritization, and measurable value.",
     },
     audience: {
-      pt: "Executivos, gestores de transformação e times que buscam inovação com clareza metodológica.",
-      en: "Executives, transformation managers, and teams seeking innovation with methodological clarity.",
+      pt: "Executivos, gestores e equipes que desejam IA com critério e retorno real.",
+      en: "Executives, managers, and teams seeking AI with judgment and real return.",
     },
   },
   {
-    slug: "modelagem-matematica-e-negocio",
+    slug: "modelos-matematicos-problemas-reais",
     category: { pt: "Modelagem e decisão", en: "Modeling and decision-making" },
     title: {
-      pt: "Modelagem matemática para negócio: quando otimização, previsão e decisão deixam de ser abstração",
-      en: "Mathematical modeling for business: when optimization, forecasting, and decision-making stop being abstract",
+      pt: "Modelos matemáticos para problemas reais",
+      en: "Mathematical models for real problems",
     },
     excerpt: {
-      pt: "Uma leitura aplicada sobre como heurísticas, algoritmos e simulação podem destravar eficiência, escala e inteligência operacional em setores complexos.",
-      en: "An applied perspective on how heuristics, algorithms, and simulation can unlock efficiency, scale, and operational intelligence in complex sectors.",
+      pt: "Artigos sobre otimização, simulação, previsão e desenho de sistemas analíticos para contextos complexos.",
+      en: "Articles on optimization, simulation, forecasting, and analytical system design for complex contexts.",
     },
     audience: {
-      pt: "Indústria, logística, planejamento e organizações intensivas em decisão.",
-      en: "Industry, logistics, planning, and decision-intensive organizations.",
+      pt: "Logística, indústria, setor público e organizações intensivas em decisão.",
+      en: "Logistics, industry, the public sector, and decision-intensive organizations.",
+    },
+  },
+  {
+    slug: "educacao-dados-recomposicao",
+    category: { pt: "Educação baseada em dados", en: "Data-driven education" },
+    title: {
+      pt: "Educação, dados e recomposição da aprendizagem",
+      en: "Education, data, and learning recovery",
+    },
+    excerpt: {
+      pt: "Série voltada a evidência educacional, diagnóstico, BNCC, personalização e recomposição da aprendizagem.",
+      en: "Series focused on educational evidence, diagnosis, BNCC alignment, personalization, and learning recovery.",
+    },
+    audience: {
+      pt: "Redes de ensino, edtechs, fundações, escolas e lideranças pedagógicas.",
+      en: "School systems, edtechs, foundations, schools, and pedagogical leadership teams.",
+    },
+  },
+  {
+    slug: "logistica-otimizacao-inteligencia-operacional",
+    category: { pt: "Operações e logística", en: "Operations and logistics" },
+    title: {
+      pt: "Logística, otimização e inteligência operacional",
+      en: "Logistics, optimization, and operational intelligence",
+    },
+    excerpt: {
+      pt: "Conteúdos sobre roteirização, supply chain, previsão, heurísticas e eficiência operacional em ambientes críticos.",
+      en: "Content about routing, supply chain, forecasting, heuristics, and operational efficiency in critical environments.",
+    },
+    audience: {
+      pt: "Operações, planejamento, supply chain, indústria e logística.",
+      en: "Operations, planning, supply chain, industry, and logistics teams.",
+    },
+  },
+  {
+    slug: "avaliar-modelos-ia-rigor",
+    category: { pt: "Avaliação de modelos", en: "Model evaluation" },
+    title: {
+      pt: "Como avaliar modelos de IA com rigor",
+      en: "How to evaluate AI models rigorously",
+    },
+    excerpt: {
+      pt: "Reflexões sobre validação, vieses, métricas, critérios de comparação e uso responsável de modelos em contextos sensíveis.",
+      en: "Reflections on validation, bias, metrics, comparison criteria, and responsible model use in sensitive contexts.",
+    },
+    audience: {
+      pt: "Times de dados, inovação, pesquisa aplicada e lideranças que precisam confiar na decisão algorítmica.",
+      en: "Data, innovation, and applied research teams that need to trust algorithmic decision-making.",
     },
   },
 ];
@@ -1060,6 +1249,7 @@ export const contact = {
     { label: "E-mail", href: "mailto:contato@gisellefalcao.com", available: true },
     { label: "Google Scholar", href: "https://scholar.google.com.br/citations?hl=pt-BR&user=ljBj6GMAAAAJ", available: true },
     { label: "Lattes", href: "http://lattes.cnpq.br/7661015485905669", available: true },
+    { label: "Medium", href: "https://medium.com/@giselle_9978", available: true },
   ],
 };
 

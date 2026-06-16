@@ -27,12 +27,13 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { trpc } from "@/lib/trpc";
-import { aboutSection, assets, authorityMetrics, caseStudies, certifications, consultingSectors, consultingServices, contact, educationTimeline, experienceTimeline, expertiseCards, faqItems, heroCopy, impactStats, insightArticles, keyAreas, linkedinBadge, navItems, placeholderPrompt, projectCategories, projects, publications, speaking, stack, t, type Locale, valueBlocks } from "@/lib/portfolioData";
+import { aboutSection, assets, authorityMetrics, authorityProofs, caseStudies, certifications, consultingSectors, consultingServices, contact, editorialPositioning, editorialSeries, educationTimeline, experienceTimeline, expertiseCards, faqItems, heroCopy, impactStats, insightArticles, keyAreas, linkedinBadge, navItems, placeholderPrompt, projectCategories, projects, publications, speaking, stack, t, type Locale, valueBlocks } from "@/lib/portfolioData";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 
 type SectionId =
   | "home"
+  | "provas"
   | "sobre"
   | "expertise"
   | "servicos"
@@ -418,7 +419,7 @@ export default function PortfolioSite({ initialLocale = "pt", page = "home" }: P
               <p className="mt-6 max-w-2xl text-base leading-8 text-slate-400 sm:text-lg">{t(locale, heroCopy.subheadline)}</p>
 
               <div className="mt-8 flex flex-wrap gap-4">
-                <a href="#projetos" onClick={handleAnchorNavigation("#projetos")} className="group inline-flex items-center rounded-full bg-white px-6 py-3 text-sm font-medium text-slate-950 transition hover:bg-[var(--accent-copper)]">
+                <a href="#provas" onClick={handleAnchorNavigation("#provas")} className="group inline-flex items-center rounded-full bg-white px-6 py-3 text-sm font-medium text-slate-950 transition hover:bg-[var(--accent-copper)]">
                   {t(locale, heroCopy.ctaPrimary)}
                   <ArrowRight className="ml-2 size-4 transition-transform group-hover:translate-x-1" />
                 </a>
@@ -474,6 +475,41 @@ export default function PortfolioSite({ initialLocale = "pt", page = "home" }: P
                   <p className="mt-3 text-sm leading-7 text-slate-300">{t(locale, metric.label)}</p>
                 </motion.div>
               ))}
+            </div>
+          </div>
+        </section>
+
+        <section id="provas" className="scroll-mt-28 border-b border-white/6 py-24">
+          <div className="container">
+            <SectionHeading
+              eyebrow={locale === "pt" ? "Provas de autoridade" : "Authority proof"}
+              title={locale === "pt" ? "Os sinais que ajudam uma marca, cliente ou instituição a confiar rápido" : "The signals that help brands, clients, and institutions trust quickly"}
+              text={locale === "pt" ? "Em vez de exigir leitura longa para transmitir densidade, esta seção organiza os sinais objetivos de autoridade logo no início: formação, produção científica, presença pública, repositórios, cases e canais verificáveis." : "Instead of requiring a long read to communicate depth, this section organizes objective signals of authority up front: education, scientific production, public presence, repositories, case studies, and verifiable channels."}
+            />
+
+            <div className="mt-12 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+              {authorityProofs.map((proof, index) => {
+                const isExternal = proof.kind === "external";
+
+                return (
+                  <motion.div key={proof.key} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-120px" }} transition={{ delay: index * 0.04 }}>
+                    <a
+                      href={proof.href}
+                      onClick={isExternal ? undefined : handleAnchorNavigation(proof.href)}
+                      target={isExternal ? "_blank" : undefined}
+                      rel={isExternal ? "noreferrer" : undefined}
+                      className="group block h-full rounded-[1.9rem] border border-white/8 bg-[linear-gradient(180deg,rgba(255,255,255,0.05),rgba(255,255,255,0.02))] p-6 transition duration-300 hover:-translate-y-1 hover:border-teal-300/25 hover:bg-[linear-gradient(180deg,rgba(37,167,167,0.10),rgba(255,255,255,0.03))]"
+                    >
+                      <div className="flex items-center justify-between gap-4">
+                        <span className="text-[0.68rem] uppercase tracking-[0.28em] text-[var(--accent-copper)]">{locale === "pt" ? "Verificável" : "Verifiable"}</span>
+                        <ArrowRight className="size-4 text-teal-300 transition-transform group-hover:translate-x-1" />
+                      </div>
+                      <h3 className="mt-5 font-display text-2xl leading-tight text-white">{t(locale, proof.title)}</h3>
+                      <p className="mt-4 text-sm leading-7 text-slate-300">{t(locale, proof.description)}</p>
+                    </a>
+                  </motion.div>
+                );
+              })}
             </div>
           </div>
         </section>
@@ -901,28 +937,43 @@ export default function PortfolioSite({ initialLocale = "pt", page = "home" }: P
         <section id="insights" className="scroll-mt-28 border-b border-white/6 py-24">
           <div className="container">
             <SectionHeading
-              eyebrow={locale === "pt" ? "Artigos e insights" : "Articles and insights"}
-              title={locale === "pt" ? "Bloco editorial recorrente para consolidar autoridade orgânica em tecnologia, inovação e IA" : "Recurring editorial block to consolidate organic authority in technology, innovation, and AI"}
-              text={locale === "pt" ? "Os temas abaixo funcionam como base para uma linha editorial contínua. Eles ajudam Google, modelos de IA e potenciais clientes a reconhecer padrões de especialidade, repertório executivo e profundidade analítica." : "The themes below act as a foundation for an ongoing editorial line. They help Google, AI models, and potential clients recognize patterns of expertise, executive repertoire, and analytical depth."}
+              eyebrow={locale === "pt" ? "Linha editorial" : "Editorial line"}
+              title={t(locale, editorialPositioning.title)}
+              text={t(locale, editorialPositioning.body)}
             />
 
+            <div className="mt-10 rounded-[2rem] border border-[rgba(191,148,103,0.22)] bg-[linear-gradient(135deg,rgba(191,148,103,0.14),rgba(7,17,26,0.8))] p-7 sm:p-8">
+              <p className="text-xs uppercase tracking-[0.28em] text-[var(--accent-copper)]">{locale === "pt" ? "Interseção pública a dominar" : "Public intersection to own"}</p>
+              <p className="mt-4 max-w-4xl font-display text-3xl leading-tight text-white sm:text-[2.5rem]">{t(locale, editorialPositioning.title)}</p>
+              <p className="mt-5 max-w-3xl text-base leading-8 text-slate-200">{t(locale, editorialPositioning.body)}</p>
+            </div>
+
             <div className="mt-12 grid gap-5 xl:grid-cols-3">
-              {insightArticles.map((article, index) => (
-                <motion.div key={article.slug} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} transition={{ delay: index * 0.05 }}>
+              {editorialSeries.map((series, index) => (
+                <motion.div key={series.key} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} transition={{ delay: index * 0.05 }}>
                   <Card className="h-full rounded-[1.9rem] border-white/8 bg-white/5 text-white transition duration-300 hover:-translate-y-1 hover:border-teal-300/20">
                     <CardContent className="flex h-full flex-col p-7">
                       <div className="flex items-center justify-between gap-4">
-                        <Badge className="rounded-full border border-white/10 bg-white/5 text-slate-200">{t(locale, article.category)}</Badge>
+                        <Badge className="rounded-full border border-white/10 bg-white/5 text-slate-200">{locale === "pt" ? "Série editorial" : "Editorial series"}</Badge>
                         <Newspaper className="size-5 text-teal-200" />
                       </div>
-                      <h3 className="mt-6 font-display text-3xl leading-tight">{t(locale, article.title)}</h3>
-                      <p className="mt-4 text-sm leading-7 text-slate-300">{t(locale, article.excerpt)}</p>
-                      <div className="mt-6 border-t border-white/8 pt-5">
-                        <p className="text-xs uppercase tracking-[0.24em] text-[var(--accent-copper)]">{locale === "pt" ? "Leitura recomendada para" : "Recommended reading for"}</p>
-                        <p className="mt-2 text-sm leading-7 text-slate-200">{t(locale, article.audience)}</p>
-                      </div>
+                      <h3 className="mt-6 font-display text-3xl leading-tight">{t(locale, series.title)}</h3>
+                      <p className="mt-4 text-sm leading-7 text-slate-300">{t(locale, series.description)}</p>
                     </CardContent>
                   </Card>
+                </motion.div>
+              ))}
+            </div>
+
+            <div className="mt-12 grid gap-5 xl:grid-cols-3">
+              {insightArticles.map((article, index) => (
+                <motion.div key={article.slug} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} transition={{ delay: index * 0.04 }}>
+                  <div className="h-full rounded-[1.7rem] border border-white/8 bg-[rgba(255,255,255,0.03)] p-6">
+                    <p className="text-xs uppercase tracking-[0.24em] text-teal-200">{t(locale, article.category)}</p>
+                    <h3 className="mt-4 font-display text-2xl leading-tight text-white">{t(locale, article.title)}</h3>
+                    <p className="mt-4 text-sm leading-7 text-slate-300">{t(locale, article.excerpt)}</p>
+                    <p className="mt-5 text-sm leading-7 text-slate-400">{t(locale, article.audience)}</p>
+                  </div>
                 </motion.div>
               ))}
             </div>
