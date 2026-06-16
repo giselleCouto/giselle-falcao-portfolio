@@ -12,7 +12,9 @@ import ErrorBoundary from "./components/ErrorBoundary";
 import PortfolioSite from "./components/PortfolioSite";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { caseStudies, faqItems, insightArticles } from "./lib/portfolioData";
+import { minasSummitFaqItems, minasSummitFaqMeta, minasSummitSocialLinks } from "./lib/minasSummitFaqData";
 import GiselleCourses from "./pages/GiselleCourses";
+import MinasSummitFaq from "./pages/MinasSummitFaq";
 
 function upsertMeta(selector: string, attributeName: "name" | "property", attributeValue: string, content: string) {
   let tag = document.querySelector<HTMLMetaElement>(selector);
@@ -73,6 +75,8 @@ function RouteSeo() {
     removeJsonLd("giselle-faq-schema");
     removeJsonLd("giselle-case-studies-schema");
     removeJsonLd("giselle-insights-schema");
+    removeJsonLd("minas-summit-faq-schema");
+    removeJsonLd("minas-summit-speaker-schema");
 
     if (location === "/giselle/cursos") {
       title = "Curso de Engenharia de Sistemas de IA Generativa | Giselle Falcão";
@@ -95,6 +99,36 @@ function RouteSeo() {
       description =
         "Área autenticada dos cursos de Giselle Falcão com histórico detalhado, retomada por aula, progresso salvo e status claro de liberação pós-compra.";
       keywords = "meus cursos, área do aluno, curso de IA, Giselle Falcão";
+    } else if (location === minasSummitFaqMeta.slug) {
+      title = minasSummitFaqMeta.title;
+      description = minasSummitFaqMeta.description;
+      keywords = minasSummitFaqMeta.keywords;
+
+      upsertJsonLd("minas-summit-faq-schema", {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        mainEntity: minasSummitFaqItems.map((item) => ({
+          "@type": "Question",
+          name: item.question,
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: item.answer,
+          },
+        })),
+      });
+
+      upsertJsonLd("minas-summit-speaker-schema", {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        name: "Giselle Couto Falcão",
+        url: new URL(minasSummitFaqMeta.slug, origin).toString(),
+        sameAs: [minasSummitSocialLinks.linkedin],
+        contactPoint: {
+          "@type": "ContactPoint",
+          contactType: "business inquiries",
+          url: minasSummitSocialLinks.whatsapp,
+        },
+      });
     } else if (location === "/giselle") {
       title = "Giselle Couto Falcão | IA Industrial, Modelagem Matemática e Ciência de Dados";
       description =
@@ -480,6 +514,7 @@ function Router() {
         <Route path="/giselle/cursos/lab" component={() => <GiselleCourses view="lab" />} />
         <Route path="/giselle/cursos/meus-cursos" component={() => <GiselleCourses view="dashboard" />} />
         <Route path="/giselle" component={() => <PortfolioSite />} />
+        <Route path={minasSummitFaqMeta.slug} component={MinasSummitFaq} />
         <Route path="/jade" component={JadeProfile} />
         <Route path="/404" component={NotFound} />
         <Route component={NotFound} />

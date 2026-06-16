@@ -106,3 +106,6 @@
 - [x] Replanejar a arquitetura visual, a hierarquia e a narrativa da página /giselle para um layout mais inovador
 - [x] Implementar um novo layout para /giselle com linguagem visual mais contemporânea, editorial e tecnológica
 - [x] Validar responsividade, SEO, testes e build após a reformulação visual da página /giselle
+- [x] Criar uma página pública de FAQ para o evento Minas Summit com rota dedicada e acesso fácil por QR Code
+- [x] Integrar na página do Minas Summit os links de LinkedIn e WhatsApp da Giselle com CTAs visíveis
+- [x] Validar a nova página do Minas Summit com testes, build e preview antes da entrega
