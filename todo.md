@@ -122,3 +122,12 @@
 - [x] Implementar no hero da rota /ai-os um headline duplicado em camadas traseira e dianteira para produzir recorte visual real entre tipografia e geometria 3D
 - [x] Coordenar o ScrollTrigger com esse recorte tipográfico para criar cruzamentos visuais claros, e não apenas parallax global
 - [x] Adicionar validação automatizada para a presença da estrutura de camadas duplicadas do headline na rota /ai-os
+- [x] Adicionar à página /minas-summit um formulário de captação com nome, e-mail, telefone e área de negócio
+- [x] Persistir os dados enviados pelo formulário do Minas Summit no backend existente de leads com validação adequada
+- [x] Validar a coleta do formulário do Minas Summit com testes, build e revisão final da experiência
+- [x] Adicionar à página /minas-summit uma seção de lista de espera para o livro 'IA na Prática: Anatomia de uma Solução de Machine Learning em Larga Escala — do Dado Bruto à Decisão'
+- [x] Integrar a captação da lista de espera do livro ao fluxo existente de leads, diferenciando a origem e o interesse do contato
+- [x] Validar a nova seção de lista de espera do livro com testes, build e revisão final da experiência
+- [x] Tornar `phone` e `businessArea` obrigatórios também no backend da mutation `leads.submit`, com validação mínima de formato ou comprimento para telefone
+- [x] Reabrir `/minas-summit` no preview após as alterações e revisar visualmente o formulário e a seção de lista de espera
+- [x] Validar em browser o estado final da experiência do Minas Summit após a nova captação

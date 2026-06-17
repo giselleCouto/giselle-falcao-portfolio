@@ -36,6 +36,13 @@
       "when": 1780449175422,
       "tag": "0004_new_raider",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "5",
+      "when": 1781726504542,
+      "tag": "0005_slow_yellowjacket",
+      "breakpoints": true
     }
   ]
 }

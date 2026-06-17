@@ -22,6 +22,16 @@ describe("Página Minas Summit FAQ", () => {
     expect(pageSource).toContain("Perfil no LinkedIn");
   });
 
+  it("inclui formulário de captação com nome, e-mail, telefone, área de negócio e lista de espera do livro", () => {
+    expect(pageSource).toContain('placeholder="Seu nome"');
+    expect(pageSource).toContain('placeholder="Seu e-mail"');
+    expect(pageSource).toContain('placeholder="Seu telefone / WhatsApp"');
+    expect(pageSource).toContain('placeholder="Sua área de negócio"');
+    expect(pageSource).toContain("Lista de espera do livro");
+    expect(pageSource).toContain("IA na Prática: Anatomia de uma Solução de Machine Learning em Larga Escala — do Dado Bruto à Decisão");
+    expect(pageSource).toContain("minas-summit-faq-waitlist");
+  });
+
   it("publica um FAQ robusto com conteúdo pós-palestra sobre IA no agro", () => {
     expect(minasSummitFaqItems.length).toBeGreaterThanOrEqual(18);
     expect(minasSummitFaqItems[0].question).toContain("IA no agro");

@@ -1,11 +1,68 @@
+import { useState } from "react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { minasSummitFaqIntro, minasSummitFaqItems, minasSummitHighlights, minasSummitSocialLinks } from "@/lib/minasSummitFaqData";
-import { ArrowRight, Linkedin, MessageCircle, QrCode } from "lucide-react";
+import { trpc } from "@/lib/trpc";
+import { ArrowRight, BookOpen, Linkedin, MessageCircle, QrCode } from "lucide-react";
+import { toast } from "sonner";
 import { Link } from "wouter";
+
+const bookTitle = "IA na Prática: Anatomia de uma Solução de Machine Learning em Larga Escala — do Dado Bruto à Decisão";
 
 export default function MinasSummitFaq() {
   const intro = minasSummitFaqIntro.pt;
+  const [leadForm, setLeadForm] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    businessArea: "",
+  });
+
+  const submitLeadMutation = trpc.leads.submit.useMutation({
+    onSuccess: (result) => {
+      setLeadForm({
+        name: "",
+        email: "",
+        phone: "",
+        businessArea: "",
+      });
+
+      toast.success(
+        result.notificationSent
+          ? "Cadastro enviado com sucesso. Sua entrada na lista de espera e seu contato já foram sinalizados internamente."
+          : "Cadastro recebido com sucesso. Seus dados foram salvos e sua lista de espera foi registrada.",
+      );
+    },
+    onError: () => {
+      toast.error("Não foi possível registrar seu cadastro agora. Tente novamente em instantes.");
+    },
+  });
+
+  const handleFieldChange =
+    (field: keyof typeof leadForm) => (event: React.ChangeEvent<HTMLInputElement>) => {
+      setLeadForm((prev) => ({
+        ...prev,
+        [field]: event.target.value,
+      }));
+    };
+
+  const handleLeadSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    await submitLeadMutation.mutateAsync({
+      route: "/minas-summit",
+      persona: "minas-summit",
+      name: leadForm.name,
+      email: leadForm.email,
+      phone: leadForm.phone,
+      organization: "",
+      businessArea: leadForm.businessArea,
+      interest: "Lista de espera do livro Novatec + contato Minas Summit",
+      message: `Contato captado na página Minas Summit. Interesse registrado na lista de espera do livro ${bookTitle}. Telefone: ${leadForm.phone}. Área de negócio: ${leadForm.businessArea}.`,
+      source: "minas-summit-faq-waitlist",
+    });
+  };
 
   return (
     <main className="relative min-h-screen overflow-hidden bg-[var(--bg-obsidian)] text-slate-100">
@@ -88,7 +145,7 @@ export default function MinasSummitFaq() {
                 Quer levar IA aplicada para a sua operação?
               </h2>
               <p className="mt-5 text-base leading-8 text-slate-300">
-                O melhor próximo passo é sair da abstração e olhar para dados, processo, dor operacional e impacto econômico. A conversa pode começar por uma troca simples no WhatsApp ou pelo LinkedIn.
+                O melhor próximo passo é sair da abstração e olhar para dados, processo, dor operacional e impacto econômico. A conversa pode começar por uma troca simples no WhatsApp, pelo LinkedIn ou pelo cadastro abaixo.
               </p>
 
               <div className="mt-8 grid gap-4">
@@ -118,6 +175,67 @@ export default function MinasSummitFaq() {
                   <ArrowRight className="size-4 text-white" />
                 </Link>
               </div>
+            </div>
+
+            <div className="thoughtworks-card rounded-[1.6rem] p-6 sm:p-8">
+              <div className="flex items-start gap-4">
+                <div className="flex size-12 shrink-0 items-center justify-center rounded-full bg-[var(--accent-teal)]/12 text-[var(--accent-teal)]">
+                  <BookOpen className="size-5" />
+                </div>
+                <div>
+                  <p className="text-[0.72rem] font-semibold uppercase tracking-[0.3em] text-teal-200">Lista de espera do livro</p>
+                  <h2 className="mt-3 font-display text-2xl font-bold uppercase leading-tight text-white">
+                    {bookTitle}
+                  </h2>
+                  <p className="mt-4 text-sm leading-7 text-slate-300 sm:text-base">
+                    Deixe seus dados para receber novidades sobre o lançamento pela <span className="font-semibold text-white">Novatec</span>, prioridade de aviso e abertura da conversa sobre como IA aplicada, dados brutos e decisão em larga escala podem entrar na sua operação.
+                  </p>
+                </div>
+              </div>
+
+              <form className="mt-8 grid gap-4" onSubmit={handleLeadSubmit}>
+                <Input
+                  value={leadForm.name}
+                  onChange={handleFieldChange("name")}
+                  placeholder="Seu nome"
+                  className="h-12 rounded-2xl border-white/10 bg-white/[0.03] text-white placeholder:text-slate-500"
+                  required
+                />
+                <Input
+                  type="email"
+                  value={leadForm.email}
+                  onChange={handleFieldChange("email")}
+                  placeholder="Seu e-mail"
+                  className="h-12 rounded-2xl border-white/10 bg-white/[0.03] text-white placeholder:text-slate-500"
+                  required
+                />
+                <Input
+                  value={leadForm.phone}
+                  onChange={handleFieldChange("phone")}
+                  placeholder="Seu telefone / WhatsApp"
+                  className="h-12 rounded-2xl border-white/10 bg-white/[0.03] text-white placeholder:text-slate-500"
+                  required
+                />
+                <Input
+                  value={leadForm.businessArea}
+                  onChange={handleFieldChange("businessArea")}
+                  placeholder="Sua área de negócio"
+                  className="h-12 rounded-2xl border-white/10 bg-white/[0.03] text-white placeholder:text-slate-500"
+                  required
+                />
+
+                <Button
+                  type="submit"
+                  disabled={submitLeadMutation.isPending}
+                  className="mt-2 rounded-full bg-[var(--accent-copper)] px-6 py-6 text-sm font-semibold uppercase tracking-[0.18em] text-slate-950 hover:bg-white disabled:cursor-not-allowed disabled:opacity-70"
+                >
+                  {submitLeadMutation.isPending ? "Registrando cadastro..." : "Entrar na lista de espera e receber contato"}
+                </Button>
+              </form>
+
+              <p className="mt-4 text-sm leading-7 text-slate-400">
+                Ao enviar, seus dados ficam registrados para acompanhamento do pós-evento, contato consultivo e comunicação do lançamento do livro.
+              </p>
             </div>
 
             <div className="thoughtworks-card rounded-[1.6rem] p-6 sm:p-8">

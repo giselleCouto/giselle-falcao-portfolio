@@ -29,16 +29,48 @@ import {
   hasCompletedModuleLessons,
 } from "./courseCertificate";
 
-const leadInputSchema = z.object({
-  route: z.string().trim().min(1).max(64),
-  persona: z.string().trim().min(1).max(64),
-  name: z.string().trim().min(2).max(160),
-  email: z.string().trim().email().max(320),
-  organization: z.string().trim().max(200).optional().or(z.literal("")),
-  interest: z.string().trim().max(120).optional().or(z.literal("")),
-  message: z.string().trim().min(12).max(4000),
-  source: z.string().trim().max(120).optional(),
-});
+const leadInputSchema = z
+  .object({
+    route: z.string().trim().min(1).max(64),
+    persona: z.string().trim().min(1).max(64),
+    name: z.string().trim().min(2).max(160),
+    email: z.string().trim().email().max(320),
+    phone: z.string().trim().max(40).optional().or(z.literal("")),
+    organization: z.string().trim().max(200).optional().or(z.literal("")),
+    businessArea: z.string().trim().max(160).optional().or(z.literal("")),
+    interest: z.string().trim().max(120).optional().or(z.literal("")),
+    message: z.string().trim().min(12).max(4000),
+    source: z.string().trim().max(120).optional(),
+  })
+  .superRefine((input, ctx) => {
+    const isMinasSummitLead = input.route === "/minas-summit" || input.source?.includes("minas-summit");
+
+    if (!isMinasSummitLead) return;
+
+    const phoneDigits = (input.phone ?? "").replace(/\D/g, "");
+
+    if (!input.phone?.trim()) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["phone"],
+        message: "Telefone é obrigatório para contatos do Minas Summit.",
+      });
+    } else if (phoneDigits.length < 10) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["phone"],
+        message: "Informe um telefone válido com DDD.",
+      });
+    }
+
+    if (!input.businessArea?.trim()) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["businessArea"],
+        message: "Área de negócio é obrigatória para contatos do Minas Summit.",
+      });
+    }
+  });
 
 const progressInputSchema = z.object({
   moduleId: z.string().trim().min(1).max(64),
@@ -84,7 +116,9 @@ export const appRouter = router({
         persona: input.persona,
         name: input.name,
         email: input.email,
+        phone: input.phone?.trim() || null,
         organization: input.organization?.trim() || null,
+        businessArea: input.businessArea?.trim() || null,
         interest: input.interest?.trim() || null,
         message: input.message,
         source: input.source?.trim() || "website",
@@ -98,7 +132,9 @@ export const appRouter = router({
           `Persona: ${normalized.persona}`,
           `Nome: ${normalized.name}`,
           `E-mail: ${normalized.email}`,
+          `Telefone: ${normalized.phone ?? "Não informado"}`,
           `Organização: ${normalized.organization ?? "Não informada"}`,
+          `Área de negócio: ${normalized.businessArea ?? "Não informada"}`,
           `Interesse: ${normalized.interest ?? "Não informado"}`,
           `Origem: ${normalized.source}`,
           `Mensagem: ${normalized.message}`,

@@ -1,0 +1,10 @@
+Revisão visual final da página /minas-summit no preview https://3000-i0om0noxqs1ckss8d6gzr-b208a56c.us2.manus.computer/minas-summit
+
+Evidências confirmadas:
+- Hero e CTAs principais renderizados corretamente no topo.
+- FAQ continua acessível com acordeões listados na coluna esquerda.
+- Card lateral "Continuar a conversa" permanece visível com links para WhatsApp, LinkedIn e portfólio.
+- Nova seção "Lista de espera do livro" visível no preview, com o título completo do livro e menção ao lançamento pela Novatec.
+- Formulário renderizado com os quatro campos solicitados: nome, e-mail, telefone/WhatsApp e área de negócio.
+- Botão principal renderizado: "Entrar na lista de espera e receber contato".
+- Layout preserva consistência visual com fundo escuro e estética editorial/tecnológica.
