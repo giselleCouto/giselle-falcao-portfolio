@@ -113,3 +113,12 @@
 - [x] Implementar um novo Hero com tipografia monumental, grid matemático e elementos técnicos de interface
 - [x] Construir a transição inicial para o módulo Geometria de Precisão com composição visual componentizada
 - [x] Validar o redesign inicial com testes, build e revisão visual da rota afetada
+- [x] Aprofundar o sistema de camadas da rota /ai-os para que elementos visuais atravessem a tipografia pela frente e por trás
+- [x] Refinar animações de scroll e composição do hero para aumentar a percepção de profundidade e recorte entre texto e geometria
+- [x] Revalidar testes, build e revisão visual da rota /ai-os após o novo refinamento de animação
+- [x] Ajustar a paleta da rota /ai-os para tons de roxo, lavanda e ciano alinhados à identidade visual da logo
+- [x] Integrar a nova paleta ao sistema de camadas e às animações de profundidade entre tipografia e elementos 3D
+- [x] Revalidar testes, build e revisão visual da rota /ai-os após o refinamento cromático
+- [x] Implementar no hero da rota /ai-os um headline duplicado em camadas traseira e dianteira para produzir recorte visual real entre tipografia e geometria 3D
+- [x] Coordenar o ScrollTrigger com esse recorte tipográfico para criar cruzamentos visuais claros, e não apenas parallax global
+- [x] Adicionar validação automatizada para a presença da estrutura de camadas duplicadas do headline na rota /ai-os

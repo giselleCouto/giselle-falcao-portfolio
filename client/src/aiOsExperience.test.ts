@@ -14,7 +14,7 @@ describe("Rota experimental AI/OS", () => {
 
   it("implementa o hero com linguagem AI/OS e foco em decisão, dados e engenharia", () => {
     expect(pageSource).toContain("Sistema operacional moderno de IA");
-    expect(pageSource).toContain("IA, dados e engenharia para decisões em camadas.");
+    expect(pageSource).toContain('const heroHeadlineLines = ["IA,", "DADOS E", "ENGENHARIA", "PARA", "DECISÕES", "EM", "CAMADAS."]');
     expect(pageSource).toContain("Geometria de precisão.");
   });
 
@@ -23,5 +23,12 @@ describe("Rota experimental AI/OS", () => {
     expect(pageSource).toContain('from "@react-three/fiber"');
     expect(pageSource).toContain("ScrollTrigger");
     expect(pageSource).toContain("<Canvas");
+  });
+
+  it("mantém headline duplicado em camadas para criar recorte tipográfico com o canvas entre texto traseiro e dianteiro", () => {
+    expect(pageSource).toContain('HeroHeadlineLines mode="back"');
+    expect(pageSource).toContain('HeroHeadlineLines mode="front"');
+    expect(pageSource).toContain("WebkitMaskImage");
+    expect(pageSource).toContain("clipPath");
   });
 });
