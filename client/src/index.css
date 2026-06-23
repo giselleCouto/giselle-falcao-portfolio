@@ -224,6 +224,21 @@
     background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.025));
     border: 1px solid rgba(255,255,255,0.08);
     box-shadow: 0 24px 80px rgba(0,0,0,0.18);
+    transition: border-color 0.25s, background 0.25s;
+  }
+
+  .thoughtworks-card:hover {
+    background: linear-gradient(180deg, rgba(32,211,194,0.07), rgba(255,255,255,0.025));
+  }
+
+  @keyframes gradientShift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+
+  @keyframes pulseGlow {
+    0%, 100% { transform: scale(1); opacity: 0.18; }
+    50% { transform: scale(1.15); opacity: 0.28; }
   }
 
   .portrait-frame::before {
