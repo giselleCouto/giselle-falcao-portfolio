@@ -22,6 +22,7 @@ async function startServer() {
   app.get("/solucoes/sensormonit", (_req, res) => res.redirect("https://sensormonit-ipqnpabh.manus.space"));
   app.get("/solucoes/eucasmart", (_req, res) => res.redirect("https://eucasmart-wwnth7mf.manus.space"));
   app.get("/solucoes/greensenti", (_req, res) => res.redirect("https://greensenti-wehhdk6t.manus.space"));
+  app.get("/solucoes/pharo", (_req, res) => res.redirect("https://pharo-production.up.railway.app/"));
 
   // Handle client-side routing - serve index.html for all routes
   app.get("*", (_req, res) => {
