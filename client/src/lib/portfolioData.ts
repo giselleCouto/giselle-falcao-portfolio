@@ -531,6 +531,34 @@ export const projects = [
     linkLabel: "Curral AI",
   },
   {
+    category: "Logística",
+    sector: { pt: "Logística Marítima e Pesquisa Operacional", en: "Maritime Logistics and Operations Research" },
+    title: {
+      pt: "Pharos — DSS de cabotagem multi-porto com modelagem de marés e otimização",
+      en: "Pharos — Multi-port cabotage DSS with tide modeling and optimization",
+    },
+    context: {
+      pt: "Sistema de Suporte à Decisão para planejamento operacional de cabotagem marítima com horizonte de até 60 dias, integrando motor de marés, restrições de calado e UKC, modelos de custo e heurística multi-cenário.",
+      en: "Decision Support System for maritime cabotage operational planning with a 60-day horizon, integrating a tide engine, draft and UKC constraints, cost models, and a multi-scenario heuristic.",
+    },
+    problem: {
+      pt: "Planejamento manual de rotas marítimas sujeito a restrições simultâneas de calado, maré, capacidade, segregação IMDG e janelas de ressuprimento — sem visibilidade de custo nem comparação de cenários em tempo hábil.",
+      en: "Manual maritime route planning under simultaneous constraints of draft, tide, capacity, IMDG segregation, and supply windows — with no cost visibility or timely scenario comparison.",
+    },
+    approach: {
+      pt: "Motor de marés com síntese harmônica (DHN 2026, 8 componentes astronômicas, 10 portos brasileiros) para validação de calado/UKC por chegada. Metaheurística construtiva greedy (multi_porto_heuristica_v3.3) executada em Web Worker gera 4 cenários paralelos — OTIMISTA, BASE, CONSERVADOR e CUSTO_MÍNIMO — com modelos de custo de bunker (FULL/ECO/MIN), hire TC, SPOT, demurrage e reefer.",
+      en: "Harmonic tide engine (DHN 2026, 8 astronomical components, 10 Brazilian ports) for per-arrival draft/UKC validation. Greedy constructive meta-heuristic (multi_porto_heuristica_v3.3) running in a Web Worker generates 4 parallel scenarios — OPTIMISTIC, BASE, CONSERVATIVE, and MINIMUM_COST — with bunker cost models (FULL/ECO/MIN), TC hire, SPOT, demurrage, and reefer.",
+    },
+    stack: "TypeScript, Web Workers, síntese harmônica de marés, VRP, meta-heurística, WorldTides API, Gantt SVG, API Type 4",
+    impact: {
+      pt: "Automação do planejamento de viagens com validação física de calado × maré, comparação de 4 cenários de custo em < 2 min no browser e saída API Type 4 com Gantt e mapa SVG de rotas para tomada de decisão comercial e operacional.",
+      en: "Automated voyage planning with physical draft × tide validation, 4-scenario cost comparison in under 2 minutes in the browser, and Type 4 API output with Gantt and SVG route map for commercial and operational decision-making.",
+    },
+    tags: ["cabotage", "tide modeling", "VRP", "DSS", "operations research", "maritime logistics"],
+    link: "/solucoes/pharo",
+    linkLabel: "Pharos",
+  },
+  {
     category: "Clima e Meio Ambiente",
     sector: { pt: "Clima e ESG", en: "Climate and ESG" },
     title: {
@@ -1277,12 +1305,18 @@ export const contact = {
     pt: "Se a sua organização busca uma profissional capaz de conectar inteligência artificial, modelagem matemática, educação, pesquisa aplicada e tomada de decisão estratégica, este é o momento para iniciar uma conversa qualificada.",
     en: "If your organization is looking for a professional able to connect artificial intelligence, mathematical modeling, education, applied research, and strategic decision-making, this is the right time to start a qualified conversation.",
   },
+  whatsapp: "https://wa.me/qr/ZQ5MXUPDDICTL1",
+  email: "mailto:giselle@coutofalcao.com",
+  calendar: "https://calendar.app.google/CHjaQQ3p9MeW4RYi9",
+  lattes: "http://lattes.cnpq.br/7661015485905669",
   links: [
     { label: "LinkedIn", href: "https://www.linkedin.com/in/giselle-falcao-phd/", available: true },
     { label: "GitHub", href: "https://github.com/giselleCouto", available: true },
-    { label: "E-mail", href: "mailto:contato@gisellefalcao.com", available: true },
+    { label: "E-mail", href: "mailto:giselle@coutofalcao.com", available: true },
+    { label: "WhatsApp", href: "https://wa.me/qr/ZQ5MXUPDDICTL1", available: true },
+    { label: "Agendar reunião", href: "https://calendar.app.google/CHjaQQ3p9MeW4RYi9", available: true },
     { label: "Google Scholar", href: "https://scholar.google.com.br/citations?hl=pt-BR&user=ljBj6GMAAAAJ", available: true },
-    { label: "Lattes", href: "http://lattes.cnpq.br/7661015485905669", available: true },
+    { label: "Lattes CNPq", href: "http://lattes.cnpq.br/7661015485905669", available: true },
     { label: "Medium", href: "https://medium.com/@giselle_9978", available: true },
   ],
 };

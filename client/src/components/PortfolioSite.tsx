@@ -1218,7 +1218,42 @@ export default function PortfolioSite({ initialLocale = "pt", page = "home" }: P
                 <h2 className="font-display text-4xl leading-tight text-white sm:text-5xl">{t(locale, contact.title)}</h2>
                 <p className="mt-6 max-w-2xl text-base leading-8 text-slate-300">{t(locale, contact.text)}</p>
 
-                <div className="mt-10 grid gap-4 sm:grid-cols-2">
+                <div className="mt-8 grid gap-3 sm:grid-cols-3">
+                  <a
+                    href={contact.whatsapp}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="group flex flex-col gap-2 rounded-[1.4rem] border border-[rgba(37,211,102,0.25)] bg-[rgba(37,211,102,0.06)] px-5 py-4 transition hover:border-[rgba(37,211,102,0.45)] hover:bg-[rgba(37,211,102,0.12)]"
+                  >
+                    <span className="text-[0.62rem] font-semibold uppercase tracking-[0.28em] text-[rgba(37,211,102,0.8)]">WhatsApp</span>
+                    <span className="text-sm font-medium text-white group-hover:text-white">
+                      {locale === "pt" ? "Iniciar conversa" : "Start a conversation"}
+                    </span>
+                    <ArrowRight className="size-4 text-[rgba(37,211,102,0.7)] transition-transform group-hover:translate-x-0.5" />
+                  </a>
+                  <a
+                    href={contact.email}
+                    className="group flex flex-col gap-2 rounded-[1.4rem] border border-[rgba(139,92,246,0.25)] bg-[rgba(139,92,246,0.06)] px-5 py-4 transition hover:border-[rgba(139,92,246,0.45)] hover:bg-[rgba(139,92,246,0.12)]"
+                  >
+                    <span className="text-[0.62rem] font-semibold uppercase tracking-[0.28em] text-[rgba(167,139,250,0.8)]">E-mail</span>
+                    <span className="text-sm font-medium text-white">giselle@coutofalcao.com</span>
+                    <ArrowRight className="size-4 text-[rgba(139,92,246,0.7)] transition-transform group-hover:translate-x-0.5" />
+                  </a>
+                  <a
+                    href={contact.calendar}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="group flex flex-col gap-2 rounded-[1.4rem] border border-[rgba(20,184,166,0.25)] bg-[rgba(20,184,166,0.06)] px-5 py-4 transition hover:border-[rgba(20,184,166,0.45)] hover:bg-[rgba(20,184,166,0.12)]"
+                  >
+                    <span className="text-[0.62rem] font-semibold uppercase tracking-[0.28em] text-[rgba(20,184,166,0.8)]">{locale === "pt" ? "Agenda" : "Calendar"}</span>
+                    <span className="text-sm font-medium text-white">
+                      {locale === "pt" ? "Agendar reunião" : "Schedule a meeting"}
+                    </span>
+                    <ArrowRight className="size-4 text-[rgba(20,184,166,0.7)] transition-transform group-hover:translate-x-0.5" />
+                  </a>
+                </div>
+
+                <div className="mt-4 grid gap-3 sm:grid-cols-2">
                   {contact.links.map((item) => {
                     const enabled = item.available && item.href;
                     if (!enabled) {
@@ -1343,18 +1378,31 @@ export default function PortfolioSite({ initialLocale = "pt", page = "home" }: P
       </main>
 
       <footer className="border-t border-white/8 py-8">
-        <div className="container flex flex-col gap-4 text-sm text-slate-400 sm:flex-row sm:items-center sm:justify-between">
-          <div className="flex items-center gap-3">
-            <Globe className="size-4" />
+        <div className="container flex flex-col gap-6">
+          <div className="flex flex-wrap items-center gap-3">
+            <a href={contact.whatsapp} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-4 py-2 text-xs text-slate-300 transition hover:border-[rgba(37,211,102,0.3)] hover:text-white">
+              <span className="size-2 rounded-full bg-[rgba(37,211,102,0.8)]" />WhatsApp
+            </a>
+            <a href={contact.email} className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-4 py-2 text-xs text-slate-300 transition hover:border-[rgba(139,92,246,0.3)] hover:text-white">
+              <Mail className="size-3" />giselle@coutofalcao.com
+            </a>
+            <a href={contact.calendar} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-4 py-2 text-xs text-slate-300 transition hover:border-[rgba(20,184,166,0.3)] hover:text-white">
+              <Globe className="size-3" />{locale === "pt" ? "Agendar reunião" : "Book a meeting"}
+            </a>
+            <a href={contact.lattes} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-4 py-2 text-xs text-slate-300 transition hover:border-white/20 hover:text-white">
+              <BookOpen className="size-3" />Lattes CNPq
+            </a>
+          </div>
+          <div className="flex flex-col gap-3 text-sm text-slate-500 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex items-center gap-2">
+              <Newspaper className="size-4" />
+              <span>Giselle Couto Falcão · Portfolio</span>
+            </div>
             <span>
               {locale === "pt"
-                ? "Estrutura bilíngue pronta para expansão, SEO editorial e integração com acervo institucional."
-                : "Bilingual structure ready for expansion, editorial SEO, and institutional archive integration."}
+                ? "Estrutura bilíngue · SEO editorial · IA industrial"
+                : "Bilingual structure · Editorial SEO · Industrial AI"}
             </span>
-          </div>
-          <div className="flex items-center gap-3">
-            <Newspaper className="size-4" />
-            <span>Giselle Couto Falcão · Portfolio</span>
           </div>
         </div>
       </footer>
