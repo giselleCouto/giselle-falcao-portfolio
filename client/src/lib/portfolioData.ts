@@ -447,6 +447,8 @@ export const projects = [
       en: "Greater operational reliability, fewer interruptions, and better use of production capacity.",
     },
     tags: ["predictive maintenance", "manufacturing", "optimization", "analytics"],
+    link: "/solucoes/sensormonit",
+    linkLabel: "SensorMonit",
   },
   {
     category: "Finanças",
@@ -525,6 +527,8 @@ export const projects = [
       en: "Reduced operational cost by USD 96k per month, increased fleet utilization from 60% to 87%, lowered carbon footprint by 22%, and delivered a cloud-agnostic architecture with 100% data isolation in a multitenant environment.",
     },
     tags: ["VRP", "meta-heuristics", "multitenancy", "bunker optimization", "SVG routing"],
+    link: "/solucoes/curral",
+    linkLabel: "Curral AI",
   },
   {
     category: "Clima e Meio Ambiente",
@@ -551,6 +555,36 @@ export const projects = [
       en: "Support for sustainability agendas, risk interpretation, and stronger decisions in climate and environmental contexts.",
     },
     tags: ["climate math", "precipitation", "ESG", "sustainability"],
+    link: "/solucoes/greensenti",
+    linkLabel: "GreenSenti",
+  },
+  {
+    category: "Clima e Meio Ambiente",
+    sector: { pt: "Agropecuária & Floresta", en: "Agribusiness & Forestry" },
+    title: {
+      pt: "EucaSmart — Gestão inteligente de eucalipto com IA e sensoriamento",
+      en: "EucaSmart — Intelligent eucalyptus management with AI and sensing",
+    },
+    context: {
+      pt: "Solução de precision agriculture voltada ao monitoramento de talhões de eucalipto, integrando sensores de campo, modelos preditivos e inteligência operacional para produtores florestais.",
+      en: "Precision agriculture solution for eucalyptus stand monitoring, integrating field sensors, predictive models, and operational intelligence for forestry producers.",
+    },
+    problem: {
+      pt: "Baixa previsibilidade de produtividade, manejo reativo e dificuldade de escalar decisões técnicas em grandes extensões de plantio.",
+      en: "Low productivity predictability, reactive management, and difficulty scaling technical decisions across large planting areas.",
+    },
+    approach: {
+      pt: "Integração de sensores IoT, modelos de crescimento, imagens de satélite e IA preditiva para otimizar ciclos de corte, irrigação e manejo fitossanitário.",
+      en: "Integration of IoT sensors, growth models, satellite imagery, and predictive AI to optimize cutting cycles, irrigation, and phytosanitary management.",
+    },
+    stack: "Python, IoT, satellite imagery, time series, predictive modeling",
+    impact: {
+      pt: "Maior precisão no planejamento de colheita, redução de perdas por pragas e clima, e decisões operacionais mais rápidas e defensáveis.",
+      en: "Improved harvest planning precision, reduced losses from pests and climate, and faster, more defensible operational decisions.",
+    },
+    tags: ["precision agriculture", "eucalyptus", "forestry", "IoT", "ESG"],
+    link: "/solucoes/eucasmart",
+    linkLabel: "EucaSmart",
   },
   {
     category: "Pesquisa Científica",

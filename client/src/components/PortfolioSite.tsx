@@ -84,8 +84,8 @@ const pageTitles = {
 
 function SectionEyebrow({ children }: { children: React.ReactNode }) {
   return (
-    <div className="mb-4 inline-flex items-center gap-2 border border-white/10 bg-slate-950/65 px-4 py-2 text-[0.68rem] font-semibold uppercase tracking-[0.32em] text-teal-300 backdrop-blur">
-      <span className="h-1.5 w-1.5 rounded-full bg-[var(--accent-copper)]" />
+    <div className="mb-4 inline-flex items-center gap-2 border border-white/10 bg-slate-950/65 px-4 py-2 text-[0.68rem] font-semibold uppercase tracking-[0.32em] text-violet-300 backdrop-blur">
+      <span className="h-1.5 w-1.5 rounded-full bg-[var(--accent-purple)]" />
       {children}
     </div>
   );
@@ -292,7 +292,7 @@ export default function PortfolioSite({ initialLocale = "pt", page = "home" }: P
   return (
     <div className="relative overflow-hidden bg-[var(--bg-obsidian)] text-slate-100">
       <div className="pointer-events-none absolute inset-0 opacity-50">
-        <div className="absolute inset-x-0 top-0 h-[720px] bg-[radial-gradient(circle_at_top_left,_rgba(32,211,194,0.14),_transparent_32%),radial-gradient(circle_at_top_right,_rgba(255,107,74,0.14),_transparent_28%),linear-gradient(180deg,_rgba(6,7,10,0.96),_rgba(6,7,10,1))]" />
+        <div className="absolute inset-x-0 top-0 h-[720px] bg-[radial-gradient(circle_at_top_left,_rgba(107,33,168,0.14),_transparent_32%),radial-gradient(circle_at_top_right,_rgba(167,139,250,0.12),_transparent_28%),linear-gradient(180deg,_rgba(6,7,10,0.96),_rgba(6,7,10,1))]" />
         <div className="grid-overlay absolute inset-0" />
       </div>
 
@@ -350,7 +350,7 @@ export default function PortfolioSite({ initialLocale = "pt", page = "home" }: P
             <a
               href="#contato"
               onClick={handleAnchorNavigation("#contato")}
-              className="inline-flex items-center rounded-full bg-[var(--accent-copper)] px-5 py-2.5 text-xs font-semibold uppercase tracking-[0.22em] text-slate-950 transition hover:bg-white"
+              className="inline-flex items-center rounded-full bg-[var(--accent-purple)] px-5 py-2.5 text-xs font-semibold uppercase tracking-[0.22em] text-slate-950 transition hover:bg-white"
             >
               {locale === "pt" ? "Agendar conversa" : "Book a conversation"}
               <ArrowRight className="ml-2 size-4" />
@@ -389,7 +389,7 @@ export default function PortfolioSite({ initialLocale = "pt", page = "home" }: P
                 </Link>
                 <a
                   href="#contato"
-                  className="inline-flex items-center justify-center rounded-full bg-[var(--accent-copper)] px-4 py-2 text-sm font-semibold text-slate-950 transition hover:bg-white"
+                  className="inline-flex items-center justify-center rounded-full bg-[var(--accent-purple)] px-4 py-2 text-sm font-semibold text-slate-950 transition hover:bg-white"
                   onClick={handleAnchorNavigation("#contato")}
                 >
                   {locale === "pt" ? "Agendar conversa" : "Book a conversation"}
@@ -406,14 +406,14 @@ export default function PortfolioSite({ initialLocale = "pt", page = "home" }: P
             <div
               className="absolute -left-40 top-20 h-[500px] w-[500px] rounded-full opacity-20"
               style={{
-                background: "radial-gradient(circle, rgba(32,211,194,0.5) 0%, transparent 70%)",
+                background: "radial-gradient(circle, rgba(107,33,168,0.5) 0%, transparent 70%)",
                 animation: "pulseGlow 6s ease-in-out infinite",
               }}
             />
             <div
               className="absolute -right-20 top-40 h-[400px] w-[400px] rounded-full opacity-15"
               style={{
-                background: "radial-gradient(circle, rgba(255,107,74,0.5) 0%, transparent 70%)",
+                background: "radial-gradient(circle, rgba(139,92,246,0.5) 0%, transparent 70%)",
                 animation: "pulseGlow 6s ease-in-out infinite 3s",
               }}
             />
@@ -421,13 +421,13 @@ export default function PortfolioSite({ initialLocale = "pt", page = "home" }: P
           <div className="container pb-20 pt-8 lg:pb-28">
             <div className="grid items-start gap-10 lg:grid-cols-[1.08fr_0.92fr] lg:gap-16">
               <motion.div initial="hidden" animate="visible" variants={fadeUp} className="relative z-10">
-                <div className="h-1.5 w-28 bg-[var(--accent-copper)]" />
+                <div className="h-1.5 w-28 bg-[var(--accent-purple)]" />
                 <Badge className="mt-6 rounded-full border border-white/12 bg-white/[0.04] px-4 py-1.5 text-[0.68rem] uppercase tracking-[0.28em] text-teal-200">
                   {t(locale, pageTitles[page])}
                 </Badge>
                 <h1 className="mt-6 max-w-5xl font-display text-5xl font-bold uppercase leading-[0.9] sm:text-6xl lg:text-[5.3rem]"
                   style={{
-                    backgroundImage: "linear-gradient(135deg, #ffffff 0%, #e2f4f3 35%, #20d3c2 60%, #ff6b4a 85%, #ffffff 100%)",
+                    backgroundImage: "linear-gradient(135deg, #ffffff 0%, #ede9fe 25%, #8b5cf6 55%, #14b8a6 80%, #ffffff 100%)",
                     backgroundSize: "300% 100%",
                     WebkitBackgroundClip: "text",
                     backgroundClip: "text",
@@ -441,7 +441,7 @@ export default function PortfolioSite({ initialLocale = "pt", page = "home" }: P
                 <p className="mt-6 max-w-2xl text-base leading-8 text-slate-400 sm:text-lg">{t(locale, heroCopy.subheadline)}</p>
 
                 <div className="mt-10 flex flex-wrap gap-4">
-                  <a href="#provas" onClick={handleAnchorNavigation("#provas")} className="group inline-flex items-center rounded-full bg-[var(--accent-copper)] px-6 py-3 text-sm font-semibold uppercase tracking-[0.2em] text-slate-950 transition hover:bg-white">
+                  <a href="#provas" onClick={handleAnchorNavigation("#provas")} className="group inline-flex items-center rounded-full bg-[var(--accent-purple)] px-6 py-3 text-sm font-semibold uppercase tracking-[0.2em] text-slate-950 transition hover:bg-white">
                     {t(locale, heroCopy.ctaPrimary)}
                     <ArrowRight className="ml-2 size-4 transition-transform group-hover:translate-x-1" />
                   </a>
@@ -477,7 +477,7 @@ export default function PortfolioSite({ initialLocale = "pt", page = "home" }: P
                     </div>
                     <div className="story-divider relative z-10 grid gap-5 pb-5 lg:grid-cols-[1.05fr_0.95fr] lg:items-end">
                       <div>
-                        <p className="text-[0.68rem] uppercase tracking-[0.32em] text-[var(--accent-copper)]">Industrial AI · Computer Vision · Digital Twins</p>
+                        <p className="text-[0.68rem] uppercase tracking-[0.32em] text-[var(--accent-purple)]">Industrial AI · Computer Vision · Digital Twins</p>
                         <p className="mt-4 font-display text-3xl font-bold uppercase leading-[1.02] text-white">{t(locale, heroCopy.role)}</p>
                       </div>
                       <div className="border-l-0 border-white/10 pl-0 text-sm leading-7 text-slate-300 lg:border-l lg:pl-5">
@@ -536,7 +536,7 @@ export default function PortfolioSite({ initialLocale = "pt", page = "home" }: P
                   >
                     <span
                       className="size-1.5 rounded-full"
-                      style={{ background: index % 2 === 0 ? "var(--accent-teal)" : "var(--accent-copper)" }}
+                      style={{ background: index % 2 === 0 ? "var(--accent-teal)" : "var(--accent-purple)" }}
                     />
                     {area}
                   </a>
@@ -544,7 +544,7 @@ export default function PortfolioSite({ initialLocale = "pt", page = "home" }: P
                 <a
                   href="#contato"
                   onClick={handleAnchorNavigation("#contato")}
-                  className="ml-auto flex shrink-0 items-center gap-2 border-l border-white/6 px-5 py-3.5 text-xs font-semibold uppercase tracking-[0.2em] text-[var(--accent-copper)] transition hover:bg-[var(--accent-copper)]/10"
+                  className="ml-auto flex shrink-0 items-center gap-2 border-l border-white/6 px-5 py-3.5 text-xs font-semibold uppercase tracking-[0.2em] text-[var(--accent-purple)] transition hover:bg-[var(--accent-purple)]/10"
                 >
                   {locale === "pt" ? "Falar sobre projeto" : "Discuss project"}
                   <ArrowRight className="size-3.5" />
@@ -582,7 +582,7 @@ export default function PortfolioSite({ initialLocale = "pt", page = "home" }: P
                         className="group bg-[rgba(8,10,14,0.92)] p-6 transition duration-300 hover:bg-[rgba(12,16,22,0.96)]"
                       >
                         <div className="flex items-center justify-between gap-4">
-                          <span className="text-[0.66rem] font-semibold uppercase tracking-[0.3em] text-[var(--accent-copper)]">{locale === "pt" ? "Verificável" : "Verifiable"}</span>
+                          <span className="text-[0.66rem] font-semibold uppercase tracking-[0.3em] text-[var(--accent-purple)]">{locale === "pt" ? "Verificável" : "Verifiable"}</span>
                           <ArrowRight className="size-4 text-[var(--accent-teal)] transition-transform group-hover:translate-x-1" />
                         </div>
                         <h3 className="mt-5 font-display text-2xl font-bold uppercase leading-tight text-white">{t(locale, proof.title)}</h3>
@@ -622,7 +622,7 @@ export default function PortfolioSite({ initialLocale = "pt", page = "home" }: P
                 </Card>
                 <Card className="rounded-[1.35rem] border-white/8 bg-white/[0.03] text-white">
                   <CardContent className="p-6">
-                    <BriefcaseBusiness className="size-8 text-[var(--accent-copper)]" />
+                    <BriefcaseBusiness className="size-8 text-[var(--accent-purple)]" />
                     <h3 className="mt-5 font-display text-2xl">{locale === "pt" ? "Aplicação estratégica" : "Strategic application"}</h3>
                     <p className="mt-3 text-sm leading-7 text-slate-300">
                       {locale === "pt"
@@ -656,7 +656,7 @@ export default function PortfolioSite({ initialLocale = "pt", page = "home" }: P
                   <Card className="group h-full rounded-[1.9rem] border-white/8 bg-[linear-gradient(180deg,rgba(255,255,255,0.05),rgba(255,255,255,0.02))] text-white transition duration-300 hover:-translate-y-1 hover:border-teal-300/20 hover:bg-[linear-gradient(180deg,rgba(32,211,194,0.12),rgba(255,255,255,0.03))]">
                     <CardContent className="flex h-full flex-col p-6">
                       <div className="mb-5 flex items-center justify-between">
-                        <span className="h-1.5 w-12 rounded-full bg-[var(--accent-copper)]" />
+                        <span className="h-1.5 w-12 rounded-full bg-[var(--accent-purple)]" />
                         <Sparkles className="size-4 text-teal-300/80" />
                       </div>
                       <h3 className="font-display text-2xl leading-tight">{t(locale, card.title)}</h3>
@@ -702,7 +702,7 @@ export default function PortfolioSite({ initialLocale = "pt", page = "home" }: P
                 </div>
 
                 <div className="rounded-[1.6rem] border border-white/10 bg-white/[0.04] p-6">
-                  <p className="text-xs uppercase tracking-[0.28em] text-[var(--accent-copper)]">{locale === "pt" ? "Setores-alvo" : "Target sectors"}</p>
+                  <p className="text-xs uppercase tracking-[0.28em] text-[var(--accent-purple)]">{locale === "pt" ? "Setores-alvo" : "Target sectors"}</p>
                   <div className="mt-5 flex flex-wrap gap-3">
                     {(locale === "pt" ? consultingSectors.pt : consultingSectors.en).map((sector) => (
                       <span key={sector} className="rounded-full border border-white/10 bg-white/[0.03] px-4 py-2 text-sm text-slate-200">
@@ -720,10 +720,10 @@ export default function PortfolioSite({ initialLocale = "pt", page = "home" }: P
             <div className="mt-14 grid gap-5 lg:grid-cols-2">
               {consultingServices.map((service, index) => (
                 <motion.div key={service.key} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-120px" }} transition={{ delay: index * 0.05 }}>
-                  <Card className="group h-full rounded-[1.9rem] border-white/8 bg-[linear-gradient(180deg,rgba(255,255,255,0.05),rgba(255,255,255,0.025))] text-white transition duration-300 hover:-translate-y-1 hover:border-[rgba(255,107,74,0.28)]">
+                  <Card className="group h-full rounded-[1.9rem] border-white/8 bg-[linear-gradient(180deg,rgba(255,255,255,0.05),rgba(255,255,255,0.025))] text-white transition duration-300 hover:-translate-y-1 hover:border-[rgba(139,92,246,0.28)]">
                     <CardContent className="flex h-full flex-col p-7">
                       <div className="flex items-center justify-between gap-4">
-                        <span className="h-1.5 w-14 rounded-full bg-[var(--accent-copper)]" />
+                        <span className="h-1.5 w-14 rounded-full bg-[var(--accent-purple)]" />
                         <BriefcaseBusiness className="size-5 text-teal-200" />
                       </div>
                       <h3 className="mt-6 font-display text-3xl leading-tight">{t(locale, service.title)}</h3>
@@ -736,7 +736,7 @@ export default function PortfolioSite({ initialLocale = "pt", page = "home" }: P
                         <a
                           href="#contato"
                           onClick={handleAnchorNavigation("#contato")}
-                          className="inline-flex items-center gap-2 rounded-full border border-[var(--accent-copper)]/30 bg-[var(--accent-copper)]/10 px-5 py-2.5 text-xs font-semibold uppercase tracking-[0.2em] text-[var(--accent-copper)] transition hover:border-[var(--accent-copper)]/60 hover:bg-[var(--accent-copper)]/20 hover:text-white"
+                          className="inline-flex items-center gap-2 rounded-full border border-[var(--accent-purple)]/30 bg-[var(--accent-purple)]/10 px-5 py-2.5 text-xs font-semibold uppercase tracking-[0.2em] text-[var(--accent-purple)] transition hover:border-[var(--accent-purple)]/60 hover:bg-[var(--accent-purple)]/20 hover:text-white"
                         >
                           {locale === "pt" ? "Agendar consulta" : "Book a consultation"}
                           <ArrowRight className="size-3.5" />
@@ -765,9 +765,9 @@ export default function PortfolioSite({ initialLocale = "pt", page = "home" }: P
                     <CardContent className="flex h-full flex-col p-7">
                       <div className="flex items-start justify-between gap-4">
                         <Badge className="rounded-full border border-teal-300/20 bg-teal-300/10 text-teal-100">{t(locale, caseItem.sector)}</Badge>
-                        <BriefcaseBusiness className="mt-1 size-5 text-[var(--accent-copper)]" />
+                        <BriefcaseBusiness className="mt-1 size-5 text-[var(--accent-purple)]" />
                       </div>
-                      <p className="mt-5 text-xs uppercase tracking-[0.24em] text-[var(--accent-copper)]">{t(locale, caseItem.metric)}</p>
+                      <p className="mt-5 text-xs uppercase tracking-[0.24em] text-[var(--accent-purple)]">{t(locale, caseItem.metric)}</p>
                       <h3 className="mt-4 font-display text-3xl leading-tight">{t(locale, caseItem.title)}</h3>
                       <p className="mt-4 text-sm leading-7 text-slate-300">{t(locale, caseItem.result)}</p>
                       <div className="mt-6 rounded-[1.4rem] border border-white/10 bg-white/[0.04] p-4">
@@ -860,7 +860,7 @@ export default function PortfolioSite({ initialLocale = "pt", page = "home" }: P
                           <p className="mt-2 text-sm leading-7 text-slate-300">{project.stack}</p>
                         </div>
                         <div className="border-t border-white/8 pt-6">
-                          <p className="text-xs uppercase tracking-[0.24em] text-[var(--accent-copper)]">{locale === "pt" ? "Impacto gerado" : "Impact generated"}</p>
+                          <p className="text-xs uppercase tracking-[0.24em] text-[var(--accent-purple)]">{locale === "pt" ? "Impacto gerado" : "Impact generated"}</p>
                           <p className="mt-2 text-sm leading-7 text-slate-200">{t(locale, project.impact)}</p>
                           <div className="mt-5 flex flex-wrap gap-2">
                             {project.tags.map((tag) => (
@@ -875,9 +875,9 @@ export default function PortfolioSite({ initialLocale = "pt", page = "home" }: P
                                 href={project.link}
                                 target="_blank"
                                 rel="noreferrer"
-                                className="inline-flex items-center gap-2 rounded-full border border-[rgba(255,107,74,0.28)] bg-[rgba(255,107,74,0.08)] px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-[var(--accent-copper)] transition hover:border-[rgba(255,107,74,0.45)] hover:bg-[rgba(255,107,74,0.16)]"
+                                className="inline-flex items-center gap-2 rounded-full border border-[rgba(139,92,246,0.35)] bg-[rgba(139,92,246,0.1)] px-5 py-2.5 text-xs font-semibold uppercase tracking-[0.2em] text-[var(--accent-purple)] transition hover:border-[rgba(139,92,246,0.55)] hover:bg-[rgba(139,92,246,0.2)] hover:text-white"
                               >
-                                {locale === "pt" ? "Abrir projeto" : "Open project"}
+                                {project.linkLabel ?? (locale === "pt" ? "Ver solução" : "View solution")}
                                 <ArrowRight className="size-4" />
                               </a>
                             </div>
@@ -906,7 +906,7 @@ export default function PortfolioSite({ initialLocale = "pt", page = "home" }: P
                 <motion.div key={item.value} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} transition={{ delay: index * 0.05 }}>
                   <Card className="h-full rounded-[1.8rem] border-white/8 bg-[rgba(7,17,26,0.72)] text-white backdrop-blur-xl">
                     <CardContent className="p-6">
-                      <p className="font-display text-3xl text-[var(--accent-copper)]">{item.value}</p>
+                      <p className="font-display text-3xl text-[var(--accent-purple)]">{item.value}</p>
                       <h3 className="mt-4 text-lg font-semibold text-white">{t(locale, item.title)}</h3>
                       <p className="mt-3 text-sm leading-7 text-slate-300">{t(locale, item.text)}</p>
                     </CardContent>
@@ -924,10 +924,10 @@ export default function PortfolioSite({ initialLocale = "pt", page = "home" }: P
               title={locale === "pt" ? "Uma linha do tempo que combina mercado, pesquisa, ensino e relevância pública" : "A timeline combining market experience, research, teaching, and public relevance"}
               text={locale === "pt" ? "A força do posicionamento está também na diversidade qualificada das experiências. Cada instituição amplia o repertório técnico e institucional da atuação." : "The strength of the positioning also lies in the qualified diversity of experiences. Each institution expands the technical and institutional repertoire of her work."}
             />
-            <div className="relative space-y-6 before:absolute before:bottom-0 before:left-3 before:top-0 before:w-px before:bg-gradient-to-b before:from-[var(--accent-copper)] before:to-teal-300/20 sm:before:left-4">
+            <div className="relative space-y-6 before:absolute before:bottom-0 before:left-3 before:top-0 before:w-px before:bg-gradient-to-b before:from-[var(--accent-purple)] before:to-teal-300/20 sm:before:left-4">
               {experienceTimeline.map((item, index) => (
                 <motion.div key={item.org} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} transition={{ delay: index * 0.04 }} className="relative pl-10 sm:pl-14">
-                  <span className="absolute left-0 top-2 h-7 w-7 rounded-full border border-[color:rgba(255,107,74,0.4)] bg-[var(--bg-obsidian)] shadow-[0_0_0_6px_rgba(7,17,26,0.8)] sm:left-1" />
+                  <span className="absolute left-0 top-2 h-7 w-7 rounded-full border border-[color:rgba(139,92,246,0.4)] bg-[var(--bg-obsidian)] shadow-[0_0_0_6px_rgba(7,17,26,0.8)] sm:left-1" />
                   <Card className="rounded-[1.35rem] border-white/8 bg-white/[0.03] text-white">
                     <CardContent className="p-6">
                       <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
@@ -962,7 +962,7 @@ export default function PortfolioSite({ initialLocale = "pt", page = "home" }: P
                     <CardContent className="p-6">
                       <div className="flex items-start gap-4">
                         <div className="mt-1 flex size-11 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.03]">
-                          <GraduationCap className="size-5 text-[var(--accent-copper)]" />
+                          <GraduationCap className="size-5 text-[var(--accent-purple)]" />
                         </div>
                         <div>
                           <h3 className="font-display text-2xl leading-tight">{t(locale, item.title)}</h3>
@@ -1055,8 +1055,8 @@ export default function PortfolioSite({ initialLocale = "pt", page = "home" }: P
               text={t(locale, editorialPositioning.body)}
             />
 
-            <div className="mt-10 rounded-[2rem] border border-[rgba(255,107,74,0.22)] bg-[linear-gradient(135deg,rgba(255,107,74,0.14),rgba(7,17,26,0.8))] p-7 sm:p-8">
-              <p className="text-xs uppercase tracking-[0.28em] text-[var(--accent-copper)]">{locale === "pt" ? "Interseção editorial a dominar" : "Editorial intersection to own"}</p>
+            <div className="mt-10 rounded-[2rem] border border-[rgba(139,92,246,0.22)] bg-[linear-gradient(135deg,rgba(139,92,246,0.14),rgba(7,17,26,0.8))] p-7 sm:p-8">
+              <p className="text-xs uppercase tracking-[0.28em] text-[var(--accent-purple)]">{locale === "pt" ? "Interseção editorial a dominar" : "Editorial intersection to own"}</p>
               <p className="mt-4 max-w-4xl font-display text-3xl leading-tight text-white sm:text-[2.5rem]">{t(locale, editorialPositioning.title)}</p>
               <p className="mt-5 max-w-3xl text-base leading-8 text-slate-200">{t(locale, editorialPositioning.body)}</p>
             </div>
@@ -1145,7 +1145,7 @@ export default function PortfolioSite({ initialLocale = "pt", page = "home" }: P
               <div className="mt-8 space-y-4">
                 {speaking.themes[locale].map((item) => (
                   <div key={item} className="flex items-start gap-4 rounded-[1.5rem] border border-white/8 bg-white/[0.03] p-5">
-                    <BookOpen className="mt-1 size-5 text-[var(--accent-copper)]" />
+                    <BookOpen className="mt-1 size-5 text-[var(--accent-purple)]" />
                     <p className="text-sm leading-7 text-slate-300">{item}</p>
                   </div>
                 ))}
@@ -1170,7 +1170,7 @@ export default function PortfolioSite({ initialLocale = "pt", page = "home" }: P
                       <h3 className="font-display text-2xl">{t(locale, item.title)}</h3>
                       <p className="mt-5 text-xs uppercase tracking-[0.24em] text-slate-500">{locale === "pt" ? "Dores que resolve" : "Problems solved"}</p>
                       <p className="mt-2 text-sm leading-7 text-slate-300">{t(locale, item.pain)}</p>
-                      <p className="mt-5 text-xs uppercase tracking-[0.24em] text-[var(--accent-copper)]">{locale === "pt" ? "Valor percebido" : "Perceived value"}</p>
+                      <p className="mt-5 text-xs uppercase tracking-[0.24em] text-[var(--accent-purple)]">{locale === "pt" ? "Valor percebido" : "Perceived value"}</p>
                       <p className="mt-2 text-sm leading-7 text-slate-200">{t(locale, item.value)}</p>
                     </CardContent>
                   </Card>
@@ -1238,8 +1238,8 @@ export default function PortfolioSite({ initialLocale = "pt", page = "home" }: P
                   })}
                 </div>
 
-                <div className="mt-10 rounded-[1.7rem] border border-[color:rgba(255,107,74,0.25)] bg-[linear-gradient(135deg,rgba(255,107,74,0.12),rgba(32,211,194,0.04))] p-6">
-                  <p className="text-xs uppercase tracking-[0.26em] text-[var(--accent-copper)]">Future-ready prompt</p>
+                <div className="mt-10 rounded-[1.7rem] border border-[color:rgba(139,92,246,0.25)] bg-[linear-gradient(135deg,rgba(139,92,246,0.12),rgba(32,211,194,0.04))] p-6">
+                  <p className="text-xs uppercase tracking-[0.26em] text-[var(--accent-purple)]">Future-ready prompt</p>
                   <p className="mt-3 text-sm leading-7 text-slate-300">{placeholderPrompt[locale]}</p>
                 </div>
 
@@ -1316,7 +1316,7 @@ export default function PortfolioSite({ initialLocale = "pt", page = "home" }: P
                   <Button
                     type="submit"
                     disabled={submitLeadMutation.isPending}
-                    className="w-full rounded-full bg-white text-slate-950 hover:bg-[var(--accent-copper)] disabled:cursor-not-allowed disabled:opacity-70"
+                    className="w-full rounded-full bg-white text-slate-950 hover:bg-[var(--accent-purple)] disabled:cursor-not-allowed disabled:opacity-70"
                   >
                     <Mail className="mr-2 size-4" />
                     {submitLeadMutation.isPending

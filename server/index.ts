@@ -18,6 +18,11 @@ async function startServer() {
 
   app.use(express.static(staticPath));
 
+  app.get("/solucoes/curral", (_req, res) => res.redirect("https://curral-demo-mq88jbar.manus.space"));
+  app.get("/solucoes/sensormonit", (_req, res) => res.redirect("https://sensormonit-ipqnpabh.manus.space"));
+  app.get("/solucoes/eucasmart", (_req, res) => res.redirect("https://eucasmart-wwnth7mf.manus.space"));
+  app.get("/solucoes/greensenti", (_req, res) => res.redirect("https://greensenti-wehhdk6t.manus.space"));
+
   // Handle client-side routing - serve index.html for all routes
   app.get("*", (_req, res) => {
     res.sendFile(path.join(staticPath, "index.html"));
