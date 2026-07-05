@@ -51,6 +51,21 @@ async function startServer() {
       createContext,
     })
   );
+  // Subdomínio giselle.* abre direto no perfil da Giselle
+  app.use((req, res, next) => {
+    if (req.hostname?.startsWith("giselle.") && req.path === "/") {
+      return res.redirect(302, "/giselle");
+    }
+    next();
+  });
+
+  // Rotas limpas das soluções (redirecionamento server-side, sem expor o host de origem)
+  app.get("/solucoes/curral", (_req, res) => res.redirect("https://curral-demo-mq88jbar.manus.space"));
+  app.get("/solucoes/sensormonit", (_req, res) => res.redirect("https://sensormonit-ipqnpabh.manus.space"));
+  app.get("/solucoes/eucasmart", (_req, res) => res.redirect("https://eucasmart-wwnth7mf.manus.space"));
+  app.get("/solucoes/greensenti", (_req, res) => res.redirect("https://greensenti-wehhdk6t.manus.space"));
+  app.get("/solucoes/pharo", (_req, res) => res.redirect("https://pharo-production.up.railway.app/"));
+
   // development mode uses Vite, production mode uses static files
   if (process.env.NODE_ENV === "development") {
     await setupVite(app, server);
