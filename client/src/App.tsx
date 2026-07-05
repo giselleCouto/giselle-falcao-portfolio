@@ -14,6 +14,7 @@ import { ThemeProvider } from "./contexts/ThemeContext";
 import { caseStudies, faqItems, insightArticles } from "./lib/portfolioData";
 import { minasSummitFaqItems, minasSummitFaqMeta, minasSummitSocialLinks } from "./lib/minasSummitFaqData";
 import AiOsExperience from "./pages/AiOsExperience";
+import CourseCatalog from "./pages/CourseCatalog";
 import GiselleCourses from "./pages/GiselleCourses";
 import MinasSummitFaq from "./pages/MinasSummitFaq";
 
@@ -516,7 +517,8 @@ function Router() {
       <RouteSeo />
       <Switch>
         <Route path="/" component={IdentityHub} />
-        <Route path="/giselle/cursos" component={() => <GiselleCourses view="overview" />} />
+        <Route path="/giselle/cursos" component={CourseCatalog} />
+        <Route path="/giselle/cursos/trilha" component={() => <GiselleCourses view="overview" />} />
         <Route path="/giselle/cursos/checkout" component={() => <GiselleCourses view="checkout" />} />
         <Route path="/giselle/cursos/lab" component={() => <GiselleCourses view="lab" />} />
         <Route path="/giselle/cursos/meus-cursos" component={() => <GiselleCourses view="dashboard" />} />
