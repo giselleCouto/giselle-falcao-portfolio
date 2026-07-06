@@ -2,16 +2,20 @@ import { motion } from "framer-motion";
 import { Link } from "wouter";
 import {
   ArrowRight,
+  ArrowUpRight,
   BrainCircuit,
   Briefcase,
   GraduationCap,
   MessageCircle,
+  Newspaper,
   Rocket,
   Sparkles,
+  TrendingDown,
   UserRound,
 } from "lucide-react";
 import GiselleLayout from "@/components/giselle/GiselleLayout";
 import { assets, contact, keyAreas } from "@/lib/portfolioData";
+import { pressFeatures } from "@/lib/pressData";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
@@ -184,6 +188,53 @@ export default function GiselleHome() {
               </span>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Na mídia */}
+      <section className="container pb-16 sm:pb-20">
+        <p className="text-xs font-bold uppercase tracking-[0.25em] text-teal-600">Na mídia</p>
+        <h2 className="mt-3 text-3xl font-bold">Meu trabalho no jornal</h2>
+        <div className="mt-10 grid gap-6 lg:grid-cols-2">
+          {pressFeatures.map((press, i) => (
+            <motion.div
+              key={press.url}
+              variants={fadeUp}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ duration: 0.45, delay: i * 0.08 }}
+            >
+              <a
+                href={press.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex h-full flex-col rounded-3xl border border-slate-200/70 bg-white p-6 shadow-[0_10px_40px_rgba(26,19,51,0.06)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_18px_50px_rgba(107,33,168,0.12)]"
+              >
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="inline-flex items-center gap-1.5 rounded-full bg-[#1a1333] px-3 py-1 text-xs font-bold text-white">
+                    <Newspaper className="size-3.5" />
+                    {press.outlet}
+                  </span>
+                  <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-bold text-slate-500">
+                    {press.section} · {press.date}
+                  </span>
+                </div>
+                <h3 className="mt-4 text-lg font-bold leading-snug">{press.title}</h3>
+                <p className="mt-2 flex-1 text-sm leading-6 text-slate-500">{press.summary}</p>
+                <div className="mt-5 flex flex-wrap items-center justify-between gap-3">
+                  <span className="inline-flex items-center gap-1.5 rounded-full bg-teal-100 px-4 py-1.5 text-sm font-bold text-teal-700">
+                    <TrendingDown className="size-4" />
+                    {press.highlight}
+                  </span>
+                  <span className="inline-flex items-center gap-1 text-sm font-bold text-[#6b21a8]">
+                    Ler matéria
+                    <ArrowUpRight className="size-4 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                  </span>
+                </div>
+              </a>
+            </motion.div>
+          ))}
         </div>
       </section>
 
