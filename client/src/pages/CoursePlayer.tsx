@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { Link } from "wouter";
 import {
   ArrowLeft,
@@ -8,16 +8,27 @@ import {
   CheckCircle2,
   ChevronRight,
   CirclePlay,
-  Clock,
   FlaskConical,
-  GraduationCap,
   ListChecks,
   LockKeyhole,
   MessageCircle,
+  PartyPopper,
+  Sparkles,
+  Star,
+  Trophy,
   Video,
+  Zap,
 } from "lucide-react";
+import { toast } from "sonner";
+import GiselleLayout from "@/components/giselle/GiselleLayout";
 import { getCourse } from "@/lib/courses";
 import type { CourseModule, Lesson, QuizQuestion } from "@/lib/courses/types";
+import {
+  QUIZ_PASS_PERCENT,
+  XP_PER_LESSON,
+  XP_PER_QUIZ,
+  useCourseProgress,
+} from "@/lib/courses/useCourseProgress";
 import { contact } from "@/lib/portfolioData";
 import NotFound from "@/pages/NotFound";
 
@@ -40,21 +51,80 @@ const lessonTypeLabels = {
   quiz: "Quiz",
 } as const;
 
-function ModuleQuiz({ questions }: { questions: QuizQuestion[] }) {
+/** Anel de progresso do módulo (SVG). */
+function ProgressRing({ percent, done }: { percent: number; done: boolean }) {
+  const r = 15;
+  const c = 2 * Math.PI * r;
+  return (
+    <span className="relative inline-flex size-10 shrink-0 items-center justify-center">
+      <svg viewBox="0 0 36 36" className="size-10 -rotate-90">
+        <circle cx="18" cy="18" r={r} fill="none" stroke="#ede9fe" strokeWidth="4" />
+        <circle
+          cx="18"
+          cy="18"
+          r={r}
+          fill="none"
+          stroke={done ? "#14b8a6" : "#8b5cf6"}
+          strokeWidth="4"
+          strokeLinecap="round"
+          strokeDasharray={c}
+          strokeDashoffset={c - (c * percent) / 100}
+          className="transition-all duration-500"
+        />
+      </svg>
+      <span className="absolute text-[0.6rem] font-bold text-[#1a1333]">
+        {done ? <Star className="size-4 fill-amber-400 text-amber-400" /> : `${percent}%`}
+      </span>
+    </span>
+  );
+}
+
+/** Explosão de celebração ao ganhar recompensa. */
+function Celebration({ show }: { show: boolean }) {
+  return (
+    <AnimatePresence>
+      {show ? (
+        <motion.div
+          initial={{ opacity: 0, scale: 0.6 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 1.2 }}
+          transition={{ duration: 0.45 }}
+          className="pointer-events-none fixed inset-0 z-50 flex items-center justify-center"
+        >
+          <div className="flex flex-col items-center gap-3 rounded-3xl bg-white/95 px-10 py-8 shadow-[0_25px_80px_rgba(107,33,168,0.25)] backdrop-blur">
+            <motion.div
+              animate={{ rotate: [0, -12, 12, 0], scale: [1, 1.25, 1] }}
+              transition={{ duration: 0.7 }}
+            >
+              <PartyPopper className="size-12 text-[#8b5cf6]" />
+            </motion.div>
+            <p className="font-baloo text-xl font-bold text-[#1a1333]">Conquista desbloqueada!</p>
+          </div>
+        </motion.div>
+      ) : null}
+    </AnimatePresence>
+  );
+}
+
+function ModuleQuiz({
+  questions,
+  onResult,
+}: {
+  questions: QuizQuestion[];
+  onResult: (percent: number) => void;
+}) {
   const [answers, setAnswers] = useState<Record<number, number>>({});
   const [submitted, setSubmitted] = useState(false);
 
-  const score = questions.reduce(
-    (acc, q, i) => acc + (answers[i] === q.correctIndex ? 1 : 0),
-    0,
-  );
+  const score = questions.reduce((acc, q, i) => acc + (answers[i] === q.correctIndex ? 1 : 0), 0);
   const allAnswered = questions.every((_, i) => answers[i] !== undefined);
+  const percent = Math.round((score / questions.length) * 100);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-5">
       {questions.map((q, qi) => (
-        <div key={qi} className="rounded-[1.4rem] border border-white/8 bg-white/[0.03] p-6">
-          <p className="text-sm font-semibold text-white">
+        <div key={qi} className="rounded-3xl border border-slate-200/70 bg-white p-6">
+          <p className="text-sm font-bold text-[#1a1333]">
             {qi + 1}. {q.prompt}
           </p>
           <div className="mt-4 space-y-2">
@@ -68,14 +138,14 @@ function ModuleQuiz({ questions }: { questions: QuizQuestion[] }) {
                   type="button"
                   disabled={submitted}
                   onClick={() => setAnswers((a) => ({ ...a, [qi]: oi }))}
-                  className={`block w-full rounded-[1rem] border px-4 py-3 text-left text-sm transition ${
+                  className={`block w-full rounded-2xl border-2 px-4 py-3 text-left text-sm font-medium transition ${
                     showState
                       ? isCorrect
-                        ? "border-emerald-400/50 bg-emerald-400/10 text-emerald-100"
-                        : "border-rose-400/50 bg-rose-400/10 text-rose-100"
+                        ? "border-emerald-400 bg-emerald-50 text-emerald-800"
+                        : "border-rose-300 bg-rose-50 text-rose-700"
                       : chosen
-                        ? "border-[var(--accent-purple)]/50 bg-[var(--accent-purple)]/10 text-violet-100"
-                        : "border-white/10 bg-white/[0.02] text-slate-300 hover:border-white/25"
+                        ? "border-[#8b5cf6] bg-violet-50 text-[#6b21a8]"
+                        : "border-slate-200 text-slate-600 hover:border-violet-300 hover:bg-violet-50/50"
                   }`}
                 >
                   {opt}
@@ -86,25 +156,29 @@ function ModuleQuiz({ questions }: { questions: QuizQuestion[] }) {
           {submitted ? (
             <p
               className={`mt-4 text-sm leading-6 ${
-                answers[qi] === q.correctIndex ? "text-emerald-200" : "text-rose-200"
+                answers[qi] === q.correctIndex ? "text-emerald-700" : "text-rose-600"
               }`}
             >
-              {answers[qi] === q.correctIndex ? "Correto! " : "Não foi dessa vez. "}
-              <span className="text-slate-300">{q.explanation}</span>
+              {answers[qi] === q.correctIndex ? "Correto! " : "Quase! "}
+              <span className="text-slate-500">{q.explanation}</span>
             </p>
           ) : null}
         </div>
       ))}
 
       {submitted ? (
-        <div className="rounded-[1.4rem] border border-[var(--accent-teal)]/25 bg-[var(--accent-teal)]/10 p-6 text-center">
-          <p className="font-display text-2xl font-semibold text-white">
-            {score} de {questions.length} corretas
+        <div
+          className={`rounded-3xl border-2 p-6 text-center ${
+            percent >= QUIZ_PASS_PERCENT ? "border-teal-300 bg-teal-50" : "border-amber-200 bg-amber-50"
+          }`}
+        >
+          <p className="font-baloo text-3xl font-bold text-[#1a1333]">
+            {score}/{questions.length}
           </p>
-          <p className="mt-2 text-sm text-slate-300">
-            {score === questions.length
-              ? "Excelente! Você dominou este módulo."
-              : "Revise as explicações acima e tente novamente quando quiser."}
+          <p className="mt-1 text-sm font-medium text-slate-600">
+            {percent >= QUIZ_PASS_PERCENT
+              ? `Você passou! +${XP_PER_QUIZ} XP adicionados à sua trilha.`
+              : `Você precisa de ${QUIZ_PASS_PERCENT}% para ganhar o XP. Revise e tente de novo!`}
           </p>
           <button
             type="button"
@@ -112,7 +186,7 @@ function ModuleQuiz({ questions }: { questions: QuizQuestion[] }) {
               setAnswers({});
               setSubmitted(false);
             }}
-            className="mt-4 rounded-full border border-white/15 px-5 py-2 text-sm text-slate-200 transition hover:bg-white/10"
+            className="mt-4 rounded-full border-2 border-violet-200 px-5 py-2 text-sm font-semibold text-[#6b21a8] transition hover:bg-violet-50"
           >
             Refazer quiz
           </button>
@@ -121,34 +195,41 @@ function ModuleQuiz({ questions }: { questions: QuizQuestion[] }) {
         <button
           type="button"
           disabled={!allAnswered}
-          onClick={() => setSubmitted(true)}
-          className="w-full rounded-full bg-white px-6 py-3 text-sm font-semibold text-slate-950 transition hover:bg-violet-200 disabled:cursor-not-allowed disabled:opacity-40"
+          onClick={() => {
+            setSubmitted(true);
+            onResult(percent);
+          }}
+          className="w-full rounded-full bg-[#1a1333] px-6 py-3.5 text-sm font-bold text-white transition hover:bg-[#6b21a8] disabled:cursor-not-allowed disabled:opacity-40"
         >
-          {allAnswered ? "Corrigir respostas" : "Responda todas as perguntas para corrigir"}
+          {allAnswered ? "Corrigir respostas ✨" : "Responda tudo para corrigir"}
         </button>
       )}
     </div>
   );
 }
 
-function LessonView({ lesson, module }: { lesson: Lesson; module: CourseModule }) {
+function LessonView({
+  lesson,
+  module,
+  onQuizResult,
+}: {
+  lesson: Lesson;
+  module: CourseModule;
+  onQuizResult: (percent: number) => void;
+}) {
   if (lesson.type === "quiz") {
     return module.quiz && module.quiz.length > 0 ? (
-      <ModuleQuiz questions={module.quiz} />
+      <ModuleQuiz questions={module.quiz} onResult={onQuizResult} />
     ) : (
-      <PlaceholderPanel
-        icon={ListChecks}
-        title="Quiz em preparação"
-        text="As perguntas deste módulo estão sendo finalizadas."
-      />
+      <Placeholder icon={ListChecks} title="Quiz em preparação" text="As perguntas deste módulo estão sendo finalizadas." />
     );
   }
 
   if (lesson.type === "video") {
     return (
-      <div className="space-y-6">
+      <div className="space-y-5">
         {lesson.videoUrl ? (
-          <div className="overflow-hidden rounded-[1.4rem] border border-white/10 bg-black">
+          <div className="overflow-hidden rounded-3xl border border-slate-200/70 bg-black">
             <div className="relative aspect-video">
               <iframe
                 src={lesson.videoUrl}
@@ -160,15 +241,14 @@ function LessonView({ lesson, module }: { lesson: Lesson; module: CourseModule }
             </div>
           </div>
         ) : (
-          <PlaceholderPanel
+          <Placeholder
             icon={CirclePlay}
             title="Aula em gravação"
-            text="A Giselle está gravando esta aula. Enquanto isso, aproveite o resumo abaixo e os materiais do módulo."
+            text="A Giselle está gravando esta aula. Aproveite o resumo e os materiais do módulo."
           />
         )}
-
         {lesson.slidesUrl ? (
-          <div className="overflow-hidden rounded-[1.4rem] border border-white/10 bg-black">
+          <div className="overflow-hidden rounded-3xl border border-slate-200/70 bg-black">
             <div className="relative aspect-video">
               <iframe
                 src={lesson.slidesUrl}
@@ -179,48 +259,46 @@ function LessonView({ lesson, module }: { lesson: Lesson; module: CourseModule }
             </div>
           </div>
         ) : null}
-
-        <p className="text-base leading-8 text-slate-300">{lesson.summary}</p>
+        <p className="text-base leading-8 text-slate-600">{lesson.summary}</p>
       </div>
     );
   }
 
   if (lesson.type === "pratica") {
     return (
-      <div className="space-y-6">
-        <div className="rounded-[1.4rem] border border-[var(--accent-teal)]/25 bg-[var(--accent-teal)]/8 p-6">
-          <div className="flex items-center gap-3">
-            <FlaskConical className="size-5 text-teal-300" />
-            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-teal-200">
-              {lesson.practiceTool ?? "Prática guiada"} · 100% no navegador
-            </p>
-          </div>
-          <p className="mt-4 text-base leading-8 text-slate-300">{lesson.summary}</p>
-          {lesson.practiceUrl ? (
-            <a
-              href={lesson.practiceUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-5 inline-flex items-center gap-2 rounded-full bg-[var(--accent-teal)] px-6 py-3 text-sm font-semibold text-slate-950 transition hover:opacity-90"
-            >
-              Abrir ambiente de prática
-              <ChevronRight className="size-4" />
-            </a>
-          ) : (
-            <p className="mt-5 inline-flex items-center gap-2 rounded-full border border-white/15 px-5 py-2.5 text-sm text-slate-400">
-              Ambiente de prática em preparação
-            </p>
-          )}
+      <div className="rounded-3xl border-2 border-teal-200 bg-teal-50/60 p-6">
+        <div className="flex items-center gap-3">
+          <span className="flex size-11 items-center justify-center rounded-2xl bg-teal-100 text-teal-700">
+            <FlaskConical className="size-6" />
+          </span>
+          <p className="text-xs font-bold uppercase tracking-[0.2em] text-teal-700">
+            {lesson.practiceTool ?? "Prática"} · 100% no navegador
+          </p>
         </div>
+        <p className="mt-4 text-base leading-8 text-slate-600">{lesson.summary}</p>
+        {lesson.practiceUrl ? (
+          <a
+            href={lesson.practiceUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-5 inline-flex items-center gap-2 rounded-full bg-teal-600 px-6 py-3 text-sm font-bold text-white transition hover:bg-teal-700"
+          >
+            Abrir ambiente de prática
+            <ChevronRight className="size-4" />
+          </a>
+        ) : (
+          <p className="mt-5 inline-flex rounded-full border border-slate-300 px-5 py-2.5 text-sm text-slate-400">
+            Ambiente em preparação
+          </p>
+        )}
       </div>
     );
   }
 
-  // leitura
   return (
     <div className="space-y-5">
       {(lesson.content ?? lesson.summary).split("\n\n").map((paragraph, i) => (
-        <p key={i} className="text-base leading-8 text-slate-300">
+        <p key={i} className="text-base leading-8 text-slate-600">
           {paragraph}
         </p>
       ))}
@@ -228,7 +306,7 @@ function LessonView({ lesson, module }: { lesson: Lesson; module: CourseModule }
   );
 }
 
-function PlaceholderPanel({
+function Placeholder({
   icon: Icon,
   title,
   text,
@@ -238,10 +316,10 @@ function PlaceholderPanel({
   text: string;
 }) {
   return (
-    <div className="flex flex-col items-center rounded-[1.4rem] border border-dashed border-white/15 bg-white/[0.02] px-6 py-14 text-center">
-      <Icon className="size-10 text-violet-300/70" />
-      <p className="mt-4 font-display text-xl font-semibold text-white">{title}</p>
-      <p className="mt-2 max-w-md text-sm leading-6 text-slate-400">{text}</p>
+    <div className="flex flex-col items-center rounded-3xl border-2 border-dashed border-violet-200 bg-violet-50/50 px-6 py-14 text-center">
+      <Icon className="size-10 text-[#8b5cf6]" />
+      <p className="mt-4 font-baloo text-xl font-bold text-[#1a1333]">{title}</p>
+      <p className="mt-2 max-w-md text-sm leading-6 text-slate-500">{text}</p>
     </div>
   );
 }
@@ -250,6 +328,11 @@ export default function CoursePlayer({ slug }: { slug: string }) {
   const course = getCourse(slug);
   const [activeModuleId, setActiveModuleId] = useState<string | null>(null);
   const [activeLessonIndex, setActiveLessonIndex] = useState(0);
+  const [celebrating, setCelebrating] = useState(false);
+
+  const progress = useCourseProgress(
+    course ?? { slug: "_", title: "", level: "Iniciante", hours: "", free: true, tagline: "", description: "", outcomes: [], audience: "", prerequisites: "", status: "em-breve", modules: [], library: [] },
+  );
 
   const activeModule = useMemo(() => {
     if (!course) return null;
@@ -261,70 +344,131 @@ export default function CoursePlayer({ slug }: { slug: string }) {
   }
 
   const moduleUnlocked = course.free || (activeModule?.free ?? false);
-  const activeLesson = activeModule?.lessons[activeLessonIndex] ?? activeModule?.lessons[0] ?? null;
+  const activeLesson = activeModule?.lessons[activeLessonIndex] ?? null;
+  const lessonDone =
+    activeModule && activeLesson ? progress.isLessonComplete(activeModule.id, activeLessonIndex) : false;
+
+  const celebrate = () => {
+    setCelebrating(true);
+    window.setTimeout(() => setCelebrating(false), 1400);
+  };
+
+  const handleCompleteLesson = () => {
+    if (!activeModule || lessonDone) return;
+    const before = progress.moduleProgress[activeModule.id];
+    progress.markLessonComplete(activeModule.id, activeLessonIndex);
+    toast.success(`+${XP_PER_LESSON} XP — aula concluída!`);
+    if (before && before.done + 1 === before.total) celebrate();
+  };
+
+  const handleQuizResult = (percent: number) => {
+    if (!activeModule) return;
+    progress.registerQuizScore(activeModule.id, percent);
+    if (percent >= QUIZ_PASS_PERCENT) {
+      toast.success(`+${XP_PER_QUIZ} XP — quiz aprovado com ${percent}%!`);
+      celebrate();
+    }
+  };
 
   return (
-    <main className="relative min-h-screen bg-[linear-gradient(180deg,#050608_0%,#090c11_38%,#0d1117_100%)] text-slate-100">
-      <header className="sticky top-0 z-20 border-b border-white/8 bg-[#06070a]/80 backdrop-blur-xl">
-        <div className="container flex items-center justify-between py-4">
+    <GiselleLayout>
+      <Celebration show={celebrating} />
+
+      {/* Cabeçalho do curso + gamificação */}
+      <section className="border-b border-slate-200/70 bg-white">
+        <div className="container py-10 sm:py-12">
           <Link
             href="/giselle/cursos"
-            className="inline-flex items-center gap-2 text-sm font-medium text-slate-300 transition hover:text-white"
+            className="inline-flex items-center gap-2 text-sm font-semibold text-slate-500 transition hover:text-[#6b21a8]"
           >
             <ArrowLeft className="size-4" />
             Todos os cursos
           </Link>
-          <span
-            className={`rounded-full border px-4 py-1.5 text-xs font-semibold ${
-              course.free
-                ? "border-emerald-400/30 bg-emerald-400/10 text-emerald-200"
-                : "border-amber-400/30 bg-amber-400/10 text-amber-200"
-            }`}
-          >
-            {course.free ? "Curso gratuito" : "Curso premium"}
-          </span>
-        </div>
-      </header>
 
-      {/* Hero do curso */}
-      <section className="relative overflow-hidden border-b border-white/8">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_12%_20%,rgba(107,33,168,0.28),transparent_45%),radial-gradient(circle_at_88%_15%,rgba(20,184,166,0.16),transparent_40%)]" />
-        <div className="container relative py-14 sm:py-16">
-          <motion.div variants={fadeUp} initial="hidden" animate="visible" transition={{ duration: 0.55 }}>
-            <p className="text-[0.7rem] font-semibold uppercase tracking-[0.32em] text-teal-300">
-              {course.level} · {course.hours} · Com certificado
-            </p>
-            <h1 className="mt-4 max-w-3xl font-display text-3xl font-bold leading-tight tracking-tight text-white sm:text-4xl lg:text-5xl">
-              {course.title}
-            </h1>
-            <p className="mt-4 max-w-2xl text-lg leading-8 text-slate-300">{course.tagline}</p>
+          <div className="mt-5 flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
+            <motion.div variants={fadeUp} initial="hidden" animate="visible" transition={{ duration: 0.5 }}>
+              <div className="flex flex-wrap gap-2">
+                <span className="rounded-full bg-violet-100 px-3 py-1 text-xs font-bold text-violet-700">
+                  {course.level}
+                </span>
+                <span
+                  className={`rounded-full px-3 py-1 text-xs font-bold ${
+                    course.free ? "bg-teal-100 text-teal-700" : "bg-amber-100 text-amber-700"
+                  }`}
+                >
+                  {course.free ? "Gratuito" : "Premium"}
+                </span>
+                <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-bold text-slate-500">
+                  {course.hours}
+                </span>
+              </div>
+              <h1 className="mt-4 max-w-2xl text-3xl font-bold leading-tight sm:text-4xl">{course.title}</h1>
+            </motion.div>
 
-            <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:max-w-3xl">
-              {course.outcomes.slice(0, 4).map((outcome) => (
-                <div key={outcome} className="flex items-start gap-3 rounded-[1.2rem] border border-white/8 bg-white/[0.03] px-4 py-3">
-                  <CheckCircle2 className="mt-0.5 size-4 shrink-0 text-teal-300" />
-                  <p className="text-sm leading-6 text-slate-300">{outcome}</p>
-                </div>
-              ))}
+            {/* Painel de XP */}
+            <motion.div
+              variants={fadeUp}
+              initial="hidden"
+              animate="visible"
+              transition={{ duration: 0.5, delay: 0.08 }}
+              className="flex shrink-0 items-center gap-4 rounded-3xl border border-slate-200/70 bg-[#f7f8fc] px-6 py-4"
+            >
+              <div className="text-center">
+                <p className="flex items-center gap-1 font-baloo text-2xl font-bold text-[#6b21a8]">
+                  <Zap className="size-5 fill-amber-400 text-amber-400" />
+                  {progress.xp}
+                </p>
+                <p className="text-[0.65rem] font-bold uppercase tracking-wider text-slate-400">XP</p>
+              </div>
+              <div className="h-10 w-px bg-slate-200" />
+              <div className="text-center">
+                <p className="font-baloo text-lg font-bold text-[#1a1333]">
+                  {progress.level.emoji} {progress.level.name}
+                </p>
+                <p className="text-[0.65rem] font-bold uppercase tracking-wider text-slate-400">Nível</p>
+              </div>
+              <div className="h-10 w-px bg-slate-200" />
+              <div className="text-center">
+                <p className="flex items-center justify-center gap-1 font-baloo text-2xl font-bold text-teal-600">
+                  <Trophy className="size-5" />
+                  {progress.badges}
+                </p>
+                <p className="text-[0.65rem] font-bold uppercase tracking-wider text-slate-400">Conquistas</p>
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Barra de progresso do curso */}
+          <div className="mt-6">
+            <div className="flex items-center justify-between text-xs font-bold text-slate-400">
+              <span>Progresso do curso</span>
+              <span className="text-[#6b21a8]">{progress.coursePercent}%</span>
             </div>
-          </motion.div>
+            <div className="mt-2 h-2.5 overflow-hidden rounded-full bg-slate-100">
+              <motion.div
+                className="h-full rounded-full bg-[linear-gradient(90deg,#6b21a8,#8b5cf6,#14b8a6)]"
+                initial={{ width: 0 }}
+                animate={{ width: `${progress.coursePercent}%` }}
+                transition={{ duration: 0.8, ease: "easeOut" }}
+              />
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* Player: módulos + aula ativa */}
+      {/* Player */}
       <section className="container grid gap-8 py-12 lg:grid-cols-[0.85fr_1.15fr]">
-        {/* Navegação de módulos */}
+        {/* Trilha de módulos */}
         <div className="space-y-3">
           {course.modules.map((module, mi) => {
             const unlocked = course.free || module.free;
             const isActive = module.id === (activeModule?.id ?? "");
+            const mp = progress.moduleProgress[module.id];
             return (
               <div
                 key={module.id}
-                className={`overflow-hidden rounded-[1.4rem] border transition ${
-                  isActive
-                    ? "border-[var(--accent-purple)]/40 bg-[var(--accent-purple)]/8"
-                    : "border-white/8 bg-white/[0.02]"
+                className={`overflow-hidden rounded-3xl border bg-white transition ${
+                  isActive ? "border-[#8b5cf6] shadow-[0_10px_40px_rgba(107,33,168,0.12)]" : "border-slate-200/70"
                 }`}
               >
                 <button
@@ -333,38 +477,48 @@ export default function CoursePlayer({ slug }: { slug: string }) {
                     setActiveModuleId(module.id);
                     setActiveLessonIndex(0);
                   }}
-                  className="flex w-full items-start justify-between gap-3 px-5 py-4 text-left"
+                  className="flex w-full items-center gap-4 px-5 py-4 text-left"
                 >
-                  <div>
-                    <p className="text-[0.65rem] font-semibold uppercase tracking-[0.24em] text-slate-500">
+                  {unlocked ? (
+                    <ProgressRing percent={mp?.percent ?? 0} done={mp?.badge ?? false} />
+                  ) : (
+                    <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-amber-100 text-amber-600">
+                      <LockKeyhole className="size-4" />
+                    </span>
+                  )}
+                  <div className="min-w-0 flex-1">
+                    <p className="text-[0.65rem] font-bold uppercase tracking-[0.18em] text-slate-400">
                       Módulo {mi + 1} · {module.duration}
                     </p>
-                    <p className="mt-1.5 text-sm font-semibold text-white">{module.title}</p>
+                    <p className="truncate text-sm font-bold text-[#1a1333]">{module.title}</p>
                   </div>
-                  {unlocked ? (
-                    <ChevronRight className={`mt-1 size-4 shrink-0 text-slate-500 transition ${isActive ? "rotate-90 text-violet-300" : ""}`} />
-                  ) : (
-                    <LockKeyhole className="mt-1 size-4 shrink-0 text-amber-300/80" />
-                  )}
+                  <ChevronRight
+                    className={`size-4 shrink-0 text-slate-400 transition ${isActive ? "rotate-90 text-[#8b5cf6]" : ""}`}
+                  />
                 </button>
 
                 {isActive && unlocked ? (
-                  <div className="border-t border-white/8 px-3 pb-3 pt-2">
+                  <div className="border-t border-slate-100 px-3 pb-3 pt-2">
                     {module.lessons.map((lesson, li) => {
                       const Icon = lessonIcons[lesson.type];
                       const selected = li === activeLessonIndex;
+                      const done = progress.isLessonComplete(module.id, li);
                       return (
                         <button
                           key={li}
                           type="button"
                           onClick={() => setActiveLessonIndex(li)}
-                          className={`flex w-full items-center gap-3 rounded-[1rem] px-3 py-2.5 text-left text-sm transition ${
-                            selected ? "bg-white/8 text-white" : "text-slate-400 hover:bg-white/[0.04] hover:text-slate-200"
+                          className={`flex w-full items-center gap-3 rounded-2xl px-3 py-2.5 text-left text-sm transition ${
+                            selected ? "bg-violet-50 font-semibold text-[#6b21a8]" : "text-slate-500 hover:bg-slate-50"
                           }`}
                         >
-                          <Icon className={`size-4 shrink-0 ${selected ? "text-teal-300" : ""}`} />
-                          <span className="flex-1">{lesson.title}</span>
-                          <span className="text-xs text-slate-500">{lesson.duration}</span>
+                          {done ? (
+                            <CheckCircle2 className="size-4 shrink-0 fill-teal-100 text-teal-600" />
+                          ) : (
+                            <Icon className="size-4 shrink-0" />
+                          )}
+                          <span className="flex-1 truncate">{lesson.title}</span>
+                          <span className="text-xs text-slate-400">{lesson.duration}</span>
                         </button>
                       );
                     })}
@@ -372,15 +526,15 @@ export default function CoursePlayer({ slug }: { slug: string }) {
                 ) : null}
 
                 {isActive && !unlocked ? (
-                  <div className="border-t border-white/8 px-5 py-5">
-                    <p className="text-sm leading-6 text-slate-400">
-                      Este módulo faz parte do conteúdo premium. Garanta sua vaga e libere a trilha completa com certificado.
+                  <div className="border-t border-slate-100 px-5 py-5">
+                    <p className="text-sm leading-6 text-slate-500">
+                      Conteúdo premium. Garanta sua vaga e libere a trilha completa com certificado.
                     </p>
                     <a
                       href={contact.whatsapp}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="mt-4 inline-flex items-center gap-2 rounded-full bg-emerald-500/90 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-emerald-500"
+                      className="mt-4 inline-flex items-center gap-2 rounded-full bg-emerald-500 px-5 py-2.5 text-sm font-bold text-white transition hover:bg-emerald-600"
                     >
                       <MessageCircle className="size-4" />
                       Quero me matricular
@@ -393,30 +547,27 @@ export default function CoursePlayer({ slug }: { slug: string }) {
 
           {/* Biblioteca de prática */}
           {course.library.length > 0 ? (
-            <div className="mt-6 rounded-[1.4rem] border border-[var(--accent-teal)]/20 bg-[var(--accent-teal)]/5 p-5">
-              <div className="flex items-center gap-2">
-                <FlaskConical className="size-4 text-teal-300" />
-                <p className="text-[0.7rem] font-semibold uppercase tracking-[0.24em] text-teal-200">
-                  Biblioteca de prática
-                </p>
-              </div>
+            <div className="rounded-3xl border-2 border-teal-200 bg-teal-50/50 p-5">
+              <p className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] text-teal-700">
+                <FlaskConical className="size-4" />
+                Biblioteca de prática
+              </p>
               <div className="mt-4 space-y-3">
                 {course.library.map((resource) => (
-                  <div key={resource.title} className="rounded-[1rem] border border-white/8 bg-white/[0.03] px-4 py-3">
-                    <p className="text-sm font-semibold text-white">{resource.title}</p>
-                    <p className="mt-1 text-xs leading-5 text-slate-400">{resource.description}</p>
+                  <div key={resource.title} className="rounded-2xl border border-teal-100 bg-white px-4 py-3">
+                    <p className="text-sm font-bold text-[#1a1333]">{resource.title}</p>
                     {resource.url ? (
                       <a
                         href={resource.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="mt-2 inline-flex items-center gap-1 text-xs font-semibold text-teal-300 hover:text-teal-200"
+                        className="mt-1 inline-flex items-center gap-1 text-xs font-bold text-teal-600 hover:text-teal-700"
                       >
                         Abrir {resource.tool}
                         <ChevronRight className="size-3" />
                       </a>
                     ) : (
-                      <p className="mt-2 text-xs text-slate-500">Em preparação</p>
+                      <p className="mt-1 text-xs text-slate-400">Em preparação</p>
                     )}
                   </div>
                 ))}
@@ -433,68 +584,86 @@ export default function CoursePlayer({ slug }: { slug: string }) {
               variants={fadeUp}
               initial="hidden"
               animate="visible"
-              transition={{ duration: 0.4 }}
-              className="rounded-[1.6rem] border border-white/8 bg-white/[0.03] p-6 sm:p-8"
+              transition={{ duration: 0.35 }}
+              className="rounded-3xl border border-slate-200/70 bg-white p-6 shadow-[0_10px_40px_rgba(26,19,51,0.06)] sm:p-8"
             >
-              <div className="flex flex-wrap items-center gap-3">
-                <span className="rounded-full border border-[var(--accent-purple)]/30 bg-[var(--accent-purple)]/10 px-3 py-1 text-[0.7rem] font-semibold text-violet-200">
-                  {lessonTypeLabels[activeLesson.type]}
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <span className="rounded-full bg-violet-100 px-3 py-1 text-xs font-bold text-violet-700">
+                  {lessonTypeLabels[activeLesson.type]} · {activeLesson.duration}
                 </span>
-                <span className="inline-flex items-center gap-1.5 text-xs text-slate-400">
-                  <Clock className="size-3.5" />
-                  {activeLesson.duration}
-                </span>
-              </div>
-              <h2 className="mt-4 font-display text-2xl font-semibold text-white sm:text-3xl">
-                {activeLesson.title}
-              </h2>
-              <div className="mt-6">
-                <LessonView lesson={activeLesson} module={activeModule} />
+                {lessonDone ? (
+                  <span className="inline-flex items-center gap-1.5 rounded-full bg-teal-100 px-3 py-1 text-xs font-bold text-teal-700">
+                    <CheckCircle2 className="size-3.5" />
+                    Concluída
+                  </span>
+                ) : null}
               </div>
 
-              {/* Navegação entre aulas */}
-              <div className="mt-8 flex items-center justify-between border-t border-white/8 pt-6">
+              <h2 className="mt-4 text-2xl font-bold sm:text-3xl">{activeLesson.title}</h2>
+
+              <div className="mt-6">
+                <LessonView lesson={activeLesson} module={activeModule} onQuizResult={handleQuizResult} />
+              </div>
+
+              {/* Ações da aula */}
+              <div className="mt-8 flex flex-wrap items-center justify-between gap-3 border-t border-slate-100 pt-6">
                 <button
                   type="button"
                   disabled={activeLessonIndex === 0}
                   onClick={() => setActiveLessonIndex((i) => Math.max(0, i - 1))}
-                  className="rounded-full border border-white/10 px-5 py-2.5 text-sm text-slate-300 transition hover:bg-white/5 disabled:cursor-not-allowed disabled:opacity-30"
+                  className="rounded-full border-2 border-slate-200 px-5 py-2.5 text-sm font-semibold text-slate-500 transition hover:border-violet-200 hover:text-[#6b21a8] disabled:cursor-not-allowed disabled:opacity-30"
                 >
-                  Aula anterior
+                  Anterior
                 </button>
+
+                {activeLesson.type !== "quiz" ? (
+                  <button
+                    type="button"
+                    disabled={lessonDone}
+                    onClick={handleCompleteLesson}
+                    className={`inline-flex items-center gap-2 rounded-full px-6 py-2.5 text-sm font-bold transition ${
+                      lessonDone
+                        ? "cursor-default bg-teal-100 text-teal-700"
+                        : "bg-[linear-gradient(90deg,#6b21a8,#8b5cf6)] text-white hover:opacity-90"
+                    }`}
+                  >
+                    {lessonDone ? (
+                      <>
+                        <CheckCircle2 className="size-4" />
+                        Aula concluída
+                      </>
+                    ) : (
+                      <>
+                        <Sparkles className="size-4" />
+                        Concluir aula (+{XP_PER_LESSON} XP)
+                      </>
+                    )}
+                  </button>
+                ) : null}
+
                 <button
                   type="button"
-                  disabled={activeLessonIndex >= activeModule.lessons.length - 1}
+                  disabled={!activeModule || activeLessonIndex >= activeModule.lessons.length - 1}
                   onClick={() =>
-                    setActiveLessonIndex((i) => Math.min(activeModule.lessons.length - 1, i + 1))
+                    setActiveLessonIndex((i) => Math.min((activeModule?.lessons.length ?? 1) - 1, i + 1))
                   }
-                  className="rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-slate-950 transition hover:bg-violet-200 disabled:cursor-not-allowed disabled:opacity-30"
+                  className="rounded-full bg-[#1a1333] px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[#6b21a8] disabled:cursor-not-allowed disabled:opacity-30"
                 >
-                  Próxima aula
+                  Próxima
                 </button>
               </div>
             </motion.div>
           ) : (
-            <div className="rounded-[1.6rem] border border-white/8 bg-white/[0.03] p-8">
-              <PlaceholderPanel
-                icon={GraduationCap}
+            <div className="rounded-3xl border border-slate-200/70 bg-white p-8">
+              <Placeholder
+                icon={Award}
                 title="Conteúdo premium"
-                text="Selecione um módulo liberado na coluna ao lado, ou garanta sua matrícula para acessar a trilha completa."
+                text="Selecione um módulo liberado ao lado, ou garanta sua matrícula para desbloquear a trilha completa."
               />
             </div>
           )}
         </div>
       </section>
-
-      <footer className="border-t border-white/8">
-        <div className="container flex flex-col items-center justify-between gap-4 py-8 sm:flex-row">
-          <p className="text-sm text-slate-500">© 2026 Giselle Falcão. Todos os direitos reservados.</p>
-          <div className="flex items-center gap-2 text-xs text-slate-400">
-            <Award className="size-4 text-teal-300" />
-            Certificado digital ao concluir todas as aulas
-          </div>
-        </div>
-      </footer>
-    </main>
+    </GiselleLayout>
   );
 }

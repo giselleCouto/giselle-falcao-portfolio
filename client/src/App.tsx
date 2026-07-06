@@ -17,6 +17,11 @@ import AiOsExperience from "./pages/AiOsExperience";
 import CourseCatalog from "./pages/CourseCatalog";
 import CoursePlayer from "./pages/CoursePlayer";
 import GiselleCourses from "./pages/GiselleCourses";
+import GiselleHome from "./pages/giselle/GiselleHome";
+import GiselleSolucoes from "./pages/giselle/GiselleSolucoes";
+import GiselleServicos from "./pages/giselle/GiselleServicos";
+import GiselleSobre from "./pages/giselle/GiselleSobre";
+import GiselleContato from "./pages/giselle/GiselleContato";
 import MinasSummitFaq from "./pages/MinasSummitFaq";
 
 function upsertMeta(selector: string, attributeName: "name" | "property", attributeValue: string, content: string) {
@@ -526,7 +531,12 @@ function Router() {
         <Route path="/giselle/cursos/:slug">
           {(params) => <CoursePlayer slug={params.slug ?? ""} />}
         </Route>
-        <Route path="/giselle" component={() => <PortfolioSite />} />
+        <Route path="/giselle/solucoes" component={GiselleSolucoes} />
+        <Route path="/giselle/servicos" component={GiselleServicos} />
+        <Route path="/giselle/sobre" component={GiselleSobre} />
+        <Route path="/giselle/contato" component={GiselleContato} />
+        <Route path="/giselle/completo" component={() => <PortfolioSite />} />
+        <Route path="/giselle" component={GiselleHome} />
         <Route path="/ai-os" component={AiOsExperience} />
         <Route path={minasSummitFaqMeta.slug} component={MinasSummitFaq} />
         <Route path="/jade" component={JadeProfile} />
