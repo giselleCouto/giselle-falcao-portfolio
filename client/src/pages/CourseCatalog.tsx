@@ -1,11 +1,8 @@
 import { motion } from "framer-motion";
 import { Link } from "wouter";
 import { ArrowLeft, BookOpen, Clock, Award } from "lucide-react";
-import {
-  catalogHero,
-  catalogCourses,
-  levelStyles,
-} from "@/lib/courseCatalogData";
+import { catalogHero, levelStyles } from "@/lib/courseCatalogData";
+import { courses } from "@/lib/courses";
 import { contact } from "@/lib/portfolioData";
 
 const fadeUp = {
@@ -77,9 +74,9 @@ export default function CourseCatalog() {
       {/* Grade de cursos */}
       <section className="container py-16 sm:py-20">
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {catalogCourses.map((course, index) => (
+          {courses.map((course, index) => (
             <motion.article
-              key={course.id}
+              key={course.slug}
               variants={fadeUp}
               initial="hidden"
               whileInView="visible"
@@ -95,17 +92,28 @@ export default function CourseCatalog() {
 
               {/* Conteúdo */}
               <div className="flex flex-1 flex-col p-6">
-                <span
-                  className={`inline-flex w-fit items-center rounded-full border px-3 py-1 text-[0.7rem] font-semibold ${levelStyles[course.level]}`}
-                >
-                  {course.level}
-                </span>
+                <div className="flex flex-wrap items-center gap-2">
+                  <span
+                    className={`inline-flex w-fit items-center rounded-full border px-3 py-1 text-[0.7rem] font-semibold ${levelStyles[course.level]}`}
+                  >
+                    {course.level}
+                  </span>
+                  <span
+                    className={`inline-flex w-fit items-center rounded-full border px-3 py-1 text-[0.7rem] font-semibold ${
+                      course.free
+                        ? "border-teal-400/30 bg-teal-400/10 text-teal-200"
+                        : "border-violet-400/30 bg-violet-400/10 text-violet-200"
+                    }`}
+                  >
+                    {course.free ? "Gratuito" : "Premium"}
+                  </span>
+                </div>
 
                 <h2 className="mt-4 font-display text-xl font-semibold leading-snug text-white">
                   {course.title}
                 </h2>
 
-                <p className="mt-3 flex-1 text-sm leading-6 text-slate-400">
+                <p className="mt-3 line-clamp-5 flex-1 text-sm leading-6 text-slate-400">
                   {course.description}
                 </p>
 
@@ -114,17 +122,24 @@ export default function CourseCatalog() {
                     <Clock className="size-3.5" />
                     {course.hours}
                   </span>
-                  {course.certificate ? (
-                    <span className="inline-flex items-center gap-1.5">
-                      <Award className="size-3.5 text-teal-300" />
-                      Com certificado
-                    </span>
-                  ) : null}
+                  <span className="inline-flex items-center gap-1.5">
+                    <Award className="size-3.5 text-teal-300" />
+                    Com certificado
+                  </span>
                 </div>
 
-                <span className="mt-6 inline-flex w-fit cursor-default items-center gap-2 rounded-full border border-white/10 bg-white/5 px-5 py-2.5 text-sm font-medium text-slate-300">
-                  Em breve
-                </span>
+                {course.status === "disponivel" ? (
+                  <Link
+                    href={`/giselle/cursos/${course.slug}`}
+                    className="mt-6 inline-flex w-fit items-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-slate-950 transition hover:bg-violet-200"
+                  >
+                    Ver curso
+                  </Link>
+                ) : (
+                  <span className="mt-6 inline-flex w-fit cursor-default items-center gap-2 rounded-full border border-white/10 bg-white/5 px-5 py-2.5 text-sm font-medium text-slate-300">
+                    Em breve
+                  </span>
+                )}
               </div>
             </motion.article>
           ))}

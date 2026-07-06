@@ -70,6 +70,6 @@ describe("portfolio featured projects curation", () => {
     expect(contactLabels).not.toContain("CV");
     expect(contactLabels).toContain("LinkedIn");
     expect(contactLabels).toContain("Google Scholar");
-    expect(contactLabels).toContain("Lattes");
+    expect(contactLabels).toContain("Lattes CNPq");
   });
 });

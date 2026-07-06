@@ -15,6 +15,7 @@ import { caseStudies, faqItems, insightArticles } from "./lib/portfolioData";
 import { minasSummitFaqItems, minasSummitFaqMeta, minasSummitSocialLinks } from "./lib/minasSummitFaqData";
 import AiOsExperience from "./pages/AiOsExperience";
 import CourseCatalog from "./pages/CourseCatalog";
+import CoursePlayer from "./pages/CoursePlayer";
 import GiselleCourses from "./pages/GiselleCourses";
 import MinasSummitFaq from "./pages/MinasSummitFaq";
 
@@ -522,6 +523,9 @@ function Router() {
         <Route path="/giselle/cursos/checkout" component={() => <GiselleCourses view="checkout" />} />
         <Route path="/giselle/cursos/lab" component={() => <GiselleCourses view="lab" />} />
         <Route path="/giselle/cursos/meus-cursos" component={() => <GiselleCourses view="dashboard" />} />
+        <Route path="/giselle/cursos/:slug">
+          {(params) => <CoursePlayer slug={params.slug ?? ""} />}
+        </Route>
         <Route path="/giselle" component={() => <PortfolioSite />} />
         <Route path="/ai-os" component={AiOsExperience} />
         <Route path={minasSummitFaqMeta.slug} component={MinasSummitFaq} />
