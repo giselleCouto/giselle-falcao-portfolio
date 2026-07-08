@@ -244,6 +244,58 @@ export const analiseDadosEstrategica: Course = {
           "duration": "15min",
           "summary": "Questões objetivas sobre média versus mediana, correlação versus causalidade e viés de amostra, com explicações comentadas. Correção automática e nota mínima de 70%."
         }
+      ],
+      "quiz": [
+        {
+          "prompt": "O tempo médio de resolução de um serviço é 12 dias, mas a mediana é 4 dias. O que essa diferença indica?",
+          "options": [
+            "Erro de cálculo — média e mediana de uma mesma base deveriam ser sempre iguais.",
+            "Distribuição assimétrica: a maioria dos casos é resolvida rápido, mas uma minoria demora muito e puxa a média para cima.",
+            "Que metade dos casos demora exatamente 12 dias para ser resolvida."
+          ],
+          "correctIndex": 1,
+          "explanation": "Média e mediana distantes são o diagnóstico clássico de cauda longa — poucos casos muito demorados arrastam a média para longe do caso típico. Em distribuição assimétrica, a mediana descreve melhor o típico, e a regra do curso é: assimétrica pede mediana."
+        },
+        {
+          "prompt": "Para prometer um prazo ao cidadão (\"seu chamado será resolvido em até X dias\"), qual medida é a mais adequada?",
+          "options": [
+            "A média, porque leva em conta todos os valores.",
+            "Um percentil alto, como o P90 — o prazo dentro do qual 90% dos casos são de fato resolvidos.",
+            "A moda, porque é o prazo que mais se repete."
+          ],
+          "correctIndex": 1,
+          "explanation": "Promessa de prazo é compromisso com a cauda da distribuição, não com o centro. Prometer a média significa estourar o prazo em boa parte dos casos; o P90 é a régua das metas honestas."
+        },
+        {
+          "prompt": "Distritos com mais UBS por habitante apresentam piores indicadores de saúde. A leitura mais prudente dessa correlação é:",
+          "options": [
+            "As UBS pioram a saúde da população e deveriam ser repensadas.",
+            "Pode haver causalidade reversa ou direcionamento: as UBS foram instaladas justamente onde os indicadores já eram piores.",
+            "O dado prova que investir em atenção básica não tem efeito."
+          ],
+          "correctIndex": 1,
+          "explanation": "Política pública bem alocada vai sempre \"se correlacionar\" com o problema que combate — o equipamento foi para onde a necessidade era maior. Antes de atribuir causa, rode o checklist das 4 perguntas: terceiro fator? seta invertida? acaso? mecanismo testável?"
+        },
+        {
+          "prompt": "Por que o volume de chamados do SP156 por distrito não mede diretamente a necessidade de zeladoria da cidade?",
+          "options": [
+            "Porque quem registra chamados é uma amostra autosselecionada: depende de conhecer o canal, ter acesso e acreditar que reclamar adianta.",
+            "Porque os dados do SP156 são sigilosos e incompletos por determinação legal.",
+            "Porque chamados telefônicos não podem ser tratados estatisticamente."
+          ],
+          "correctIndex": 0,
+          "explanation": "É o viés de seleção — dado administrativo mede a demanda registrada, não a necessidade real. Um distrito com poucos chamados pode estar bem cuidado ou pode ter desistido de pedir; por isso a pergunta profissional é sempre \"quem ficou de fora destes dados?\"."
+        },
+        {
+          "prompt": "Um distrito pequeno passou de 2 para 4 sinistros fatais e virou manchete: \"mortes no trânsito dobram\". Qual é a leitura estatística mais honesta?",
+          "options": [
+            "Alta de 100% exige transferir imediatamente equipes de fiscalização de outros distritos para lá.",
+            "Em bases pequenas, variações percentuais grandes podem ser flutuação aleatória: olhe os valores absolutos e a série de vários anos antes de concluir tendência.",
+            "Percentuais não podem ser calculados sobre números pequenos, então o dado deve ser descartado."
+          ],
+          "correctIndex": 1,
+          "explanation": "É a armadilha dos pequenos números — de 2 para 4 pode ser acaso, e no ano seguinte o valor pode voltar a 1 ou 2 sem que nada tenha mudado. O dado não se descarta: agrega-se mais tempo ou mais território e comparam-se absolutos, reportando a incerteza sem paralisar a decisão."
+        }
       ]
     },
     {
@@ -283,6 +335,58 @@ export const analiseDadosEstrategica: Course = {
           "type": "quiz",
           "duration": "15min",
           "summary": "Questões de leitura e correção de consultas: prever o resultado de um GROUP BY, identificar o erro de um JOIN e escolher a cláusula certa para cada pergunta de gestão."
+        }
+      ],
+      "quiz": [
+        {
+          "prompt": "Considere a consulta: SELECT servico, distrito FROM chamados WHERE distrito = 'SE' LIMIT 100. O que ela retorna?",
+          "options": [
+            "As colunas servico e distrito de até 100 chamados cujo distrito é \"SE\".",
+            "Todas as colunas de todos os chamados da cidade, destacando os da Sé.",
+            "A contagem de chamados da Sé, agrupada por serviço."
+          ],
+          "correctIndex": 0,
+          "explanation": "Lendo como uma frase — \"selecione serviço e distrito, da tabela chamados, onde o distrito é SE, no máximo 100 linhas\". Sem GROUP BY não há contagem, e o SELECT nomeou apenas duas colunas."
+        },
+        {
+          "prompt": "A tabela chamados tem 50.000 linhas distribuídas em 96 distritos. Quantas linhas retorna SELECT distrito, COUNT(*) AS total FROM chamados GROUP BY distrito?",
+          "options": [
+            "50.000 — uma por chamado, com o total repetido.",
+            "96 — uma por distrito, cada uma com sua contagem.",
+            "1 — apenas o total geral de chamados."
+          ],
+          "correctIndex": 1,
+          "explanation": "O GROUP BY colapsa as linhas em um registro por grupo — a mesma lógica da tabela dinâmica do módulo 2: \"conte os chamados, agrupados por distrito\" produz uma linha por distrito."
+        },
+        {
+          "prompt": "Você quer listar apenas os serviços cujo tempo MÉDIO de resolução passa de 30 dias. Qual cláusula filtra corretamente essa condição?",
+          "options": [
+            "WHERE AVG(dias_para_resolucao) > 30, antes do GROUP BY.",
+            "HAVING AVG(dias_para_resolucao) > 30, depois do GROUP BY.",
+            "LIMIT 30, para restringir o resultado a 30 dias."
+          ],
+          "correctIndex": 1,
+          "explanation": "O WHERE filtra linhas antes do agrupamento — quando a média ainda não existe. Filtros sobre resultados agregados usam HAVING, que age depois do GROUP BY. LIMIT corta a quantidade de linhas exibidas, não tem relação com dias."
+        },
+        {
+          "prompt": "Um colega cruzou a tabela de ocorrências com o diretório de municípios usando ON ocorrencias.nome_municipio = diretorio.nome e vários municípios sumiram do resultado. Qual é a causa mais provável e a correção?",
+          "options": [
+            "Nomes de município variam em grafia e acentuação entre bases; o correto é juntar pela chave de código IBGE (id_municipio).",
+            "O BigQuery não permite JOIN entre projetos diferentes; é preciso copiar as tabelas para o mesmo projeto.",
+            "Faltou um LIMIT na consulta; sem ele o JOIN descarta linhas automaticamente."
+          ],
+          "correctIndex": 0,
+          "explanation": "JOIN por texto é a armadilha de grafia vestida de consulta — \"Embu das Artes\" × \"Embu\" não casam e a linha some no INNER JOIN. O código IBGE de 7 dígitos existe justamente para ser a chave única e estável. JOINs entre projetos públicos são permitidos, e LIMIT nunca altera quais linhas casam."
+        },
+        {
+          "prompt": "No BigQuery, o custo de uma consulta (bytes processados) depende principalmente de quê?",
+          "options": [
+            "Das colunas que a consulta lê — por isso SELECT * processa a tabela inteira e nomear colunas processa menos.",
+            "Do número de linhas exibidas — um LIMIT 10 garante custo próximo de zero.",
+            "Do tempo que a consulta demora para executar."
+          ],
+          "correctIndex": 0,
+          "explanation": "O BigQuery é um banco colunar — ele lê apenas as colunas citadas na consulta, e é isso que a estimativa mostra antes de executar. O LIMIT corta a exibição, mas não reduz o que foi escaneado; o tempo de execução não é a base do custo."
         }
       ]
     },
@@ -324,6 +428,58 @@ export const analiseDadosEstrategica: Course = {
           "duration": "15min",
           "summary": "Questões sobre escolha de gráfico por pergunta, hierarquia visual e crítica de um dashboard de exemplo, com explicações comentadas."
         }
+      ],
+      "quiz": [
+        {
+          "prompt": "Você precisa mostrar ao gestor como o volume de chamados evoluiu mês a mês no último ano. O visual mais adequado é:",
+          "options": [
+            "Gráfico de pizza com 12 fatias, uma por mês.",
+            "Gráfico de linhas (série temporal) com um ponto por mês.",
+            "Um scorecard com o total do ano."
+          ],
+          "correctIndex": 1,
+          "explanation": "Evolução no tempo pede linhas — o olho acompanha tendência, sazonalidade e quebras. Pizza compara partes de um todo (mal, aliás, com 12 fatias), e o scorecard resume um número, mas não mostra a evolução."
+        },
+        {
+          "prompt": "Por que gráficos de barras costumam comunicar comparações melhor que gráficos de pizza?",
+          "options": [
+            "Porque o cérebro compara comprimentos com muito mais precisão do que ângulos e áreas.",
+            "Porque barras aceitam mais cores diferentes que fatias.",
+            "Porque pizza só funciona para dados que somam menos de 100%."
+          ],
+          "correctIndex": 0,
+          "explanation": "É a hierarquia da percepção (Cleveland & McGill): posição e comprimento no topo, ângulo e área embaixo. Não tem a ver com cores — aliás, quanto menos cores, melhor — e proporções em pizza sempre somam 100% por construção."
+        },
+        {
+          "prompt": "No Looker Studio, ao montar o gráfico \"chamados por distrito\", os campos distrito e Contagem de registros são, respectivamente:",
+          "options": [
+            "Uma métrica e uma dimensão.",
+            "Uma dimensão e uma métrica.",
+            "Dois filtros do relatório."
+          ],
+          "correctIndex": 1,
+          "explanation": "Dimensão é o \"agrupado por aquilo\" (categorias, como distrito — em verde no painel); métrica é o \"calcule isto\" (números agregados, como a contagem — em azul). É a mesma gramática da tabela dinâmica e do GROUP BY."
+        },
+        {
+          "prompt": "Em um dashboard executivo, o número mais importante (KPI nº 1) deve ficar:",
+          "options": [
+            "No rodapé, para fechar a leitura com chave de ouro.",
+            "No canto superior esquerdo, onde o padrão de leitura em F começa.",
+            "Em qualquer lugar, desde que pisque ou tenha cor vibrante."
+          ],
+          "correctIndex": 1,
+          "explanation": "O olho varre a tela num padrão em F, começando pelo canto superior esquerdo — o \"metro quadrado mais caro\" do painel. É a regra dos 5 segundos: a resposta principal precisa aparecer onde o olhar chega primeiro, sem depender de efeitos."
+        },
+        {
+          "prompt": "Um painel com 30 gráficos numa única página, seis paletas de cores e nenhum número em destaque comete qual erro?",
+          "options": [
+            "É um dashboard-enciclopédia: sem persona, sem pergunta e sem hierarquia, ninguém o abre duas vezes.",
+            "Nenhum — quanto mais informação na tela, melhor a decisão.",
+            "Usar dados públicos, que não deveriam aparecer em dashboards."
+          ],
+          "correctIndex": 0,
+          "explanation": "O dashboard-enciclopédia nasce quando ninguém define para quem e para qual decisão o painel existe — cada área pede \"só mais um gráfico\" e nada se destaca. A cura: persona + pergunta em uma frase, 3 a 5 KPIs na visão geral e o detalhe em outra página. Mais informação não é mais decisão; dados públicos são exatamente a matéria-prima certa."
+        }
       ]
     },
     {
@@ -363,6 +519,58 @@ export const analiseDadosEstrategica: Course = {
           "duration": "2h30",
           "summary": "O aluno escolhe um dataset dos portais do curso (SP156, InfoSiga, ObservaSampa, Base dos Dados), define uma pergunta estratégica e executa o ciclo completo: limpeza, análise e dashboard no Looker Studio. Entrega link do dashboard, sumário executivo de 1 página e roteiro de apresentação de 5 minutos, avaliados por rubrica com feedback individual.",
           "practiceTool": "Looker Studio"
+        }
+      ],
+      "quiz": [
+        {
+          "prompt": "Um gestor pergunta a um chatbot genérico \"quantos chamados o SP156 recebeu em 2025?\" e recebe um número exato e convincente. Qual é a atitude correta?",
+          "options": [
+            "Usar o número, pois a IA de 2026 tem acesso a todos os dados públicos.",
+            "Tratar o número como não verificado e conferir na fonte oficial (Portal de Dados Abertos) antes de citá-lo.",
+            "Pedir ao próprio chatbot que confirme se o número está correto."
+          ],
+          "correctIndex": 1,
+          "explanation": "A IA generativa produz o texto mais plausível, não consulta o portal — e pode alucinar números e fontes com total confiança. Pedir confirmação à própria IA não verifica nada. O protocolo da casa: a IA propõe, o dado confirma, você assina."
+        },
+        {
+          "prompt": "Qual é a principal vantagem do NotebookLM sobre um chatbot genérico para interrogar relatórios públicos?",
+          "options": [
+            "Ele responde com base apenas nos documentos carregados e cita o trecho de origem de cada afirmação.",
+            "Ele escreve resumos mais longos e em menos tempo.",
+            "Ele dispensa a conferência das respostas no documento original."
+          ],
+          "correctIndex": 0,
+          "explanation": "O NotebookLM é \"IA com coleira\": ancora as respostas nas SUAS fontes e mostra citações clicáveis — se a informação não está nos documentos, ele diz isso. Ainda assim, resumos podem perder nuance (prazos, condições, status parciais); a conferência no original continua obrigatória."
+        },
+        {
+          "prompt": "A coluna de descrição em texto livre dos chamados do 156 pode conter nome, telefone e endereço do cidadão. Antes de publicar uma análise, o correto é:",
+          "options": [
+            "Publicar mesmo assim, pois quem escreveu o relato concordou implicitamente com a divulgação.",
+            "Revisar e remover os dados pessoais — ou trabalhar apenas com os campos estruturados e agregados.",
+            "Publicar apenas se o volume de chamados for grande, porque aí ninguém acha o relato individual."
+          ],
+          "correctIndex": 1,
+          "explanation": "Dado pessoal em texto livre continua protegido pela LGPD; registrar um chamado não é consentir com a exposição, e o volume da base não anonimiza o relato individual. Regra da casa: texto livre não vai para material público sem revisão — prefira agregados."
+        },
+        {
+          "prompt": "Segundo a LGPD, qual opção descreve um dado que, em regra, está FORA do alcance da lei?",
+          "options": [
+            "Um total agregado e anonimizado, como \"1.200 chamados de poda no distrito X\", que não permite identificar ninguém por meios razoáveis.",
+            "Nome e CPF de munícipes em uma planilha interna da prefeitura, porque não foi publicada.",
+            "Qualquer dado que já esteja em um portal de transparência."
+          ],
+          "correctIndex": 0,
+          "explanation": "Pelo art. 12, dados anonimizados/agregados que não permitem identificação por meios técnicos razoáveis não são considerados dados pessoais. Planilha interna com nome e CPF é tratamento de dado pessoal (a LGPD se aplica mesmo sem publicação), e dado publicado em portal pode, sim, conter dado pessoal indevido — publicidade não o exclui da lei."
+        },
+        {
+          "prompt": "Na estrutura contexto → conflito → resolução de uma apresentação executiva de 5 minutos, o \"conflito\" corresponde a:",
+          "options": [
+            "O momento de debater com a audiência as discordâncias sobre o método.",
+            "O problema revelado pelos dados — a distância entre o que é e o que deveria ser, com número — que exige uma decisão.",
+            "O gráfico visualmente mais impactante da análise."
+          ],
+          "correctIndex": 1,
+          "explanation": "O conflito é o coração da história: o achado que dói (\"3 distritos concentram 45% dos chamados e esperam o dobro do prazo\"). Sem ele, a apresentação vira despejo de dados; com ele, a resolução — sua recomendação — ganha urgência e sentido."
         }
       ]
     }

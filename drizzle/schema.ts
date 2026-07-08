@@ -111,3 +111,35 @@ export const courseLessonProgress = mysqlTable(
 
 export type CourseLessonProgress = typeof courseLessonProgress.$inferSelect;
 export type InsertCourseLessonProgress = typeof courseLessonProgress.$inferInsert;
+
+/**
+ * Alunos da Giselle Falcão Academy — cadastro gratuito na plataforma de cursos.
+ * Também funciona como captação de leads: interesses em workshop, palestras
+ * e consultoria alimentam o funil comercial da Giselle.
+ */
+export const academyStudents = mysqlTable(
+  "academy_students",
+  {
+    id: int("id").autoincrement().primaryKey(),
+    name: varchar("name", { length: 160 }).notNull(),
+    email: varchar("email", { length: 320 }).notNull(),
+    whatsapp: varchar("whatsapp", { length: 40 }),
+    role: varchar("role", { length: 160 }),
+    organization: varchar("organization", { length: 200 }),
+    courseSlug: varchar("courseSlug", { length: 120 }),
+    interestWorkshop: boolean("interestWorkshop").default(false).notNull(),
+    interestTalks: boolean("interestTalks").default(false).notNull(),
+    interestConsulting: boolean("interestConsulting").default(false).notNull(),
+    goals: text("goals"),
+    consent: boolean("consent").default(false).notNull(),
+    source: varchar("source", { length: 120 }).default("academy").notNull(),
+    createdAt: timestamp("createdAt").defaultNow().notNull(),
+    updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+  },
+  (table) => ({
+    emailUnique: uniqueIndex("academy_students_email_unique").on(table.email),
+  }),
+);
+
+export type AcademyStudent = typeof academyStudents.$inferSelect;
+export type InsertAcademyStudent = typeof academyStudents.$inferInsert;

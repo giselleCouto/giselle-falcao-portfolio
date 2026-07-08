@@ -21,6 +21,8 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import GiselleLayout from "@/components/giselle/GiselleLayout";
+import StudentGate from "@/components/giselle/StudentGate";
+import { useStudentProfile } from "@/lib/courses/useStudentProfile";
 import { getCourse } from "@/lib/courses";
 import type { CourseModule, Lesson, QuizQuestion } from "@/lib/courses/types";
 import {
@@ -329,6 +331,8 @@ export default function CoursePlayer({ slug }: { slug: string }) {
   const [activeModuleId, setActiveModuleId] = useState<string | null>(null);
   const [activeLessonIndex, setActiveLessonIndex] = useState(0);
   const [celebrating, setCelebrating] = useState(false);
+  const [gateOpen, setGateOpen] = useState(false);
+  const { profile, saveProfile } = useStudentProfile();
 
   const progress = useCourseProgress(
     course ?? { slug: "_", title: "", level: "Iniciante", hours: "", free: true, tagline: "", description: "", outcomes: [], audience: "", prerequisites: "", status: "em-breve", modules: [], library: [] },
@@ -355,6 +359,10 @@ export default function CoursePlayer({ slug }: { slug: string }) {
 
   const handleCompleteLesson = () => {
     if (!activeModule || lessonDone) return;
+    if (!profile) {
+      setGateOpen(true);
+      return;
+    }
     const before = progress.moduleProgress[activeModule.id];
     progress.markLessonComplete(activeModule.id, activeLessonIndex);
     toast.success(`+${XP_PER_LESSON} XP — aula concluída!`);
@@ -373,6 +381,16 @@ export default function CoursePlayer({ slug }: { slug: string }) {
   return (
     <GiselleLayout>
       <Celebration show={celebrating} />
+      <StudentGate
+        open={gateOpen}
+        courseSlug={course.slug}
+        courseTitle={course.title}
+        onClose={() => setGateOpen(false)}
+        onRegistered={(data) => {
+          saveProfile(data);
+          setGateOpen(false);
+        }}
+      />
 
       {/* Cabeçalho do curso + gamificação */}
       <section className="border-b border-slate-200/70 bg-white">
@@ -440,8 +458,21 @@ export default function CoursePlayer({ slug }: { slug: string }) {
 
           {/* Barra de progresso do curso */}
           <div className="mt-6">
-            <div className="flex items-center justify-between text-xs font-bold text-slate-400">
-              <span>Progresso do curso</span>
+            <div className="flex items-center justify-between gap-3 text-xs font-bold text-slate-400">
+              <span>
+                Progresso do curso
+                {profile ? (
+                  <span className="ml-2 font-medium text-slate-400">· {profile.name.split(" ")[0]}</span>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => setGateOpen(true)}
+                    className="ml-2 rounded-full bg-violet-100 px-3 py-1 font-bold text-[#6b21a8] transition hover:bg-violet-200"
+                  >
+                    Crie seu perfil gratuito para garantir o certificado →
+                  </button>
+                )}
+              </span>
               <span className="text-[#6b21a8]">{progress.coursePercent}%</span>
             </div>
             <div className="mt-2 h-2.5 overflow-hidden rounded-full bg-slate-100">

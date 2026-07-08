@@ -1,9 +1,11 @@
 import { and, desc, eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
 import {
+  academyStudents,
   courseAccess,
   courseLessonProgress,
   courseProgress,
+  InsertAcademyStudent,
   InsertCourseAccess,
   InsertCourseLessonProgress,
   InsertCourseProgress,
@@ -142,6 +144,44 @@ export async function listLeadContacts() {
   }
 
   return db.select().from(leadContacts).orderBy(desc(leadContacts.createdAt));
+}
+
+export async function upsertAcademyStudent(input: InsertAcademyStudent) {
+  const db = await getDb();
+  if (!db) {
+    throw new Error("Database not available for student registration");
+  }
+
+  await db
+    .insert(academyStudents)
+    .values(input)
+    .onDuplicateKeyUpdate({
+      set: {
+        name: input.name,
+        whatsapp: input.whatsapp ?? null,
+        role: input.role ?? null,
+        organization: input.organization ?? null,
+        courseSlug: input.courseSlug ?? null,
+        interestWorkshop: input.interestWorkshop ?? false,
+        interestTalks: input.interestTalks ?? false,
+        interestConsulting: input.interestConsulting ?? false,
+        goals: input.goals ?? null,
+        consent: input.consent ?? false,
+        source: input.source ?? "academy",
+      },
+    });
+
+  return { ...input };
+}
+
+export async function listAcademyStudents() {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot list students: database not available");
+    return [];
+  }
+
+  return db.select().from(academyStudents).orderBy(desc(academyStudents.createdAt));
 }
 
 export async function upsertCourseCheckout(input: {

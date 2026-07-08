@@ -8,9 +8,11 @@ import {
   createLeadContact,
   getCourseAccessForUser,
   getUserById,
+  listAcademyStudents,
   listCourseLessonProgress,
   listCourseProgress,
   listLeadContacts,
+  upsertAcademyStudent,
   upsertCourseCheckout,
   upsertCourseLessonProgressRecord,
   upsertCourseProgressRecord,
@@ -71,6 +73,22 @@ const leadInputSchema = z
       });
     }
   });
+
+const studentInputSchema = z.object({
+  name: z.string().trim().min(2).max(160),
+  email: z.string().trim().email().max(320),
+  whatsapp: z.string().trim().max(40).optional().or(z.literal("")),
+  role: z.string().trim().max(160).optional().or(z.literal("")),
+  organization: z.string().trim().max(200).optional().or(z.literal("")),
+  courseSlug: z.string().trim().max(120).optional().or(z.literal("")),
+  interestWorkshop: z.boolean().optional(),
+  interestTalks: z.boolean().optional(),
+  interestConsulting: z.boolean().optional(),
+  goals: z.string().trim().max(2000).optional().or(z.literal("")),
+  consent: z.boolean().refine((value) => value === true, {
+    message: "É preciso aceitar a política de contato para criar o perfil.",
+  }),
+});
 
 const progressInputSchema = z.object({
   moduleId: z.string().trim().min(1).max(64),
@@ -148,6 +166,56 @@ export const appRouter = router({
     }),
     list: adminProcedure.query(async () => {
       return listLeadContacts();
+    }),
+  }),
+  academy: router({
+    register: publicProcedure.input(studentInputSchema).mutation(async ({ input }) => {
+      const normalized = {
+        name: input.name,
+        email: input.email.toLowerCase(),
+        whatsapp: input.whatsapp?.trim() || null,
+        role: input.role?.trim() || null,
+        organization: input.organization?.trim() || null,
+        courseSlug: input.courseSlug?.trim() || null,
+        interestWorkshop: input.interestWorkshop ?? false,
+        interestTalks: input.interestTalks ?? false,
+        interestConsulting: input.interestConsulting ?? false,
+        goals: input.goals?.trim() || null,
+        consent: input.consent,
+        source: "academy",
+      } as const;
+
+      await upsertAcademyStudent(normalized);
+
+      // Notificação é melhor-esforço: sem credenciais do serviço (ex.: Railway),
+      // o cadastro do aluno não pode falhar por causa dela.
+      let notificationSent = false;
+      try {
+        const interesses = [
+          normalized.interestWorkshop ? "Workshop de Dados & IA" : null,
+          normalized.interestTalks ? "Palestras" : null,
+          normalized.interestConsulting ? "Consultoria/Soluções" : null,
+        ].filter(Boolean);
+        notificationSent = await notifyOwner({
+          title: `Novo aluno na Academy: ${normalized.name}`,
+          content: [
+            `E-mail: ${normalized.email}`,
+            `WhatsApp: ${normalized.whatsapp ?? "Não informado"}`,
+            `Cargo/área: ${normalized.role ?? "Não informado"}`,
+            `Organização: ${normalized.organization ?? "Não informada"}`,
+            `Curso: ${normalized.courseSlug ?? "Não informado"}`,
+            `Interesses: ${interesses.length ? interesses.join(", ") : "Nenhum assinalado"}`,
+            `Objetivos: ${normalized.goals ?? "Não informados"}`,
+          ].join("\n"),
+        });
+      } catch {
+        notificationSent = false;
+      }
+
+      return { success: true, notificationSent } as const;
+    }),
+    students: adminProcedure.query(async () => {
+      return listAcademyStudents();
     }),
   }),
   course: router({
