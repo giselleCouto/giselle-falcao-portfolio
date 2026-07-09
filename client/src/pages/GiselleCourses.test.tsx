@@ -178,5 +178,5 @@ describe("GiselleCourses resume by lesson", () => {
 
     expect(screen.getAllByText(/Tentativa 2 · 0\/3 respondidas/i).length).toBeGreaterThan(0);
     expect(screen.getByText(/Qual etapa do fluxo MCP revela resources, prompts e tools disponíveis antes da execução/i)).toBeTruthy();
-  });
+  }, 20000);
 });

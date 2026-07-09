@@ -1,28 +1,68 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://coutofalcao.com/</loc>
+    <loc>https://www.coutofalcao.com/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://coutofalcao.com/giselle</loc>
+    <loc>https://www.coutofalcao.com/giselle</loc>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://www.coutofalcao.com/giselle/solucoes</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.coutofalcao.com/giselle/cursos</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://coutofalcao.com/giselle/cursos</loc>
+    <loc>https://www.coutofalcao.com/giselle/cursos/analise-dados-estrategica</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://coutofalcao.com/minas-summit</loc>
+    <loc>https://www.coutofalcao.com/giselle/cursos/fundamentos-ml</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.coutofalcao.com/giselle/cursos/ia-na-pratica</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.coutofalcao.com/giselle/cursos/agentes-ia</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.coutofalcao.com/giselle/servicos</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.coutofalcao.com/giselle/sobre</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.coutofalcao.com/giselle/contato</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://coutofalcao.com/jade</loc>
+    <loc>https://www.coutofalcao.com/minas-summit</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.coutofalcao.com/jade</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
 </urlset>

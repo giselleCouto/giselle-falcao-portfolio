@@ -12,7 +12,7 @@ describe("Página Minas Summit FAQ", () => {
   it("mantém uma rota pública curta, apropriada para uso em QR Code", () => {
     expect(minasSummitFaqMeta.slug).toBe("/minas-summit");
     expect(appSource).toContain('Route path={minasSummitFaqMeta.slug}');
-    expect(sitemapXml).toContain("https://coutofalcao.com/minas-summit");
+    expect(sitemapXml).toContain("https://www.coutofalcao.com/minas-summit");
   });
 
   it("expõe os links principais de contato para LinkedIn e WhatsApp", () => {

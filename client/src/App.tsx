@@ -12,6 +12,7 @@ import ErrorBoundary from "./components/ErrorBoundary";
 import PortfolioSite from "./components/PortfolioSite";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { caseStudies, faqItems, insightArticles } from "./lib/portfolioData";
+import { getCourse } from "./lib/courses";
 import { minasSummitFaqItems, minasSummitFaqMeta, minasSummitSocialLinks } from "./lib/minasSummitFaqData";
 import AiOsExperience from "./pages/AiOsExperience";
 import CourseCatalog from "./pages/CourseCatalog";
@@ -69,7 +70,8 @@ function RouteSeo() {
   const [location] = useLocation();
 
   useEffect(() => {
-    const origin = window.location.origin;
+    // Host canônico único: evita conteúdo duplicado entre www e subdomínios.
+    const origin = "https://www.coutofalcao.com";
     const pathname = location || "/";
     const canonicalUrl = new URL(pathname, origin).toString();
 
@@ -83,15 +85,16 @@ function RouteSeo() {
     removeJsonLd("giselle-faq-schema");
     removeJsonLd("giselle-case-studies-schema");
     removeJsonLd("giselle-insights-schema");
+    removeJsonLd("giselle-course-schema");
     removeJsonLd("minas-summit-faq-schema");
     removeJsonLd("minas-summit-speaker-schema");
 
     if (location === "/giselle/cursos") {
-      title = "Curso de Engenharia de Sistemas de IA Generativa | Giselle Falcão";
+      title = "Cursos de IA e Dados com Certificado | Giselle Falcão Academy";
       description =
-        "Curso de IA generativa com módulos gratuitos e pagos, prática visual, engenharia de RAG, embeddings, bancos vetoriais, frameworks, avaliação e checkout com PIX.";
+        "Cursos práticos de Machine Learning, análise de dados, IA aplicada e agentes de IA — com trilha gamificada, laboratórios no navegador e certificado. Cursos gratuitos para começar hoje.";
       keywords =
-        "curso de IA generativa, curso de inteligência artificial, RAG, embeddings, bancos vetoriais, Giselle Falcão";
+        "curso de inteligência artificial, curso de machine learning gratuito, curso de análise de dados, curso de IA com certificado, Giselle Falcão Academy";
     } else if (location === "/giselle/cursos/checkout") {
       title = "Checkout do Curso | Giselle Falcão";
       description =
@@ -107,6 +110,68 @@ function RouteSeo() {
       description =
         "Área autenticada dos cursos de Giselle Falcão com histórico detalhado, retomada por aula, progresso salvo e status claro de liberação pós-compra.";
       keywords = "meus cursos, área do aluno, curso de IA, Giselle Falcão";
+    } else if (location.startsWith("/giselle/cursos/")) {
+      const slug = location.split("/")[3] ?? "";
+      const course = getCourse(slug);
+
+      if (course) {
+        title = `${course.title} — Curso ${course.free ? "Gratuito" : "Premium"} com Certificado | Giselle Falcão Academy`;
+        description = `${course.tagline} Curso ${course.level.toLowerCase()} de ${course.hours} com trilha gamificada, práticas no navegador e certificado digital.`;
+        keywords = `curso ${course.title}, curso de IA, curso ${course.free ? "gratuito" : "online"}, ${course.level}, certificado, Giselle Falcão Academy`;
+
+        upsertJsonLd("giselle-course-schema", {
+          "@context": "https://schema.org",
+          "@type": "Course",
+          name: course.title,
+          description: course.description,
+          inLanguage: "pt-BR",
+          provider: {
+            "@type": "Organization",
+            name: "Giselle Falcão Academy",
+            url: "https://www.coutofalcao.com/giselle",
+          },
+          offers: {
+            "@type": "Offer",
+            category: course.free ? "Free" : "Paid",
+            ...(course.free ? { price: "0", priceCurrency: "BRL" } : {}),
+          },
+          hasCourseInstance: {
+            "@type": "CourseInstance",
+            courseMode: "Online",
+            courseWorkload: `PT${course.hours.replace(/\D/g, "")}H`,
+          },
+          educationalCredentialAwarded: "Certificado digital de conclusão",
+          teaches: course.outcomes,
+          audience: {
+            "@type": "EducationalAudience",
+            educationalRole: "student",
+            audienceType: course.audience,
+          },
+        });
+      }
+    } else if (location === "/giselle/solucoes") {
+      title = "Soluções de IA em Produção | Giselle Falcão";
+      description =
+        "SensorMonit, Curral AI, GreenSenti, EucaSmart e Pharos: sistemas de IA em produção para indústria, agro, logística e clima — com demos abertas.";
+      keywords =
+        "soluções de IA, IA industrial, IA no agro, otimização logística, gêmeo digital, visão computacional, Giselle Falcão";
+    } else if (location === "/giselle/servicos") {
+      title = "Consultoria em IA e Ciência de Dados | Giselle Falcão";
+      description =
+        "Consultoria PhD em IA industrial, digital twins, modelagem matemática e analytics estratégico: diagnóstico, modelagem, implementação e acompanhamento.";
+      keywords =
+        "consultoria em inteligência artificial, consultoria de dados, IA industrial, digital twins, modelagem matemática, Giselle Falcão";
+    } else if (location === "/giselle/sobre") {
+      title = "Sobre a Dra. Giselle Couto Falcão | PhD em IA e Modelagem Matemática";
+      description =
+        "Trajetória, formação (2 doutorados), publicações científicas e credenciais da Dra. Giselle Couto Falcão — pesquisadora e consultora em IA industrial.";
+      keywords =
+        "Giselle Couto Falcão, PhD inteligência artificial, doutora modelagem matemática, pesquisadora IA, Lattes, Google Scholar";
+    } else if (location === "/giselle/contato") {
+      title = "Contato | Giselle Falcão — IA e Ciência de Dados";
+      description =
+        "Fale com a Dra. Giselle Falcão: WhatsApp, e-mail ou agende uma reunião online de 30 minutos sobre consultoria, cursos, palestras e workshops.";
+      keywords = "contato Giselle Falcão, agendar consultoria IA, palestra inteligência artificial, workshop dados";
     } else if (location === "/ai-os") {
       title = "AI/OS Interface Prototype | Couto Falcão";
       description =
@@ -154,7 +219,7 @@ function RouteSeo() {
         "@context": "https://schema.org",
         "@type": "Person",
         name: "Giselle Couto Falcão",
-        url: "https://coutofalcao.com/giselle",
+        url: "https://www.coutofalcao.com/giselle",
         jobTitle: "Pesquisadora e consultora PhD em IA industrial, modelagem matemática e ciência de dados aplicada",
         description:
           "Pesquisadora e consultora PhD que desenvolve modelos, sistemas analíticos e estratégias técnicas para indústria, logística, saúde, educação e setor público, com foco em visão computacional, digital twins e inteligência operacional.",

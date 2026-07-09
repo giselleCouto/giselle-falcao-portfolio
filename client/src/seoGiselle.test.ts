@@ -105,8 +105,8 @@ describe("SEO da rota /giselle", () => {
   it("publica robots.txt e sitemap.xml para indexação", () => {
     expect(robotsTxt).toContain("User-agent: *");
     expect(robotsTxt).toContain("Allow: /");
-    expect(robotsTxt).toContain("Sitemap: https://coutofalcao.com/sitemap.xml");
-    expect(sitemapXml).toContain("https://coutofalcao.com/giselle");
-    expect(sitemapXml).toContain("https://coutofalcao.com/giselle/cursos");
+    expect(robotsTxt).toContain("Sitemap: https://www.coutofalcao.com/sitemap.xml");
+    expect(sitemapXml).toContain("https://www.coutofalcao.com/giselle");
+    expect(sitemapXml).toContain("https://www.coutofalcao.com/giselle/cursos");
   });
 });

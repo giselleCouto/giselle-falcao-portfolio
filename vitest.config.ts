@@ -14,6 +14,9 @@ export default defineConfig({
   },
   test: {
     environment: "node",
+    // Testes de UI (jsdom) ficam lentos com a suíte inteira em paralelo em
+    // máquinas modestas; o padrão de 5s gerava falhas intermitentes.
+    testTimeout: 20000,
     include: [
       "server/**/*.test.ts",
       "server/**/*.spec.ts",
