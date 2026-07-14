@@ -23,6 +23,8 @@ import GiselleSolucoes from "./pages/giselle/GiselleSolucoes";
 import GiselleServicos from "./pages/giselle/GiselleServicos";
 import GiselleSobre from "./pages/giselle/GiselleSobre";
 import GiselleContato from "./pages/giselle/GiselleContato";
+import GiselleLivro from "./pages/giselle/GiselleLivro";
+import GiselleDossie from "./pages/giselle/GiselleDossie";
 import MinasSummitFaq from "./pages/MinasSummitFaq";
 
 function upsertMeta(selector: string, attributeName: "name" | "property", attributeValue: string, content: string) {
@@ -86,6 +88,7 @@ function RouteSeo() {
     removeJsonLd("giselle-case-studies-schema");
     removeJsonLd("giselle-insights-schema");
     removeJsonLd("giselle-course-schema");
+    removeJsonLd("giselle-book-schema");
     removeJsonLd("minas-summit-faq-schema");
     removeJsonLd("minas-summit-speaker-schema");
 
@@ -172,6 +175,39 @@ function RouteSeo() {
       description =
         "Fale com a Dra. Giselle Falcão: WhatsApp, e-mail ou agende uma reunião online de 30 minutos sobre consultoria, cursos, palestras e workshops.";
       keywords = "contato Giselle Falcão, agendar consultoria IA, palestra inteligência artificial, workshop dados";
+    } else if (location === "/giselle/livro" || location === "/giselle/livro/dossie") {
+      const isDossie = location === "/giselle/livro/dossie";
+      title = isDossie
+        ? "Dossiê Educacional — Metodologia CEOD | Giselle Falcão"
+        : "Metodologia CEOD — Livro de Giselle Falcão (Editora Sorian, 2026)";
+      description = isDossie
+        ? "Dossiê técnico da Metodologia CEOD para secretarias, escolas e editais: fundamentação científica, evidências de impacto (estudo SAEB em Goiás) e implementação."
+        : "Livro Metodologia CEOD: a revolução data-driven na recomposição da aprendizagem. IA, psicometria e modelagem matemática validadas sobre milhões de registros do SAEB. Editora Sorian, 2026.";
+      keywords =
+        "Metodologia CEOD, livro Giselle Falcão, recomposição da aprendizagem, IA na educação, BNCC, SAEB, Editora Sorian, Conhecimento Evolutivo Orientado por Dados";
+
+      upsertJsonLd("giselle-book-schema", {
+        "@context": "https://schema.org",
+        "@type": "Book",
+        name: "Metodologia CEOD: a revolução data-driven na recomposição da aprendizagem",
+        author: { "@type": "Person", name: "Giselle Couto Falcão" },
+        publisher: { "@type": "Organization", name: "Editora Sorian" },
+        inLanguage: "pt-BR",
+        datePublished: "2026",
+        numberOfPages: 184,
+        isbn: "978-65-5453-849-7",
+        bookFormat: "https://schema.org/EBook",
+        about: [
+          "Inteligência artificial na educação",
+          "Recomposição da aprendizagem",
+          "Psicometria",
+          "Modelagem matemática",
+          "BNCC",
+          "SAEB",
+        ],
+        sameAs: "https://doi.org/10.54466/sorianed.978-65-5453-849-7",
+        url: "https://www.coutofalcao.com/giselle/livro",
+      });
     } else if (location === "/ai-os") {
       title = "AI/OS Interface Prototype | Couto Falcão";
       description =
@@ -597,6 +633,8 @@ function Router() {
           {(params) => <CoursePlayer slug={params.slug ?? ""} />}
         </Route>
         <Route path="/giselle/solucoes" component={GiselleSolucoes} />
+        <Route path="/giselle/livro/dossie" component={GiselleDossie} />
+        <Route path="/giselle/livro" component={GiselleLivro} />
         <Route path="/giselle/servicos" component={GiselleServicos} />
         <Route path="/giselle/sobre" component={GiselleSobre} />
         <Route path="/giselle/contato" component={GiselleContato} />

@@ -3,6 +3,7 @@ import { Link } from "wouter";
 import {
   ArrowRight,
   ArrowUpRight,
+  BookText,
   BrainCircuit,
   Briefcase,
   GraduationCap,
@@ -16,6 +17,7 @@ import {
 import GiselleLayout from "@/components/giselle/GiselleLayout";
 import { assets, contact, keyAreas } from "@/lib/portfolioData";
 import { pressFeatures } from "@/lib/pressData";
+import { livro } from "@/lib/livroData";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
@@ -172,6 +174,53 @@ export default function GiselleHome() {
             </motion.div>
           ))}
         </div>
+      </section>
+
+      {/* Destaque: livro recém-lançado */}
+      <section className="container pb-16 sm:pb-20">
+        <motion.div
+          variants={fadeUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.5 }}
+          className="relative overflow-hidden rounded-[2.5rem] bg-[#0d1226]"
+        >
+          <div className="absolute inset-0 bg-[linear-gradient(120deg,rgba(107,33,168,0.45),rgba(13,18,38,0.92))]" />
+          <div className="relative grid items-center gap-8 px-8 py-10 sm:py-12 lg:grid-cols-[auto_1fr] lg:gap-12">
+            <img
+              src={livro.cover}
+              alt={`Capa do livro ${livro.title}`}
+              className="mx-auto w-40 rounded-xl shadow-[0_18px_50px_rgba(0,0,0,0.4)] sm:w-48"
+            />
+            <div>
+              <p className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.2em] text-teal-200 backdrop-blur">
+                <BookText className="size-3.5" />
+                Novo livro · {livro.publisher} · {livro.year}
+              </p>
+              <h2 className="mt-4 font-baloo text-2xl font-bold text-white sm:text-3xl">
+                {livro.title}
+              </h2>
+              <p className="mt-1 font-semibold text-violet-200">{livro.subtitle}</p>
+              <p className="mt-4 max-w-xl leading-7 text-slate-300">{livro.shortPitch}</p>
+              <div className="mt-6 flex flex-wrap gap-3">
+                <Link
+                  href="/giselle/livro"
+                  className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-bold text-[#1a1333] transition hover:bg-violet-100"
+                >
+                  Conhecer o livro
+                  <ArrowRight className="size-4" />
+                </Link>
+                <Link
+                  href="/giselle/livro/dossie"
+                  className="inline-flex items-center gap-2 rounded-full border-2 border-white/40 px-6 py-3 text-sm font-bold text-white transition hover:bg-white/10"
+                >
+                  Dossiê para escolas
+                </Link>
+              </div>
+            </div>
+          </div>
+        </motion.div>
       </section>
 
       {/* Áreas-chave (chips visuais) */}
