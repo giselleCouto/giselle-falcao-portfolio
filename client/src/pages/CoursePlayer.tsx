@@ -9,6 +9,7 @@ import {
   ChevronRight,
   CirclePlay,
   FlaskConical,
+  Headphones,
   ListChecks,
   LockKeyhole,
   MessageCircle,
@@ -44,6 +45,7 @@ const lessonIcons = {
   leitura: BookOpen,
   pratica: FlaskConical,
   quiz: ListChecks,
+  podcast: Headphones,
 } as const;
 
 const lessonTypeLabels = {
@@ -51,6 +53,7 @@ const lessonTypeLabels = {
   leitura: "Leitura",
   pratica: "Prática guiada",
   quiz: "Quiz",
+  podcast: "Podcast",
 } as const;
 
 /** Anel de progresso do módulo (SVG). */
@@ -261,6 +264,36 @@ function LessonView({
             </div>
           </div>
         ) : null}
+        <p className="text-base leading-8 text-slate-600">{lesson.summary}</p>
+      </div>
+    );
+  }
+
+  if (lesson.type === "podcast") {
+    return (
+      <div className="space-y-5">
+        {lesson.audioUrl ? (
+          <div className="rounded-3xl border-2 border-violet-200 bg-violet-50/60 p-6">
+            <div className="flex items-center gap-3">
+              <span className="flex size-11 items-center justify-center rounded-2xl bg-violet-100 text-[#6b21a8]">
+                <Headphones className="size-6" />
+              </span>
+              <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#6b21a8]">
+                Aperte o play e ouça onde quiser
+              </p>
+            </div>
+            <audio controls preload="metadata" className="mt-5 w-full">
+              <source src={lesson.audioUrl} type="audio/mp4" />
+              Seu navegador não suporta o player de áudio.
+            </audio>
+          </div>
+        ) : (
+          <Placeholder
+            icon={Headphones}
+            title="Podcast em preparação"
+            text="O episódio está sendo finalizado. Enquanto isso, confira o resumo abaixo e as demais aulas do módulo."
+          />
+        )}
         <p className="text-base leading-8 text-slate-600">{lesson.summary}</p>
       </div>
     );

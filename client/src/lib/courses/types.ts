@@ -3,7 +3,7 @@
 // A Giselle edita os campos videoUrl / slidesUrl / practiceUrl conforme grava
 // as aulas e publica os materiais — ver docs/cursos/GUIA-DA-PROFESSORA.md.
 
-export type LessonType = "video" | "leitura" | "pratica" | "quiz";
+export type LessonType = "video" | "leitura" | "pratica" | "quiz" | "podcast";
 
 export type Lesson = {
   title: string;
@@ -16,6 +16,8 @@ export type Lesson = {
   practiceUrl?: string | null;
   /** Embed do YouTube (https://www.youtube.com/embed/VIDEO_ID) — null = aula ainda não gravada */
   videoUrl?: string | null;
+  /** Áudio do podcast (para type = "podcast", ex.: /cursos/podcasts/arquivo.m4a) — null = em preparação */
+  audioUrl?: string | null;
   /** Embed do Google Slides publicado ou PDF — null = slides ainda não publicados */
   slidesUrl?: string | null;
   /** Texto da aula (para type = "leitura"), parágrafos separados por \n\n */

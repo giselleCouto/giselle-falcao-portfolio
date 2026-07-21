@@ -26,7 +26,7 @@ export const analiseDadosEstrategica: Course = {
     {
       "id": "modulo-1",
       "title": "Pensar com dados: fundamentos e dados abertos",
-      "duration": "4h",
+      "duration": "4h30",
       "free": true,
       "lessons": [
         {
@@ -34,6 +34,13 @@ export const analiseDadosEstrategica: Course = {
           "type": "video",
           "duration": "18min",
           "summary": "A partir do caso das equipes de zeladoria distribuídas sem olhar os chamados do SP156, a aula mostra o custo de decidir no escuro e apresenta o ciclo dado → informação → conhecimento → decisão. Diferencia decisões operacionais, táticas e estratégicas e apresenta a caixa de ferramentas 100% gratuita e no navegador que será usada no curso."
+        },
+        {
+          "title": "Podcast — Dados e planilhas para decisões públicas",
+          "type": "podcast",
+          "duration": "31min",
+          "summary": "Episódio em áudio para ouvir onde quiser: uma conversa acessível sobre como dados e planilhas transformam decisões públicas no dia a dia da gestão — o complemento perfeito da primeira aula, reforçando o ciclo dado → informação → decisão com exemplos práticos.",
+          "audioUrl": null
         },
         {
           "title": "O mapa do tesouro: dados abertos de São Paulo e do Brasil",
