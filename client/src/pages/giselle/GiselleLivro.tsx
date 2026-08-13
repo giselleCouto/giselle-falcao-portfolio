@@ -85,10 +85,25 @@ export default function GiselleLivro() {
                         : "inline-flex items-center gap-2 rounded-full border-2 border-violet-200 px-6 py-3 text-sm font-semibold text-[#6b21a8] transition hover:bg-violet-50"
                     }
                   >
-                    {link.label}
+                    <span className="flex flex-col leading-tight">
+                      <span>{link.label}</span>
+                      {link.note ? <span className="text-[0.68rem] font-medium opacity-75">{link.note}</span> : null}
+                    </span>
                     <ArrowUpRight className="size-4" />
                   </a>
-                ) : null,
+                ) : (
+                  <span
+                    key={link.label}
+                    aria-disabled="true"
+                    className="inline-flex items-center gap-2 rounded-full border-2 border-slate-200 bg-slate-50 px-6 py-3 text-sm font-semibold text-slate-400"
+                    title={link.note ?? "Aguardando link oficial"}
+                  >
+                    <span className="flex flex-col leading-tight">
+                      <span>{link.label}</span>
+                      <span className="text-[0.68rem] font-medium">{link.note ?? "Aguardando link oficial"}</span>
+                    </span>
+                  </span>
+                ),
               )}
             </div>
 
@@ -98,16 +113,32 @@ export default function GiselleLivro() {
                 { t: "Edição", v: `${livro.edition} · ${livro.pages}p` },
                 { t: "ISBN (impresso)", v: livro.isbnPrint },
                 { t: "ISBN (digital)", v: livro.isbnDigital },
-                { t: "DOI", v: livro.doi },
+                { t: "DOI", v: livro.doi, note: "aguardando ativação pública" },
                 { t: "Publicação", v: `${livro.place} · ${livro.year}` },
                 { t: "Editora", v: livro.publisher },
               ].map((item) => (
                 <div key={item.t}>
                   <dt className="text-xs font-bold uppercase tracking-wider text-slate-400">{item.t}</dt>
                   <dd className="mt-0.5 font-medium text-[#1a1333] break-words">{item.v}</dd>
+                  {"note" in item && item.note ? (
+                    <p className="mt-1 text-[0.68rem] font-semibold uppercase tracking-wider text-amber-700">{item.note}</p>
+                  ) : null}
                 </div>
               ))}
             </dl>
+
+            <div className="mt-6 rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm leading-6 text-amber-900">
+              <p>{livro.doiStatus}</p>
+              <a
+                href={livro.doiResolverUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-2 inline-flex items-center gap-1 font-bold text-amber-950 underline decoration-amber-300 underline-offset-4"
+              >
+                Verificar o DOI no resolvedor oficial
+                <ArrowUpRight className="size-3.5" />
+              </a>
+            </div>
           </motion.div>
         </div>
       </section>
@@ -214,6 +245,7 @@ export default function GiselleLivro() {
             A obra está disponível pela {livro.publisher}. Para aquisição institucional ou em lote,
             fale diretamente com a editora.
           </p>
+          <p className="mx-auto mt-3 max-w-xl text-xs leading-5 text-slate-400">{livro.distributionNotice}</p>
           <div className="mt-6 flex flex-wrap justify-center gap-3">
             <a
               href="https://www.editorasorian.com.br"

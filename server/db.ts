@@ -3,9 +3,11 @@ import { drizzle } from "drizzle-orm/mysql2";
 import {
   academyStudents,
   courseAccess,
+  courseInterest,
   courseLessonProgress,
   courseProgress,
   InsertAcademyStudent,
+  InsertCourseInterest,
   InsertCourseAccess,
   InsertCourseLessonProgress,
   InsertCourseProgress,
@@ -172,6 +174,26 @@ export async function upsertAcademyStudent(input: InsertAcademyStudent) {
     });
 
   return { ...input };
+}
+
+export async function createCourseInterest(input: InsertCourseInterest) {
+  const db = await getDb();
+  if (!db) {
+    throw new Error("Database not available for interest survey");
+  }
+
+  await db.insert(courseInterest).values(input);
+  return { ...input };
+}
+
+export async function listCourseInterest() {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot list interest survey: database not available");
+    return [];
+  }
+
+  return db.select().from(courseInterest).orderBy(desc(courseInterest.createdAt));
 }
 
 export async function listAcademyStudents() {

@@ -143,3 +143,30 @@ export const academyStudents = mysqlTable(
 
 export type AcademyStudent = typeof academyStudents.$inferSelect;
 export type InsertAcademyStudent = typeof academyStudents.$inferInsert;
+
+/**
+ * Pesquisa de interesse nos cursos — formulário público /interesse.
+ * Perfil demográfico e de experiência para a Giselle dimensionar a demanda.
+ */
+export const courseInterest = mysqlTable("course_interest", {
+  id: int("id").autoincrement().primaryKey(),
+  name: varchar("name", { length: 160 }).notNull(),
+  email: varchar("email", { length: 320 }).notNull(),
+  whatsapp: varchar("whatsapp", { length: 40 }),
+  state: varchar("state", { length: 2 }).notNull(),
+  region: varchar("region", { length: 20 }).notNull(),
+  gender: varchar("gender", { length: 40 }).notNull(),
+  race: varchar("race", { length: 40 }).notNull(),
+  education: varchar("education", { length: 60 }).notNull(),
+  techExperience: varchar("techExperience", { length: 40 }).notNull(),
+  dataExperience: varchar("dataExperience", { length: 40 }).notNull(),
+  codeExperience: varchar("codeExperience", { length: 40 }).notNull(),
+  coursesInterest: text("coursesInterest"),
+  goals: text("goals"),
+  consent: boolean("consent").default(false).notNull(),
+  source: varchar("source", { length: 120 }).default("interesse").notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type CourseInterest = typeof courseInterest.$inferSelect;
+export type InsertCourseInterest = typeof courseInterest.$inferInsert;

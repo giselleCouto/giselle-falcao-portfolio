@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { motion } from "framer-motion";
 import { Link } from "wouter";
-import { Award, BookOpen, Clock, Play, Trophy } from "lucide-react";
+import { Award, BookOpen, ClipboardList, Clock, Play, Trophy } from "lucide-react";
 import GiselleLayout from "@/components/giselle/GiselleLayout";
 import { courses } from "@/lib/courses";
 import { readCoursePercent } from "@/lib/courses/useCourseProgress";
@@ -59,6 +59,13 @@ export default function CourseCatalog() {
                 Certificado digital
               </span>
             </div>
+            <Link
+              href="/interesse"
+              className="mt-6 inline-flex items-center gap-2 rounded-full bg-teal-400 px-6 py-3 text-sm font-bold text-slate-950 transition hover:bg-teal-300"
+            >
+              <ClipboardList className="size-4" />
+              Diga o que você quer aprender (2 min)
+            </Link>
           </motion.div>
         </div>
       </section>

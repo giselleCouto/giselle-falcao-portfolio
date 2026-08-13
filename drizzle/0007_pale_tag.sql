@@ -1,0 +1,20 @@
+CREATE TABLE `course_interest` (
+	`id` int AUTO_INCREMENT NOT NULL,
+	`name` varchar(160) NOT NULL,
+	`email` varchar(320) NOT NULL,
+	`whatsapp` varchar(40),
+	`state` varchar(2) NOT NULL,
+	`region` varchar(20) NOT NULL,
+	`gender` varchar(40) NOT NULL,
+	`race` varchar(40) NOT NULL,
+	`education` varchar(60) NOT NULL,
+	`techExperience` varchar(40) NOT NULL,
+	`dataExperience` varchar(40) NOT NULL,
+	`codeExperience` varchar(40) NOT NULL,
+	`coursesInterest` text,
+	`goals` text,
+	`consent` boolean NOT NULL DEFAULT false,
+	`source` varchar(120) NOT NULL DEFAULT 'interesse',
+	`createdAt` timestamp NOT NULL DEFAULT (now()),
+	CONSTRAINT `course_interest_id` PRIMARY KEY(`id`)
+);

@@ -5,6 +5,7 @@ import {
   BadgeCheck,
   Building2,
   CheckCircle2,
+  Download,
   Mail,
   MessageCircle,
   Printer,
@@ -49,6 +50,14 @@ export default function GiselleDossie() {
               <Printer className="size-4" />
               Imprimir / salvar em PDF
             </button>
+            <a
+              href={livro.dossierDownload}
+              download
+              className="inline-flex items-center gap-2 rounded-full bg-[#1a1333] px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[#6b21a8]"
+            >
+              <Download className="size-4" />
+              Baixar dossiê Word
+            </a>
           </div>
 
           <motion.div variants={fadeUp} initial="hidden" animate="visible" transition={{ duration: 0.5 }} className="mt-8">
@@ -61,7 +70,10 @@ export default function GiselleDossie() {
             </h1>
             <p className="mt-4 max-w-2xl text-xs font-medium uppercase tracking-wider text-slate-400">
               Material técnico para secretarias, escolas e submissão a editais · {livro.author} ·{" "}
-              {livro.publisher}, {livro.year} · ISBN {livro.isbnDigital} · DOI {livro.doi}
+              {livro.publisher}, {livro.year} · ISBN {livro.isbnDigital} · DOI informado na obra: {livro.doi}
+            </p>
+            <p className="mt-3 max-w-2xl rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm leading-6 text-amber-900">
+              {livro.doiStatus}
             </p>
           </motion.div>
         </div>

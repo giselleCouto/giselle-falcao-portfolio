@@ -25,6 +25,7 @@ import GiselleSobre from "./pages/giselle/GiselleSobre";
 import GiselleContato from "./pages/giselle/GiselleContato";
 import GiselleLivro from "./pages/giselle/GiselleLivro";
 import GiselleDossie from "./pages/giselle/GiselleDossie";
+import GiselleInteresse from "./pages/giselle/GiselleInteresse";
 import MinasSummitFaq from "./pages/MinasSummitFaq";
 
 function upsertMeta(selector: string, attributeName: "name" | "property", attributeValue: string, content: string) {
@@ -175,6 +176,11 @@ function RouteSeo() {
       description =
         "Fale com a Dra. Giselle Falcão: WhatsApp, e-mail ou agende uma reunião online de 30 minutos sobre consultoria, cursos, palestras e workshops.";
       keywords = "contato Giselle Falcão, agendar consultoria IA, palestra inteligência artificial, workshop dados";
+    } else if (location === "/interesse" || location === "/giselle/interesse") {
+      title = "Pesquisa de Interesse — Cursos de Dados e IA | Giselle Falcão Academy";
+      description =
+        "Conte em 2 minutos o que você quer aprender sobre dados e IA. Suas respostas ajudam a criar cursos gratuitos e acessíveis, no formato certo para você.";
+      keywords = "pesquisa de interesse, curso de dados, curso de IA, curso gratuito, Giselle Falcão Academy";
     } else if (location === "/giselle/livro" || location === "/giselle/livro/dossie") {
       const isDossie = location === "/giselle/livro/dossie";
       title = isDossie
@@ -197,6 +203,23 @@ function RouteSeo() {
         numberOfPages: 184,
         isbn: "978-65-5453-849-7",
         bookFormat: "https://schema.org/EBook",
+        identifier: [
+          {
+            "@type": "PropertyValue",
+            propertyID: "ISBN digital",
+            value: "978-65-5453-849-7",
+          },
+          {
+            "@type": "PropertyValue",
+            propertyID: "ISBN impresso",
+            value: "978-65-5453-847-3",
+          },
+          {
+            "@type": "PropertyValue",
+            propertyID: "DOI informado na obra",
+            value: "10.54466/sorianed.978-65-5453-849-7",
+          },
+        ],
         about: [
           "Inteligência artificial na educação",
           "Recomposição da aprendizagem",
@@ -205,7 +228,6 @@ function RouteSeo() {
           "BNCC",
           "SAEB",
         ],
-        sameAs: "https://doi.org/10.54466/sorianed.978-65-5453-849-7",
         url: "https://www.coutofalcao.com/giselle/livro",
       });
     } else if (location === "/ai-os") {
@@ -633,6 +655,8 @@ function Router() {
           {(params) => <CoursePlayer slug={params.slug ?? ""} />}
         </Route>
         <Route path="/giselle/solucoes" component={GiselleSolucoes} />
+        <Route path="/interesse" component={GiselleInteresse} />
+        <Route path="/giselle/interesse" component={GiselleInteresse} />
         <Route path="/giselle/livro/dossie" component={GiselleDossie} />
         <Route path="/giselle/livro" component={GiselleLivro} />
         <Route path="/giselle/servicos" component={GiselleServicos} />

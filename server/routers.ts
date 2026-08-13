@@ -5,10 +5,12 @@ import { systemRouter } from "./_core/systemRouter";
 import { notifyOwner } from "./_core/notification";
 import { adminProcedure, protectedProcedure, publicProcedure, router } from "./_core/trpc";
 import {
+  createCourseInterest,
   createLeadContact,
   getCourseAccessForUser,
   getUserById,
   listAcademyStudents,
+  listCourseInterest,
   listCourseLessonProgress,
   listCourseProgress,
   listLeadContacts,
@@ -87,6 +89,37 @@ const studentInputSchema = z.object({
   goals: z.string().trim().max(2000).optional().or(z.literal("")),
   consent: z.boolean().refine((value) => value === true, {
     message: "É preciso aceitar a política de contato para criar o perfil.",
+  }),
+});
+
+const UF_REGIONS: Record<string, string> = {
+  AC: "Norte", AM: "Norte", AP: "Norte", PA: "Norte", RO: "Norte", RR: "Norte", TO: "Norte",
+  AL: "Nordeste", BA: "Nordeste", CE: "Nordeste", MA: "Nordeste", PB: "Nordeste",
+  PE: "Nordeste", PI: "Nordeste", RN: "Nordeste", SE: "Nordeste",
+  DF: "Centro-Oeste", GO: "Centro-Oeste", MS: "Centro-Oeste", MT: "Centro-Oeste",
+  ES: "Sudeste", MG: "Sudeste", RJ: "Sudeste", SP: "Sudeste",
+  PR: "Sul", RS: "Sul", SC: "Sul",
+};
+
+const interestInputSchema = z.object({
+  name: z.string().trim().min(2).max(160),
+  email: z.string().trim().email().max(320),
+  whatsapp: z.string().trim().max(40).optional().or(z.literal("")),
+  state: z
+    .string()
+    .trim()
+    .toUpperCase()
+    .refine((uf) => uf in UF_REGIONS, { message: "Selecione um estado válido." }),
+  gender: z.string().trim().min(1).max(40),
+  race: z.string().trim().min(1).max(40),
+  education: z.string().trim().min(1).max(60),
+  techExperience: z.string().trim().min(1).max(40),
+  dataExperience: z.string().trim().min(1).max(40),
+  codeExperience: z.string().trim().min(1).max(40),
+  coursesInterest: z.array(z.string().trim().max(80)).max(10).optional(),
+  goals: z.string().trim().max(2000).optional().or(z.literal("")),
+  consent: z.boolean().refine((value) => value === true, {
+    message: "É preciso aceitar a política de contato para enviar.",
   }),
 });
 
@@ -216,6 +249,30 @@ export const appRouter = router({
     }),
     students: adminProcedure.query(async () => {
       return listAcademyStudents();
+    }),
+    interest: publicProcedure.input(interestInputSchema).mutation(async ({ input }) => {
+      await createCourseInterest({
+        name: input.name,
+        email: input.email.toLowerCase(),
+        whatsapp: input.whatsapp?.trim() || null,
+        state: input.state,
+        region: UF_REGIONS[input.state],
+        gender: input.gender,
+        race: input.race,
+        education: input.education,
+        techExperience: input.techExperience,
+        dataExperience: input.dataExperience,
+        codeExperience: input.codeExperience,
+        coursesInterest: input.coursesInterest?.length ? input.coursesInterest.join(", ") : null,
+        goals: input.goals?.trim() || null,
+        consent: input.consent,
+        source: "interesse",
+      });
+
+      return { success: true } as const;
+    }),
+    interests: adminProcedure.query(async () => {
+      return listCourseInterest();
     }),
   }),
   course: router({

@@ -5,6 +5,7 @@ export type BookLink = {
   label: string;
   href: string | null; // null = ainda não divulgado (mostra "em breve")
   kind: "primary" | "official" | "marketplace";
+  note?: string;
 };
 
 export const livro = {
@@ -20,7 +21,11 @@ export const livro = {
   isbnPrint: "978-65-5453-847-3",
   isbnDigital: "978-65-5453-849-7",
   doi: "10.54466/sorianed.978-65-5453-849-7",
+  doiResolverUrl: "https://doi.org/10.54466/sorianed.978-65-5453-849-7",
+  doiStatus:
+    "DOI informado na obra; em 28/07/2026, o resolvedor DOI.org, Crossref e DataCite ainda não retornavam registro público.",
   cover: "/livro/capa-ceod.jpg",
+  dossierDownload: "/livro/dossie-educacional-metodologia-ceod.docx",
 
   pitch:
     "A crise da aprendizagem no Brasil não é apenas pedagógica — é estrutural, mensurável e acumulativa. A Metodologia CEOD integra inteligência artificial, psicometria e modelagem matemática para diagnosticar as lacunas de aprendizagem e atuar em suas causas estruturais.",
@@ -63,17 +68,44 @@ export const livro = {
     "Modelagem matemática da retenção",
   ],
 
-  // Links oficiais — DOI e editora são confirmados; marketplaces entram quando divulgados
+  distributionNotice:
+    "Pelo contrato editorial, os links de venda, e-book e marketplaces devem ser confirmados ou liberados pela Editora Sorian.",
+
+  // Links oficiais — marketplaces entram quando a editora divulgar os URLs finais
   links: [
     {
-      label: "Acessar pelo DOI oficial",
-      href: "https://doi.org/10.54466/sorianed.978-65-5453-849-7",
+      label: "Solicitar compra institucional",
+      href: "mailto:editor@editorasorian.com.br?subject=Interesse%20institucional%20no%20livro%20Metodologia%20CEOD",
       kind: "primary",
+      note: "Contato direto com a Editora Sorian",
+    },
+    {
+      label: "WhatsApp da editora",
+      href: "https://wa.me/5541988655312",
+      kind: "official",
     },
     {
       label: "Editora Sorian",
       href: "https://www.editorasorian.com.br",
       kind: "official",
+    },
+    {
+      label: "Amazon / Kindle",
+      href: null,
+      kind: "marketplace",
+      note: "Aguardando link oficial da editora",
+    },
+    {
+      label: "Google Livros",
+      href: null,
+      kind: "marketplace",
+      note: "Aguardando ativação pela editora",
+    },
+    {
+      label: "Google Play Livros",
+      href: null,
+      kind: "marketplace",
+      note: "Aguardando link oficial da editora",
     },
   ] as BookLink[],
 
@@ -166,7 +198,7 @@ export const dossie = {
     "Base em microdados oficiais e reprodutibilidade científica",
     "IA interpretável e auditável — adequada à adoção responsável no setor público",
     "Foco em equidade: maiores ganhos em contextos de vulnerabilidade",
-    "Publicação com ISBN, DOI e conselho editorial (validade acadêmica CAPES)",
+    "Publicação com ISBN físico/digital, DOI informado na obra e conselho editorial",
     "Escalável a redes municipais e estaduais inteiras",
   ],
 

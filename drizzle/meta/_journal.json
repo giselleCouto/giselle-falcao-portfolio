@@ -50,6 +50,13 @@
       "when": 1783535192187,
       "tag": "0006_public_captain_midlands",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "5",
+      "when": 1785946175408,
+      "tag": "0007_pale_tag",
+      "breakpoints": true
     }
   ]
 }
