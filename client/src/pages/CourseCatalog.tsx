@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { motion } from "framer-motion";
 import { Link } from "wouter";
-import { Award, BookOpen, ClipboardList, Clock, Play, Trophy } from "lucide-react";
+import { Award, BookOpen, ClipboardList, Clock, Play, Route as RouteIcon, Trophy } from "lucide-react";
 import GiselleLayout from "@/components/giselle/GiselleLayout";
 import { courses } from "@/lib/courses";
 import { readCoursePercent } from "@/lib/courses/useCourseProgress";
@@ -70,8 +70,33 @@ export default function CourseCatalog() {
         </div>
       </section>
 
+      {/* Banner: trilha profissional */}
+      <section className="container pt-12">
+        <Link
+          href="/giselle/trilha"
+          className="group flex flex-col items-start gap-4 rounded-3xl border-2 border-violet-200 bg-white p-6 shadow-[0_10px_40px_rgba(26,19,51,0.06)] transition duration-300 hover:-translate-y-0.5 hover:border-[#8b5cf6] hover:shadow-[0_18px_50px_rgba(107,33,168,0.14)] sm:flex-row sm:items-center sm:justify-between"
+        >
+          <div className="flex items-center gap-4">
+            <span className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-[linear-gradient(135deg,#6b21a8,#14b8a6)] text-white">
+              <RouteIcon className="size-6" />
+            </span>
+            <div>
+              <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#6b21a8]">
+                Formação profissional completa
+              </p>
+              <p className="mt-1 font-baloo text-lg font-bold text-[#1a1333]">
+                Trilha Arquiteto de Soluções, Dados & IA — 480h em 10 cursos
+              </p>
+            </div>
+          </div>
+          <span className="inline-flex shrink-0 items-center gap-2 rounded-full bg-[#1a1333] px-5 py-2.5 text-sm font-semibold text-white transition group-hover:bg-[#6b21a8]">
+            Conhecer a trilha
+          </span>
+        </Link>
+      </section>
+
       {/* Grade de cursos */}
-      <section className="container py-16 sm:py-20">
+      <section className="container py-10 sm:py-12">
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {courses.map((course, index) => {
             const percent = progressBySlug[course.slug] ?? 0;

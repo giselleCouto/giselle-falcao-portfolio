@@ -26,6 +26,7 @@ import GiselleContato from "./pages/giselle/GiselleContato";
 import GiselleLivro from "./pages/giselle/GiselleLivro";
 import GiselleDossie from "./pages/giselle/GiselleDossie";
 import GiselleInteresse from "./pages/giselle/GiselleInteresse";
+import GiselleTrilha from "./pages/giselle/GiselleTrilha";
 import MinasSummitFaq from "./pages/MinasSummitFaq";
 
 function upsertMeta(selector: string, attributeName: "name" | "property", attributeValue: string, content: string) {
@@ -176,6 +177,12 @@ function RouteSeo() {
       description =
         "Fale com a Dra. Giselle Falcão: WhatsApp, e-mail ou agende uma reunião online de 30 minutos sobre consultoria, cursos, palestras e workshops.";
       keywords = "contato Giselle Falcão, agendar consultoria IA, palestra inteligência artificial, workshop dados";
+    } else if (location === "/giselle/trilha" || location === "/giselle/trilhas/arquiteto-dados-ia") {
+      title = "Trilha Arquiteto de Soluções, Dados & IA — 480h Multicloud | Giselle Falcão";
+      description =
+        "Formação profissional de 480h em 10 cursos (rota acelerada de 300h): arquitetura de soluções, cloud multicloud, dados, MLOps, GenAI, FinOps e capstone com banca. Certificação por competências demonstradas.";
+      keywords =
+        "trilha arquiteto de soluções, formação arquiteto de dados, curso arquitetura de IA, multicloud, MLOps, GenAI, FinOps, capstone, Giselle Falcão";
     } else if (location === "/interesse" || location === "/giselle/interesse") {
       title = "Pesquisa de Interesse — Cursos de Dados e IA | Giselle Falcão Academy";
       description =
@@ -657,6 +664,8 @@ function Router() {
         <Route path="/giselle/solucoes" component={GiselleSolucoes} />
         <Route path="/interesse" component={GiselleInteresse} />
         <Route path="/giselle/interesse" component={GiselleInteresse} />
+        <Route path="/giselle/trilha" component={GiselleTrilha} />
+        <Route path="/giselle/trilhas/arquiteto-dados-ia" component={GiselleTrilha} />
         <Route path="/giselle/livro/dossie" component={GiselleDossie} />
         <Route path="/giselle/livro" component={GiselleLivro} />
         <Route path="/giselle/servicos" component={GiselleServicos} />
