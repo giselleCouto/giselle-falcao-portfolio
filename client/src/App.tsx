@@ -183,6 +183,11 @@ function RouteSeo() {
         "Formação profissional de 480h em 10 cursos (rota acelerada de 300h): arquitetura de soluções, cloud multicloud, dados, MLOps, GenAI, FinOps e capstone com banca. Certificação por competências demonstradas.";
       keywords =
         "trilha arquiteto de soluções, formação arquiteto de dados, curso arquitetura de IA, multicloud, MLOps, GenAI, FinOps, capstone, Giselle Falcão";
+    } else if (location === "/databh") {
+      title = "Da Query ao Modelo — Trilha de 30 dias | DATA BH · SQL Saturday 2026";
+      description =
+        "Continuação da palestra da Giselle Falcão no DATA BH: responda em 2 minutos e libere o treinamento gratuito de 4 semanas — do SQL ao modelo de ML em produção, na Databricks Free Edition.";
+      keywords = "DATA BH, SQL Saturday 2026, Da Query ao Modelo, Giselle Falcão, Databricks Free Edition, curso ML SQL";
     } else if (location === "/interesse" || location === "/giselle/interesse") {
       title = "Pesquisa de Interesse — Cursos de Dados e IA | Giselle Falcão Academy";
       description =
@@ -662,8 +667,18 @@ function Router() {
           {(params) => <CoursePlayer slug={params.slug ?? ""} />}
         </Route>
         <Route path="/giselle/solucoes" component={GiselleSolucoes} />
-        <Route path="/interesse" component={GiselleInteresse} />
-        <Route path="/giselle/interesse" component={GiselleInteresse} />
+        <Route path="/interesse">{() => <GiselleInteresse />}</Route>
+        <Route path="/giselle/interesse">{() => <GiselleInteresse />}</Route>
+        <Route path="/databh">
+          {() => (
+            <GiselleInteresse
+              source="databh-sqlsaturday-2026"
+              next="/giselle/cursos/da-query-ao-modelo"
+              headline="Bem-vindo(a) à sua trilha de 30 dias 🚀"
+              intro="Você assistiu à palestra 'Da Query ao Modelo' no DATA BH · SQL Saturday. Responda em 2 minutos e libere o treinamento introdutório de 4 semanas — com o notebook da palestra, o plano S1–S4 e os quatro tropeços já vacinados."
+            />
+          )}
+        </Route>
         <Route path="/giselle/trilha" component={GiselleTrilha} />
         <Route path="/giselle/trilhas/arquiteto-dados-ia" component={GiselleTrilha} />
         <Route path="/giselle/livro/dossie" component={GiselleDossie} />

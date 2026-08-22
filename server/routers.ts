@@ -118,6 +118,7 @@ const interestInputSchema = z.object({
   codeExperience: z.string().trim().min(1).max(40),
   coursesInterest: z.array(z.string().trim().max(80)).max(10).optional(),
   goals: z.string().trim().max(2000).optional().or(z.literal("")),
+  source: z.string().trim().max(120).optional().or(z.literal("")),
   consent: z.boolean().refine((value) => value === true, {
     message: "É preciso aceitar a política de contato para enviar.",
   }),
@@ -266,7 +267,7 @@ export const appRouter = router({
         coursesInterest: input.coursesInterest?.length ? input.coursesInterest.join(", ") : null,
         goals: input.goals?.trim() || null,
         consent: input.consent,
-        source: "interesse",
+        source: input.source?.trim() || "interesse",
       });
 
       return { success: true } as const;

@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 import { CheckCircle2, ClipboardList, GraduationCap, Loader2, PartyPopper } from "lucide-react";
 import { toast } from "sonner";
 import GiselleLayout from "@/components/giselle/GiselleLayout";
@@ -71,7 +71,24 @@ function Select({
   );
 }
 
-export default function GiselleInteresse() {
+type GiselleInteresseProps = {
+  /** Identificador da origem (ex.: evento) gravado no banco para segmentar a demanda */
+  source?: string;
+  /** Rota para onde o aluno é levado automaticamente após enviar */
+  next?: string;
+  /** Título e contexto específicos da origem (ex.: palestra) */
+  headline?: string;
+  intro?: string;
+};
+
+export default function GiselleInteresse({
+  source = "interesse",
+  next,
+  headline,
+  intro,
+}: GiselleInteresseProps = {}) {
+  const [, navigate] = useLocation();
+  const [countdown, setCountdown] = useState(5);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [whatsapp, setWhatsapp] = useState("");
@@ -124,9 +141,21 @@ export default function GiselleInteresse() {
       codeExperience: experience.code,
       coursesInterest: selectedCourses,
       goals,
+      source,
       consent: true,
     });
   };
+
+  // Redirecionamento automático após o envio (fluxo QR Code → questionário → curso)
+  useEffect(() => {
+    if (!submitted || !next) return;
+    if (countdown <= 0) {
+      navigate(next);
+      return;
+    }
+    const timer = window.setTimeout(() => setCountdown((c) => c - 1), 1000);
+    return () => window.clearTimeout(timer);
+  }, [submitted, next, countdown, navigate]);
 
   if (submitted) {
     return (
@@ -147,15 +176,21 @@ export default function GiselleInteresse() {
             </motion.div>
             <h1 className="mt-6 font-baloo text-3xl font-bold">Recebido! 🎉</h1>
             <p className="mt-3 leading-7 text-slate-500">
-              Obrigada por compartilhar seu interesse. Suas respostas ajudam a construir cursos
-              cada vez melhores — e você será avisado(a) das novidades em primeira mão.
+              {next
+                ? "Obrigada! Seu ambiente de treinamento já está pronto — você será levado(a) para ele em instantes."
+                : "Obrigada por compartilhar seu interesse. Suas respostas ajudam a construir cursos cada vez melhores — e você será avisado(a) das novidades em primeira mão."}
             </p>
+            {next ? (
+              <p className="mt-2 text-sm font-semibold text-[#6b21a8]">
+                Redirecionando em {countdown}s…
+              </p>
+            ) : null}
             <Link
-              href="/giselle/cursos"
+              href={next ?? "/giselle/cursos"}
               className="mt-7 inline-flex items-center gap-2 rounded-full bg-[#1a1333] px-7 py-3 text-sm font-bold text-white transition hover:bg-[#6b21a8]"
             >
               <GraduationCap className="size-4" />
-              Conhecer os cursos gratuitos
+              {next ? "Ir agora para o treinamento" : "Conhecer os cursos gratuitos"}
             </Link>
           </motion.div>
         </section>
@@ -172,15 +207,19 @@ export default function GiselleInteresse() {
             Pesquisa de interesse · 2 minutos
           </p>
           <h1 className="mt-5 text-3xl font-bold leading-tight sm:text-4xl">
-            Me conta sobre{" "}
-            <span className="bg-[linear-gradient(90deg,#6b21a8,#8b5cf6,#14b8a6)] bg-clip-text text-transparent">
-              você
-            </span>
-            ?
+            {headline ?? (
+              <>
+                Me conta sobre{" "}
+                <span className="bg-[linear-gradient(90deg,#6b21a8,#8b5cf6,#14b8a6)] bg-clip-text text-transparent">
+                  você
+                </span>
+                ?
+              </>
+            )}
           </h1>
           <p className="mt-4 leading-7 text-slate-500">
-            Suas respostas me ajudam a criar cursos de dados e IA que realmente sirvam para quem
-            quer aprender — no formato, no ritmo e no nível certos.
+            {intro ??
+              "Suas respostas me ajudam a criar cursos de dados e IA que realmente sirvam para quem quer aprender — no formato, no ritmo e no nível certos."}
           </p>
         </motion.div>
 
