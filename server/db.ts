@@ -8,6 +8,8 @@ import {
   courseProgress,
   InsertAcademyStudent,
   InsertCourseInterest,
+  InsertMentoriaDiagnostico,
+  mentoriaDiagnostico,
   InsertCourseAccess,
   InsertCourseLessonProgress,
   InsertCourseProgress,
@@ -194,6 +196,26 @@ export async function listCourseInterest() {
   }
 
   return db.select().from(courseInterest).orderBy(desc(courseInterest.createdAt));
+}
+
+export async function createMentoriaDiagnostico(input: InsertMentoriaDiagnostico) {
+  const db = await getDb();
+  if (!db) {
+    throw new Error("Database not available for mentoria diagnostic");
+  }
+
+  await db.insert(mentoriaDiagnostico).values(input);
+  return { ...input };
+}
+
+export async function listMentoriaDiagnostico() {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot list mentoria diagnostics: database not available");
+    return [];
+  }
+
+  return db.select().from(mentoriaDiagnostico).orderBy(desc(mentoriaDiagnostico.createdAt));
 }
 
 export async function listAcademyStudents() {

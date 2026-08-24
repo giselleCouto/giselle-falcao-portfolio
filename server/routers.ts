@@ -7,6 +7,8 @@ import { adminProcedure, protectedProcedure, publicProcedure, router } from "./_
 import {
   createCourseInterest,
   createLeadContact,
+  createMentoriaDiagnostico,
+  listMentoriaDiagnostico,
   getCourseAccessForUser,
   getUserById,
   listAcademyStudents,
@@ -121,6 +123,32 @@ const interestInputSchema = z.object({
   source: z.string().trim().max(120).optional().or(z.literal("")),
   consent: z.boolean().refine((value) => value === true, {
     message: "É preciso aceitar a política de contato para enviar.",
+  }),
+});
+
+const mentoriaInputSchema = z.object({
+  name: z.string().trim().min(2).max(160),
+  email: z.string().trim().email().max(320),
+  whatsapp: z.string().trim().min(8).max(40),
+  city: z.string().trim().min(2).max(120),
+  state: z
+    .string()
+    .trim()
+    .toUpperCase()
+    .refine((uf) => uf in UF_REGIONS, { message: "Selecione um estado válido." }),
+  ageRange: z.string().trim().max(40).optional().or(z.literal("")),
+  education: z.string().trim().min(1).max(60),
+  currentSituation: z.string().trim().min(1).max(80),
+  worksWithTech: z.string().trim().min(1).max(40),
+  areaInterest: z.string().trim().min(1).max(80),
+  mainDifficulty: z.string().trim().min(5).max(2000),
+  goal: z.string().trim().min(5).max(2000),
+  hoursPerWeek: z.string().trim().min(1).max(40),
+  format: z.string().trim().min(1).max(40),
+  investmentRange: z.string().trim().min(1).max(60),
+  whyNow: z.string().trim().min(5).max(2000),
+  consent: z.boolean().refine((value) => value === true, {
+    message: "É preciso autorizar o contato para enviar o diagnóstico.",
   }),
 });
 
@@ -274,6 +302,32 @@ export const appRouter = router({
     }),
     interests: adminProcedure.query(async () => {
       return listCourseInterest();
+    }),
+    mentoria: publicProcedure.input(mentoriaInputSchema).mutation(async ({ input }) => {
+      await createMentoriaDiagnostico({
+        name: input.name,
+        email: input.email.toLowerCase(),
+        whatsapp: input.whatsapp,
+        city: input.city,
+        state: input.state,
+        ageRange: input.ageRange?.trim() || null,
+        education: input.education,
+        currentSituation: input.currentSituation,
+        worksWithTech: input.worksWithTech,
+        areaInterest: input.areaInterest,
+        mainDifficulty: input.mainDifficulty,
+        goal: input.goal,
+        hoursPerWeek: input.hoursPerWeek,
+        format: input.format,
+        investmentRange: input.investmentRange,
+        whyNow: input.whyNow,
+        consent: input.consent,
+      });
+
+      return { success: true } as const;
+    }),
+    mentorias: adminProcedure.query(async () => {
+      return listMentoriaDiagnostico();
     }),
   }),
   course: router({

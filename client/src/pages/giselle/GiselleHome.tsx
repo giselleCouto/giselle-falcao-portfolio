@@ -5,6 +5,7 @@ import {
   ArrowUpRight,
   BookText,
   BrainCircuit,
+  Compass,
   Briefcase,
   GraduationCap,
   MessageCircle,
@@ -45,6 +46,13 @@ const portals = [
     tint: "bg-teal-100 text-teal-700",
     title: "Cursos",
     text: "Aprenda IA na prática, com certificado e trilha gamificada.",
+  },
+  {
+    href: "/giselle/mentoria",
+    icon: Compass,
+    tint: "bg-orange-100 text-[#a94b30]",
+    title: "Mentoria",
+    text: "Impulso Dela IA: direção de carreira para mulheres em Dados e IA.",
   },
   {
     href: "/giselle/servicos",
@@ -147,7 +155,7 @@ export default function GiselleHome() {
       <section className="container py-16 sm:py-20">
         <p className="text-xs font-bold uppercase tracking-[0.25em] text-teal-600">Explore</p>
         <h2 className="mt-3 text-3xl font-bold">Por onde você quer começar?</h2>
-        <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {portals.map((portal, i) => (
             <motion.div
               key={portal.href}

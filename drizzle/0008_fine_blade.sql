@@ -1,0 +1,23 @@
+CREATE TABLE `mentoria_diagnostico` (
+	`id` int AUTO_INCREMENT NOT NULL,
+	`name` varchar(160) NOT NULL,
+	`email` varchar(320) NOT NULL,
+	`whatsapp` varchar(40) NOT NULL,
+	`city` varchar(120) NOT NULL,
+	`state` varchar(2) NOT NULL,
+	`ageRange` varchar(40),
+	`education` varchar(60) NOT NULL,
+	`currentSituation` varchar(80) NOT NULL,
+	`worksWithTech` varchar(40) NOT NULL,
+	`areaInterest` varchar(80) NOT NULL,
+	`mainDifficulty` text NOT NULL,
+	`goal` text NOT NULL,
+	`hoursPerWeek` varchar(40) NOT NULL,
+	`format` varchar(40) NOT NULL,
+	`investmentRange` varchar(60) NOT NULL,
+	`whyNow` text NOT NULL,
+	`consent` boolean NOT NULL DEFAULT false,
+	`status` enum('new','reviewed','invited','archived') NOT NULL DEFAULT 'new',
+	`createdAt` timestamp NOT NULL DEFAULT (now()),
+	CONSTRAINT `mentoria_diagnostico_id` PRIMARY KEY(`id`)
+);

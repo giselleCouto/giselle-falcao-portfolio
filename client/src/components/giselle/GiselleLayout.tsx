@@ -7,6 +7,7 @@ const NAV_ITEMS = [
   { href: "/giselle", label: "Início" },
   { href: "/giselle/solucoes", label: "Soluções" },
   { href: "/giselle/cursos", label: "Cursos" },
+  { href: "/giselle/mentoria", label: "Mentoria" },
   { href: "/giselle/livro", label: "Livro" },
   { href: "/giselle/servicos", label: "Serviços" },
   { href: "/giselle/sobre", label: "Sobre" },

@@ -170,3 +170,34 @@ export const courseInterest = mysqlTable("course_interest", {
 
 export type CourseInterest = typeof courseInterest.$inferSelect;
 export type InsertCourseInterest = typeof courseInterest.$inferInsert;
+
+/**
+ * Diagnóstico do programa de mentoria "Impulso Dela IA" — formulário de
+ * qualificação comercial: a Giselle analisa cada resposta antes de oferecer
+ * a conversa de diagnóstico e decidir o formato adequado.
+ */
+export const mentoriaDiagnostico = mysqlTable("mentoria_diagnostico", {
+  id: int("id").autoincrement().primaryKey(),
+  name: varchar("name", { length: 160 }).notNull(),
+  email: varchar("email", { length: 320 }).notNull(),
+  whatsapp: varchar("whatsapp", { length: 40 }).notNull(),
+  city: varchar("city", { length: 120 }).notNull(),
+  state: varchar("state", { length: 2 }).notNull(),
+  ageRange: varchar("ageRange", { length: 40 }),
+  education: varchar("education", { length: 60 }).notNull(),
+  currentSituation: varchar("currentSituation", { length: 80 }).notNull(),
+  worksWithTech: varchar("worksWithTech", { length: 40 }).notNull(),
+  areaInterest: varchar("areaInterest", { length: 80 }).notNull(),
+  mainDifficulty: text("mainDifficulty").notNull(),
+  goal: text("goal").notNull(),
+  hoursPerWeek: varchar("hoursPerWeek", { length: 40 }).notNull(),
+  format: varchar("format", { length: 40 }).notNull(),
+  investmentRange: varchar("investmentRange", { length: 60 }).notNull(),
+  whyNow: text("whyNow").notNull(),
+  consent: boolean("consent").default(false).notNull(),
+  status: mysqlEnum("status", ["new", "reviewed", "invited", "archived"]).default("new").notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type MentoriaDiagnostico = typeof mentoriaDiagnostico.$inferSelect;
+export type InsertMentoriaDiagnostico = typeof mentoriaDiagnostico.$inferInsert;

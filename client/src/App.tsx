@@ -27,6 +27,7 @@ import GiselleLivro from "./pages/giselle/GiselleLivro";
 import GiselleDossie from "./pages/giselle/GiselleDossie";
 import GiselleInteresse from "./pages/giselle/GiselleInteresse";
 import GiselleLivroComprar from "./pages/giselle/GiselleLivroComprar";
+import GiselleMentoria from "./pages/giselle/GiselleMentoria";
 import GiselleTrilha from "./pages/giselle/GiselleTrilha";
 import MinasSummitFaq from "./pages/MinasSummitFaq";
 
@@ -184,6 +185,12 @@ function RouteSeo() {
         "Formação profissional de 480h em 10 cursos (rota acelerada de 300h): arquitetura de soluções, cloud multicloud, dados, MLOps, GenAI, FinOps e capstone com banca. Certificação por competências demonstradas.";
       keywords =
         "trilha arquiteto de soluções, formação arquiteto de dados, curso arquitetura de IA, multicloud, MLOps, GenAI, FinOps, capstone, Giselle Falcão";
+    } else if (location === "/mentoria" || location === "/giselle/mentoria") {
+      title = "Impulso Dela IA — Mentoria para Mulheres em Dados e IA | Giselle Falcão";
+      description =
+        "Direção, conhecimento e confiança para construir uma carreira possível em tecnologia. Mentoria em grupo e individual para mulheres que desejam entrar, migrar ou crescer em Dados e IA — com a Dra. Giselle Falcão.";
+      keywords =
+        "mentoria mulheres tecnologia, mentoria dados e IA, carreira em dados, transição de carreira mulher, Impulso Dela IA, Giselle Falcão";
     } else if (location === "/livro" || location === "/livro/") {
       title = "Onde comprar — Metodologia CEOD | Giselle Falcão";
       description =
@@ -682,6 +689,8 @@ function Router() {
         <Route path="/interesse">{() => <GiselleInteresse />}</Route>
         <Route path="/giselle/interesse">{() => <GiselleInteresse />}</Route>
         <Route path="/livro" component={GiselleLivroComprar} />
+        <Route path="/mentoria" component={GiselleMentoria} />
+        <Route path="/giselle/mentoria" component={GiselleMentoria} />
         <Route path="/palestra">
           {() => (
             <GiselleInteresse
