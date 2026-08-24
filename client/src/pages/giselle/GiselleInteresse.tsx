@@ -1,11 +1,28 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Link, useLocation } from "wouter";
-import { CheckCircle2, ClipboardList, GraduationCap, Loader2, PartyPopper } from "lucide-react";
+import {
+  ArrowRight,
+  BookOpen,
+  CheckCircle2,
+  ClipboardList,
+  Github,
+  GraduationCap,
+  Linkedin,
+  Loader2,
+  PartyPopper,
+  PenLine,
+  Rocket,
+  ShoppingCart,
+} from "lucide-react";
 import { toast } from "sonner";
 import GiselleLayout from "@/components/giselle/GiselleLayout";
 import { courses } from "@/lib/courses";
+import { contact } from "@/lib/portfolioData";
+import { livro } from "@/lib/livroData";
 import { trpc } from "@/lib/trpc";
+
+const socialLink = (label: string) => contact.links.find((l) => l.label === label)?.href ?? "#";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
@@ -76,6 +93,8 @@ type GiselleInteresseProps = {
   source?: string;
   /** Rota para onde o aluno é levado automaticamente após enviar */
   next?: string;
+  /** Sucesso em modo "jornada": redes sociais → livro → soluções → cursos (QR genérico de palestras) */
+  journey?: boolean;
   /** Título e contexto específicos da origem (ex.: palestra) */
   headline?: string;
   intro?: string;
@@ -84,6 +103,7 @@ type GiselleInteresseProps = {
 export default function GiselleInteresse({
   source = "interesse",
   next,
+  journey = false,
   headline,
   intro,
 }: GiselleInteresseProps = {}) {
@@ -156,6 +176,149 @@ export default function GiselleInteresse({
     const timer = window.setTimeout(() => setCountdown((c) => c - 1), 1000);
     return () => window.clearTimeout(timer);
   }, [submitted, next, countdown, navigate]);
+
+  if (submitted && journey) {
+    return (
+      <GiselleLayout>
+        <section className="container max-w-2xl py-12 sm:py-16">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.96 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.45 }}
+            className="text-center"
+          >
+            <motion.div
+              animate={{ rotate: [0, -10, 10, 0], scale: [1, 1.15, 1] }}
+              transition={{ duration: 0.8 }}
+              className="mx-auto flex size-16 items-center justify-center rounded-3xl bg-violet-100"
+            >
+              <PartyPopper className="size-8 text-[#6b21a8]" />
+            </motion.div>
+            <h1 className="mt-5 font-baloo text-3xl font-bold">Recebido! Sua jornada começa agora</h1>
+            <p className="mx-auto mt-2 max-w-md leading-7 text-slate-500">
+              Três passos rápidos para continuar de onde a palestra parou:
+            </p>
+          </motion.div>
+
+          <div className="mt-8 space-y-4">
+            {/* Passo 1 — Redes */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.15 }}
+              className="rounded-3xl border border-slate-200/70 bg-white p-6 shadow-[0_10px_40px_rgba(26,19,51,0.06)]"
+            >
+              <p className="text-xs font-bold uppercase tracking-[0.2em] text-teal-600">Passo 1</p>
+              <h2 className="mt-1 text-lg font-bold">Siga e acompanhe os bastidores</h2>
+              <div className="mt-4 flex flex-wrap gap-2">
+                <a
+                  href={socialLink("LinkedIn")}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 rounded-full bg-[#0a66c2] px-5 py-2.5 text-sm font-bold text-white transition hover:opacity-90"
+                >
+                  <Linkedin className="size-4" />
+                  LinkedIn
+                </a>
+                <a
+                  href={socialLink("Medium")}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 rounded-full bg-[#1a1333] px-5 py-2.5 text-sm font-bold text-white transition hover:bg-[#6b21a8]"
+                >
+                  <PenLine className="size-4" />
+                  Medium
+                </a>
+                <a
+                  href={socialLink("GitHub")}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 rounded-full border-2 border-slate-200 px-5 py-2.5 text-sm font-bold text-slate-600 transition hover:border-violet-300 hover:text-[#6b21a8]"
+                >
+                  <Github className="size-4" />
+                  GitHub
+                </a>
+              </div>
+            </motion.div>
+
+            {/* Passo 2 — Livro */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.28 }}
+              className="flex items-center gap-5 rounded-3xl border border-slate-200/70 bg-white p-6 shadow-[0_10px_40px_rgba(26,19,51,0.06)]"
+            >
+              <img
+                src={livro.cover}
+                alt={`Capa do livro ${livro.title}`}
+                className="w-20 shrink-0 rounded-lg border border-slate-200/70 shadow-md"
+              />
+              <div className="min-w-0 flex-1">
+                <p className="text-xs font-bold uppercase tracking-[0.2em] text-teal-600">Passo 2</p>
+                <h2 className="mt-1 text-lg font-bold leading-snug">
+                  Leve a Metodologia CEOD com você
+                </h2>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  <Link
+                    href="/giselle/livro"
+                    className="inline-flex items-center gap-1.5 rounded-full border-2 border-violet-200 px-4 py-2 text-xs font-bold text-[#6b21a8] transition hover:bg-violet-50"
+                  >
+                    <BookOpen className="size-3.5" />
+                    Conhecer o livro
+                  </Link>
+                  <Link
+                    href="/livro"
+                    className="inline-flex items-center gap-1.5 rounded-full bg-[#1a1333] px-4 py-2 text-xs font-bold text-white transition hover:bg-[#6b21a8]"
+                  >
+                    <ShoppingCart className="size-3.5" />
+                    Onde comprar
+                  </Link>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Passo 3 — Soluções */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.41 }}
+              className="rounded-3xl border border-slate-200/70 bg-white p-6 shadow-[0_10px_40px_rgba(26,19,51,0.06)]"
+            >
+              <p className="text-xs font-bold uppercase tracking-[0.2em] text-teal-600">Passo 3</p>
+              <h2 className="mt-1 text-lg font-bold">Mergulhe nas soluções que construí</h2>
+              <p className="mt-1 text-sm leading-6 text-slate-500">
+                SensorMonit, Curral AI, GreenSenti, EucaSmart e Pharos — IA em produção com demos abertas.
+              </p>
+              <Link
+                href="/giselle/solucoes"
+                className="mt-3 inline-flex items-center gap-1.5 rounded-full border-2 border-teal-200 px-4 py-2 text-xs font-bold text-teal-700 transition hover:bg-teal-50"
+              >
+                <Rocket className="size-3.5" />
+                Explorar as soluções
+              </Link>
+            </motion.div>
+          </div>
+
+          {/* Destino final: cursos */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: 0.55 }}
+            className="mt-8"
+          >
+            <Link
+              href="/giselle/cursos"
+              className="flex w-full items-center justify-center gap-2 rounded-full bg-[linear-gradient(90deg,#6b21a8,#8b5cf6,#14b8a6)] px-6 py-4 text-sm font-bold text-white transition hover:opacity-90"
+            >
+              <GraduationCap className="size-5" />
+              Começar os cursos gratuitos agora
+              <ArrowRight className="size-4" />
+            </Link>
+          </motion.div>
+        </section>
+      </GiselleLayout>
+    );
+  }
 
   if (submitted) {
     return (

@@ -26,6 +26,7 @@ import GiselleContato from "./pages/giselle/GiselleContato";
 import GiselleLivro from "./pages/giselle/GiselleLivro";
 import GiselleDossie from "./pages/giselle/GiselleDossie";
 import GiselleInteresse from "./pages/giselle/GiselleInteresse";
+import GiselleLivroComprar from "./pages/giselle/GiselleLivroComprar";
 import GiselleTrilha from "./pages/giselle/GiselleTrilha";
 import MinasSummitFaq from "./pages/MinasSummitFaq";
 
@@ -183,6 +184,16 @@ function RouteSeo() {
         "Formação profissional de 480h em 10 cursos (rota acelerada de 300h): arquitetura de soluções, cloud multicloud, dados, MLOps, GenAI, FinOps e capstone com banca. Certificação por competências demonstradas.";
       keywords =
         "trilha arquiteto de soluções, formação arquiteto de dados, curso arquitetura de IA, multicloud, MLOps, GenAI, FinOps, capstone, Giselle Falcão";
+    } else if (location === "/livro") {
+      title = "Onde comprar — Metodologia CEOD | Giselle Falcão";
+      description =
+        "Escolha onde comprar o livro Metodologia CEOD: Amazon, Mercado Livre, umLivro ou direto com a Editora Sorian. A revolução data-driven na recomposição da aprendizagem.";
+      keywords = "comprar Metodologia CEOD, livro Giselle Falcão Amazon, Mercado Livre, umLivro, Editora Sorian";
+    } else if (location === "/palestra") {
+      title = "Continue sua jornada | Palestras da Giselle Falcão";
+      description =
+        "Você assistiu a uma palestra da Giselle Falcão? Responda em 2 minutos e destrave a jornada completa: redes, livro Metodologia CEOD, soluções de IA e cursos gratuitos.";
+      keywords = "palestra Giselle Falcão, questionário, cursos gratuitos de dados e IA";
     } else if (location === "/databh") {
       title = "Da Query ao Modelo — Trilha de 30 dias | DATA BH · SQL Saturday 2026";
       description =
@@ -669,6 +680,17 @@ function Router() {
         <Route path="/giselle/solucoes" component={GiselleSolucoes} />
         <Route path="/interesse">{() => <GiselleInteresse />}</Route>
         <Route path="/giselle/interesse">{() => <GiselleInteresse />}</Route>
+        <Route path="/livro" component={GiselleLivroComprar} />
+        <Route path="/palestra">
+          {() => (
+            <GiselleInteresse
+              source="palestra"
+              journey
+              headline="Que bom ter você aqui! 🚀"
+              intro="Você acabou de assistir a uma palestra da Giselle Falcão. Responda em 2 minutos — suas respostas moldam os próximos conteúdos — e destrave sua jornada: redes, livro, soluções e os cursos gratuitos."
+            />
+          )}
+        </Route>
         <Route path="/databh">
           {() => (
             <GiselleInteresse

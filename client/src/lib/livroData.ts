@@ -69,45 +69,60 @@ export const livro = {
   ],
 
   distributionNotice:
-    "Pelo contrato editorial, os links de venda, e-book e marketplaces devem ser confirmados ou liberados pela Editora Sorian.",
+    "Links de venda confirmados nos marketplaces. Para compra institucional ou em lote, fale com a Editora Sorian.",
 
-  // Links oficiais — marketplaces entram quando a editora divulgar os URLs finais
   links: [
     {
-      label: "Solicitar compra institucional",
-      href: "mailto:editor@editorasorian.com.br?subject=Interesse%20institucional%20no%20livro%20Metodologia%20CEOD",
+      label: "Comprar na Amazon",
+      href: "https://www.amazon.com.br/dp/655453847X",
       kind: "primary",
-      note: "Contato direto com a Editora Sorian",
+      note: "Livro físico",
     },
     {
-      label: "WhatsApp da editora",
-      href: "https://wa.me/5541988655312",
-      kind: "official",
+      label: "Mercado Livre",
+      href: "https://www.mercadolivre.com.br/metodologia-ceod-a-revolucao-datadriven-na-recomposicao-da-aprendizagem/up/MLBU4780091149",
+      kind: "marketplace",
+    },
+    {
+      label: "umLivro",
+      href: "https://loja.umlivro.com.br/metodologia-ceod--a-revolucao-data-driven-na-recomposicao-da-aprendizagem-8501885/p",
+      kind: "marketplace",
     },
     {
       label: "Editora Sorian",
       href: "https://www.editorasorian.com.br",
       kind: "official",
-    },
-    {
-      label: "Amazon / Kindle",
-      href: null,
-      kind: "marketplace",
-      note: "Aguardando link oficial da editora",
-    },
-    {
-      label: "Google Livros",
-      href: null,
-      kind: "marketplace",
-      note: "Aguardando ativação pela editora",
-    },
-    {
-      label: "Google Play Livros",
-      href: null,
-      kind: "marketplace",
-      note: "Aguardando link oficial da editora",
+      note: "Compra institucional e em lote",
     },
   ] as BookLink[],
+
+  // Lojas para a página de escolha de compra (/livro — link curto das redes)
+  buyLinks: [
+    {
+      store: "Amazon",
+      description: "Entrega rápida em todo o Brasil · vendido como livro físico",
+      href: "https://www.amazon.com.br/dp/655453847X",
+      accent: "amber",
+    },
+    {
+      store: "Mercado Livre",
+      description: "Parcelamento e frete Mercado Envios",
+      href: "https://www.mercadolivre.com.br/metodologia-ceod-a-revolucao-datadriven-na-recomposicao-da-aprendizagem/up/MLBU4780091149",
+      accent: "yellow",
+    },
+    {
+      store: "umLivro",
+      description: "Livraria especializada · catálogo editorial",
+      href: "https://loja.umlivro.com.br/metodologia-ceod--a-revolucao-data-driven-na-recomposicao-da-aprendizagem-8501885/p",
+      accent: "teal",
+    },
+    {
+      store: "Editora Sorian",
+      description: "Compra institucional, em lote ou com a editora",
+      href: "https://www.editorasorian.com.br",
+      accent: "violet",
+    },
+  ],
 
   publisherContact: {
     whatsapp: "https://wa.me/5541988655312",
