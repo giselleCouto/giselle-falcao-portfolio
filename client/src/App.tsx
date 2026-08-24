@@ -81,11 +81,11 @@ function RouteSeo() {
     const pathname = location || "/";
     const canonicalUrl = new URL(pathname, origin).toString();
 
-    let title = "Couto Falcão | Hub de Identidades";
+    let title = "Giselle Falcão | AI que entende, transforma e impulsiona";
     let description =
-      "Couto Falcão é um hub de identidades que organiza frentes autorais e institucionais. Explore a rota Giselle para autoridade científica, consultoria em IA e modelagem matemática, e a rota Jade para posicionamento, narrativa e presença de marca.";
+      "AI que entende, transforma e impulsiona. Dra. Giselle Falcão — PhD, pesquisadora e consultora em IA industrial, modelagem matemática e ciência de dados, com soluções em produção, cursos, mentoria e o livro Metodologia CEOD.";
     let keywords =
-      "Couto Falcão, Giselle Couto Falcão, consultoria em inteligência artificial, tecnologia, inovação, modelagem matemática, branding pessoal, Jade";
+      "Giselle Falcão, Giselle Couto Falcão, inteligência artificial, consultoria em IA, modelagem matemática, ciência de dados, cursos de IA, mentoria mulheres em dados, Metodologia CEOD";
 
     removeJsonLd("giselle-person-schema");
     removeJsonLd("giselle-faq-schema");

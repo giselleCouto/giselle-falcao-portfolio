@@ -96,7 +96,7 @@ describe("SEO da rota /giselle", () => {
   });
 
   it("expõe metadados estáticos compatíveis com o novo posicionamento industrial", () => {
-    expect(indexHtml).toContain("IA Industrial, Modelagem Matemática e Ciência de Dados");
+    expect(indexHtml).toContain("Giselle Falcão | AI que entende, transforma e impulsiona");
     expect(indexHtml).toContain("decisões críticas");
     expect(indexHtml).toContain("visão computacional");
     expect(indexHtml).toContain("digital twins");
