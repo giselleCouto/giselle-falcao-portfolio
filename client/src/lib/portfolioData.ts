@@ -1311,6 +1311,7 @@ export const contact = {
   lattes: "http://lattes.cnpq.br/7661015485905669",
   links: [
     { label: "LinkedIn", href: "https://www.linkedin.com/in/giselle-falcao-phd/", available: true },
+    { label: "Instagram", href: "https://www.instagram.com/gisellecfalcao", available: true },
     { label: "GitHub", href: "https://github.com/giselleCouto", available: true },
     { label: "E-mail", href: "mailto:giselle@coutofalcao.com", available: true },
     { label: "WhatsApp", href: "https://wa.me/qr/ZQ5MXUPDDICTL1", available: true },

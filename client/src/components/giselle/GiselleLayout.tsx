@@ -152,6 +152,14 @@ export default function GiselleLayout({ children }: { children: ReactNode }) {
             >
               LinkedIn
             </a>
+            <a
+              href="https://www.instagram.com/gisellecfalcao"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded-full bg-pink-100 px-4 py-1.5 text-xs font-bold text-pink-700 transition hover:bg-pink-200"
+            >
+              Instagram
+            </a>
           </nav>
         </div>
       </footer>

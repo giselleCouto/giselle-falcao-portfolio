@@ -6,6 +6,7 @@ import {
   FileText,
   Github,
   GraduationCap,
+  Instagram,
   Linkedin,
   Mail,
   MessageCircle,
@@ -50,6 +51,7 @@ const channels = [
 ];
 
 const socialLabels = [
+  { label: "Instagram", icon: Instagram },
   { label: "LinkedIn", icon: Linkedin },
   { label: "GitHub", icon: Github },
   { label: "Google Scholar", icon: GraduationCap },

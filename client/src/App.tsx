@@ -339,6 +339,7 @@ function RouteSeo() {
         ],
         sameAs: [
           "https://www.linkedin.com/in/giselle-falcao-phd/",
+          "https://www.instagram.com/gisellecfalcao",
           "https://github.com/giselleCouto",
           "https://scholar.google.com.br/citations?hl=pt-BR&user=ljBj6GMAAAAJ",
           "http://lattes.cnpq.br/7661015485905669",

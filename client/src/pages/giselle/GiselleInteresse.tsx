@@ -8,6 +8,7 @@ import {
   ClipboardList,
   Github,
   GraduationCap,
+  Instagram,
   Linkedin,
   Loader2,
   PartyPopper,
@@ -211,6 +212,15 @@ export default function GiselleInteresse({
               <p className="text-xs font-bold uppercase tracking-[0.2em] text-teal-600">Passo 1</p>
               <h2 className="mt-1 text-lg font-bold">Siga e acompanhe os bastidores</h2>
               <div className="mt-4 flex flex-wrap gap-2">
+                <a
+                  href={socialLink("Instagram")}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 rounded-full bg-[linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888)] px-5 py-2.5 text-sm font-bold text-white transition hover:opacity-90"
+                >
+                  <Instagram className="size-4" />
+                  Instagram
+                </a>
                 <a
                   href={socialLink("LinkedIn")}
                   target="_blank"
