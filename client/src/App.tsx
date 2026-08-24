@@ -184,7 +184,7 @@ function RouteSeo() {
         "Formação profissional de 480h em 10 cursos (rota acelerada de 300h): arquitetura de soluções, cloud multicloud, dados, MLOps, GenAI, FinOps e capstone com banca. Certificação por competências demonstradas.";
       keywords =
         "trilha arquiteto de soluções, formação arquiteto de dados, curso arquitetura de IA, multicloud, MLOps, GenAI, FinOps, capstone, Giselle Falcão";
-    } else if (location === "/livro") {
+    } else if (location === "/livro" || location === "/livro/") {
       title = "Onde comprar — Metodologia CEOD | Giselle Falcão";
       description =
         "Escolha onde comprar o livro Metodologia CEOD: Amazon, Mercado Livre, umLivro ou direto com a Editora Sorian. A revolução data-driven na recomposição da aprendizagem.";
