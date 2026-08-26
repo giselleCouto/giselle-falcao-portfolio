@@ -99,9 +99,9 @@ export default function GiselleSobre() {
           <div className="absolute -inset-3 rounded-[2.5rem] bg-[linear-gradient(135deg,#6b21a8,#8b5cf6,#14b8a6)] opacity-15 blur-xl" />
           <div className="relative overflow-hidden rounded-[2.5rem] border border-slate-200/70 bg-white shadow-[0_18px_60px_rgba(26,19,51,0.12)]">
             <img
-              src={assets.heroAtlas}
-              alt="Dra. Giselle Couto Falcão"
-              className="aspect-[4/3] w-full object-cover"
+              src="/brand/giselle-palestra.jpg"
+              alt="Dra. Giselle Couto Falcão palestrando no DATA BH · SQL Saturday, na PUC Minas"
+              className="aspect-[4/5] w-full object-cover object-top"
             />
             <div className="flex items-center gap-3 p-5">
               <span className="flex size-11 items-center justify-center rounded-2xl bg-violet-100 text-[#6b21a8]">

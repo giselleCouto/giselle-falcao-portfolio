@@ -2,8 +2,10 @@ import { and, desc, eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
 import {
   academyStudents,
+  aiMaturity,
   courseAccess,
   courseInterest,
+  InsertAiMaturity,
   courseLessonProgress,
   courseProgress,
   InsertAcademyStudent,
@@ -196,6 +198,26 @@ export async function listCourseInterest() {
   }
 
   return db.select().from(courseInterest).orderBy(desc(courseInterest.createdAt));
+}
+
+export async function createAiMaturity(input: InsertAiMaturity) {
+  const db = await getDb();
+  if (!db) {
+    throw new Error("Database not available for AI maturity quiz");
+  }
+
+  await db.insert(aiMaturity).values(input);
+  return { ...input };
+}
+
+export async function listAiMaturity() {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot list AI maturity entries: database not available");
+    return [];
+  }
+
+  return db.select().from(aiMaturity).orderBy(desc(aiMaturity.createdAt));
 }
 
 export async function createMentoriaDiagnostico(input: InsertMentoriaDiagnostico) {

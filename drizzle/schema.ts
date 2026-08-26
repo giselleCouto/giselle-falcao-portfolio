@@ -201,3 +201,30 @@ export const mentoriaDiagnostico = mysqlTable("mentoria_diagnostico", {
 
 export type MentoriaDiagnostico = typeof mentoriaDiagnostico.$inferSelect;
 export type InsertMentoriaDiagnostico = typeof mentoriaDiagnostico.$inferInsert;
+
+/**
+ * Quiz "Diagnóstico de Maturidade em IA" — lead magnet B2B.
+ * Guarda contato + pontuação por dimensão para qualificar palestras,
+ * workshops e consultoria.
+ */
+export const aiMaturity = mysqlTable("ai_maturity", {
+  id: int("id").autoincrement().primaryKey(),
+  name: varchar("name", { length: 160 }).notNull(),
+  email: varchar("email", { length: 320 }).notNull(),
+  company: varchar("company", { length: 200 }).notNull(),
+  role: varchar("role", { length: 160 }).notNull(),
+  companySize: varchar("companySize", { length: 60 }).notNull(),
+  scoreDados: int("scoreDados").notNull(),
+  scoreTecnologia: int("scoreTecnologia").notNull(),
+  scorePessoas: int("scorePessoas").notNull(),
+  scoreProcessos: int("scoreProcessos").notNull(),
+  scoreEstrategia: int("scoreEstrategia").notNull(),
+  totalScore: int("totalScore").notNull(),
+  level: varchar("level", { length: 40 }).notNull(),
+  answers: text("answers"),
+  consent: boolean("consent").default(false).notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type AiMaturity = typeof aiMaturity.$inferSelect;
+export type InsertAiMaturity = typeof aiMaturity.$inferInsert;

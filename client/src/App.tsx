@@ -28,6 +28,8 @@ import GiselleDossie from "./pages/giselle/GiselleDossie";
 import GiselleInteresse from "./pages/giselle/GiselleInteresse";
 import GiselleLivroComprar from "./pages/giselle/GiselleLivroComprar";
 import GiselleMentoria from "./pages/giselle/GiselleMentoria";
+import GisellePalestras from "./pages/giselle/GisellePalestras";
+import GiselleDiagnosticoIA from "./pages/giselle/GiselleDiagnosticoIA";
 import GiselleTrilha from "./pages/giselle/GiselleTrilha";
 import MinasSummitFaq from "./pages/MinasSummitFaq";
 
@@ -185,6 +187,18 @@ function RouteSeo() {
         "Formação profissional de 480h em 10 cursos (rota acelerada de 300h): arquitetura de soluções, cloud multicloud, dados, MLOps, GenAI, FinOps e capstone com banca. Certificação por competências demonstradas.";
       keywords =
         "trilha arquiteto de soluções, formação arquiteto de dados, curso arquitetura de IA, multicloud, MLOps, GenAI, FinOps, capstone, Giselle Falcão";
+    } else if (location === "/palestras" || location === "/giselle/palestras") {
+      title = "Palestras e Formações Corporativas em Dados e IA | Giselle Falcão";
+      description =
+        "Palestras, workshops hands-on e programas corporativos com a Dra. Giselle Falcão: casos reais do agro, indústria e educação, do DATA BH ao Minas Summit. Proposta sob consulta.";
+      keywords =
+        "palestrante inteligência artificial, palestra dados e IA, workshop IA empresas, formação corporativa dados, keynote IA Brasil, Giselle Falcão";
+    } else if (location === "/diagnostico-ia" || location === "/giselle/diagnostico-ia") {
+      title = "Diagnóstico de Maturidade em IA — Teste Gratuito | Giselle Falcão";
+      description =
+        "Em 3 minutos, descubra o estágio da sua empresa em Dados, Tecnologia, Pessoas, Processos e Estratégia de IA — com resultado na hora e recomendações práticas.";
+      keywords =
+        "maturidade em IA, diagnóstico de IA, assessment inteligência artificial, maturidade de dados empresa, teste gratuito IA";
     } else if (location === "/mentoria" || location === "/giselle/mentoria") {
       title = "Impulso Dela IA — Mentoria para Mulheres em Dados e IA | Giselle Falcão";
       description =
@@ -691,6 +705,10 @@ function Router() {
         <Route path="/livro" component={GiselleLivroComprar} />
         <Route path="/mentoria" component={GiselleMentoria} />
         <Route path="/giselle/mentoria" component={GiselleMentoria} />
+        <Route path="/palestras" component={GisellePalestras} />
+        <Route path="/giselle/palestras" component={GisellePalestras} />
+        <Route path="/diagnostico-ia" component={GiselleDiagnosticoIA} />
+        <Route path="/giselle/diagnostico-ia" component={GiselleDiagnosticoIA} />
         <Route path="/palestra">
           {() => (
             <GiselleInteresse

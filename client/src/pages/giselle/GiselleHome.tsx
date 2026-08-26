@@ -9,6 +9,7 @@ import {
   Briefcase,
   GraduationCap,
   MessageCircle,
+  Mic,
   Newspaper,
   Rocket,
   Sparkles,
@@ -53,6 +54,13 @@ const portals = [
     tint: "bg-orange-100 text-[#a94b30]",
     title: "Mentoria",
     text: "Impulso Dela IA: direção de carreira para mulheres em Dados e IA.",
+  },
+  {
+    href: "/giselle/palestras",
+    icon: Mic,
+    tint: "bg-sky-100 text-sky-700",
+    title: "Palestras",
+    text: "Keynotes, workshops e programas corporativos com casos reais.",
   },
   {
     href: "/giselle/servicos",

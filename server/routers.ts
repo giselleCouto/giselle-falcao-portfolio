@@ -5,9 +5,11 @@ import { systemRouter } from "./_core/systemRouter";
 import { notifyOwner } from "./_core/notification";
 import { adminProcedure, protectedProcedure, publicProcedure, router } from "./_core/trpc";
 import {
+  createAiMaturity,
   createCourseInterest,
   createLeadContact,
   createMentoriaDiagnostico,
+  listAiMaturity,
   listMentoriaDiagnostico,
   getCourseAccessForUser,
   getUserById,
@@ -123,6 +125,26 @@ const interestInputSchema = z.object({
   source: z.string().trim().max(120).optional().or(z.literal("")),
   consent: z.boolean().refine((value) => value === true, {
     message: "É preciso aceitar a política de contato para enviar.",
+  }),
+});
+
+const maturityInputSchema = z.object({
+  name: z.string().trim().min(2).max(160),
+  email: z.string().trim().email().max(320),
+  company: z.string().trim().min(2).max(200),
+  role: z.string().trim().min(2).max(160),
+  companySize: z.string().trim().min(1).max(60),
+  scores: z.object({
+    dados: z.number().int().min(0).max(6),
+    tecnologia: z.number().int().min(0).max(6),
+    pessoas: z.number().int().min(0).max(6),
+    processos: z.number().int().min(0).max(6),
+    estrategia: z.number().int().min(0).max(6),
+  }),
+  level: z.string().trim().min(1).max(40),
+  answers: z.array(z.number().int().min(0).max(3)).length(10),
+  consent: z.boolean().refine((value) => value === true, {
+    message: "É preciso autorizar o contato para receber o diagnóstico.",
   }),
 });
 
@@ -328,6 +350,36 @@ export const appRouter = router({
     }),
     mentorias: adminProcedure.query(async () => {
       return listMentoriaDiagnostico();
+    }),
+    maturidade: publicProcedure.input(maturityInputSchema).mutation(async ({ input }) => {
+      const total =
+        input.scores.dados +
+        input.scores.tecnologia +
+        input.scores.pessoas +
+        input.scores.processos +
+        input.scores.estrategia;
+
+      await createAiMaturity({
+        name: input.name,
+        email: input.email.toLowerCase(),
+        company: input.company,
+        role: input.role,
+        companySize: input.companySize,
+        scoreDados: input.scores.dados,
+        scoreTecnologia: input.scores.tecnologia,
+        scorePessoas: input.scores.pessoas,
+        scoreProcessos: input.scores.processos,
+        scoreEstrategia: input.scores.estrategia,
+        totalScore: total,
+        level: input.level,
+        answers: JSON.stringify(input.answers),
+        consent: input.consent,
+      });
+
+      return { success: true, totalScore: total } as const;
+    }),
+    maturidades: adminProcedure.query(async () => {
+      return listAiMaturity();
     }),
   }),
   course: router({
