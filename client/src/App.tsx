@@ -31,6 +31,9 @@ import GiselleMentoria from "./pages/giselle/GiselleMentoria";
 import GisellePalestras from "./pages/giselle/GisellePalestras";
 import GiselleDiagnosticoIA from "./pages/giselle/GiselleDiagnosticoIA";
 import GiselleTrilha from "./pages/giselle/GiselleTrilha";
+import GiselleTrilhas from "./pages/giselle/GiselleTrilhas";
+import GiselleTrilhaCarreira from "./pages/giselle/GiselleTrilhaCarreira";
+import { trilhasCarreira } from "./lib/trilhasCarreiraData";
 import MinasSummitFaq from "./pages/MinasSummitFaq";
 
 function upsertMeta(selector: string, attributeName: "name" | "property", attributeValue: string, content: string) {
@@ -74,6 +77,18 @@ function removeJsonLd(id: string) {
   document.getElementById(id)?.remove();
 }
 
+// Rotas-atalho que renderizam o mesmo conteúdo de uma URL principal:
+// o canonical (e og:url) deve apontar sempre para a variante listada no
+// sitemap, evitando conteúdo duplicado aos olhos dos buscadores.
+const CANONICAL_ALIASES: Record<string, string> = {
+  "/trilhas": "/giselle/trilhas",
+  "/mentoria": "/giselle/mentoria",
+  "/palestras": "/giselle/palestras",
+  "/giselle/diagnostico-ia": "/diagnostico-ia",
+  "/giselle/interesse": "/interesse",
+  "/giselle/trilhas/arquiteto-dados-ia": "/giselle/trilha",
+};
+
 function RouteSeo() {
   const [location] = useLocation();
 
@@ -81,7 +96,7 @@ function RouteSeo() {
     // Host canônico único: evita conteúdo duplicado entre www e subdomínios.
     const origin = "https://www.coutofalcao.com";
     const pathname = location || "/";
-    const canonicalUrl = new URL(pathname, origin).toString();
+    const canonicalUrl = new URL(CANONICAL_ALIASES[pathname] ?? pathname, origin).toString();
 
     let title = "Giselle Falcão | AI que entende, transforma e impulsiona";
     let description =
@@ -181,6 +196,24 @@ function RouteSeo() {
       description =
         "Fale com a Dra. Giselle Falcão: WhatsApp, e-mail ou agende uma reunião online de 30 minutos sobre consultoria, cursos, palestras e workshops.";
       keywords = "contato Giselle Falcão, agendar consultoria IA, palestra inteligência artificial, workshop dados";
+    } else if (location === "/trilhas" || location === "/giselle/trilhas") {
+      title = "Trilhas de Carreira em Dados e IA — do Zero ao Arquiteto | Giselle Falcão";
+      description =
+        "Três degraus, um caminho: Trilha Analista de Dados (do zero, 98h), Trilha Cientista de Dados (96h) e a formação Arquiteto de Soluções, Dados & IA (480h). Comece grátis, na ordem certa.";
+      keywords =
+        "trilha analista de dados, trilha cientista de dados, carreira em dados, como começar em ciência de dados, curso gratuito dados e IA, Giselle Falcão";
+    } else if (location === "/giselle/trilhas/analista-de-dados") {
+      title = "Trilha Analista de Dados — Comece do Zero | Giselle Falcão";
+      description =
+        "4 cursos e 98h para se tornar Analista de Dados: fundamentos, análise estratégica, SQL de produção e estatística — com ferramentas gratuitas, direto no navegador. Comece grátis hoje.";
+      keywords =
+        "trilha analista de dados, curso analista de dados gratuito, aprender SQL do zero, dashboard, estatística para análise de dados, Giselle Falcão";
+    } else if (location === "/giselle/trilhas/cientista-de-dados") {
+      title = "Trilha Cientista de Dados — do Analisar ao Prever | Giselle Falcão";
+      description =
+        "3 cursos e 96h para evoluir de analista a cientista de dados: Machine Learning, IA aplicada com casos reais da indústria e do agro, e agentes de IA — do notebook à produção.";
+      keywords =
+        "trilha cientista de dados, curso machine learning, IA aplicada, agentes de IA, transição analista para cientista de dados, Giselle Falcão";
     } else if (location === "/giselle/trilha" || location === "/giselle/trilhas/arquiteto-dados-ia") {
       title = "Trilha Arquiteto de Soluções, Dados & IA — 480h Multicloud | Giselle Falcão";
       description =
@@ -730,7 +763,14 @@ function Router() {
           )}
         </Route>
         <Route path="/giselle/trilha" component={GiselleTrilha} />
+        <Route path="/trilhas" component={GiselleTrilhas} />
+        <Route path="/giselle/trilhas" component={GiselleTrilhas} />
         <Route path="/giselle/trilhas/arquiteto-dados-ia" component={GiselleTrilha} />
+        {trilhasCarreira.map((t) => (
+          <Route key={t.slug} path={`/giselle/trilhas/${t.slug}`}>
+            {() => <GiselleTrilhaCarreira trilha={t} />}
+          </Route>
+        ))}
         <Route path="/giselle/livro/dossie" component={GiselleDossie} />
         <Route path="/giselle/livro" component={GiselleLivro} />
         <Route path="/giselle/servicos" component={GiselleServicos} />

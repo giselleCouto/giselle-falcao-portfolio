@@ -57,6 +57,24 @@ export default function GiselleTrilha() {
         </div>
       </section>
 
+      {/* Posição na escada de carreira */}
+      <section className="border-b border-slate-200/70 bg-white">
+        <div className="container flex flex-wrap items-center justify-between gap-4 py-5">
+          <p className="text-sm leading-6 text-slate-600">
+            <strong className="text-[#1a1333]">Degrau 3 de 3</strong> da escada de carreira — o caminho
+            começa nas trilhas <strong className="text-[#1a1333]">Analista de Dados</strong> e{" "}
+            <strong className="text-[#1a1333]">Cientista de Dados</strong>.
+          </p>
+          <Link
+            href="/giselle/trilhas"
+            className="inline-flex items-center gap-2 text-sm font-bold text-[#6b21a8] transition hover:text-[#8b5cf6]"
+          >
+            Ver a escada completa
+            <Sparkles className="size-4" />
+          </Link>
+        </div>
+      </section>
+
       {/* Duas rotas */}
       <section className="container py-14 sm:py-16">
         <p className="text-xs font-bold uppercase tracking-[0.25em] text-teal-600">Escolha sua rota</p>
