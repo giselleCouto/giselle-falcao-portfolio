@@ -228,3 +228,38 @@ export const aiMaturity = mysqlTable("ai_maturity", {
 
 export type AiMaturity = typeof aiMaturity.$inferSelect;
 export type InsertAiMaturity = typeof aiMaturity.$inferInsert;
+
+/**
+ * Candidaturas à Turma Fundadora da "Mentoria Trajetória em Dados & IA" —
+ * mentoria de 4 semanas aberta a todos, com bolsas para mulheres.
+ * As 12 perguntas de seleção vêm do plano da turma fundadora; a Giselle
+ * analisa cada candidatura antes de convidar para a conversa individual.
+ */
+export const trajetoriaCandidatura = mysqlTable("trajetoria_candidatura", {
+  id: int("id").autoincrement().primaryKey(),
+  name: varchar("name", { length: 160 }).notNull(),
+  email: varchar("email", { length: 320 }).notNull(),
+  whatsapp: varchar("whatsapp", { length: 40 }).notNull(),
+  linkedin: varchar("linkedin", { length: 320 }),
+  areaAtual: varchar("areaAtual", { length: 120 }).notNull(),
+  formacao: varchar("formacao", { length: 160 }).notNull(),
+  porque: text("porque").notNull(),
+  funcaoInteresse: varchar("funcaoInteresse", { length: 120 }).notNull(),
+  jaEstudou: text("jaEstudou").notNull(),
+  maiorDificuldade: text("maiorDificuldade").notNull(),
+  horasSemana: varchar("horasSemana", { length: 40 }).notNull(),
+  expectativa: text("expectativa").notNull(),
+  disponibilidade: varchar("disponibilidade", { length: 60 }).notNull(),
+  dispostoProjeto: boolean("dispostoProjeto").default(false).notNull(),
+  porqueAgora: text("porqueAgora").notNull(),
+  bolsa: boolean("bolsa").default(false).notNull(),
+  bolsaContexto: text("bolsaContexto"),
+  consent: boolean("consent").default(false).notNull(),
+  status: mysqlEnum("status", ["new", "interview", "approved", "waitlist", "archived"])
+    .default("new")
+    .notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type TrajetoriaCandidatura = typeof trajetoriaCandidatura.$inferSelect;
+export type InsertTrajetoriaCandidatura = typeof trajetoriaCandidatura.$inferInsert;

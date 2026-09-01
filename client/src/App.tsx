@@ -30,6 +30,7 @@ import GiselleLivroComprar from "./pages/giselle/GiselleLivroComprar";
 import GiselleMentoria from "./pages/giselle/GiselleMentoria";
 import GisellePalestras from "./pages/giselle/GisellePalestras";
 import GiselleDiagnosticoIA from "./pages/giselle/GiselleDiagnosticoIA";
+import GiselleTrajetoria from "./pages/giselle/GiselleTrajetoria";
 import GiselleTrilha from "./pages/giselle/GiselleTrilha";
 import GiselleTrilhas from "./pages/giselle/GiselleTrilhas";
 import GiselleTrilhaCarreira from "./pages/giselle/GiselleTrilhaCarreira";
@@ -84,6 +85,8 @@ const CANONICAL_ALIASES: Record<string, string> = {
   "/trilhas": "/giselle/trilhas",
   "/trilhas/": "/giselle/trilhas",
   "/mentoria": "/giselle/mentoria",
+  "/trajetoria": "/giselle/mentoria/trajetoria",
+  "/trajetoria/": "/giselle/mentoria/trajetoria",
   "/palestras": "/giselle/palestras",
   "/giselle/diagnostico-ia": "/diagnostico-ia",
   "/giselle/interesse": "/interesse",
@@ -92,6 +95,13 @@ const CANONICAL_ALIASES: Record<string, string> = {
 
 function RouteSeo() {
   const [location] = useLocation();
+
+  useEffect(() => {
+    // Navegação SPA deve se comportar como troca de página: volta ao topo.
+    // Âncoras same-page (#candidatura etc.) não alteram o pathname do wouter,
+    // então não passam por aqui e continuam funcionando.
+    window.scrollTo(0, 0);
+  }, [location]);
 
   useEffect(() => {
     // Host canônico único: evita conteúdo duplicado entre www e subdomínios.
@@ -233,6 +243,16 @@ function RouteSeo() {
         "Em 3 minutos, descubra o estágio da sua empresa em Dados, Tecnologia, Pessoas, Processos e Estratégia de IA — com resultado na hora e recomendações práticas.";
       keywords =
         "maturidade em IA, diagnóstico de IA, assessment inteligência artificial, maturidade de dados empresa, teste gratuito IA";
+    } else if (
+      location === "/trajetoria" ||
+      location === "/trajetoria/" ||
+      location === "/giselle/mentoria/trajetoria"
+    ) {
+      title = "Mentoria Trajetória em Dados & IA — Turma Fundadora | Giselle Falcão";
+      description =
+        "Mentoria prática de 4 semanas para iniciar, migrar ou reposicionar sua carreira em Dados e IA aproveitando a experiência que você já tem: direção, caso prático para portfólio e plano de 90 dias. 12 vagas + bolsas para mulheres.";
+      keywords =
+        "mentoria dados e IA, mentoria carreira em dados, transição de carreira tecnologia, turma fundadora, mentoria trajetória, projeto para portfólio dados, Giselle Falcão";
     } else if (location === "/mentoria" || location === "/giselle/mentoria") {
       title = "Impulso Dela IA — Mentoria para Mulheres em Dados e IA | Giselle Falcão";
       description =
@@ -739,6 +759,8 @@ function Router() {
         <Route path="/livro" component={GiselleLivroComprar} />
         <Route path="/mentoria" component={GiselleMentoria} />
         <Route path="/giselle/mentoria" component={GiselleMentoria} />
+        <Route path="/trajetoria" component={GiselleTrajetoria} />
+        <Route path="/giselle/mentoria/trajetoria" component={GiselleTrajetoria} />
         <Route path="/palestras" component={GisellePalestras} />
         <Route path="/giselle/palestras" component={GisellePalestras} />
         <Route path="/diagnostico-ia" component={GiselleDiagnosticoIA} />

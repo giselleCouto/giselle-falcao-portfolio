@@ -9,8 +9,10 @@ import {
   createCourseInterest,
   createLeadContact,
   createMentoriaDiagnostico,
+  createTrajetoriaCandidatura,
   listAiMaturity,
   listMentoriaDiagnostico,
+  listTrajetoriaCandidatura,
   getCourseAccessForUser,
   getUserById,
   listAcademyStudents,
@@ -171,6 +173,31 @@ const mentoriaInputSchema = z.object({
   whyNow: z.string().trim().min(5).max(2000),
   consent: z.boolean().refine((value) => value === true, {
     message: "É preciso autorizar o contato para enviar o diagnóstico.",
+  }),
+});
+
+const trajetoriaInputSchema = z.object({
+  name: z.string().trim().min(2).max(160),
+  email: z.string().trim().email().max(320),
+  whatsapp: z.string().trim().min(8).max(40),
+  linkedin: z.string().trim().max(320).optional().or(z.literal("")),
+  areaAtual: z.string().trim().min(2).max(120),
+  formacao: z.string().trim().min(2).max(160),
+  porque: z.string().trim().min(10).max(2000),
+  funcaoInteresse: z.string().trim().min(1).max(120),
+  jaEstudou: z.string().trim().min(2).max(2000),
+  maiorDificuldade: z.string().trim().min(5).max(2000),
+  horasSemana: z.string().trim().min(1).max(40),
+  expectativa: z.string().trim().min(5).max(2000),
+  disponibilidade: z.string().trim().min(1).max(60),
+  dispostoProjeto: z.boolean().refine((value) => value === true, {
+    message: "A mentoria é prática: é preciso estar disposto(a) a desenvolver um projeto.",
+  }),
+  porqueAgora: z.string().trim().min(5).max(2000),
+  bolsa: z.boolean(),
+  bolsaContexto: z.string().trim().max(2000).optional().or(z.literal("")),
+  consent: z.boolean().refine((value) => value === true, {
+    message: "É preciso autorizar o contato para enviar a candidatura.",
   }),
 });
 
@@ -350,6 +377,33 @@ export const appRouter = router({
     }),
     mentorias: adminProcedure.query(async () => {
       return listMentoriaDiagnostico();
+    }),
+    trajetoria: publicProcedure.input(trajetoriaInputSchema).mutation(async ({ input }) => {
+      await createTrajetoriaCandidatura({
+        name: input.name,
+        email: input.email.toLowerCase(),
+        whatsapp: input.whatsapp,
+        linkedin: input.linkedin?.trim() || null,
+        areaAtual: input.areaAtual,
+        formacao: input.formacao,
+        porque: input.porque,
+        funcaoInteresse: input.funcaoInteresse,
+        jaEstudou: input.jaEstudou,
+        maiorDificuldade: input.maiorDificuldade,
+        horasSemana: input.horasSemana,
+        expectativa: input.expectativa,
+        disponibilidade: input.disponibilidade,
+        dispostoProjeto: input.dispostoProjeto,
+        porqueAgora: input.porqueAgora,
+        bolsa: input.bolsa,
+        bolsaContexto: input.bolsa ? input.bolsaContexto?.trim() || null : null,
+        consent: input.consent,
+      });
+
+      return { success: true } as const;
+    }),
+    trajetorias: adminProcedure.query(async () => {
+      return listTrajetoriaCandidatura();
     }),
     maturidade: publicProcedure.input(maturityInputSchema).mutation(async ({ input }) => {
       const total =

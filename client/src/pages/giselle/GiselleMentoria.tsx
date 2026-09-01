@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { Link } from "wouter";
 import {
   ArrowRight,
   CheckCircle2,
@@ -159,6 +160,35 @@ export default function GiselleMentoria() {
             />
           </motion.div>
         </div>
+      </section>
+
+      {/* Turma Fundadora — Mentoria Trajetória em Dados & IA */}
+      <section className="container pb-4">
+        <Link
+          href="/giselle/mentoria/trajetoria"
+          className="group relative block overflow-hidden rounded-[2rem] bg-[#0d1226] transition hover:-translate-y-0.5"
+        >
+          <div className="absolute inset-0 bg-[linear-gradient(110deg,rgba(198,90,58,0.5),rgba(13,18,38,0.9)_55%)]" />
+          <div className="relative flex flex-col gap-4 px-7 py-8 sm:flex-row sm:items-center sm:justify-between sm:px-9">
+            <div>
+              <p className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3.5 py-1 text-xs font-bold uppercase tracking-[0.2em] text-orange-200 backdrop-blur">
+                <Sparkles className="size-3.5" />
+                Inscrições abertas · Turma Fundadora
+              </p>
+              <p className="mt-3 font-baloo text-2xl font-bold text-white">
+                Mentoria Trajetória em Dados & IA — 4 semanas, aberta a todos
+              </p>
+              <p className="mt-1.5 max-w-xl text-sm leading-6 text-slate-300">
+                Direção de carreira, um caso prático para o portfólio e um plano de 90 dias. 12 vagas,
+                com bolsas para mulheres em vulnerabilidade econômica.
+              </p>
+            </div>
+            <span className="inline-flex shrink-0 items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-bold text-[#1a1333] transition group-hover:bg-orange-100">
+              Candidatar-se
+              <ArrowRight className="size-4" />
+            </span>
+          </div>
+        </Link>
       </section>
 
       {/* Identificação */}

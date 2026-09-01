@@ -16,8 +16,10 @@ import {
   InsertCourseLessonProgress,
   InsertCourseProgress,
   InsertLeadContact,
+  InsertTrajetoriaCandidatura,
   InsertUser,
   leadContacts,
+  trajetoriaCandidatura,
   users,
 } from "../drizzle/schema";
 import { ENV } from "./_core/env";
@@ -238,6 +240,26 @@ export async function listMentoriaDiagnostico() {
   }
 
   return db.select().from(mentoriaDiagnostico).orderBy(desc(mentoriaDiagnostico.createdAt));
+}
+
+export async function createTrajetoriaCandidatura(input: InsertTrajetoriaCandidatura) {
+  const db = await getDb();
+  if (!db) {
+    throw new Error("Database not available for trajetoria application");
+  }
+
+  await db.insert(trajetoriaCandidatura).values(input);
+  return { ...input };
+}
+
+export async function listTrajetoriaCandidatura() {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot list trajetoria applications: database not available");
+    return [];
+  }
+
+  return db.select().from(trajetoriaCandidatura).orderBy(desc(trajetoriaCandidatura.createdAt));
 }
 
 export async function listAcademyStudents() {

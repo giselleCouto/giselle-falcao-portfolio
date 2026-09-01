@@ -71,6 +71,13 @@
       "when": 1787720906428,
       "tag": "0009_faithful_bill_hollister",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "5",
+      "when": 1788282738204,
+      "tag": "0010_brief_komodo",
+      "breakpoints": true
     }
   ]
 }
