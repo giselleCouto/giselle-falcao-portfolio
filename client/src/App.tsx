@@ -82,6 +82,7 @@ function removeJsonLd(id: string) {
 // sitemap, evitando conteúdo duplicado aos olhos dos buscadores.
 const CANONICAL_ALIASES: Record<string, string> = {
   "/trilhas": "/giselle/trilhas",
+  "/trilhas/": "/giselle/trilhas",
   "/mentoria": "/giselle/mentoria",
   "/palestras": "/giselle/palestras",
   "/giselle/diagnostico-ia": "/diagnostico-ia",
@@ -196,7 +197,7 @@ function RouteSeo() {
       description =
         "Fale com a Dra. Giselle Falcão: WhatsApp, e-mail ou agende uma reunião online de 30 minutos sobre consultoria, cursos, palestras e workshops.";
       keywords = "contato Giselle Falcão, agendar consultoria IA, palestra inteligência artificial, workshop dados";
-    } else if (location === "/trilhas" || location === "/giselle/trilhas") {
+    } else if (location === "/trilhas" || location === "/trilhas/" || location === "/giselle/trilhas") {
       title = "Trilhas de Carreira em Dados e IA — do Zero ao Arquiteto | Giselle Falcão";
       description =
         "Três degraus, um caminho: Trilha Analista de Dados (do zero, 98h), Trilha Cientista de Dados (96h) e a formação Arquiteto de Soluções, Dados & IA (480h). Comece grátis, na ordem certa.";
