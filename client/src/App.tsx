@@ -30,6 +30,7 @@ import GiselleLivroComprar from "./pages/giselle/GiselleLivroComprar";
 import GiselleMentoria from "./pages/giselle/GiselleMentoria";
 import GisellePalestras from "./pages/giselle/GisellePalestras";
 import GiselleDiagnosticoIA from "./pages/giselle/GiselleDiagnosticoIA";
+import GiselleLab from "./pages/giselle/GiselleLab";
 import GiselleTrajetoria from "./pages/giselle/GiselleTrajetoria";
 import GiselleTrilha from "./pages/giselle/GiselleTrilha";
 import GiselleTrilhas from "./pages/giselle/GiselleTrilhas";
@@ -87,6 +88,9 @@ const CANONICAL_ALIASES: Record<string, string> = {
   "/mentoria": "/giselle/mentoria",
   "/trajetoria": "/giselle/mentoria/trajetoria",
   "/trajetoria/": "/giselle/mentoria/trajetoria",
+  "/lab": "/giselle/lab",
+  "/lab/": "/giselle/lab",
+  "/giselle/lab/": "/giselle/lab",
   "/palestras": "/giselle/palestras",
   "/giselle/diagnostico-ia": "/diagnostico-ia",
   "/giselle/interesse": "/interesse",
@@ -243,6 +247,17 @@ function RouteSeo() {
         "Em 3 minutos, descubra o estágio da sua empresa em Dados, Tecnologia, Pessoas, Processos e Estratégia de IA — com resultado na hora e recomendações práticas.";
       keywords =
         "maturidade em IA, diagnóstico de IA, assessment inteligência artificial, maturidade de dados empresa, teste gratuito IA";
+    } else if (
+      location === "/lab" ||
+      location === "/lab/" ||
+      location === "/giselle/lab" ||
+      location === "/giselle/lab/"
+    ) {
+      title = "Laboratório da Decisão — Da Dor à Produção | Giselle Falcão";
+      description =
+        "Três ferramentas de 5 minutos para destravar sua trajetória em Dados e IA ou o projeto parado da sua empresa: diagnóstico de prontidão, checklist anti agent-washing e roteiro de 30 dias. Resultado na hora, no celular.";
+      keywords =
+        "laboratório da decisão, diagnóstico IA, projeto de IA parado, agent washing, checklist agente de IA, roteiro 30 dias IA, prontidão em dados, Giselle Falcão";
     } else if (
       location === "/trajetoria" ||
       location === "/trajetoria/" ||
@@ -759,6 +774,8 @@ function Router() {
         <Route path="/livro" component={GiselleLivroComprar} />
         <Route path="/mentoria" component={GiselleMentoria} />
         <Route path="/giselle/mentoria" component={GiselleMentoria} />
+        <Route path="/lab" component={GiselleLab} />
+        <Route path="/giselle/lab" component={GiselleLab} />
         <Route path="/trajetoria" component={GiselleTrajetoria} />
         <Route path="/giselle/mentoria/trajetoria" component={GiselleTrajetoria} />
         <Route path="/palestras" component={GisellePalestras} />
