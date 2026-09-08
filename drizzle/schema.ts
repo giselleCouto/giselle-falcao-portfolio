@@ -223,6 +223,10 @@ export const aiMaturity = mysqlTable("ai_maturity", {
   level: varchar("level", { length: 40 }).notNull(),
   answers: text("answers"),
   consent: boolean("consent").default(false).notNull(),
+  /** Canal de origem do lead (ex.: "linkedin", "palestra", "website"). */
+  source: varchar("source", { length: 120 }),
+  /** Campanha dentro do canal (ex.: "guia", "mediakit"), lida do parâmetro ?c= */
+  campaign: varchar("campaign", { length: 120 }),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
 });
 
@@ -263,3 +267,20 @@ export const trajetoriaCandidatura = mysqlTable("trajetoria_candidatura", {
 
 export type TrajetoriaCandidatura = typeof trajetoriaCandidatura.$inferSelect;
 export type InsertTrajetoriaCandidatura = typeof trajetoriaCandidatura.$inferInsert;
+
+/**
+ * Rastreamento anônimo de acessos — responde "o QR da palestra X foi usado?".
+ * Sem dado pessoal (LGPD): apenas caminho, origem (?src= do QR / host de
+ * referência) e data. Deduplicado por sessão no cliente.
+ */
+export const pageVisits = mysqlTable("page_visits", {
+  id: int("id").autoincrement().primaryKey(),
+  path: varchar("path", { length: 255 }).notNull(),
+  source: varchar("source", { length: 120 }),
+  campaign: varchar("campaign", { length: 120 }),
+  referrer: varchar("referrer", { length: 255 }),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type PageVisit = typeof pageVisits.$inferSelect;
+export type InsertPageVisit = typeof pageVisits.$inferInsert;

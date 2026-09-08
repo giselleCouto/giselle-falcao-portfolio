@@ -9,9 +9,11 @@ import {
   createCourseInterest,
   createLeadContact,
   createMentoriaDiagnostico,
+  createPageVisit,
   createTrajetoriaCandidatura,
   listAiMaturity,
   listMentoriaDiagnostico,
+  listPageVisits,
   listTrajetoriaCandidatura,
   getCourseAccessForUser,
   getUserById,
@@ -148,6 +150,8 @@ const maturityInputSchema = z.object({
   consent: z.boolean().refine((value) => value === true, {
     message: "É preciso autorizar o contato para receber o diagnóstico.",
   }),
+  source: z.string().trim().max(120).optional().or(z.literal("")),
+  campaign: z.string().trim().max(120).optional().or(z.literal("")),
 });
 
 const mentoriaInputSchema = z.object({
@@ -199,6 +203,18 @@ const trajetoriaInputSchema = z.object({
   consent: z.boolean().refine((value) => value === true, {
     message: "É preciso autorizar o contato para enviar a candidatura.",
   }),
+});
+
+const visitaInputSchema = z.object({
+  path: z
+    .string()
+    .trim()
+    .min(1)
+    .max(255)
+    .regex(/^\/[^\s]*$/, { message: "path deve ter formato de rota" }),
+  source: z.string().trim().max(120).optional().or(z.literal("")),
+  campaign: z.string().trim().max(120).optional().or(z.literal("")),
+  referrer: z.string().trim().max(255).optional().or(z.literal("")),
 });
 
 const progressInputSchema = z.object({
@@ -405,6 +421,19 @@ export const appRouter = router({
     trajetorias: adminProcedure.query(async () => {
       return listTrajetoriaCandidatura();
     }),
+    visita: publicProcedure.input(visitaInputSchema).mutation(async ({ input }) => {
+      await createPageVisit({
+        path: input.path,
+        source: input.source?.trim() || null,
+        campaign: input.campaign?.trim() || null,
+        referrer: input.referrer?.trim() || null,
+      });
+
+      return { success: true } as const;
+    }),
+    visitas: adminProcedure.query(async () => {
+      return listPageVisits();
+    }),
     maturidade: publicProcedure.input(maturityInputSchema).mutation(async ({ input }) => {
       const total =
         input.scores.dados +
@@ -428,6 +457,8 @@ export const appRouter = router({
         level: input.level,
         answers: JSON.stringify(input.answers),
         consent: input.consent,
+        source: input.source?.trim() || "website",
+        campaign: input.campaign?.trim() || null,
       });
 
       return { success: true, totalScore: total } as const;

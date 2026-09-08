@@ -30,6 +30,7 @@ import GiselleLivroComprar from "./pages/giselle/GiselleLivroComprar";
 import GiselleMentoria from "./pages/giselle/GiselleMentoria";
 import GisellePalestras from "./pages/giselle/GisellePalestras";
 import GiselleDiagnosticoIA from "./pages/giselle/GiselleDiagnosticoIA";
+import GiselleBio from "./pages/giselle/GiselleBio";
 import GiselleLab from "./pages/giselle/GiselleLab";
 import GiselleTrajetoria from "./pages/giselle/GiselleTrajetoria";
 import GiselleTrilha from "./pages/giselle/GiselleTrilha";
@@ -93,9 +94,63 @@ const CANONICAL_ALIASES: Record<string, string> = {
   "/giselle/lab/": "/giselle/lab",
   "/palestras": "/giselle/palestras",
   "/giselle/diagnostico-ia": "/diagnostico-ia",
+  "/linkedin": "/diagnostico-ia",
+  "/linkedin/": "/diagnostico-ia",
   "/giselle/interesse": "/interesse",
   "/giselle/trilhas/arquiteto-dados-ia": "/giselle/trilha",
 };
+
+// Rastreamento anônimo de acessos (LGPD-safe: sem IP, sem identificador de
+// pessoa). Lê ?src= (canal — ex.: QR de um evento) e ?c= (campanha) na chegada
+// e mantém a atribuição na sessão; deduplica cada rota por sessão para não
+// contar recarregamentos. Best-effort: falha em silêncio.
+// Rotas que SÃO um canal (porta de divulgação): a visita herda a origem mesmo
+// sem ?src= — espelha a prop source passada às rotas no Router.
+const ROUTE_CHANNELS: Record<string, string> = {
+  "/linkedin": "linkedin",
+  "/linkedin/": "linkedin",
+  "/bio": "instagram",
+  "/bio/": "instagram",
+};
+
+function trackVisit(path: string) {
+  try {
+    const params = new URLSearchParams(window.location.search);
+    const clean = (v: string | null, max: number) => v?.trim().slice(0, max) || undefined;
+    const srcParam = clean(params.get("src"), 120);
+    const cParam = clean(params.get("c"), 120);
+    if (srcParam) sessionStorage.setItem("trk-src", srcParam);
+    if (cParam) sessionStorage.setItem("trk-c", cParam);
+    const source =
+      srcParam ?? ROUTE_CHANNELS[path] ?? sessionStorage.getItem("trk-src") ?? undefined;
+    const campaign = cParam ?? sessionStorage.getItem("trk-c") ?? undefined;
+
+    // Só o host de onde a pessoa veio (nunca a URL completa), e só se externo.
+    // Guard próprio: um referrer malformado não pode custar a contagem.
+    let referrer: string | undefined;
+    try {
+      if (document.referrer) {
+        const refHost = new URL(document.referrer).host;
+        if (refHost && refHost !== window.location.host) referrer = refHost.slice(0, 255);
+      }
+    } catch {
+      referrer = undefined;
+    }
+
+    const dedupeKey = `trk-v:${path}`;
+    if (sessionStorage.getItem(dedupeKey)) return;
+    sessionStorage.setItem(dedupeKey, "1");
+
+    void fetch("/api/trpc/academy.visita", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ json: { path, source, campaign, referrer } }),
+      keepalive: true,
+    }).catch(() => {});
+  } catch {
+    /* sessionStorage indisponível (modo anônimo estrito) — segue sem medir */
+  }
+}
 
 function RouteSeo() {
   const [location] = useLocation();
@@ -105,6 +160,7 @@ function RouteSeo() {
     // Âncoras same-page (#candidatura etc.) não alteram o pathname do wouter,
     // então não passam por aqui e continuam funcionando.
     window.scrollTo(0, 0);
+    trackVisit(location || "/");
   }, [location]);
 
   useEffect(() => {
@@ -241,12 +297,22 @@ function RouteSeo() {
         "Palestras, workshops hands-on e programas corporativos com a Dra. Giselle Falcão: casos reais do agro, indústria e educação, do DATA BH ao Minas Summit. Proposta sob consulta.";
       keywords =
         "palestrante inteligência artificial, palestra dados e IA, workshop IA empresas, formação corporativa dados, keynote IA Brasil, Giselle Falcão";
-    } else if (location === "/diagnostico-ia" || location === "/giselle/diagnostico-ia") {
+    } else if (
+      location === "/diagnostico-ia" ||
+      location === "/giselle/diagnostico-ia" ||
+      location === "/linkedin" ||
+      location === "/linkedin/"
+    ) {
       title = "Diagnóstico de Maturidade em IA — Teste Gratuito | Giselle Falcão";
       description =
         "Em 3 minutos, descubra o estágio da sua empresa em Dados, Tecnologia, Pessoas, Processos e Estratégia de IA — com resultado na hora e recomendações práticas.";
       keywords =
         "maturidade em IA, diagnóstico de IA, assessment inteligência artificial, maturidade de dados empresa, teste gratuito IA";
+    } else if (location === "/bio" || location === "/bio/") {
+      title = "Giselle Falcão — Links";
+      description =
+        "Mentoria, diagnóstico, cursos gratuitos, trilhas de carreira, livro e palestras da Dra. Giselle Falcão — todos os caminhos em um só lugar.";
+      keywords = "Giselle Falcão, links, mentoria dados e IA, cursos gratuitos, diagnóstico IA";
     } else if (
       location === "/lab" ||
       location === "/lab/" ||
@@ -774,14 +840,18 @@ function Router() {
         <Route path="/livro" component={GiselleLivroComprar} />
         <Route path="/mentoria" component={GiselleMentoria} />
         <Route path="/giselle/mentoria" component={GiselleMentoria} />
+        <Route path="/bio" component={GiselleBio} />
         <Route path="/lab" component={GiselleLab} />
         <Route path="/giselle/lab" component={GiselleLab} />
         <Route path="/trajetoria" component={GiselleTrajetoria} />
         <Route path="/giselle/mentoria/trajetoria" component={GiselleTrajetoria} />
         <Route path="/palestras" component={GisellePalestras} />
         <Route path="/giselle/palestras" component={GisellePalestras} />
-        <Route path="/diagnostico-ia" component={GiselleDiagnosticoIA} />
-        <Route path="/giselle/diagnostico-ia" component={GiselleDiagnosticoIA} />
+        <Route path="/diagnostico-ia">{() => <GiselleDiagnosticoIA />}</Route>
+        <Route path="/giselle/diagnostico-ia">{() => <GiselleDiagnosticoIA />}</Route>
+        {/* Porta de entrada do LinkedIn (B2B): mesmo diagnóstico, lead marcado com source="linkedin" */}
+        <Route path="/linkedin">{() => <GiselleDiagnosticoIA source="linkedin" />}</Route>
+        <Route path="/linkedin/">{() => <GiselleDiagnosticoIA source="linkedin" />}</Route>
         <Route path="/palestra">
           {() => (
             <GiselleInteresse

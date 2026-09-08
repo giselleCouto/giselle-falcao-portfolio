@@ -41,7 +41,35 @@ const inputClass =
 
 type Stage = "intro" | "quiz" | "result";
 
-export default function GiselleDiagnosticoIA() {
+type Props = {
+  /** Canal de origem do lead (ex.: "linkedin"). Rotas de campanha passam este valor. */
+  source?: string;
+};
+
+/**
+ * Origem/campanha do lead. Precedência: prop da rota (a rota É o canal, ex.
+ * /linkedin) > ?src=/?c= da URL > atribuição sticky da sessão (gravada pelo
+ * rastreamento de visitas em trk-src/trk-c quando a pessoa chegou com ?src=
+ * em outra página e navegou internamente até o quiz).
+ */
+function readTracking(routeSource?: string) {
+  if (typeof window === "undefined") return { source: routeSource, campaign: undefined };
+  const params = new URLSearchParams(window.location.search);
+  const sticky = (key: string) => {
+    try {
+      return sessionStorage.getItem(key) ?? undefined;
+    } catch {
+      return undefined;
+    }
+  };
+  const campaign = params.get("c")?.trim().slice(0, 120) || sticky("trk-c") || undefined;
+  const source =
+    routeSource || params.get("src")?.trim().slice(0, 120) || sticky("trk-src") || undefined;
+  return { source, campaign };
+}
+
+export default function GiselleDiagnosticoIA({ source }: Props = {}) {
+  const [tracking] = useState(() => readTracking(source));
   const [stage, setStage] = useState<Stage>("intro");
   const [contactForm, setContactForm] = useState({
     name: "",
@@ -106,6 +134,8 @@ export default function GiselleDiagnosticoIA() {
       level: levelForScore(t).nome,
       answers: next,
       consent: true,
+      source: tracking.source,
+      campaign: tracking.campaign,
     });
   };
 

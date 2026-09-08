@@ -16,9 +16,11 @@ import {
   InsertCourseLessonProgress,
   InsertCourseProgress,
   InsertLeadContact,
+  InsertPageVisit,
   InsertTrajetoriaCandidatura,
   InsertUser,
   leadContacts,
+  pageVisits,
   trajetoriaCandidatura,
   users,
 } from "../drizzle/schema";
@@ -260,6 +262,34 @@ export async function listTrajetoriaCandidatura() {
   }
 
   return db.select().from(trajetoriaCandidatura).orderBy(desc(trajetoriaCandidatura.createdAt));
+}
+
+export async function createPageVisit(input: InsertPageVisit) {
+  const db = await getDb();
+  if (!db) {
+    // Métrica é best-effort: nunca derrubar a navegação por falta de banco.
+    console.warn("[Database] Cannot record page visit: database not available");
+    return null;
+  }
+
+  try {
+    await db.insert(pageVisits).values(input);
+    return { ...input };
+  } catch (error) {
+    console.warn("[Database] Failed to record page visit", error);
+    return null;
+  }
+}
+
+export async function listPageVisits() {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot list page visits: database not available");
+    return [];
+  }
+
+  // id (PK) tem a mesma ordem cronológica e usa índice — createdAt não tem.
+  return db.select().from(pageVisits).orderBy(desc(pageVisits.id)).limit(2000);
 }
 
 export async function listAcademyStudents() {
