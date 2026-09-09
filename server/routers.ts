@@ -10,10 +10,12 @@ import {
   createLeadContact,
   createMentoriaDiagnostico,
   createPageVisit,
+  createPalestraPedido,
   createTrajetoriaCandidatura,
   listAiMaturity,
   listMentoriaDiagnostico,
   listPageVisits,
+  listPalestraPedidos,
   listTrajetoriaCandidatura,
   getCourseAccessForUser,
   getUserById,
@@ -178,6 +180,8 @@ const mentoriaInputSchema = z.object({
   consent: z.boolean().refine((value) => value === true, {
     message: "É preciso autorizar o contato para enviar o diagnóstico.",
   }),
+  source: z.string().trim().max(120).optional().or(z.literal("")),
+  campaign: z.string().trim().max(120).optional().or(z.literal("")),
 });
 
 const trajetoriaInputSchema = z.object({
@@ -203,6 +207,25 @@ const trajetoriaInputSchema = z.object({
   consent: z.boolean().refine((value) => value === true, {
     message: "É preciso autorizar o contato para enviar a candidatura.",
   }),
+  source: z.string().trim().max(120).optional().or(z.literal("")),
+  campaign: z.string().trim().max(120).optional().or(z.literal("")),
+});
+
+const palestraPedidoInputSchema = z.object({
+  name: z.string().trim().min(2).max(160),
+  email: z.string().trim().email().max(320),
+  whatsapp: z.string().trim().max(40).optional().or(z.literal("")),
+  empresa: z.string().trim().min(2).max(200),
+  tipo: z.string().trim().min(1).max(60),
+  evento: z.string().trim().max(200).optional().or(z.literal("")),
+  dataDesejada: z.string().trim().max(60).optional().or(z.literal("")),
+  publico: z.string().trim().max(200).optional().or(z.literal("")),
+  mensagem: z.string().trim().min(10).max(4000),
+  consent: z.boolean().refine((value) => value === true, {
+    message: "É preciso autorizar o contato para enviar o pedido.",
+  }),
+  source: z.string().trim().max(120).optional().or(z.literal("")),
+  campaign: z.string().trim().max(120).optional().or(z.literal("")),
 });
 
 const visitaInputSchema = z.object({
@@ -387,12 +410,35 @@ export const appRouter = router({
         investmentRange: input.investmentRange,
         whyNow: input.whyNow,
         consent: input.consent,
+        source: input.source?.trim() || null,
+        campaign: input.campaign?.trim() || null,
       });
 
       return { success: true } as const;
     }),
     mentorias: adminProcedure.query(async () => {
       return listMentoriaDiagnostico();
+    }),
+    palestraPedido: publicProcedure.input(palestraPedidoInputSchema).mutation(async ({ input }) => {
+      await createPalestraPedido({
+        name: input.name,
+        email: input.email.toLowerCase(),
+        whatsapp: input.whatsapp?.trim() || null,
+        empresa: input.empresa,
+        tipo: input.tipo,
+        evento: input.evento?.trim() || null,
+        dataDesejada: input.dataDesejada?.trim() || null,
+        publico: input.publico?.trim() || null,
+        mensagem: input.mensagem,
+        consent: input.consent,
+        source: input.source?.trim() || null,
+        campaign: input.campaign?.trim() || null,
+      });
+
+      return { success: true } as const;
+    }),
+    palestraPedidos: adminProcedure.query(async () => {
+      return listPalestraPedidos();
     }),
     trajetoria: publicProcedure.input(trajetoriaInputSchema).mutation(async ({ input }) => {
       await createTrajetoriaCandidatura({
@@ -414,6 +460,8 @@ export const appRouter = router({
         bolsa: input.bolsa,
         bolsaContexto: input.bolsa ? input.bolsaContexto?.trim() || null : null,
         consent: input.consent,
+        source: input.source?.trim() || null,
+        campaign: input.campaign?.trim() || null,
       });
 
       return { success: true } as const;

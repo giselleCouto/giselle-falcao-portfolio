@@ -195,6 +195,8 @@ export const mentoriaDiagnostico = mysqlTable("mentoria_diagnostico", {
   investmentRange: varchar("investmentRange", { length: 60 }).notNull(),
   whyNow: text("whyNow").notNull(),
   consent: boolean("consent").default(false).notNull(),
+  source: varchar("source", { length: 120 }),
+  campaign: varchar("campaign", { length: 120 }),
   status: mysqlEnum("status", ["new", "reviewed", "invited", "archived"]).default("new").notNull(),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
 });
@@ -259,6 +261,8 @@ export const trajetoriaCandidatura = mysqlTable("trajetoria_candidatura", {
   bolsa: boolean("bolsa").default(false).notNull(),
   bolsaContexto: text("bolsaContexto"),
   consent: boolean("consent").default(false).notNull(),
+  source: varchar("source", { length: 120 }),
+  campaign: varchar("campaign", { length: 120 }),
   status: mysqlEnum("status", ["new", "interview", "approved", "waitlist", "archived"])
     .default("new")
     .notNull(),
@@ -284,3 +288,30 @@ export const pageVisits = mysqlTable("page_visits", {
 
 export type PageVisit = typeof pageVisits.$inferSelect;
 export type InsertPageVisit = typeof pageVisits.$inferInsert;
+
+/**
+ * Pedidos de proposta de palestra/workshop/programa corporativo — briefing
+ * estruturado com origem da conversa, em vez de WhatsApp genérico.
+ */
+export const palestraPedidos = mysqlTable("palestra_pedidos", {
+  id: int("id").autoincrement().primaryKey(),
+  name: varchar("name", { length: 160 }).notNull(),
+  email: varchar("email", { length: 320 }).notNull(),
+  whatsapp: varchar("whatsapp", { length: 40 }),
+  empresa: varchar("empresa", { length: 200 }).notNull(),
+  tipo: varchar("tipo", { length: 60 }).notNull(),
+  evento: varchar("evento", { length: 200 }),
+  dataDesejada: varchar("dataDesejada", { length: 60 }),
+  publico: varchar("publico", { length: 200 }),
+  mensagem: text("mensagem").notNull(),
+  source: varchar("source", { length: 120 }),
+  campaign: varchar("campaign", { length: 120 }),
+  consent: boolean("consent").default(false).notNull(),
+  status: mysqlEnum("status", ["new", "replied", "proposal", "closed", "archived"])
+    .default("new")
+    .notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type PalestraPedido = typeof palestraPedidos.$inferSelect;
+export type InsertPalestraPedido = typeof palestraPedidos.$inferInsert;

@@ -31,11 +31,13 @@ import GiselleMentoria from "./pages/giselle/GiselleMentoria";
 import GisellePalestras from "./pages/giselle/GisellePalestras";
 import GiselleDiagnosticoIA from "./pages/giselle/GiselleDiagnosticoIA";
 import GiselleBio from "./pages/giselle/GiselleBio";
+import GisellePrivacidade from "./pages/giselle/GisellePrivacidade";
 import GiselleLab from "./pages/giselle/GiselleLab";
 import GiselleTrajetoria from "./pages/giselle/GiselleTrajetoria";
 import GiselleTrilha from "./pages/giselle/GiselleTrilha";
 import GiselleTrilhas from "./pages/giselle/GiselleTrilhas";
 import GiselleTrilhaCarreira from "./pages/giselle/GiselleTrilhaCarreira";
+import { readTrackingParams, stickAttribution } from "./lib/tracking";
 import { trilhasCarreira } from "./lib/trilhasCarreiraData";
 import MinasSummitFaq from "./pages/MinasSummitFaq";
 
@@ -92,6 +94,9 @@ const CANONICAL_ALIASES: Record<string, string> = {
   "/lab": "/giselle/lab",
   "/lab/": "/giselle/lab",
   "/giselle/lab/": "/giselle/lab",
+  "/privacidade/": "/privacidade",
+  "/politica-de-privacidade": "/privacidade",
+  "/politica-de-privacidade/": "/privacidade",
   "/palestras": "/giselle/palestras",
   "/giselle/diagnostico-ia": "/diagnostico-ia",
   "/linkedin": "/diagnostico-ia",
@@ -115,12 +120,8 @@ const ROUTE_CHANNELS: Record<string, string> = {
 
 function trackVisit(path: string) {
   try {
-    const params = new URLSearchParams(window.location.search);
-    const clean = (v: string | null, max: number) => v?.trim().slice(0, max) || undefined;
-    const srcParam = clean(params.get("src"), 120);
-    const cParam = clean(params.get("c"), 120);
-    if (srcParam) sessionStorage.setItem("trk-src", srcParam);
-    if (cParam) sessionStorage.setItem("trk-c", cParam);
+    const { srcParam, cParam } = readTrackingParams();
+    stickAttribution(srcParam, cParam);
     const source =
       srcParam ?? ROUTE_CHANNELS[path] ?? sessionStorage.getItem("trk-src") ?? undefined;
     const campaign = cParam ?? sessionStorage.getItem("trk-c") ?? undefined;
@@ -308,6 +309,16 @@ function RouteSeo() {
         "Em 3 minutos, descubra o estágio da sua empresa em Dados, Tecnologia, Pessoas, Processos e Estratégia de IA — com resultado na hora e recomendações práticas.";
       keywords =
         "maturidade em IA, diagnóstico de IA, assessment inteligência artificial, maturidade de dados empresa, teste gratuito IA";
+    } else if (
+      location === "/privacidade" ||
+      location === "/privacidade/" ||
+      location === "/politica-de-privacidade" ||
+      location === "/politica-de-privacidade/"
+    ) {
+      title = "Política de Privacidade | Giselle Falcão";
+      description =
+        "Como o site de Giselle Falcão coleta, usa e protege seus dados pessoais, em conformidade com a LGPD: formulários com consentimento, métricas anônimas e nenhum compartilhamento comercial.";
+      keywords = "política de privacidade, LGPD, proteção de dados, Giselle Falcão";
     } else if (location === "/bio" || location === "/bio/") {
       title = "Giselle Falcão — Links";
       description =
@@ -841,6 +852,8 @@ function Router() {
         <Route path="/mentoria" component={GiselleMentoria} />
         <Route path="/giselle/mentoria" component={GiselleMentoria} />
         <Route path="/bio" component={GiselleBio} />
+        <Route path="/privacidade" component={GisellePrivacidade} />
+        <Route path="/politica-de-privacidade" component={GisellePrivacidade} />
         <Route path="/lab" component={GiselleLab} />
         <Route path="/giselle/lab" component={GiselleLab} />
         <Route path="/trajetoria" component={GiselleTrajetoria} />

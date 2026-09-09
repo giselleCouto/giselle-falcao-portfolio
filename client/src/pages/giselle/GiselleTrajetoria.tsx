@@ -28,6 +28,7 @@ import {
   trajetoria,
 } from "@/lib/trajetoriaData";
 import { contact } from "@/lib/portfolioData";
+import { getAttribution } from "@/lib/tracking";
 import { trpc } from "@/lib/trpc";
 
 const fadeUp = {
@@ -86,6 +87,7 @@ export default function GiselleTrajetoria() {
       dispostoProjeto,
       bolsa,
       consent,
+      ...getAttribution(),
     });
   };
 

@@ -16,6 +16,7 @@ import { toast } from "sonner";
 import GiselleLayout from "@/components/giselle/GiselleLayout";
 import { mentoria } from "@/lib/mentoriaData";
 import { assets } from "@/lib/portfolioData";
+import { getAttribution } from "@/lib/tracking";
 import { trpc } from "@/lib/trpc";
 
 const fadeUp = {
@@ -120,7 +121,7 @@ export default function GiselleMentoria() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!canSubmit || mentoriaMutation.isPending) return;
-    mentoriaMutation.mutate({ ...form, consent: true });
+    mentoriaMutation.mutate({ ...form, consent: true, ...getAttribution() });
   };
 
   return (

@@ -17,10 +17,12 @@ import {
   InsertCourseProgress,
   InsertLeadContact,
   InsertPageVisit,
+  InsertPalestraPedido,
   InsertTrajetoriaCandidatura,
   InsertUser,
   leadContacts,
   pageVisits,
+  palestraPedidos,
   trajetoriaCandidatura,
   users,
 } from "../drizzle/schema";
@@ -262,6 +264,26 @@ export async function listTrajetoriaCandidatura() {
   }
 
   return db.select().from(trajetoriaCandidatura).orderBy(desc(trajetoriaCandidatura.createdAt));
+}
+
+export async function createPalestraPedido(input: InsertPalestraPedido) {
+  const db = await getDb();
+  if (!db) {
+    throw new Error("Database not available for talk proposal request");
+  }
+
+  await db.insert(palestraPedidos).values(input);
+  return { ...input };
+}
+
+export async function listPalestraPedidos() {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot list talk proposal requests: database not available");
+    return [];
+  }
+
+  return db.select().from(palestraPedidos).orderBy(desc(palestraPedidos.id));
 }
 
 export async function createPageVisit(input: InsertPageVisit) {

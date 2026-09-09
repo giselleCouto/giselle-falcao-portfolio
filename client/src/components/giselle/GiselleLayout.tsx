@@ -113,6 +113,12 @@ export default function GiselleLayout({ children }: { children: ReactNode }) {
             <p className="text-xs text-slate-400">
               © 2026 Giselle Falcão. Todos os direitos reservados.
             </p>
+            <a
+              href="/privacidade"
+              className="text-xs font-semibold text-slate-400 underline-offset-2 hover:text-[#6b21a8] hover:underline"
+            >
+              Política de Privacidade
+            </a>
           </div>
           <nav className="flex flex-wrap items-center justify-center gap-2">
             <a

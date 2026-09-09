@@ -91,6 +91,11 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://www.coutofalcao.com/privacidade</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
     <loc>https://www.coutofalcao.com/giselle/palestras</loc>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "wouter";
 import {
@@ -5,19 +6,159 @@ import {
   BadgeCheck,
   Calendar,
   CheckCircle2,
+  ClipboardList,
   Gauge,
+  Loader2,
   MessageCircle,
   Mic,
   Sparkles,
 } from "lucide-react";
+import { toast } from "sonner";
 import GiselleLayout from "@/components/giselle/GiselleLayout";
 import { palestras } from "@/lib/palestrasData";
 import { contact } from "@/lib/portfolioData";
+import { getAttribution } from "@/lib/tracking";
+import { trpc } from "@/lib/trpc";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
   visible: { opacity: 1, y: 0 },
 };
+
+const inputClass =
+  "w-full rounded-2xl border-2 border-slate-200 bg-white px-4 py-3 text-sm text-[#1a1333] placeholder:text-slate-400 focus:border-[#8b5cf6] focus:outline-none";
+const labelClass = "block text-sm font-bold text-[#1a1333]";
+
+const TIPOS = ["Palestra / Keynote", "Workshop hands-on", "Programa corporativo", "Ainda não sei — quero orientação"];
+
+const FORM_INICIAL = {
+  name: "",
+  email: "",
+  whatsapp: "",
+  empresa: "",
+  tipo: "",
+  evento: "",
+  dataDesejada: "",
+  publico: "",
+  mensagem: "",
+};
+
+function PedidoProposta() {
+  const [form, setForm] = useState(FORM_INICIAL);
+  const [consent, setConsent] = useState(false);
+  const [enviado, setEnviado] = useState(false);
+
+  const mutation = trpc.academy.palestraPedido.useMutation({
+    onSuccess: () => setEnviado(true),
+    onError: (error) => toast.error(error.message || "Não foi possível enviar. Tente novamente."),
+  });
+
+  const set = (campo: keyof typeof FORM_INICIAL) => (valor: string) =>
+    setForm((prev) => ({ ...prev, [campo]: valor }));
+
+  if (enviado) {
+    return (
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="rounded-3xl border-2 border-teal-200 bg-teal-50/40 p-8 text-center"
+      >
+        <CheckCircle2 className="mx-auto size-10 text-teal-600" />
+        <h3 className="mt-4 font-baloo text-2xl font-bold">Pedido recebido!</h3>
+        <p className="mx-auto mt-2 max-w-md text-sm leading-7 text-slate-600">
+          A Giselle analisa o briefing e responde pelo e-mail ou WhatsApp informado. Se preferir
+          adiantar, você também pode{" "}
+          <a href={contact.calendar} target="_blank" rel="noopener noreferrer" className="font-bold text-[#6b21a8] hover:underline">
+            agendar uma conversa direto na agenda
+          </a>
+          .
+        </p>
+      </motion.div>
+    );
+  }
+
+  return (
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        mutation.mutate({ ...form, consent, ...getAttribution() });
+      }}
+      className="space-y-5 rounded-[2rem] border border-slate-200/70 bg-white p-7 shadow-[0_10px_40px_rgba(26,19,51,0.06)] sm:p-9"
+    >
+      <div className="grid gap-5 sm:grid-cols-2">
+        <div>
+          <label className={labelClass} htmlFor="pp-name">Seu nome *</label>
+          <input id="pp-name" required minLength={2} maxLength={160} className={`mt-1.5 ${inputClass}`} value={form.name} onChange={(e) => set("name")(e.target.value)} />
+        </div>
+        <div>
+          <label className={labelClass} htmlFor="pp-email">E-mail *</label>
+          <input id="pp-email" required type="email" maxLength={320} className={`mt-1.5 ${inputClass}`} value={form.email} onChange={(e) => set("email")(e.target.value)} />
+        </div>
+        <div>
+          <label className={labelClass} htmlFor="pp-whatsapp">WhatsApp (opcional)</label>
+          <input id="pp-whatsapp" maxLength={40} className={`mt-1.5 ${inputClass}`} value={form.whatsapp} onChange={(e) => set("whatsapp")(e.target.value)} placeholder="(31) 90000-0000" />
+        </div>
+        <div>
+          <label className={labelClass} htmlFor="pp-empresa">Empresa ou instituição *</label>
+          <input id="pp-empresa" required minLength={2} maxLength={200} className={`mt-1.5 ${inputClass}`} value={form.empresa} onChange={(e) => set("empresa")(e.target.value)} />
+        </div>
+        <div>
+          <label className={labelClass} htmlFor="pp-tipo">Formato desejado *</label>
+          <select id="pp-tipo" required className={`mt-1.5 ${inputClass}`} value={form.tipo} onChange={(e) => set("tipo")(e.target.value)}>
+            <option value="">Selecione...</option>
+            {TIPOS.map((t) => (
+              <option key={t} value={t}>{t}</option>
+            ))}
+          </select>
+        </div>
+        <div>
+          <label className={labelClass} htmlFor="pp-data">Data ou período desejado</label>
+          <input id="pp-data" maxLength={60} className={`mt-1.5 ${inputClass}`} value={form.dataDesejada} onChange={(e) => set("dataDesejada")(e.target.value)} placeholder="Ex.: outubro/2026" />
+        </div>
+        <div>
+          <label className={labelClass} htmlFor="pp-evento">Evento (se houver)</label>
+          <input id="pp-evento" maxLength={200} className={`mt-1.5 ${inputClass}`} value={form.evento} onChange={(e) => set("evento")(e.target.value)} placeholder="Nome do evento ou encontro interno" />
+        </div>
+        <div>
+          <label className={labelClass} htmlFor="pp-publico">Público estimado</label>
+          <input id="pp-publico" maxLength={200} className={`mt-1.5 ${inputClass}`} value={form.publico} onChange={(e) => set("publico")(e.target.value)} placeholder="Ex.: 80 pessoas, times de dados e negócio" />
+        </div>
+      </div>
+      <div>
+        <label className={labelClass} htmlFor="pp-mensagem">Conte o contexto e o objetivo *</label>
+        <textarea id="pp-mensagem" required minLength={10} maxLength={4000} rows={4} className={`mt-1.5 ${inputClass}`} value={form.mensagem} onChange={(e) => set("mensagem")(e.target.value)} placeholder="O que o público precisa sair sabendo ou decidindo? Qual desafio motivou o convite?" />
+      </div>
+      <label className="flex cursor-pointer items-start gap-3 px-1">
+        <input type="checkbox" required checked={consent} onChange={(e) => setConsent(e.target.checked)} className="mt-1 size-4 accent-[#6b21a8]" />
+        <span className="text-xs leading-6 text-slate-500">
+          Autorizo o contato da Giselle Falcão sobre este pedido. Dados usados apenas para elaborar a
+          proposta, conforme a{" "}
+          <Link href="/privacidade" className="font-semibold text-[#6b21a8] hover:underline">
+            Política de Privacidade
+          </Link>
+          . *
+        </span>
+      </label>
+      <button
+        type="submit"
+        disabled={mutation.isPending}
+        className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-[#1a1333] px-7 py-4 text-sm font-bold text-white transition hover:bg-[#6b21a8] disabled:opacity-60"
+      >
+        {mutation.isPending ? (
+          <>
+            <Loader2 className="size-4 animate-spin" />
+            Enviando...
+          </>
+        ) : (
+          <>
+            Pedir proposta
+            <ArrowRight className="size-4" />
+          </>
+        )}
+      </button>
+    </form>
+  );
+}
 
 export default function GisellePalestras() {
   return (
@@ -52,12 +193,10 @@ export default function GisellePalestras() {
                 Agendar conversa
               </a>
               <a
-                href={contact.whatsapp}
-                target="_blank"
-                rel="noopener noreferrer"
+                href="#proposta"
                 className="inline-flex items-center gap-2 rounded-full border-2 border-white/40 px-7 py-3.5 text-sm font-bold text-white transition hover:bg-white/10"
               >
-                <MessageCircle className="size-4" />
+                <ClipboardList className="size-4" />
                 Pedir proposta
               </a>
             </div>
@@ -177,6 +316,30 @@ export default function GisellePalestras() {
               <p className="mt-1.5 text-sm leading-6 text-slate-500">{s.d}</p>
             </div>
           ))}
+        </div>
+      </section>
+
+      {/* Pedido de proposta (briefing estruturado com origem registrada) */}
+      <section id="proposta" className="scroll-mt-24 border-y border-slate-200/70 bg-white">
+        <div className="container py-14 sm:py-16">
+          <div className="mx-auto max-w-3xl">
+            <p className="text-xs font-bold uppercase tracking-[0.25em] text-teal-600">Proposta</p>
+            <h2 className="mt-3 text-3xl font-bold">Peça uma proposta com briefing</h2>
+            <p className="mt-3 text-sm leading-7 text-slate-500">
+              Quanto mais contexto, mais certeira a proposta. Prefere conversar primeiro?{" "}
+              <a href={contact.calendar} target="_blank" rel="noopener noreferrer" className="font-bold text-[#6b21a8] hover:underline">
+                Agende 30 minutos
+              </a>{" "}
+              ou{" "}
+              <a href={contact.whatsapp} target="_blank" rel="noopener noreferrer" className="font-bold text-[#6b21a8] hover:underline">
+                chame no WhatsApp
+              </a>
+              .
+            </p>
+            <div className="mt-7">
+              <PedidoProposta />
+            </div>
+          </div>
         </div>
       </section>
 
