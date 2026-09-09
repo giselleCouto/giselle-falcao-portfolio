@@ -1,4 +1,4 @@
-import { and, desc, eq } from "drizzle-orm";
+import { and, desc, eq, gte } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
 import {
   academyStudents,
@@ -264,6 +264,108 @@ export async function listTrajetoriaCandidatura() {
   }
 
   return db.select().from(trajetoriaCandidatura).orderBy(desc(trajetoriaCandidatura.createdAt));
+}
+
+/**
+ * Resumo de leads e visitas das últimas N horas — alimenta o digest diário
+ * enviado à Giselle. Somente leitura; consumido via academy.digest (token).
+ */
+export async function getLeadDigest(hoursWindow: number) {
+  const db = await getDb();
+  if (!db) return null;
+  const since = new Date(Date.now() - hoursWindow * 60 * 60 * 1000);
+
+  const [interesse, alunos, impulso, trajetoria, maturidade, pedidosPalestra, visitas] =
+    await Promise.all([
+      db
+        .select({
+          name: courseInterest.name,
+          email: courseInterest.email,
+          whatsapp: courseInterest.whatsapp,
+          coursesInterest: courseInterest.coursesInterest,
+          source: courseInterest.source,
+          createdAt: courseInterest.createdAt,
+        })
+        .from(courseInterest)
+        .where(gte(courseInterest.createdAt, since)),
+      db
+        .select({
+          name: academyStudents.name,
+          email: academyStudents.email,
+          createdAt: academyStudents.createdAt,
+        })
+        .from(academyStudents)
+        .where(gte(academyStudents.createdAt, since)),
+      db
+        .select({
+          name: mentoriaDiagnostico.name,
+          email: mentoriaDiagnostico.email,
+          whatsapp: mentoriaDiagnostico.whatsapp,
+          areaInterest: mentoriaDiagnostico.areaInterest,
+          source: mentoriaDiagnostico.source,
+          campaign: mentoriaDiagnostico.campaign,
+          createdAt: mentoriaDiagnostico.createdAt,
+        })
+        .from(mentoriaDiagnostico)
+        .where(gte(mentoriaDiagnostico.createdAt, since)),
+      db
+        .select({
+          name: trajetoriaCandidatura.name,
+          email: trajetoriaCandidatura.email,
+          whatsapp: trajetoriaCandidatura.whatsapp,
+          funcaoInteresse: trajetoriaCandidatura.funcaoInteresse,
+          bolsa: trajetoriaCandidatura.bolsa,
+          source: trajetoriaCandidatura.source,
+          campaign: trajetoriaCandidatura.campaign,
+          createdAt: trajetoriaCandidatura.createdAt,
+        })
+        .from(trajetoriaCandidatura)
+        .where(gte(trajetoriaCandidatura.createdAt, since)),
+      db
+        .select({
+          name: aiMaturity.name,
+          email: aiMaturity.email,
+          company: aiMaturity.company,
+          role: aiMaturity.role,
+          totalScore: aiMaturity.totalScore,
+          level: aiMaturity.level,
+          source: aiMaturity.source,
+          campaign: aiMaturity.campaign,
+          createdAt: aiMaturity.createdAt,
+        })
+        .from(aiMaturity)
+        .where(gte(aiMaturity.createdAt, since)),
+      db
+        .select({
+          name: palestraPedidos.name,
+          email: palestraPedidos.email,
+          whatsapp: palestraPedidos.whatsapp,
+          empresa: palestraPedidos.empresa,
+          tipo: palestraPedidos.tipo,
+          evento: palestraPedidos.evento,
+          source: palestraPedidos.source,
+          createdAt: palestraPedidos.createdAt,
+        })
+        .from(palestraPedidos)
+        .where(gte(palestraPedidos.createdAt, since)),
+      db
+        .select({ path: pageVisits.path, source: pageVisits.source, campaign: pageVisits.campaign })
+        .from(pageVisits)
+        .where(gte(pageVisits.createdAt, since))
+        .limit(2000),
+    ]);
+
+  return {
+    desde: since.toISOString(),
+    janelaHoras: hoursWindow,
+    interesseCursos: interesse,
+    novosAlunos: alunos,
+    mentoriaImpulso: impulso,
+    candidaturasTrajetoria: trajetoria,
+    diagnosticosMaturidade: maturidade,
+    pedidosPalestra,
+    visitas,
+  };
 }
 
 export async function createPalestraPedido(input: InsertPalestraPedido) {

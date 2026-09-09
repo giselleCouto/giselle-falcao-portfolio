@@ -1,5 +1,7 @@
+import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { COOKIE_NAME } from "@shared/const";
+import { ENV } from "./_core/env";
 import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
 import { notifyOwner } from "./_core/notification";
@@ -11,6 +13,7 @@ import {
   createMentoriaDiagnostico,
   createPageVisit,
   createPalestraPedido,
+  getLeadDigest,
   createTrajetoriaCandidatura,
   listAiMaturity,
   listMentoriaDiagnostico,
@@ -482,6 +485,25 @@ export const appRouter = router({
     visitas: adminProcedure.query(async () => {
       return listPageVisits();
     }),
+    // Resumo de leads/visitas para o digest diário automatizado da Giselle.
+    // Protegido por token de serviço (DIGEST_TOKEN no Railway) — somente leitura.
+    digest: publicProcedure
+      .input(
+        z.object({
+          token: z.string().min(1),
+          hours: z.number().int().min(1).max(168).optional(),
+        })
+      )
+      .query(async ({ input }) => {
+        if (!ENV.digestToken || input.token !== ENV.digestToken) {
+          throw new TRPCError({ code: "UNAUTHORIZED", message: "Invalid digest token" });
+        }
+        const digest = await getLeadDigest(input.hours ?? 24);
+        if (!digest) {
+          throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "Database unavailable" });
+        }
+        return digest;
+      }),
     maturidade: publicProcedure.input(maturityInputSchema).mutation(async ({ input }) => {
       const total =
         input.scores.dados +
