@@ -368,8 +368,8 @@ export default function GiselleMentoria() {
           <div className="relative mx-auto w-full max-w-sm">
             <div className="absolute -inset-3 rounded-[2.5rem] bg-[linear-gradient(135deg,#6b21a8,#c65a3a)] opacity-15 blur-xl" />
             <img
-              src="/brand/giselle-palestra.jpg"
-              alt="Giselle Couto Falcão ensinando em palestra na PUC Minas"
+              src="/brand/giselle-mentora.jpg"
+              alt="Giselle Couto Falcão"
               className="relative aspect-[4/5] w-full rounded-[2.5rem] border border-slate-200/70 object-cover object-top shadow-[0_18px_60px_rgba(26,19,51,0.14)]"
             />
           </div>
