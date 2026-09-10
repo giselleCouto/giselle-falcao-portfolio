@@ -10,6 +10,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import GiselleLayout from "@/components/giselle/GiselleLayout";
+import { LivroSections } from "./GiselleLivro";
 import {
   assets,
   certifications,
@@ -99,8 +100,8 @@ export default function GiselleSobre() {
           <div className="absolute -inset-3 rounded-[2.5rem] bg-[linear-gradient(135deg,#6b21a8,#8b5cf6,#14b8a6)] opacity-15 blur-xl" />
           <div className="relative overflow-hidden rounded-[2.5rem] border border-slate-200/70 bg-white shadow-[0_18px_60px_rgba(26,19,51,0.12)]">
             <img
-              src="/brand/giselle-palestra.jpg"
-              alt="Dra. Giselle Couto Falcão palestrando no DATA BH · SQL Saturday, na PUC Minas"
+              src="/brand/giselle-sobre.jpg"
+              alt="Dra. Giselle Couto Falcão palestrando no HackTown 2026"
               className="aspect-[4/5] w-full object-cover object-top"
             />
             <div className="flex items-center gap-3 p-5">
@@ -201,6 +202,9 @@ export default function GiselleSobre() {
           </div>
         </div>
       </section>
+
+      {/* Livro Metodologia CEOD — antes página própria, agora vive aqui */}
+      <LivroSections />
 
       {/* CTA final (painel escuro) */}
       <section className="container pb-16 sm:pb-20">

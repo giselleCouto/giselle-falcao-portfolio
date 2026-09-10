@@ -9,6 +9,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import GiselleLayout from "@/components/giselle/GiselleLayout";
+import { SolucoesSections } from "./GiselleSolucoes";
 import { consultingSectors, consultingServices, contact } from "@/lib/portfolioData";
 
 const fadeUp = {
@@ -160,6 +161,9 @@ export default function GiselleServicos() {
           </div>
         </motion.div>
       </section>
+
+      {/* Soluções em produção — antes página própria, agora vive aqui */}
+      <SolucoesSections />
 
       {/* CTA final */}
       <section className="container pb-16 sm:pb-20">

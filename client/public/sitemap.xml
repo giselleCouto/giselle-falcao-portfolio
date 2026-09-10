@@ -11,11 +11,6 @@
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://www.coutofalcao.com/giselle/solucoes</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
     <loc>https://www.coutofalcao.com/giselle/cursos</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
@@ -109,11 +104,6 @@
     <loc>https://www.coutofalcao.com/diagnostico-ia</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://www.coutofalcao.com/giselle/livro</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
   </url>
   <url>
     <loc>https://www.coutofalcao.com/livro</loc>

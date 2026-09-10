@@ -35,11 +35,11 @@ const metrics = [
 
 const portals = [
   {
-    href: "/giselle/solucoes",
+    href: "/giselle/servicos",
     icon: Rocket,
     tint: "bg-violet-100 text-[#6b21a8]",
-    title: "Soluções",
-    text: "Sistemas de IA em produção: indústria, agro, logística e clima.",
+    title: "Soluções & Serviços",
+    text: "Consultoria e sistemas de IA em produção: indústria, agro, logística e clima.",
   },
   {
     href: "/giselle/cursos",
@@ -63,11 +63,11 @@ const portals = [
     text: "Keynotes, workshops e programas corporativos com casos reais.",
   },
   {
-    href: "/giselle/servicos",
+    href: "/giselle/trilhas",
     icon: Briefcase,
     tint: "bg-amber-100 text-amber-700",
-    title: "Serviços",
-    text: "Consultoria em IA e ciência de dados para decisões críticas.",
+    title: "Trilhas de carreira",
+    text: "Do zero ao arquiteto: o caminho em Dados e IA, na ordem certa.",
   },
   {
     href: "/giselle/sobre",
@@ -100,7 +100,7 @@ export default function GiselleHome() {
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <Link
-              href="/giselle/solucoes"
+              href="/giselle/servicos"
               className="inline-flex items-center gap-2 rounded-full bg-[#1a1333] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#6b21a8]"
             >
               Ver soluções
@@ -221,7 +221,7 @@ export default function GiselleHome() {
               <p className="mt-4 max-w-xl leading-7 text-slate-300">{livro.shortPitch}</p>
               <div className="mt-6 flex flex-wrap gap-3">
                 <Link
-                  href="/giselle/livro"
+                  href="/giselle/sobre"
                   className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-bold text-[#1a1333] transition hover:bg-violet-100"
                 >
                   Conhecer o livro

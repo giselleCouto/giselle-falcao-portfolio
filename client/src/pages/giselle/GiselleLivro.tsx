@@ -13,7 +13,6 @@ import {
   Sparkles,
   Target,
 } from "lucide-react";
-import GiselleLayout from "@/components/giselle/GiselleLayout";
 import { livro } from "@/lib/livroData";
 
 const fadeUp = {
@@ -28,11 +27,15 @@ const pillarIcons = {
   "shield-check": ShieldCheck,
 } as const;
 
-export default function GiselleLivro() {
+// Decisão da Giselle (set/2026): o livro deixou de ser página própria e vive
+// DENTRO de /giselle/sobre. Este arquivo exporta as seções para a página Sobre;
+// a rota antiga /giselle/livro redireciona para lá. A página curta de compra
+// (/livro) e o dossiê (/giselle/livro/dossie) continuam independentes.
+export function LivroSections() {
   return (
-    <GiselleLayout>
-      {/* Hero: capa + apresentação */}
-      <section className="relative overflow-hidden">
+    <>
+      {/* Livro: capa + apresentação */}
+      <section id="livro" className="relative scroll-mt-24 overflow-hidden border-t border-slate-200/70">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_15%_20%,rgba(107,33,168,0.1),transparent_45%),radial-gradient(circle_at_85%_30%,rgba(20,184,166,0.08),transparent_45%)]" />
         <div className="container relative grid items-center gap-12 py-14 sm:py-20 lg:grid-cols-[0.85fr_1.15fr]">
           {/* Capa */}
@@ -64,9 +67,9 @@ export default function GiselleLivro() {
               <Sparkles className="size-3.5" />
               Livro · {livro.publisher} · {livro.year}
             </p>
-            <h1 className="mt-6 text-4xl font-bold leading-[1.05] sm:text-5xl">
+            <h2 className="mt-6 text-4xl font-bold leading-[1.05] sm:text-5xl">
               {livro.title}
-            </h1>
+            </h2>
             <p className="mt-3 text-lg font-semibold text-[#6b21a8]">{livro.subtitle}</p>
             <p className="mt-5 max-w-xl leading-8 text-slate-500">{livro.pitch}</p>
 
@@ -268,6 +271,6 @@ export default function GiselleLivro() {
           </div>
         </div>
       </section>
-    </GiselleLayout>
+    </>
   );
 }

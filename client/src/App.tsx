@@ -7,7 +7,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/NotFound";
 import { ArrowRight, BrainCircuit, Orbit, Sparkles } from "lucide-react";
-import { Link, Route, Switch, useLocation } from "wouter";
+import { Link, Route, Switch, useLocation, Redirect } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import PortfolioSite from "./components/PortfolioSite";
 import { ThemeProvider } from "./contexts/ThemeContext";
@@ -19,11 +19,9 @@ import CourseCatalog from "./pages/CourseCatalog";
 import CoursePlayer from "./pages/CoursePlayer";
 import GiselleCourses from "./pages/GiselleCourses";
 import GiselleHome from "./pages/giselle/GiselleHome";
-import GiselleSolucoes from "./pages/giselle/GiselleSolucoes";
 import GiselleServicos from "./pages/giselle/GiselleServicos";
 import GiselleSobre from "./pages/giselle/GiselleSobre";
 import GiselleContato from "./pages/giselle/GiselleContato";
-import GiselleLivro from "./pages/giselle/GiselleLivro";
 import GiselleDossie from "./pages/giselle/GiselleDossie";
 import GiselleInteresse from "./pages/giselle/GiselleInteresse";
 import GiselleLivroComprar from "./pages/giselle/GiselleLivroComprar";
@@ -247,22 +245,16 @@ function RouteSeo() {
           },
         });
       }
-    } else if (location === "/giselle/solucoes") {
-      title = "Soluções de IA em Produção | Giselle Falcão";
-      description =
-        "SensorMonit, Curral AI, GreenSenti, EucaSmart e Pharos: sistemas de IA em produção para indústria, agro, logística e clima — com demos abertas.";
-      keywords =
-        "soluções de IA, IA industrial, IA no agro, otimização logística, gêmeo digital, visão computacional, Giselle Falcão";
     } else if (location === "/giselle/servicos") {
-      title = "Consultoria em IA e Ciência de Dados | Giselle Falcão";
+      title = "Consultoria e Soluções de IA em Produção | Giselle Falcão";
       description =
-        "Consultoria PhD em IA industrial, digital twins, modelagem matemática e analytics estratégico: diagnóstico, modelagem, implementação e acompanhamento.";
+        "Consultoria PhD em IA industrial e ciência de dados — e as soluções em produção que ela entrega: SensorMonit, Curral AI, GreenSenti, EucaSmart e Pharos, com demos abertas.";
       keywords =
         "consultoria em inteligência artificial, consultoria de dados, IA industrial, digital twins, modelagem matemática, Giselle Falcão";
     } else if (location === "/giselle/sobre") {
       title = "Sobre a Dra. Giselle Couto Falcão | PhD em IA e Modelagem Matemática";
       description =
-        "Trajetória, formação (2 doutorados), publicações científicas e credenciais da Dra. Giselle Couto Falcão — pesquisadora e consultora em IA industrial.";
+        "Trajetória, formação (2 doutorados), publicações e credenciais da Dra. Giselle Couto Falcão — e o livro Metodologia CEOD (Editora Sorian, 2026), com dossiê educacional.";
       keywords =
         "Giselle Couto Falcão, PhD inteligência artificial, doutora modelagem matemática, pesquisadora IA, Lattes, Google Scholar";
     } else if (location === "/giselle/contato") {
@@ -379,7 +371,7 @@ function RouteSeo() {
       description =
         "Conte em 2 minutos o que você quer aprender sobre dados e IA. Suas respostas ajudam a criar cursos gratuitos e acessíveis, no formato certo para você.";
       keywords = "pesquisa de interesse, curso de dados, curso de IA, curso gratuito, Giselle Falcão Academy";
-    } else if (location === "/giselle/livro" || location === "/giselle/livro/dossie") {
+    } else if (location === "/giselle/livro/dossie") {
       const isDossie = location === "/giselle/livro/dossie";
       title = isDossie
         ? "Dossiê Educacional — Metodologia CEOD | Giselle Falcão"
@@ -853,7 +845,8 @@ function Router() {
         <Route path="/giselle/cursos/:slug">
           {(params) => <CoursePlayer slug={params.slug ?? ""} />}
         </Route>
-        <Route path="/giselle/solucoes" component={GiselleSolucoes} />
+        {/* Soluções agora vive dentro de Serviços */}
+        <Route path="/giselle/solucoes">{() => <Redirect to="/giselle/servicos" replace />}</Route>
         <Route path="/interesse">{() => <GiselleInteresse />}</Route>
         <Route path="/giselle/interesse">{() => <GiselleInteresse />}</Route>
         <Route path="/livro" component={GiselleLivroComprar} />
@@ -905,7 +898,8 @@ function Router() {
           </Route>
         ))}
         <Route path="/giselle/livro/dossie" component={GiselleDossie} />
-        <Route path="/giselle/livro" component={GiselleLivro} />
+        {/* A página do livro agora vive dentro de Sobre (compra: /livro; dossiê segue próprio) */}
+        <Route path="/giselle/livro">{() => <Redirect to="/giselle/sobre" replace />}</Route>
         <Route path="/giselle/servicos" component={GiselleServicos} />
         <Route path="/giselle/sobre" component={GiselleSobre} />
         <Route path="/giselle/contato" component={GiselleContato} />

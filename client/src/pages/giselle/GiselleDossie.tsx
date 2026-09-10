@@ -36,7 +36,7 @@ export default function GiselleDossie() {
         <div className="container py-10 sm:py-12">
           <div className="flex flex-wrap items-center justify-between gap-4">
             <Link
-              href="/giselle/livro"
+              href="/giselle/sobre"
               className="inline-flex items-center gap-2 text-sm font-semibold text-slate-500 transition hover:text-[#6b21a8]"
             >
               <ArrowLeft className="size-4" />

@@ -270,7 +270,7 @@ export default function GiselleInteresse({
                 </h2>
                 <div className="mt-3 flex flex-wrap gap-2">
                   <Link
-                    href="/giselle/livro"
+                    href="/giselle/sobre"
                     className="inline-flex items-center gap-1.5 rounded-full border-2 border-violet-200 px-4 py-2 text-xs font-bold text-[#6b21a8] transition hover:bg-violet-50"
                   >
                     <BookOpen className="size-3.5" />
@@ -300,7 +300,7 @@ export default function GiselleInteresse({
                 SensorMonit, Curral AI, GreenSenti, EucaSmart e Pharos — IA em produção com demos abertas.
               </p>
               <Link
-                href="/giselle/solucoes"
+                href="/giselle/servicos"
                 className="mt-3 inline-flex items-center gap-1.5 rounded-full border-2 border-teal-200 px-4 py-2 text-xs font-bold text-teal-700 transition hover:bg-teal-50"
               >
                 <Rocket className="size-3.5" />

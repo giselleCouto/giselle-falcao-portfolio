@@ -76,7 +76,7 @@ export default function GiselleLivroComprar() {
         {/* Link para a página completa */}
         <div className="mt-8 text-center">
           <Link
-            href="/giselle/livro"
+            href="/giselle/sobre"
             className="inline-flex items-center gap-2 text-sm font-bold text-[#6b21a8] hover:underline"
           >
             <BookOpen className="size-4" />
