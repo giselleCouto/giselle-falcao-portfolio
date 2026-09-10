@@ -78,7 +78,7 @@ export default function GiselleBio() {
           <div className="relative">
             <div className="absolute -inset-1.5 rounded-full bg-[linear-gradient(135deg,#6b21a8,#8b5cf6,#14b8a6)] opacity-30 blur-md" />
             <img
-              src="/brand/giselle-retrato-2.jpg"
+              src="/brand/giselle-retrato-3.jpg"
               alt="Giselle Falcão"
               className="relative size-24 rounded-full border-2 border-white object-cover object-top shadow-lg"
             />

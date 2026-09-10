@@ -128,7 +128,7 @@ export default function GiselleHome() {
           <div className="absolute -inset-3 rounded-[2.5rem] bg-[linear-gradient(135deg,#6b21a8,#8b5cf6,#14b8a6)] opacity-15 blur-xl" />
           <div className="relative overflow-hidden rounded-[2.5rem] border border-slate-200/70 bg-white shadow-[0_18px_60px_rgba(26,19,51,0.12)]">
             <img
-              src="/brand/giselle-retrato-2.jpg"
+              src="/brand/giselle-retrato-3.jpg"
               alt="Giselle Falcão — IA industrial"
               className="aspect-[4/5] w-full object-cover object-top"
             />
