@@ -15,7 +15,6 @@ import {
 import { toast } from "sonner";
 import GiselleLayout from "@/components/giselle/GiselleLayout";
 import { mentoria } from "@/lib/mentoriaData";
-import { assets } from "@/lib/portfolioData";
 import { getAttribution } from "@/lib/tracking";
 import { trpc } from "@/lib/trpc";
 
@@ -155,8 +154,8 @@ export default function GiselleMentoria() {
           >
             <div className="absolute -inset-3 rounded-[2.5rem] bg-[linear-gradient(135deg,#c65a3a,#8b5cf6,#14b8a6)] opacity-15 blur-xl" />
             <img
-              src={assets.educationPanel}
-              alt="Giselle Falcão ensinando"
+              src="/brand/impulso-dela-ia.jpg"
+              alt="Giselle Falcão ensinando dados e IA a um grupo de mulheres"
               className="relative aspect-[4/5] w-full rounded-[2.5rem] border border-slate-200/70 object-cover shadow-[0_18px_60px_rgba(26,19,51,0.14)]"
             />
           </motion.div>
