@@ -28,6 +28,7 @@ import GiselleDossie from "./pages/giselle/GiselleDossie";
 import GiselleInteresse from "./pages/giselle/GiselleInteresse";
 import GiselleLivroComprar from "./pages/giselle/GiselleLivroComprar";
 import GiselleMentoria from "./pages/giselle/GiselleMentoria";
+import GiselleMentoriaHub from "./pages/giselle/GiselleMentoriaHub";
 import GisellePalestras from "./pages/giselle/GisellePalestras";
 import GiselleDiagnosticoIA from "./pages/giselle/GiselleDiagnosticoIA";
 import GiselleBio from "./pages/giselle/GiselleBio";
@@ -89,6 +90,7 @@ const CANONICAL_ALIASES: Record<string, string> = {
   "/trilhas": "/giselle/trilhas",
   "/trilhas/": "/giselle/trilhas",
   "/mentoria": "/giselle/mentoria",
+  "/impulso": "/giselle/mentoria/impulso",
   "/trajetoria": "/giselle/mentoria/trajetoria",
   "/trajetoria/": "/giselle/mentoria/trajetoria",
   "/lab": "/giselle/lab",
@@ -346,6 +348,12 @@ function RouteSeo() {
       keywords =
         "mentoria dados e IA, mentoria carreira em dados, transição de carreira tecnologia, turma fundadora, mentoria trajetória, projeto para portfólio dados, Giselle Falcão";
     } else if (location === "/mentoria" || location === "/giselle/mentoria") {
+      title = "Mentoria em Dados e IA — para Mulheres e Homens | Giselle Falcão";
+      description =
+        "Mentoria com a Dra. Giselle Falcão para entrar, migrar ou crescer em Dados e IA: Turma Fundadora aberta a todos, Impulso Dela IA dedicado às mulheres e acompanhamento individual sob diagnóstico.";
+      keywords =
+        "mentoria dados e IA, mentoria carreira tecnologia, mentoria individual dados, transição de carreira, Impulso Dela IA, Mentoria Trajetória, Giselle Falcão";
+    } else if (location === "/impulso" || location === "/giselle/mentoria/impulso") {
       title = "Impulso Dela IA — Mentoria para Mulheres em Dados e IA | Giselle Falcão";
       description =
         "Direção, conhecimento e confiança para construir uma carreira possível em tecnologia. Mentoria em grupo e individual para mulheres que desejam entrar, migrar ou crescer em Dados e IA — com a Dra. Giselle Falcão.";
@@ -849,8 +857,10 @@ function Router() {
         <Route path="/interesse">{() => <GiselleInteresse />}</Route>
         <Route path="/giselle/interesse">{() => <GiselleInteresse />}</Route>
         <Route path="/livro" component={GiselleLivroComprar} />
-        <Route path="/mentoria" component={GiselleMentoria} />
-        <Route path="/giselle/mentoria" component={GiselleMentoria} />
+        <Route path="/mentoria" component={GiselleMentoriaHub} />
+        <Route path="/giselle/mentoria" component={GiselleMentoriaHub} />
+        <Route path="/impulso" component={GiselleMentoria} />
+        <Route path="/giselle/mentoria/impulso" component={GiselleMentoria} />
         <Route path="/bio" component={GiselleBio} />
         <Route path="/privacidade" component={GisellePrivacidade} />
         <Route path="/politica-de-privacidade" component={GisellePrivacidade} />

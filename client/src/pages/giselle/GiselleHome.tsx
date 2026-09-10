@@ -53,7 +53,7 @@ const portals = [
     icon: Compass,
     tint: "bg-orange-100 text-[#a94b30]",
     title: "Mentoria",
-    text: "Impulso Dela IA: direção de carreira para mulheres em Dados e IA.",
+    text: "Trajetória para todos e Impulso Dela IA para mulheres — direção de carreira em Dados e IA.",
   },
   {
     href: "/giselle/palestras",
