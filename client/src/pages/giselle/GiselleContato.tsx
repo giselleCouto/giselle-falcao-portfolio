@@ -87,8 +87,8 @@ const procuras = [
     titulo: "Consultoria em Dados & IA",
     texto:
       "Para empresas que precisam tirar projetos do papel — do diagnóstico ao sistema em produção, com valor medido.",
-    href: "/giselle/servicos",
-    cta: "Ver serviços e soluções",
+    href: "/giselle/ia-para-empresas",
+    cta: "Ver Inteligência para Decisões",
   },
   {
     valor: "Mentoria",

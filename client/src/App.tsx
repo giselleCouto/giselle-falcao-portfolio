@@ -13,12 +13,14 @@ import PortfolioSite from "./components/PortfolioSite";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { caseStudies, faqItems, insightArticles } from "./lib/portfolioData";
 import { getCourse } from "./lib/courses";
+import { iaEmpresas } from "./lib/iaEmpresasData";
 import { minasSummitFaqItems, minasSummitFaqMeta, minasSummitSocialLinks } from "./lib/minasSummitFaqData";
 import AiOsExperience from "./pages/AiOsExperience";
 import CourseCatalog from "./pages/CourseCatalog";
 import CoursePlayer from "./pages/CoursePlayer";
 import GiselleCourses from "./pages/GiselleCourses";
 import GiselleHome from "./pages/giselle/GiselleHome";
+import GiselleIAEmpresas from "./pages/giselle/GiselleIAEmpresas";
 import GiselleServicos from "./pages/giselle/GiselleServicos";
 import GiselleSobre from "./pages/giselle/GiselleSobre";
 import GiselleContato from "./pages/giselle/GiselleContato";
@@ -98,6 +100,8 @@ const CANONICAL_ALIASES: Record<string, string> = {
   "/politica-de-privacidade": "/privacidade",
   "/politica-de-privacidade/": "/privacidade",
   "/palestras": "/giselle/palestras",
+  "/empresas": "/giselle/ia-para-empresas",
+  "/empresas/": "/giselle/ia-para-empresas",
   "/giselle/diagnostico-ia": "/diagnostico-ia",
   "/linkedin": "/diagnostico-ia",
   "/linkedin/": "/diagnostico-ia",
@@ -178,6 +182,7 @@ function RouteSeo() {
 
     removeJsonLd("giselle-person-schema");
     removeJsonLd("giselle-faq-schema");
+    removeJsonLd("ia-empresas-faq-schema");
     removeJsonLd("giselle-case-studies-schema");
     removeJsonLd("giselle-insights-schema");
     removeJsonLd("giselle-course-schema");
@@ -245,6 +250,22 @@ function RouteSeo() {
           },
         });
       }
+    } else if (location === "/empresas" || location === "/giselle/ia-para-empresas") {
+      title = "Inteligência para Decisões — IA para Empresas | Giselle Falcão";
+      description =
+        "Giselle Falcão prepara empresas, lideranças e times para decidir e operar com Dados e IA: qual dor do negócio a IA precisa resolver (diagnóstico e ganhos mensuráveis) e por que IA vai além dos LLMs — com abordagens provadas em produção.";
+      keywords =
+        "orientação em IA para empresas, consultoria independente de IA, treinamento de equipes em IA, IA além dos LLMs, diagnóstico de IA, inteligência para decisões, formação de lideranças em IA, Giselle Falcão";
+
+      upsertJsonLd("ia-empresas-faq-schema", {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        mainEntity: iaEmpresas.faq.map((item) => ({
+          "@type": "Question",
+          name: item.q,
+          acceptedAnswer: { "@type": "Answer", text: item.a },
+        })),
+      });
     } else if (location === "/giselle/servicos") {
       title = "Consultoria e Soluções de IA em Produção | Giselle Falcão";
       description =
@@ -470,12 +491,14 @@ function RouteSeo() {
         url: "https://www.coutofalcao.com/giselle",
         jobTitle: "Pesquisadora e consultora PhD em IA industrial, modelagem matemática e ciência de dados aplicada",
         description:
-          "Giselle Falcão — palestras e treinamentos que ajudam equipes a aplicar Dados e Inteligência Artificial no trabalho, com uso responsável e resultados mensuráveis. Pesquisadora e consultora PhD, autora do livro Metodologia CEOD, fundadora da NOKAHI Consultoria em IA e Ciência de Dados; o site coutofalcao.com concentra sua atuação pessoal (palestras, mentorias, cursos e consultoria).",
+          "Giselle Falcão — palestras e treinamentos que ajudam equipes a aplicar Dados e Inteligência Artificial no trabalho, com uso responsável e resultados mensuráveis. Orienta empresas sobre o uso adequado de IA — do diagnóstico da dor de negócio à escolha de abordagens além dos LLMs. Pesquisadora e consultora PhD, autora do livro Metodologia CEOD, fundadora da NOKAHI Consultoria em IA e Ciência de Dados; o site coutofalcao.com concentra sua atuação pessoal (palestras, mentorias, cursos e consultoria).",
         affiliation: {
           "@type": "Organization",
           name: "NOKAHI Consultoria em IA e Ciência de Dados",
         },
         knowsAbout: [
+          "Orientação estratégica em IA para empresas",
+          "Formação de lideranças e times em Dados e IA",
           "IA Industrial",
           "Visão Computacional",
           "Digital Twins",
@@ -904,6 +927,8 @@ function Router() {
         <Route path="/giselle/livro/dossie" component={GiselleDossie} />
         {/* A página do livro agora vive dentro de Sobre (compra: /livro; dossiê segue próprio) */}
         <Route path="/giselle/livro">{() => <Redirect to="/giselle/sobre" replace />}</Route>
+        <Route path="/empresas" component={GiselleIAEmpresas} />
+        <Route path="/giselle/ia-para-empresas" component={GiselleIAEmpresas} />
         <Route path="/giselle/servicos" component={GiselleServicos} />
         <Route path="/giselle/sobre" component={GiselleSobre} />
         <Route path="/giselle/contato" component={GiselleContato} />

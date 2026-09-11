@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { Link } from "wouter";
 import {
   Boxes,
   Calendar,
@@ -160,6 +161,27 @@ export default function GiselleServicos() {
             ))}
           </div>
         </motion.div>
+      </section>
+
+      {/* Ponte: orientação para empresas (Inteligência para Decisões) */}
+      <section className="container pb-4">
+        <Link
+          href="/giselle/ia-para-empresas"
+          className="group flex flex-col items-start gap-4 rounded-3xl border-2 border-teal-200 bg-white p-6 shadow-[0_10px_40px_rgba(26,19,51,0.06)] transition duration-300 hover:-translate-y-0.5 hover:border-teal-400 hover:shadow-[0_18px_50px_rgba(20,184,166,0.14)] sm:flex-row sm:items-center sm:justify-between"
+        >
+          <div>
+            <p className="text-xs font-bold uppercase tracking-[0.2em] text-teal-600">
+              Inteligência para Decisões
+            </p>
+            <p className="mt-1 font-baloo text-lg font-bold text-[#1a1333]">
+              Sua empresa ainda está decidindo ONDE usar IA? Comece pela orientação — a dor certa
+              antes da ferramenta.
+            </p>
+          </div>
+          <span className="inline-flex shrink-0 items-center gap-2 rounded-full bg-[#1a1333] px-5 py-2.5 text-sm font-semibold text-white transition group-hover:bg-teal-600">
+            IA para empresas
+          </span>
+        </Link>
       </section>
 
       {/* Soluções em produção — antes página própria, agora vive aqui */}
