@@ -470,7 +470,11 @@ function RouteSeo() {
         url: "https://www.coutofalcao.com/giselle",
         jobTitle: "Pesquisadora e consultora PhD em IA industrial, modelagem matemática e ciência de dados aplicada",
         description:
-          "Pesquisadora e consultora PhD que desenvolve modelos, sistemas analíticos e estratégias técnicas para indústria, logística, saúde, educação e setor público, com foco em visão computacional, digital twins e inteligência operacional.",
+          "Giselle Falcão — palestras e treinamentos que ajudam equipes a aplicar Dados e Inteligência Artificial no trabalho, com uso responsável e resultados mensuráveis. Pesquisadora e consultora PhD, autora do livro Metodologia CEOD, fundadora da NOKAHI Consultoria em IA e Ciência de Dados; o site coutofalcao.com concentra sua atuação pessoal (palestras, mentorias, cursos e consultoria).",
+        affiliation: {
+          "@type": "Organization",
+          name: "NOKAHI Consultoria em IA e Ciência de Dados",
+        },
         knowsAbout: [
           "IA Industrial",
           "Visão Computacional",

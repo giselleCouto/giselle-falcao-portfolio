@@ -81,6 +81,8 @@ describe("leads router", () => {
       interest: "Parceria acadêmica",
       message: "Gostaria de conversar sobre um projeto de IA aplicada à educação.",
       source: "website-contact-form",
+      campaign: null,
+      howFound: null,
     });
     expect(notifyOwnerMock).toHaveBeenCalledTimes(1);
     expect(notifyOwnerMock).toHaveBeenCalledWith(
@@ -126,6 +128,8 @@ describe("leads router", () => {
       interest: null,
       message: "Tenho interesse em convidar você para uma conversa institucional.",
       source: "website-contact-form",
+      campaign: null,
+      howFound: null,
     });
     expect(result).toEqual({ success: true, notificationSent: false });
   });

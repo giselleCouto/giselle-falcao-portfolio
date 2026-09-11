@@ -1,19 +1,30 @@
+import { useState } from "react";
 import { motion } from "framer-motion";
+import { Link } from "wouter";
 import {
+  ArrowRight,
   ArrowUpRight,
+  Briefcase,
   Calendar,
+  CheckCircle2,
   ChevronDown,
+  Compass,
   FileText,
   Github,
   GraduationCap,
   Instagram,
   Linkedin,
+  Loader2,
   Mail,
   MessageCircle,
+  Mic,
   PenLine,
 } from "lucide-react";
+import { toast } from "sonner";
 import GiselleLayout from "@/components/giselle/GiselleLayout";
 import { contact, faqItems } from "@/lib/portfolioData";
+import { getAttribution } from "@/lib/tracking";
+import { trpc } from "@/lib/trpc";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
@@ -67,6 +78,169 @@ const socials = socialLabels.map((s) => ({
 // As 3 perguntas mais comerciais do FAQ (respostas já curtas, 1-2 frases)
 const faqs = [faqItems[0], faqItems[2], faqItems[3]];
 
+// O que a pessoa procura — cada caminho com a porta certa
+const procuras = [
+  {
+    valor: "Consultoria",
+    icon: Briefcase,
+    tint: "bg-violet-100 text-[#6b21a8]",
+    titulo: "Consultoria em Dados & IA",
+    texto:
+      "Para empresas que precisam tirar projetos do papel — do diagnóstico ao sistema em produção, com valor medido.",
+    href: "/giselle/servicos",
+    cta: "Ver serviços e soluções",
+  },
+  {
+    valor: "Mentoria",
+    icon: Compass,
+    tint: "bg-orange-100 text-[#a94b30]",
+    titulo: "Mentoria de carreira",
+    texto:
+      "Para quem quer entrar, migrar ou crescer em Dados e IA — turma fundadora, Impulso Dela IA e acompanhamento individual.",
+    href: "/giselle/mentoria",
+    cta: "Conhecer as mentorias",
+  },
+  {
+    valor: "Palestra ou treinamento",
+    icon: Mic,
+    tint: "bg-sky-100 text-sky-700",
+    titulo: "Palestras e treinamentos",
+    texto:
+      "Keynotes, workshops hands-on e programas corporativos que ajudam equipes a aplicar IA no trabalho, com uso responsável.",
+    href: "/giselle/palestras",
+    cta: "Ver formatos e pedir proposta",
+  },
+];
+
+const COMO_CONHECEU = [
+  "ChatGPT, Claude, Gemini ou outra IA",
+  "Google / busca",
+  "Instagram",
+  "LinkedIn",
+  "Palestra ou evento",
+  "Indicação",
+  "Outro",
+];
+
+const FORM_INICIAL = { name: "", email: "", phone: "", procura: "", howFound: "", message: "" };
+
+function FormularioContato() {
+  const [form, setForm] = useState(FORM_INICIAL);
+  const [consent, setConsent] = useState(false);
+  const [enviado, setEnviado] = useState(false);
+
+  const mutation = trpc.leads.submit.useMutation({
+    onSuccess: () => setEnviado(true),
+    onError: (error) => toast.error(error.message || "Não foi possível enviar. Tente novamente."),
+  });
+
+  const set = (campo: keyof typeof FORM_INICIAL) => (valor: string) =>
+    setForm((prev) => ({ ...prev, [campo]: valor }));
+
+  const inputClass =
+    "w-full rounded-2xl border-2 border-slate-200 bg-white px-4 py-3 text-sm text-[#1a1333] placeholder:text-slate-400 focus:border-[#8b5cf6] focus:outline-none";
+  const labelClass = "block text-sm font-bold text-[#1a1333]";
+
+  if (enviado) {
+    return (
+      <div className="rounded-3xl border-2 border-teal-200 bg-teal-50/40 p-8 text-center">
+        <CheckCircle2 className="mx-auto size-10 text-teal-600" />
+        <h3 className="mt-4 font-baloo text-2xl font-bold">Mensagem recebida!</h3>
+        <p className="mx-auto mt-2 max-w-md text-sm leading-7 text-slate-600">
+          A Giselle responde pelo e-mail informado. Se for urgente, o WhatsApp é o caminho mais
+          rápido.
+        </p>
+      </div>
+    );
+  }
+
+  return (
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        const attr = getAttribution();
+        mutation.mutate({
+          route: "giselle-contato",
+          persona: form.procura || "Contato geral",
+          name: form.name,
+          email: form.email,
+          phone: form.phone,
+          interest: form.procura,
+          message: form.message,
+          source: attr.source ?? "website",
+          campaign: attr.campaign ?? "",
+          howFound: form.howFound,
+        });
+      }}
+      className="space-y-5 rounded-[2rem] border border-slate-200/70 bg-white p-7 shadow-[0_10px_40px_rgba(26,19,51,0.06)] sm:p-9"
+    >
+      <div className="grid gap-5 sm:grid-cols-2">
+        <div>
+          <label className={labelClass} htmlFor="ct-name">Seu nome *</label>
+          <input id="ct-name" required minLength={2} maxLength={160} className={`mt-1.5 ${inputClass}`} value={form.name} onChange={(e) => set("name")(e.target.value)} />
+        </div>
+        <div>
+          <label className={labelClass} htmlFor="ct-email">E-mail *</label>
+          <input id="ct-email" required type="email" maxLength={320} className={`mt-1.5 ${inputClass}`} value={form.email} onChange={(e) => set("email")(e.target.value)} />
+        </div>
+        <div>
+          <label className={labelClass} htmlFor="ct-phone">WhatsApp (opcional)</label>
+          <input id="ct-phone" maxLength={40} className={`mt-1.5 ${inputClass}`} value={form.phone} onChange={(e) => set("phone")(e.target.value)} placeholder="(31) 90000-0000" />
+        </div>
+        <div>
+          <label className={labelClass} htmlFor="ct-procura">O que você procura? *</label>
+          <select id="ct-procura" required className={`mt-1.5 ${inputClass}`} value={form.procura} onChange={(e) => set("procura")(e.target.value)}>
+            <option value="">Selecione...</option>
+            {[...procuras.map((p) => p.valor), "Outro assunto"].map((v) => (
+              <option key={v} value={v}>{v}</option>
+            ))}
+          </select>
+        </div>
+      </div>
+      <div>
+        <label className={labelClass} htmlFor="ct-como">Como conheceu meu trabalho? *</label>
+        <select id="ct-como" required className={`mt-1.5 ${inputClass}`} value={form.howFound} onChange={(e) => set("howFound")(e.target.value)}>
+          <option value="">Selecione...</option>
+          {COMO_CONHECEU.map((v) => (
+            <option key={v} value={v}>{v}</option>
+          ))}
+        </select>
+      </div>
+      <div>
+        <label className={labelClass} htmlFor="ct-message">Sua mensagem *</label>
+        <textarea id="ct-message" required minLength={12} maxLength={4000} rows={4} className={`mt-1.5 ${inputClass}`} value={form.message} onChange={(e) => set("message")(e.target.value)} placeholder="Conte o contexto: empresa ou carreira, desafio e o que você espera." />
+      </div>
+      <label className="flex cursor-pointer items-start gap-3 px-1">
+        <input type="checkbox" required checked={consent} onChange={(e) => setConsent(e.target.checked)} className="mt-1 size-4 accent-[#6b21a8]" />
+        <span className="text-xs leading-6 text-slate-500">
+          Autorizo o contato da Giselle Falcão sobre esta mensagem, conforme a{" "}
+          <Link href="/privacidade" className="font-semibold text-[#6b21a8] hover:underline">
+            Política de Privacidade
+          </Link>
+          . *
+        </span>
+      </label>
+      <button
+        type="submit"
+        disabled={mutation.isPending}
+        className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-[#1a1333] px-7 py-4 text-sm font-bold text-white transition hover:bg-[#6b21a8] disabled:opacity-60"
+      >
+        {mutation.isPending ? (
+          <>
+            <Loader2 className="size-4 animate-spin" />
+            Enviando...
+          </>
+        ) : (
+          <>
+            Enviar mensagem
+            <ArrowRight className="size-4" />
+          </>
+        )}
+      </button>
+    </form>
+  );
+}
+
 export default function GiselleContato() {
   return (
     <GiselleLayout>
@@ -119,6 +293,84 @@ export default function GiselleContato() {
               </a>
             </motion.div>
           ))}
+        </div>
+      </section>
+
+      {/* O que você procura? — consultoria, mentoria e palestras + vídeo do palco */}
+      <section className="container py-10">
+        <div className="grid items-start gap-8 lg:grid-cols-[1.15fr_0.85fr]">
+          <div>
+            <p className="text-xs font-bold uppercase tracking-[0.25em] text-teal-600">
+              O que você procura?
+            </p>
+            <h2 className="mt-3 text-3xl font-bold">Três caminhos, uma conversa</h2>
+            <div className="mt-8 space-y-5">
+              {procuras.map((p, i) => (
+                <motion.div
+                  key={p.valor}
+                  variants={fadeUp}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true, margin: "-60px" }}
+                  transition={{ duration: 0.45, delay: i * 0.06 }}
+                  className="flex flex-col gap-4 rounded-3xl border border-slate-200/70 bg-white p-6 shadow-[0_10px_40px_rgba(26,19,51,0.06)] sm:flex-row sm:items-center"
+                >
+                  <span className={`flex size-12 shrink-0 items-center justify-center rounded-2xl ${p.tint}`}>
+                    <p.icon className="size-6" />
+                  </span>
+                  <div className="min-w-0 flex-1">
+                    <h3 className="font-baloo text-lg font-bold">{p.titulo}</h3>
+                    <p className="mt-1 text-sm leading-6 text-slate-500">{p.texto}</p>
+                  </div>
+                  <Link
+                    href={p.href}
+                    className="inline-flex shrink-0 items-center gap-1.5 rounded-full border-2 border-violet-200 px-5 py-2.5 text-sm font-bold text-[#6b21a8] transition hover:bg-violet-50"
+                  >
+                    {p.cta}
+                    <ArrowRight className="size-4" />
+                  </Link>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+
+          {/* Vídeo: Giselle no palco do Minas Summit */}
+          <motion.div
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-60px" }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            className="mx-auto w-full max-w-xs lg:mx-0 lg:justify-self-end"
+          >
+            <div className="relative">
+              <div className="absolute -inset-3 rounded-[2rem] bg-[linear-gradient(135deg,#6b21a8,#8b5cf6,#14b8a6)] opacity-15 blur-xl" />
+              <video
+                controls
+                playsInline
+                preload="metadata"
+                poster="/videos/giselle-apresentacao-poster.jpg"
+                className="relative aspect-[9/16] w-full rounded-[2rem] border border-slate-200/70 bg-black object-cover shadow-[0_18px_60px_rgba(26,19,51,0.18)]"
+              >
+                <source src="/videos/giselle-apresentacao.mp4" type="video/mp4" />
+                Seu navegador não reproduz vídeo — assista no Instagram @gisellecfalcao.
+              </video>
+            </div>
+            <p className="mt-3 text-center text-xs font-semibold text-slate-400">
+              Giselle no palco do Minas Summit 2026 · Casa do Baile
+            </p>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Formulário */}
+      <section className="container py-10">
+        <div className="mx-auto max-w-3xl">
+          <p className="text-xs font-bold uppercase tracking-[0.25em] text-teal-600">Mensagem</p>
+          <h2 className="mt-3 text-3xl font-bold">Ou me escreva por aqui</h2>
+          <div className="mt-7">
+            <FormularioContato />
+          </div>
         </div>
       </section>
 

@@ -58,6 +58,8 @@ const leadInputSchema = z
     interest: z.string().trim().max(120).optional().or(z.literal("")),
     message: z.string().trim().min(12).max(4000),
     source: z.string().trim().max(120).optional(),
+    campaign: z.string().trim().max(120).optional().or(z.literal("")),
+    howFound: z.string().trim().max(80).optional().or(z.literal("")),
   })
   .superRefine((input, ctx) => {
     const isMinasSummitLead = input.route === "/minas-summit" || input.source?.includes("minas-summit");
@@ -293,24 +295,34 @@ export const appRouter = router({
         interest: input.interest?.trim() || null,
         message: input.message,
         source: input.source?.trim() || "website",
+        campaign: input.campaign?.trim() || null,
+        howFound: input.howFound?.trim() || null,
       } as const;
 
       await createLeadContact(normalized);
 
-      const notificationSent = await notifyOwner({
-        title: `Novo lead recebido em ${normalized.route}`,
-        content: [
-          `Persona: ${normalized.persona}`,
-          `Nome: ${normalized.name}`,
-          `E-mail: ${normalized.email}`,
-          `Telefone: ${normalized.phone ?? "Não informado"}`,
-          `Organização: ${normalized.organization ?? "Não informada"}`,
-          `Área de negócio: ${normalized.businessArea ?? "Não informada"}`,
-          `Interesse: ${normalized.interest ?? "Não informado"}`,
-          `Origem: ${normalized.source}`,
-          `Mensagem: ${normalized.message}`,
-        ].join("\n"),
-      });
+      // Notificação é melhor-esforço: sem o serviço configurado, o lead
+      // não pode falhar por causa dela (o registro já está salvo acima).
+      let notificationSent = false;
+      try {
+        notificationSent = await notifyOwner({
+          title: `Novo lead recebido em ${normalized.route}`,
+          content: [
+            `Persona: ${normalized.persona}`,
+            `Nome: ${normalized.name}`,
+            `E-mail: ${normalized.email}`,
+            `Telefone: ${normalized.phone ?? "Não informado"}`,
+            `Organização: ${normalized.organization ?? "Não informada"}`,
+            `Área de negócio: ${normalized.businessArea ?? "Não informada"}`,
+            `Interesse: ${normalized.interest ?? "Não informado"}`,
+            `Como conheceu: ${normalized.howFound ?? "Não informado"}`,
+            `Origem: ${normalized.source}`,
+            `Mensagem: ${normalized.message}`,
+          ].join("\n"),
+        });
+      } catch (error) {
+        console.warn("[Leads] Owner notification unavailable:", error);
+      }
 
       return {
         success: true,

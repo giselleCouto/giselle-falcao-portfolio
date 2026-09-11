@@ -34,6 +34,8 @@ export const leadContacts = mysqlTable("lead_contacts", {
   message: text("message").notNull(),
   status: mysqlEnum("status", ["new", "reviewed", "archived"]).default("new").notNull(),
   source: varchar("source", { length: 120 }).default("website").notNull(),
+  campaign: varchar("campaign", { length: 120 }),
+  howFound: varchar("howFound", { length: 80 }),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });
