@@ -33,6 +33,26 @@
     <meta
       name="twitter:description"
       content="IA industrial, modelagem matemática e ciência de dados para decisões críticas, com atuação em visão computacional, digital twins, logística, saúde, educação, indústria e setor público." />
+    <!-- LinkedIn Insight Tag (conta de anuncios NOKAHI). So carrega se VITE_LINKEDIN_PARTNER_ID estiver definido. -->
+    <script type="text/javascript">
+      (function () {
+        var pid = "%VITE_LINKEDIN_PARTNER_ID%";
+        if (!pid || pid.indexOf("%") === 0) return;
+        window._linkedin_partner_id = pid;
+        window._linkedin_data_partner_ids = window._linkedin_data_partner_ids || [];
+        window._linkedin_data_partner_ids.push(pid);
+        if (!window.lintrk) {
+          window.lintrk = function (a, b) { window.lintrk.q.push([a, b]); };
+          window.lintrk.q = [];
+        }
+        var s = document.getElementsByTagName("script")[0];
+        var b = document.createElement("script");
+        b.type = "text/javascript"; b.async = true;
+        b.src = "https://snap.licdn.com/li.lms-analytics/insight.min.js";
+        s.parentNode.insertBefore(b, s);
+      })();
+    </script>
+    <noscript><img height="1" width="1" style="display:none;" alt="" src="https://px.ads.linkedin.com/collect/?pid=%VITE_LINKEDIN_PARTNER_ID%&fmt=gif" /></noscript>
   </head>
 
   <body>
