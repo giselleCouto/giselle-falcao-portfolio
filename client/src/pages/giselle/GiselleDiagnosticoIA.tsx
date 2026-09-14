@@ -270,7 +270,7 @@ export default function GiselleDiagnosticoIA({ source }: Props = {}) {
 
           {/* RESULT */}
           {stage === "result" ? (
-            <motion.div key="result" initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.45 }}>
+            <motion.div key="result" initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.3 }}>
               <div className="text-center">
                 <p className="text-xs font-bold uppercase tracking-[0.25em] text-slate-400">
                   Maturidade em IA · {contactForm.company}
@@ -278,7 +278,7 @@ export default function GiselleDiagnosticoIA({ source }: Props = {}) {
                 <motion.p
                   initial={{ scale: 0.7, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
-                  transition={{ duration: 0.5, delay: 0.15 }}
+                  transition={{ duration: 0.3, delay: 0.15 }}
                   className="mt-4 font-baloo text-5xl font-bold"
                   style={{ color: level.cor }}
                 >

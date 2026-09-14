@@ -15,7 +15,7 @@ import GiselleLayout from "@/components/giselle/GiselleLayout";
 import { dossie, livro } from "@/lib/livroData";
 
 const fadeUp = {
-  hidden: { opacity: 0, y: 24 },
+  hidden: { opacity: 0, y: 10 },
   visible: { opacity: 1, y: 0 },
 };
 
@@ -101,7 +101,7 @@ export default function GiselleDossie() {
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, margin: "-60px" }}
-              transition={{ duration: 0.45, delay: i * 0.06 }}
+              transition={{ duration: 0.3, delay: i * 0.06 }}
               className="rounded-3xl border border-slate-200/70 bg-white p-6"
             >
               <p className="font-baloo text-xl font-bold text-[#6b21a8]">{p.stat}</p>
@@ -123,7 +123,7 @@ export default function GiselleDossie() {
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true, margin: "-60px" }}
-                transition={{ duration: 0.45, delay: i * 0.06 }}
+                transition={{ duration: 0.3, delay: i * 0.06 }}
                 className="relative rounded-3xl border border-slate-200/70 bg-[#f7f8fc] p-6"
               >
                 <span className="flex size-11 items-center justify-center rounded-2xl bg-[linear-gradient(135deg,#6b21a8,#14b8a6)] font-baloo text-lg font-bold text-white">
@@ -150,7 +150,7 @@ export default function GiselleDossie() {
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, margin: "-60px" }}
-              transition={{ duration: 0.45, delay: i * 0.05 }}
+              transition={{ duration: 0.3, delay: i * 0.05 }}
               className="rounded-3xl bg-[#0d1226] p-6"
             >
               <p className="font-baloo text-3xl font-bold text-teal-300">{m.value}</p>

@@ -36,15 +36,16 @@ export const palestras = {
       id: "workshop",
       nome: "Workshop Hands-on",
       duracao: "Meio dia a 2 dias",
-      formato: "Presencial ou on-line ao vivo · turmas de até 40 pessoas",
+      formato: "Presencial ou on-line ao vivo · turmas de até 40 pessoas · duas versões",
       destaque: true,
-      paraQuem: "Equipes que precisam sair fazendo: dados, analytics, IA aplicada e decisão orientada por evidência.",
+      paraQuem:
+        "Equipes que precisam sair fazendo — da diretoria ao operacional. Versão para equipes NÃO técnicas (a mais pedida por RH e T&D) e versão técnica para times de dados.",
       inclui: [
+        "Versão equipes não técnicas: produtividade com ChatGPT, Copilot e Gemini — uso seguro, LGPD e casos do dia a dia de cada área",
+        "Versão técnica: prática guiada em Colab, BigQuery e Databricks Free",
         "Diagnóstico prévio do nível e do contexto da equipe",
-        "Prática guiada em ferramentas gratuitas (Colab, BigQuery, Databricks Free)",
-        "Dados do próprio negócio quando possível (com acordo de confidencialidade)",
-        "Material de apoio e trilha de continuidade na Academy",
-        "Relatório pós-workshop com recomendações",
+        "Dados e casos do próprio negócio quando possível (com acordo de confidencialidade)",
+        "Material de apoio, trilha de continuidade e relatório pós-workshop",
       ],
       investimento: "Proposta após diagnóstico do contexto",
     },
@@ -68,6 +69,8 @@ export const palestras = {
 
   // Temas prontos (títulos reais + linhas de pesquisa)
   temas: [
+    "IA generativa para equipes não técnicas: produtividade com ChatGPT, Copilot e Gemini — com uso seguro e LGPD",
+    "IA vai além dos LLMs: qual abordagem resolve a dor do seu negócio",
     "Da Query ao Modelo: IA de produção com SQL e Python",
     "IA aplicada no Agronegócio: do sensor à decisão",
     "Metodologia CEOD: dados e IA na recomposição da aprendizagem",
@@ -75,6 +78,18 @@ export const palestras = {
     "Gêmeos digitais e visão computacional na operação",
     "Mulheres em Dados & IA: carreira, autoria e representatividade",
   ],
+
+  // Vídeo real de palco (YouTube Short — Minas Summit 2026)
+  video: {
+    embedUrl: "https://www.youtube.com/embed/M0PbUaz6naM",
+    titulo: "Giselle no palco",
+    legenda: "Trecho real de palestra — Minas Summit 2026, Palco Casa do Baile",
+  },
+
+  // Depoimentos AUTORIZADOS — regra da casa: nunca inventar.
+  // A seção só aparece quando houver itens aqui. Formato:
+  // { texto: "...", nome: "Nome Sobrenome", cargo: "Cargo · Empresa" }
+  depoimentos: [] as { texto: string; nome: string; cargo: string }[],
 
   comoFunciona: [
     { n: "1", t: "Diagnóstico", d: "Você conta o objetivo, o público e o formato do evento ou da formação." },

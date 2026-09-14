@@ -27,7 +27,7 @@ import { getAttribution } from "@/lib/tracking";
 import { trpc } from "@/lib/trpc";
 
 const fadeUp = {
-  hidden: { opacity: 0, y: 24 },
+  hidden: { opacity: 0, y: 10 },
   visible: { opacity: 1, y: 0 },
 };
 
@@ -246,7 +246,7 @@ export default function GiselleContato() {
     <GiselleLayout>
       {/* Header */}
       <section className="container pb-4 pt-14 sm:pt-20">
-        <motion.div variants={fadeUp} initial="hidden" animate="visible" transition={{ duration: 0.55 }}>
+        <motion.div variants={fadeUp} initial="hidden" animate="visible" transition={{ duration: 0.3 }}>
           <p className="text-xs font-bold uppercase tracking-[0.25em] text-teal-600">Contato</p>
           <h1 className="mt-3 text-4xl font-bold sm:text-5xl">
             Vamos{" "}
@@ -271,7 +271,7 @@ export default function GiselleContato() {
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, margin: "-60px" }}
-              transition={{ duration: 0.45, delay: i * 0.06 }}
+              transition={{ duration: 0.3, delay: i * 0.06 }}
             >
               <a
                 href={channel.href}
@@ -312,7 +312,7 @@ export default function GiselleContato() {
                   initial="hidden"
                   whileInView="visible"
                   viewport={{ once: true, margin: "-60px" }}
-                  transition={{ duration: 0.45, delay: i * 0.06 }}
+                  transition={{ duration: 0.3, delay: i * 0.06 }}
                   className="flex flex-col gap-4 rounded-3xl border border-slate-200/70 bg-white p-6 shadow-[0_10px_40px_rgba(26,19,51,0.06)] sm:flex-row sm:items-center"
                 >
                   <span className={`flex size-12 shrink-0 items-center justify-center rounded-2xl ${p.tint}`}>
@@ -340,7 +340,7 @@ export default function GiselleContato() {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "-60px" }}
-            transition={{ duration: 0.5, delay: 0.1 }}
+            transition={{ duration: 0.3, delay: 0.1 }}
             className="mx-auto w-full max-w-xs lg:mx-0 lg:justify-self-end"
           >
             <div className="relative">
@@ -381,7 +381,7 @@ export default function GiselleContato() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-60px" }}
-          transition={{ duration: 0.45 }}
+          transition={{ duration: 0.3 }}
           className="rounded-3xl border border-slate-200/70 bg-white p-8 shadow-[0_10px_40px_rgba(26,19,51,0.06)]"
         >
           <p className="text-xs font-bold uppercase tracking-[0.25em] text-teal-600">Redes</p>
@@ -414,7 +414,7 @@ export default function GiselleContato() {
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, margin: "-60px" }}
-              transition={{ duration: 0.45, delay: i * 0.06 }}
+              transition={{ duration: 0.3, delay: i * 0.06 }}
             >
               <details className="group rounded-3xl border border-slate-200/70 bg-white shadow-[0_10px_40px_rgba(26,19,51,0.06)]">
                 <summary className="flex cursor-pointer list-none items-center justify-between gap-4 p-6 text-left font-semibold text-[#1a1333] [&::-webkit-details-marker]:hidden">

@@ -16,7 +16,7 @@ import {
 import { livro } from "@/lib/livroData";
 
 const fadeUp = {
-  hidden: { opacity: 0, y: 24 },
+  hidden: { opacity: 0, y: 10 },
   visible: { opacity: 1, y: 0 },
 };
 
@@ -61,7 +61,7 @@ export function LivroSections() {
             variants={fadeUp}
             initial="hidden"
             animate="visible"
-            transition={{ duration: 0.6, delay: 0.1 }}
+            transition={{ duration: 0.3, delay: 0.1 }}
           >
             <p className="inline-flex items-center gap-2 rounded-full bg-violet-100 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.2em] text-[#6b21a8]">
               <Sparkles className="size-3.5" />
@@ -116,32 +116,16 @@ export function LivroSections() {
                 { t: "Edição", v: `${livro.edition} · ${livro.pages}p` },
                 { t: "ISBN (impresso)", v: livro.isbnPrint },
                 { t: "ISBN (digital)", v: livro.isbnDigital },
-                { t: "DOI", v: livro.doi, note: "aguardando ativação pública" },
                 { t: "Publicação", v: `${livro.place} · ${livro.year}` },
                 { t: "Editora", v: livro.publisher },
               ].map((item) => (
                 <div key={item.t}>
                   <dt className="text-xs font-bold uppercase tracking-wider text-slate-400">{item.t}</dt>
                   <dd className="mt-0.5 font-medium text-[#1a1333] break-words">{item.v}</dd>
-                  {"note" in item && item.note ? (
-                    <p className="mt-1 text-[0.68rem] font-semibold uppercase tracking-wider text-amber-700">{item.note}</p>
-                  ) : null}
                 </div>
               ))}
             </dl>
 
-            <div className="mt-6 rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm leading-6 text-amber-900">
-              <p>{livro.doiStatus}</p>
-              <a
-                href={livro.doiResolverUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-2 inline-flex items-center gap-1 font-bold text-amber-950 underline decoration-amber-300 underline-offset-4"
-              >
-                Verificar o DOI no resolvedor oficial
-                <ArrowUpRight className="size-3.5" />
-              </a>
-            </div>
           </motion.div>
         </div>
       </section>
@@ -163,7 +147,7 @@ export function LivroSections() {
                   initial="hidden"
                   whileInView="visible"
                   viewport={{ once: true, margin: "-60px" }}
-                  transition={{ duration: 0.45, delay: i * 0.06 }}
+                  transition={{ duration: 0.3, delay: i * 0.06 }}
                   className="flex h-full flex-col rounded-3xl border border-slate-200/70 bg-[#f7f8fc] p-6"
                 >
                   <span className="flex size-12 items-center justify-center rounded-2xl bg-violet-100 text-[#6b21a8]">

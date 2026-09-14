@@ -22,7 +22,7 @@ import { pressFeatures } from "@/lib/pressData";
 import { livro } from "@/lib/livroData";
 
 const fadeUp = {
-  hidden: { opacity: 0, y: 24 },
+  hidden: { opacity: 0, y: 10 },
   visible: { opacity: 1, y: 0 },
 };
 
@@ -83,7 +83,7 @@ export default function GiselleHome() {
     <GiselleLayout>
       {/* Hero */}
       <section className="container grid items-center gap-10 py-14 sm:py-20 lg:grid-cols-[1.1fr_0.9fr]">
-        <motion.div variants={fadeUp} initial="hidden" animate="visible" transition={{ duration: 0.55 }}>
+        <motion.div variants={fadeUp} initial="hidden" animate="visible" transition={{ duration: 0.3 }}>
           <p className="inline-flex items-center gap-2 rounded-full bg-violet-100 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.2em] text-[#6b21a8]">
             <Sparkles className="size-3.5" />
             PhD · IA Industrial
@@ -122,7 +122,7 @@ export default function GiselleHome() {
           variants={fadeUp}
           initial="hidden"
           animate="visible"
-          transition={{ duration: 0.55, delay: 0.1 }}
+          transition={{ duration: 0.3, delay: 0.1 }}
           className="relative mx-auto w-full max-w-md"
         >
           <div className="absolute -inset-3 rounded-[2.5rem] bg-[linear-gradient(135deg,#6b21a8,#8b5cf6,#14b8a6)] opacity-15 blur-xl" />
@@ -171,7 +171,7 @@ export default function GiselleHome() {
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, margin: "-60px" }}
-              transition={{ duration: 0.45, delay: i * 0.06 }}
+              transition={{ duration: 0.3, delay: i * 0.06 }}
             >
               <Link
                 href={portal.href}
@@ -268,7 +268,7 @@ export default function GiselleHome() {
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, margin: "-60px" }}
-              transition={{ duration: 0.45, delay: i * 0.08 }}
+              transition={{ duration: 0.3, delay: i * 0.08 }}
             >
               <a
                 href={press.url}

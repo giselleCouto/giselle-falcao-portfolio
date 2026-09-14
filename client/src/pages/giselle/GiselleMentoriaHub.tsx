@@ -14,7 +14,7 @@ import GiselleLayout from "@/components/giselle/GiselleLayout";
 import { contact } from "@/lib/portfolioData";
 
 const fadeUp = {
-  hidden: { opacity: 0, y: 24 },
+  hidden: { opacity: 0, y: 10 },
   visible: { opacity: 1, y: 0 },
 };
 
@@ -62,7 +62,7 @@ export default function GiselleMentoriaHub() {
       <section className="relative overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_12%_25%,rgba(107,33,168,0.09),transparent_45%),radial-gradient(circle_at_88%_15%,rgba(20,184,166,0.09),transparent_45%)]" />
         <div className="container relative grid items-center gap-10 py-14 sm:py-20 lg:grid-cols-[1.15fr_0.85fr]">
-          <motion.div variants={fadeUp} initial="hidden" animate="visible" transition={{ duration: 0.55 }}>
+          <motion.div variants={fadeUp} initial="hidden" animate="visible" transition={{ duration: 0.3 }}>
             <p className="inline-flex items-center gap-2 rounded-full bg-violet-100 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.2em] text-[#6b21a8]">
               <Sparkles className="size-3.5" />
               Mentoria em Dados & IA
@@ -79,7 +79,7 @@ export default function GiselleMentoriaHub() {
             variants={fadeUp}
             initial="hidden"
             animate="visible"
-            transition={{ duration: 0.55, delay: 0.1 }}
+            transition={{ duration: 0.3, delay: 0.1 }}
             className="relative mx-auto w-full max-w-sm"
           >
             <div className="absolute -inset-3 rounded-[2.5rem] bg-[linear-gradient(135deg,#6b21a8,#8b5cf6,#14b8a6)] opacity-15 blur-xl" />
@@ -105,7 +105,7 @@ export default function GiselleMentoriaHub() {
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true, margin: "-60px" }}
-                transition={{ duration: 0.45, delay: i * 0.08 }}
+                transition={{ duration: 0.3, delay: i * 0.08 }}
                 className={`flex h-full flex-col rounded-3xl border-2 p-7 ${
                   c.destaque
                     ? "border-[#c65a3a] bg-white shadow-[0_18px_50px_rgba(198,90,58,0.12)]"

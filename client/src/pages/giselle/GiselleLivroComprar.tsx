@@ -5,7 +5,7 @@ import GiselleLayout from "@/components/giselle/GiselleLayout";
 import { livro } from "@/lib/livroData";
 
 const fadeUp = {
-  hidden: { opacity: 0, y: 24 },
+  hidden: { opacity: 0, y: 10 },
   visible: { opacity: 1, y: 0 },
 };
 
@@ -56,7 +56,7 @@ export default function GiselleLivroComprar() {
               variants={fadeUp}
               initial="hidden"
               animate="visible"
-              transition={{ duration: 0.45, delay: 0.08 + i * 0.07 }}
+              transition={{ duration: 0.3, delay: 0.08 + i * 0.07 }}
               href={store.href}
               target="_blank"
               rel="noopener noreferrer"

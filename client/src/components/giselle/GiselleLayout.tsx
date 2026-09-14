@@ -5,6 +5,7 @@ import { contact } from "@/lib/portfolioData";
 
 const NAV_ITEMS = [
   { href: "/giselle", label: "Início" },
+  { href: "/giselle/palestras", label: "Palestras" },
   { href: "/giselle/cursos", label: "Cursos" },
   { href: "/giselle/mentoria", label: "Mentoria" },
   { href: "/giselle/servicos", label: "Serviços" },

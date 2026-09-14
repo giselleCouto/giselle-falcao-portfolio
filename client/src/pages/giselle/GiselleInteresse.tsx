@@ -26,7 +26,7 @@ import { trpc } from "@/lib/trpc";
 const socialLink = (label: string) => contact.links.find((l) => l.label === label)?.href ?? "#";
 
 const fadeUp = {
-  hidden: { opacity: 0, y: 24 },
+  hidden: { opacity: 0, y: 10 },
   visible: { opacity: 1, y: 0 },
 };
 
@@ -185,7 +185,7 @@ export default function GiselleInteresse({
           <motion.div
             initial={{ opacity: 0, scale: 0.96 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.45 }}
+            transition={{ duration: 0.3 }}
             className="text-center"
           >
             <motion.div
@@ -337,7 +337,7 @@ export default function GiselleInteresse({
           <motion.div
             initial={{ opacity: 0, scale: 0.94 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.45 }}
+            transition={{ duration: 0.3 }}
             className="max-w-lg rounded-[2.5rem] border border-slate-200/70 bg-white p-10 text-center shadow-[0_18px_60px_rgba(26,19,51,0.12)]"
           >
             <motion.div
@@ -400,7 +400,7 @@ export default function GiselleInteresse({
           variants={fadeUp}
           initial="hidden"
           animate="visible"
-          transition={{ duration: 0.5, delay: 0.08 }}
+          transition={{ duration: 0.3, delay: 0.08 }}
           onSubmit={handleSubmit}
           className="mt-8 space-y-6"
         >

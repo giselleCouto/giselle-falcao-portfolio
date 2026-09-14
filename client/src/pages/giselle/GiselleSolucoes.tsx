@@ -7,7 +7,7 @@ import { projects } from "@/lib/portfolioData";
 // Serviços; a rota antiga /giselle/solucoes redireciona para lá.
 
 const fadeUp = {
-  hidden: { opacity: 0, y: 24 },
+  hidden: { opacity: 0, y: 10 },
   visible: { opacity: 1, y: 0 },
 };
 
@@ -94,7 +94,7 @@ export function SolucoesSections() {
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true, margin: "-60px" }}
-                transition={{ duration: 0.45, delay: i * 0.06 }}
+                transition={{ duration: 0.3, delay: i * 0.06 }}
                 className="h-full"
               >
                 <div className="flex h-full flex-col rounded-3xl border border-slate-200/70 bg-white p-6 shadow-[0_10px_40px_rgba(26,19,51,0.06)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_18px_50px_rgba(107,33,168,0.12)]">
@@ -134,7 +134,7 @@ export function SolucoesSections() {
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, margin: "-60px" }}
-              transition={{ duration: 0.45, delay: i * 0.05 }}
+              transition={{ duration: 0.3, delay: i * 0.05 }}
               className="h-full"
             >
               <div className="flex h-full flex-col rounded-3xl border border-slate-200/70 bg-white p-5 shadow-[0_10px_40px_rgba(26,19,51,0.06)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_18px_50px_rgba(107,33,168,0.12)]">

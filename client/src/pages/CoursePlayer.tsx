@@ -36,7 +36,7 @@ import { contact } from "@/lib/portfolioData";
 import NotFound from "@/pages/NotFound";
 
 const fadeUp = {
-  hidden: { opacity: 0, y: 24 },
+  hidden: { opacity: 0, y: 10 },
   visible: { opacity: 1, y: 0 },
 };
 
@@ -93,7 +93,7 @@ function Celebration({ show }: { show: boolean }) {
           initial={{ opacity: 0, scale: 0.6 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 1.2 }}
-          transition={{ duration: 0.45 }}
+          transition={{ duration: 0.3 }}
           className="pointer-events-none fixed inset-0 z-50 flex items-center justify-center"
         >
           <div className="flex flex-col items-center gap-3 rounded-3xl bg-white/95 px-10 py-8 shadow-[0_25px_80px_rgba(107,33,168,0.25)] backdrop-blur">
@@ -461,7 +461,7 @@ export default function CoursePlayer({ slug }: { slug: string }) {
               variants={fadeUp}
               initial="hidden"
               animate="visible"
-              transition={{ duration: 0.5, delay: 0.08 }}
+              transition={{ duration: 0.3, delay: 0.08 }}
               className="flex shrink-0 items-center gap-4 rounded-3xl border border-slate-200/70 bg-[#f7f8fc] px-6 py-4"
             >
               <div className="text-center">
@@ -648,7 +648,7 @@ export default function CoursePlayer({ slug }: { slug: string }) {
               variants={fadeUp}
               initial="hidden"
               animate="visible"
-              transition={{ duration: 0.35 }}
+              transition={{ duration: 0.3 }}
               className="rounded-3xl border border-slate-200/70 bg-white p-6 shadow-[0_10px_40px_rgba(26,19,51,0.06)] sm:p-8"
             >
               <div className="flex flex-wrap items-center justify-between gap-3">

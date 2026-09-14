@@ -8,7 +8,7 @@ import LabRoteiro from "@/components/lab/LabRoteiro";
 import { PROXIMOS_PASSOS, lab } from "@/lib/labData";
 
 const fadeUp = {
-  hidden: { opacity: 0, y: 24 },
+  hidden: { opacity: 0, y: 10 },
   visible: { opacity: 1, y: 0 },
 };
 

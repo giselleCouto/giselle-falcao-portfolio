@@ -126,7 +126,7 @@ export default function LabDiagnostico() {
       const msg = `Oi, Giselle! Fiz o Diagnóstico de Prontidão no Laboratório da Decisão. Meu perfil: ${perfil.nome} (${total}/16 — ${porEixo.map((e) => `${e.nome} ${e.pontos}/${e.max}`).join(", ")}). Me diz por onde você começaria?`;
 
       return (
-        <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="space-y-5">
+        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-5">
           <div className="rounded-3xl border-2 border-teal-200 bg-white p-6">
             <p className="text-xs font-bold uppercase tracking-[0.2em] text-teal-600">Seu perfil</p>
             <h3 className="mt-2 font-baloo text-3xl font-bold text-[#1a1333]">{perfil.nome}</h3>
@@ -208,7 +208,7 @@ export default function LabDiagnostico() {
     const msg = `Oi, Giselle! Fiz o diagnóstico da empresa no Laboratório da Decisão. Nível: ${nivel.nome} (${total}/14). ${mFraco ? `O que mais trava: ${mFraco.nome}.` : "Nenhum M travando."}${temEngavetado ? " Temos solução pronta e parada — " + vereditoMsg : ""} Topo os 15 minutos de conversa sobre o diagnóstico.`;
 
     return (
-      <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="space-y-5">
+      <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-5">
         <div className="rounded-3xl border-2 border-violet-200 bg-white p-6">
           <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#6b21a8]">Prontidão do seu projeto</p>
           <h3 className="mt-2 font-baloo text-3xl font-bold text-[#1a1333]">{nivel.nome}</h3>

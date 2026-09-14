@@ -8,7 +8,7 @@ import { readCoursePercent } from "@/lib/courses/useCourseProgress";
 import type { CourseLevel } from "@/lib/courses/types";
 
 const fadeUp = {
-  hidden: { opacity: 0, y: 24 },
+  hidden: { opacity: 0, y: 10 },
   visible: { opacity: 1, y: 0 },
 };
 
@@ -37,7 +37,7 @@ export default function CourseCatalog() {
         />
         <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(13,18,38,0.55),rgba(13,18,38,0.82))]" />
         <div className="container relative py-20 sm:py-24">
-          <motion.div variants={fadeUp} initial="hidden" animate="visible" transition={{ duration: 0.55 }}>
+          <motion.div variants={fadeUp} initial="hidden" animate="visible" transition={{ duration: 0.3 }}>
             <p className="text-xs font-bold uppercase tracking-[0.3em] text-teal-300">Educação</p>
             <h1 className="mt-4 max-w-3xl font-baloo text-4xl font-bold leading-[1.05] text-white sm:text-5xl lg:text-6xl">
               Cursos{" "}
@@ -107,7 +107,7 @@ export default function CourseCatalog() {
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true, margin: "-60px" }}
-                transition={{ duration: 0.45, delay: index * 0.06 }}
+                transition={{ duration: 0.3, delay: index * 0.06 }}
                 className="group flex flex-col overflow-hidden rounded-3xl border border-slate-200/70 bg-white shadow-[0_10px_40px_rgba(26,19,51,0.06)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_18px_50px_rgba(107,33,168,0.12)]"
               >
                 {/* Capa */}

@@ -16,7 +16,7 @@ import { getCourse } from "@/lib/courses";
 import { escadaCarreira, type TrilhaCarreira } from "@/lib/trilhasCarreiraData";
 
 const fadeUp = {
-  hidden: { opacity: 0, y: 24 },
+  hidden: { opacity: 0, y: 10 },
   visible: { opacity: 1, y: 0 },
 };
 
@@ -41,7 +41,7 @@ export default function GiselleTrilhaCarreira({ trilha }: { trilha: TrilhaCarrei
           }}
         />
         <div className="container relative py-16 sm:py-20">
-          <motion.div variants={fadeUp} initial="hidden" animate="visible" transition={{ duration: 0.55 }}>
+          <motion.div variants={fadeUp} initial="hidden" animate="visible" transition={{ duration: 0.3 }}>
             <p
               className={`inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.2em] backdrop-blur ${trilha.cores.chip}`}
             >
@@ -112,7 +112,7 @@ export default function GiselleTrilhaCarreira({ trilha }: { trilha: TrilhaCarrei
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true, margin: "-60px" }}
-                transition={{ duration: 0.45, delay: i * 0.06 }}
+                transition={{ duration: 0.3, delay: i * 0.06 }}
                 className="grid gap-6 rounded-3xl border border-slate-200/70 bg-[#f7f8fc] p-7 lg:grid-cols-[auto_1fr_auto] lg:items-center"
               >
                 <span

@@ -235,7 +235,7 @@ export default function LabRoteiro() {
 
       {relatorio ? (
         <motion.div
-          initial={{ opacity: 0, y: 16 }}
+          initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           className="rounded-3xl border-2 border-slate-200 bg-[#f7f8fc] p-6"
         >

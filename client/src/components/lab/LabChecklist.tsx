@@ -108,7 +108,7 @@ export default function LabChecklist() {
 
       {completo ? (
         <motion.div
-          initial={{ opacity: 0, y: 16 }}
+          initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           className="overflow-hidden rounded-3xl bg-[#0d1226] p-6"
         >

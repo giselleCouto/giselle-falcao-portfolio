@@ -20,7 +20,7 @@ import { iaEmpresas } from "@/lib/iaEmpresasData";
 import { contact } from "@/lib/portfolioData";
 
 const fadeUp = {
-  hidden: { opacity: 0, y: 24 },
+  hidden: { opacity: 0, y: 10 },
   visible: { opacity: 1, y: 0 },
 };
 
@@ -41,7 +41,7 @@ export default function GiselleIAEmpresas() {
       <section className="relative overflow-hidden bg-[#0d1226]">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_15%_25%,rgba(107,33,168,0.4),transparent_50%),radial-gradient(circle_at_85%_20%,rgba(20,184,166,0.25),transparent_45%)]" />
         <div className="container relative py-16 sm:py-20">
-          <motion.div variants={fadeUp} initial="hidden" animate="visible" transition={{ duration: 0.55 }}>
+          <motion.div variants={fadeUp} initial="hidden" animate="visible" transition={{ duration: 0.3 }}>
             <p className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.2em] text-teal-200 backdrop-blur">
               <Sparkles className="size-3.5" />
               {iaEmpresas.badge}
@@ -118,7 +118,7 @@ export default function GiselleIAEmpresas() {
                   initial="hidden"
                   whileInView="visible"
                   viewport={{ once: true, margin: "-60px" }}
-                  transition={{ duration: 0.45, delay: i * 0.05 }}
+                  transition={{ duration: 0.3, delay: i * 0.05 }}
                   className="flex h-full flex-col rounded-3xl border border-slate-200/70 bg-[#f7f8fc] p-6"
                 >
                   <span className="flex size-12 items-center justify-center rounded-2xl bg-violet-100 text-[#6b21a8]">

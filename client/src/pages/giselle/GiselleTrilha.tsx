@@ -21,7 +21,7 @@ import { trilha } from "@/lib/trilhaData";
 import { contact } from "@/lib/portfolioData";
 
 const fadeUp = {
-  hidden: { opacity: 0, y: 24 },
+  hidden: { opacity: 0, y: 10 },
   visible: { opacity: 1, y: 0 },
 };
 
@@ -34,7 +34,7 @@ export default function GiselleTrilha() {
       <section className="relative overflow-hidden bg-[#0d1226]">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_15%_25%,rgba(107,33,168,0.4),transparent_50%),radial-gradient(circle_at_85%_20%,rgba(20,184,166,0.22),transparent_45%)]" />
         <div className="container relative py-16 sm:py-20">
-          <motion.div variants={fadeUp} initial="hidden" animate="visible" transition={{ duration: 0.55 }}>
+          <motion.div variants={fadeUp} initial="hidden" animate="visible" transition={{ duration: 0.3 }}>
             <p className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.2em] text-teal-200 backdrop-blur">
               <RouteIcon className="size-3.5" />
               Trilha profissional · {trilha.version}
@@ -87,7 +87,7 @@ export default function GiselleTrilha() {
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, margin: "-60px" }}
-              transition={{ duration: 0.45, delay: i * 0.08 }}
+              transition={{ duration: 0.3, delay: i * 0.08 }}
               className={`rounded-3xl border-2 p-7 ${
                 route.highlight
                   ? "border-[#8b5cf6] bg-white shadow-[0_18px_50px_rgba(107,33,168,0.12)]"

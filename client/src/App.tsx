@@ -608,6 +608,8 @@ function RouteSeo() {
     upsertMeta('meta[property="og:description"]', "property", "og:description", description);
     upsertMeta('meta[property="og:url"]', "property", "og:url", canonicalUrl);
     upsertMeta('meta[name="twitter:card"]', "name", "twitter:card", "summary_large_image");
+    upsertMeta('meta[property="og:image"]', "property", "og:image", "https://www.coutofalcao.com/brand/og-card.jpg");
+    upsertMeta('meta[name="twitter:image"]', "name", "twitter:image", "https://www.coutofalcao.com/brand/og-card.jpg");
     upsertMeta('meta[name="twitter:title"]', "name", "twitter:title", title);
     upsertMeta('meta[name="twitter:description"]', "name", "twitter:description", description);
     upsertCanonical(canonicalUrl);

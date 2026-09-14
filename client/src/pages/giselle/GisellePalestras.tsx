@@ -21,7 +21,7 @@ import { getAttribution } from "@/lib/tracking";
 import { trpc } from "@/lib/trpc";
 
 const fadeUp = {
-  hidden: { opacity: 0, y: 24 },
+  hidden: { opacity: 0, y: 10 },
   visible: { opacity: 1, y: 0 },
 };
 
@@ -59,7 +59,7 @@ function PedidoProposta() {
   if (enviado) {
     return (
       <motion.div
-        initial={{ opacity: 0, y: 16 }}
+        initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         className="rounded-3xl border-2 border-teal-200 bg-teal-50/40 p-8 text-center"
       >
@@ -173,7 +173,7 @@ export default function GisellePalestras() {
         />
         <div className="absolute inset-0 bg-[linear-gradient(100deg,rgba(13,18,38,0.92)_30%,rgba(13,18,38,0.55))]" />
         <div className="container relative py-16 sm:py-24">
-          <motion.div variants={fadeUp} initial="hidden" animate="visible" transition={{ duration: 0.55 }}>
+          <motion.div variants={fadeUp} initial="hidden" animate="visible" transition={{ duration: 0.3 }}>
             <p className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.2em] text-teal-200 backdrop-blur">
               <Mic className="size-3.5" />
               Palestras · Workshops · Programas corporativos
@@ -219,8 +219,54 @@ export default function GisellePalestras() {
         </div>
       </section>
 
-      {/* 3 níveis */}
+      {/* Vídeo real de palco + depoimentos (quando autorizados) */}
       <section className="container py-14 sm:py-16">
+        <div className="grid items-center gap-10 lg:grid-cols-[0.9fr_1.1fr]">
+          <div className="mx-auto w-full max-w-xs lg:mx-0">
+            <div className="relative">
+              <div className="absolute -inset-3 rounded-[2rem] bg-[linear-gradient(135deg,#6b21a8,#8b5cf6,#14b8a6)] opacity-15 blur-xl" />
+              <div className="relative aspect-[9/16] overflow-hidden rounded-[2rem] border border-slate-200/70 bg-black shadow-[0_18px_60px_rgba(26,19,51,0.18)]">
+                <iframe
+                  src={palestras.video.embedUrl}
+                  title={palestras.video.titulo}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowFullScreen
+                  loading="lazy"
+                  className="size-full"
+                />
+              </div>
+            </div>
+            <p className="mt-3 text-center text-xs font-semibold text-slate-400 lg:text-left">
+              {palestras.video.legenda}
+            </p>
+          </div>
+          <div>
+            <p className="text-xs font-bold uppercase tracking-[0.25em] text-teal-600">No palco</p>
+            <h2 className="mt-3 text-3xl font-bold">Veja como é ao vivo</h2>
+            <p className="mt-4 max-w-xl text-base leading-8 text-slate-600">
+              Conteúdo técnico com narrativa que qualquer plateia acompanha — do auditório executivo
+              ao time de operação. Este trecho é do Minas Summit 2026; a lista completa de palcos
+              está logo acima, e o formato certo para o seu evento, logo abaixo.
+            </p>
+            {palestras.depoimentos.length > 0 ? (
+              <div className="mt-8 space-y-4">
+                {palestras.depoimentos.map((d) => (
+                  <figure key={d.nome} className="rounded-3xl border border-slate-200/70 bg-white p-6">
+                    <blockquote className="text-sm leading-7 text-slate-600">“{d.texto}”</blockquote>
+                    <figcaption className="mt-3 text-sm font-bold text-[#1a1333]">
+                      {d.nome} <span className="font-medium text-slate-400">· {d.cargo}</span>
+                    </figcaption>
+                  </figure>
+                ))}
+              </div>
+            ) : null}
+          </div>
+        </div>
+      </section>
+
+      {/* 3 níveis */}
+      <section className="border-t border-slate-200/70 bg-white py-14 sm:py-16">
+        <div className="container">
         <p className="text-xs font-bold uppercase tracking-[0.25em] text-teal-600">Três formatos</p>
         <h2 className="mt-3 text-3xl font-bold">Do palco à formação completa do time</h2>
         <div className="mt-10 grid gap-6 lg:grid-cols-3">
@@ -231,7 +277,7 @@ export default function GisellePalestras() {
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, margin: "-60px" }}
-              transition={{ duration: 0.45, delay: i * 0.08 }}
+              transition={{ duration: 0.3, delay: i * 0.08 }}
               className={`flex h-full flex-col rounded-3xl border-2 p-7 ${
                 tier.destaque
                   ? "border-[#8b5cf6] bg-white shadow-[0_18px_50px_rgba(107,33,168,0.12)]"
@@ -277,6 +323,7 @@ export default function GisellePalestras() {
               </a>
             </motion.div>
           ))}
+        </div>
         </div>
       </section>
 

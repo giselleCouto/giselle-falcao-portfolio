@@ -70,7 +70,7 @@ export default function GiselleBio() {
     <div className="giselle-light min-h-screen bg-[#f7f8fc] font-baloo">
       <main className="mx-auto flex max-w-md flex-col items-center px-5 pb-14 pt-10">
         <motion.div
-          initial={{ opacity: 0, y: 16 }}
+          initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
           className="flex flex-col items-center text-center"
@@ -95,7 +95,7 @@ export default function GiselleBio() {
               key={l.href}
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.35, delay: 0.08 + i * 0.05 }}
+              transition={{ duration: 0.3, delay: 0.08 + i * 0.05 }}
             >
               <Link
                 href={l.href}
