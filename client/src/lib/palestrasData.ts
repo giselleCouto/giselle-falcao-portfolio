@@ -85,7 +85,7 @@ export const palestras = {
   video: {
     embedUrl: "https://www.youtube.com/embed/M0PbUaz6naM",
     titulo: "Giselle no palco",
-    legenda: "Trecho real de palestra — Minas Summit 2026, Palco Casa do Baile",
+    legenda: "Trecho real de palestra — HackTown 2026, Santa Rita do Sapucaí",
   },
 
   // Depoimentos AUTORIZADOS — regra da casa: nunca inventar.

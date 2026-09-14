@@ -245,7 +245,7 @@ export default function GisellePalestras() {
             <h2 className="mt-3 text-3xl font-bold">Veja como é ao vivo</h2>
             <p className="mt-4 max-w-xl text-base leading-8 text-slate-600">
               Conteúdo técnico com narrativa que qualquer plateia acompanha — do auditório executivo
-              ao time de operação. Este trecho é do Minas Summit 2026; a lista completa de palcos
+              ao time de operação. Este trecho é do HackTown 2026; a lista completa de palcos
               está logo acima, e o formato certo para o seu evento, logo abaixo.
             </p>
             {palestras.depoimentos.length > 0 ? (
