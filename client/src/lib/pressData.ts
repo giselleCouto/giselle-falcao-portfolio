@@ -12,6 +12,16 @@ export type PressFeature = {
 
 export const pressFeatures: PressFeature[] = [
   {
+    outlet: "SAGRES TV",
+    section: "É Bom, É Brasil",
+    date: "14 set 2026",
+    title: "Giselle Falcão: uma trajetória de superação, conhecimento e ciência",
+    summary:
+      "Entrevista ao programa É Bom, É Brasil (Demà Sagres TV): da sala de aula à Sorbonne, e da pesquisa à IA aplicada que chega à operação.",
+    highlight: "Entrevista em vídeo",
+    url: "https://youtube.com/live/S-VmfASN6IM",
+  },
+  {
     outlet: "O TEMPO",
     section: "Economia",
     date: "6 jul 2026",

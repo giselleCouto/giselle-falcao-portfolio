@@ -259,7 +259,7 @@ export default function GiselleHome() {
       {/* Na mídia */}
       <section className="container pb-16 sm:pb-20">
         <p className="text-xs font-bold uppercase tracking-[0.25em] text-teal-600">Na mídia</p>
-        <h2 className="mt-3 text-3xl font-bold">Meu trabalho no jornal</h2>
+        <h2 className="mt-3 text-3xl font-bold">Meu trabalho na imprensa</h2>
         <div className="mt-10 grid gap-6 lg:grid-cols-2">
           {pressFeatures.map((press, i) => (
             <motion.div

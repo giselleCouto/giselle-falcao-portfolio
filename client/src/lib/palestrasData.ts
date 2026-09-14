@@ -11,7 +11,9 @@ export const palestras = {
   proof: [
     { value: "DATA BH · SQL Saturday", label: "palestrante no maior evento de dados de MG (PUC Minas)" },
     { value: "Minas Summit", label: "painel 'IA aplicada no Agronegócio', com cobertura do jornal O Tempo" },
-    { value: "O Tempo", label: "2 reportagens de Economia destacando seus cases de IA" },
+    { value: "HackTown 2026", label: "palestrante no festival de inovação e criatividade (Santa Rita do Sapucaí)" },
+    { value: "IFMG · Campus Sabará", label: "palestra a estudantes sobre Dados, IA e carreira" },
+    { value: "O Tempo · Sagres TV", label: "2 reportagens de Economia e entrevista ao programa É Bom, É Brasil" },
     { value: "Livro publicado", label: "Metodologia CEOD (Editora Sorian, 2026) — ISBN e conselho editorial" },
   ],
 
