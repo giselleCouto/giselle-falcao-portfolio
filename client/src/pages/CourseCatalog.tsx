@@ -93,6 +93,29 @@ export default function CourseCatalog() {
             Escolher minha trilha
           </span>
         </Link>
+
+        {/* Kit da palestra "Quem está aprendendo a dirigir?" */}
+        <Link
+          href="/kit"
+          className="group mt-4 flex flex-col items-start gap-4 rounded-3xl border-2 border-slate-800 bg-[#050608] p-6 shadow-[0_10px_40px_rgba(5,6,8,0.25)] transition duration-300 hover:-translate-y-0.5 hover:border-[#C9F31D] sm:flex-row sm:items-center sm:justify-between"
+        >
+          <div className="flex items-center gap-4">
+            <span className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-[#C9F31D] font-baloo text-xl font-bold text-[#050608]">
+              4M
+            </span>
+            <div>
+              <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#C9F31D]">
+                Veio da palestra?
+              </p>
+              <p className="mt-1 font-baloo text-lg font-bold text-white">
+                Kit “Quem está aprendendo a dirigir?” — 3 ferramentas, sem cadastro
+              </p>
+            </div>
+          </div>
+          <span className="inline-flex shrink-0 items-center gap-2 rounded-full bg-[#C9F31D] px-5 py-2.5 text-sm font-semibold text-[#050608] transition group-hover:brightness-110">
+            Abrir o kit
+          </span>
+        </Link>
       </section>
 
       {/* Grade de cursos */}

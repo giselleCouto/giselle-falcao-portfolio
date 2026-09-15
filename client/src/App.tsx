@@ -33,6 +33,7 @@ import GisellePalestras from "./pages/giselle/GisellePalestras";
 import GiselleDiagnosticoIA from "./pages/giselle/GiselleDiagnosticoIA";
 import GiselleBio from "./pages/giselle/GiselleBio";
 import GisellePrivacidade from "./pages/giselle/GisellePrivacidade";
+import GiselleKit from "./pages/giselle/GiselleKit";
 import GiselleLab from "./pages/giselle/GiselleLab";
 import GiselleTrajetoria from "./pages/giselle/GiselleTrajetoria";
 import GiselleTrilha from "./pages/giselle/GiselleTrilha";
@@ -96,6 +97,12 @@ const CANONICAL_ALIASES: Record<string, string> = {
   "/lab": "/giselle/lab",
   "/lab/": "/giselle/lab",
   "/giselle/lab/": "/giselle/lab",
+  "/kit/": "/kit",
+  "/giselle/kit": "/kit",
+  "/giselle/kit/": "/kit",
+  "/kit/diagnostico": "/kit",
+  "/kit/checklist": "/kit",
+  "/kit/roteiro": "/kit",
   "/privacidade/": "/privacidade",
   "/politica-de-privacidade": "/privacidade",
   "/politica-de-privacidade/": "/privacidade",
@@ -352,6 +359,12 @@ function RouteSeo() {
         "Três ferramentas de 5 minutos para destravar sua trajetória em Dados e IA ou o projeto parado da sua empresa: diagnóstico de prontidão, checklist anti agent-washing e roteiro de 30 dias. Resultado na hora, no celular.";
       keywords =
         "laboratório da decisão, diagnóstico IA, projeto de IA parado, agent washing, checklist agente de IA, roteiro 30 dias IA, prontidão em dados, Giselle Falcão";
+    } else if (location === "/kit" || location.startsWith("/kit/") || location === "/giselle/kit") {
+      title = "Quem está aprendendo a dirigir? — Kit da palestra | Giselle Falcão";
+      description =
+        "Continuação da palestra 'A próxima interface do mundo não será um app: será um agente'. Três ferramentas para aplicar em minutos: Diagnóstico de Prontidão, Checklist das 5 Peças e Roteiro dos 30 Dias (método 4M). Sem cadastro — o resultado é seu.";
+      keywords =
+        "kit da palestra, quem está aprendendo a dirigir, agente de IA, diagnóstico de prontidão em IA, checklist agente de IA, método 4M, roteiro 30 dias IA, Giselle Falcão";
     } else if (
       location === "/trajetoria" ||
       location === "/trajetoria/" ||
@@ -890,6 +903,11 @@ function Router() {
         <Route path="/politica-de-privacidade" component={GisellePrivacidade} />
         <Route path="/lab" component={GiselleLab} />
         <Route path="/giselle/lab" component={GiselleLab} />
+        <Route path="/kit">{() => <GiselleKit tool="home" />}</Route>
+        <Route path="/giselle/kit">{() => <GiselleKit tool="home" />}</Route>
+        <Route path="/kit/diagnostico">{() => <GiselleKit tool="diagnostico" />}</Route>
+        <Route path="/kit/checklist">{() => <GiselleKit tool="checklist" />}</Route>
+        <Route path="/kit/roteiro">{() => <GiselleKit tool="roteiro" />}</Route>
         <Route path="/trajetoria" component={GiselleTrajetoria} />
         <Route path="/giselle/mentoria/trajetoria" component={GiselleTrajetoria} />
         <Route path="/palestras" component={GisellePalestras} />
