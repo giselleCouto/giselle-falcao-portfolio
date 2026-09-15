@@ -33,7 +33,7 @@ const secoes = [
   {
     titulo: "3. Métricas de navegação (sem identificação pessoal)",
     corpo: [
-      "Para saber quais páginas e canais de divulgação funcionam, registramos métricas anônimas de navegação: a página visitada, a origem do acesso (por exemplo, um QR code de palestra ou um link de rede social), o domínio do site de referência e a data. Não registramos endereço IP, não usamos cookies de publicidade e não criamos perfil individual de visitante.",
+      "Para saber quais páginas e canais de divulgação funcionam, registramos métricas anônimas de navegação: a página visitada, a origem do acesso (por exemplo, um QR code de palestra ou um link de rede social), o domínio do site de referência e a data. Para contar quantas pessoas diferentes visitaram o site no dia, o navegador gera um número aleatório que é trocado todos os dias; ele não identifica você e não permite acompanhar sua navegação de um dia para outro. Não registramos endereço IP, não usamos cookies de publicidade e não criamos perfil individual de visitante.",
       "O navegador pode guardar, apenas no seu aparelho, conveniências locais como progresso de curso e rascunhos de ferramentas interativas (localStorage/sessionStorage). Essas informações não identificam você e podem ser apagadas limpando os dados do navegador.",
     ],
   },

@@ -240,6 +240,12 @@ const visitaInputSchema = z.object({
     .min(1)
     .max(255)
     .regex(/^\/[^\s]*$/, { message: "path deve ter formato de rota" }),
+  visitorId: z
+    .string()
+    .trim()
+    .regex(/^[A-Za-z0-9-]{8,36}$/)
+    .optional()
+    .or(z.literal("")),
   source: z.string().trim().max(120).optional().or(z.literal("")),
   campaign: z.string().trim().max(120).optional().or(z.literal("")),
   referrer: z.string().trim().max(255).optional().or(z.literal("")),
@@ -487,6 +493,7 @@ export const appRouter = router({
     visita: publicProcedure.input(visitaInputSchema).mutation(async ({ input }) => {
       await createPageVisit({
         path: input.path,
+        visitorId: input.visitorId?.trim() || null,
         source: input.source?.trim() || null,
         campaign: input.campaign?.trim() || null,
         referrer: input.referrer?.trim() || null,

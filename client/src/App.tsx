@@ -38,7 +38,7 @@ import GiselleTrajetoria from "./pages/giselle/GiselleTrajetoria";
 import GiselleTrilha from "./pages/giselle/GiselleTrilha";
 import GiselleTrilhas from "./pages/giselle/GiselleTrilhas";
 import GiselleTrilhaCarreira from "./pages/giselle/GiselleTrilhaCarreira";
-import { readTrackingParams, stickAttribution } from "./lib/tracking";
+import { getDailyVisitorId, readTrackingParams, stickAttribution } from "./lib/tracking";
 import { trilhasCarreira } from "./lib/trilhasCarreiraData";
 import MinasSummitFaq from "./pages/MinasSummitFaq";
 
@@ -149,7 +149,9 @@ function trackVisit(path: string) {
     void fetch("/api/trpc/academy.visita", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ json: { path, source, campaign, referrer } }),
+      body: JSON.stringify({
+        json: { path, visitorId: getDailyVisitorId(), source, campaign, referrer },
+      }),
       keepalive: true,
     }).catch(() => {});
   } catch {

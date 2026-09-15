@@ -1,4 +1,4 @@
-import { and, desc, eq, gte } from "drizzle-orm";
+import { and, desc, eq, gte, sql } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
 import {
   academyStudents,
@@ -275,8 +275,16 @@ export async function getLeadDigest(hoursWindow: number) {
   if (!db) return null;
   const since = new Date(Date.now() - hoursWindow * 60 * 60 * 1000);
 
-  const [interesse, alunos, impulso, trajetoria, maturidade, pedidosPalestra, visitas] =
-    await Promise.all([
+  const [
+    interesse,
+    alunos,
+    impulso,
+    trajetoria,
+    maturidade,
+    pedidosPalestra,
+    visitas,
+    [contagemVisitas],
+  ] = await Promise.all([
       db
         .select({
           name: courseInterest.name,
@@ -353,6 +361,16 @@ export async function getLeadDigest(hoursWindow: number) {
         .from(pageVisits)
         .where(gte(pageVisits.createdAt, since))
         .limit(2000),
+      // Pessoas x páginas: visitorId é anônimo e muda por dia. Eventos do kit
+      // (/kit/e/...) usam o mesmo endpoint mas não são páginas vistas.
+      db
+        .select({
+          paginasVistas: sql<number>`count(*)`,
+          visitantesUnicos: sql<number>`count(distinct ${pageVisits.visitorId})`,
+          paginasSemIdentificador: sql<number>`sum(case when ${pageVisits.visitorId} is null then 1 else 0 end)`,
+        })
+        .from(pageVisits)
+        .where(and(gte(pageVisits.createdAt, since), sql`${pageVisits.path} not like '/kit/e/%'`)),
     ]);
 
   return {
@@ -365,6 +383,11 @@ export async function getLeadDigest(hoursWindow: number) {
     diagnosticosMaturidade: maturidade,
     pedidosPalestra,
     visitas,
+    resumoVisitas: {
+      paginasVistas: Number(contagemVisitas?.paginasVistas ?? 0),
+      visitantesUnicos: Number(contagemVisitas?.visitantesUnicos ?? 0),
+      paginasSemIdentificador: Number(contagemVisitas?.paginasSemIdentificador ?? 0),
+    },
   };
 }
 

@@ -278,10 +278,13 @@ export type InsertTrajetoriaCandidatura = typeof trajetoriaCandidatura.$inferIns
  * Rastreamento anônimo de acessos — responde "o QR da palestra X foi usado?".
  * Sem dado pessoal (LGPD): apenas caminho, origem (?src= do QR / host de
  * referência) e data. Deduplicado por sessão no cliente.
+ * visitorId: número aleatório gerado no navegador que muda todo dia — conta
+ * pessoas distintas no dia sem permitir seguir alguém entre dias.
  */
 export const pageVisits = mysqlTable("page_visits", {
   id: int("id").autoincrement().primaryKey(),
   path: varchar("path", { length: 255 }).notNull(),
+  visitorId: varchar("visitorId", { length: 36 }),
   source: varchar("source", { length: 120 }),
   campaign: varchar("campaign", { length: 120 }),
   referrer: varchar("referrer", { length: 255 }),

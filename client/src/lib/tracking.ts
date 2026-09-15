@@ -44,6 +44,32 @@ export function stickAttribution(srcParam?: string, cParam?: string) {
 }
 
 /**
+ * Identificador anônimo do navegador para contar visitantes únicos por dia.
+ * É aleatório (não deriva de IP nem de dado pessoal) e é trocado a cada dia,
+ * então não dá para seguir a mesma pessoa entre dias.
+ */
+export function getDailyVisitorId(): string | undefined {
+  try {
+    // Data local (não UTC): no Brasil o dia vira à meia-noite, não às 21h.
+    const now = new Date();
+    const today = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
+    const stored = localStorage.getItem("trk-vid");
+    if (stored) {
+      const [day, id] = stored.split("|");
+      if (day === today && id) return id;
+    }
+    const id =
+      typeof crypto !== "undefined" && "randomUUID" in crypto
+        ? crypto.randomUUID()
+        : `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 12)}`;
+    localStorage.setItem("trk-vid", `${today}|${id}`);
+    return id;
+  } catch {
+    return undefined;
+  }
+}
+
+/**
  * Origem/campanha para carimbar um lead no momento do envio.
  * Precedência: origem da rota (a rota É o canal, ex. /linkedin) > URL > sessão.
  */
