@@ -34,6 +34,7 @@ import GiselleDiagnosticoIA from "./pages/giselle/GiselleDiagnosticoIA";
 import GiselleBio from "./pages/giselle/GiselleBio";
 import GisellePrivacidade from "./pages/giselle/GisellePrivacidade";
 import GiselleKit from "./pages/giselle/GiselleKit";
+import GiselleMasterclass from "./pages/giselle/GiselleMasterclass";
 import GiselleLab from "./pages/giselle/GiselleLab";
 import GiselleTrajetoria from "./pages/giselle/GiselleTrajetoria";
 import GiselleTrilha from "./pages/giselle/GiselleTrilha";
@@ -103,6 +104,9 @@ const CANONICAL_ALIASES: Record<string, string> = {
   "/kit/diagnostico": "/kit",
   "/kit/checklist": "/kit",
   "/kit/roteiro": "/kit",
+  "/masterclass/": "/masterclass",
+  "/giselle/masterclass": "/masterclass",
+  "/giselle/masterclass/": "/masterclass",
   "/privacidade/": "/privacidade",
   "/politica-de-privacidade": "/privacidade",
   "/politica-de-privacidade/": "/privacidade",
@@ -359,6 +363,16 @@ function RouteSeo() {
         "Três ferramentas de 5 minutos para destravar sua trajetória em Dados e IA ou o projeto parado da sua empresa: diagnóstico de prontidão, checklist anti agent-washing e roteiro de 30 dias. Resultado na hora, no celular.";
       keywords =
         "laboratório da decisão, diagnóstico IA, projeto de IA parado, agent washing, checklist agente de IA, roteiro 30 dias IA, prontidão em dados, Giselle Falcão";
+    } else if (
+      location === "/masterclass" ||
+      location === "/masterclass/" ||
+      location === "/giselle/masterclass"
+    ) {
+      title = "Masterclass Dados & IA na Prática — 1ª Turma | Giselle Falcão";
+      description =
+        "3 horas ao vivo com a Dra. Giselle Falcão para decidir seu próximo passo em Dados & IA: transição de carreira com plano de 90 dias, IA que paga o investimento na sua empresa, ou a formação certa. Lista prioritária com condição de fundador.";
+      keywords =
+        "masterclass dados e IA, transição de carreira dados, curso IA ao vivo, IA para empresas, pós-graduação dados e IA, mentoria dados, Giselle Falcão";
     } else if (location === "/kit" || location.startsWith("/kit/") || location === "/giselle/kit") {
       title = "Quem está aprendendo a dirigir? — Kit da palestra | Giselle Falcão";
       description =
@@ -903,6 +917,8 @@ function Router() {
         <Route path="/politica-de-privacidade" component={GisellePrivacidade} />
         <Route path="/lab" component={GiselleLab} />
         <Route path="/giselle/lab" component={GiselleLab} />
+        <Route path="/masterclass" component={GiselleMasterclass} />
+        <Route path="/giselle/masterclass" component={GiselleMasterclass} />
         <Route path="/kit">{() => <GiselleKit tool="home" />}</Route>
         <Route path="/giselle/kit">{() => <GiselleKit tool="home" />}</Route>
         <Route path="/kit/diagnostico">{() => <GiselleKit tool="diagnostico" />}</Route>
