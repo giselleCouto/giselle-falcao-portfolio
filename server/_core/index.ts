@@ -49,6 +49,9 @@ async function startServer() {
     createExpressMiddleware({
       router: appRouter,
       createContext,
+      // O cliente envia queries via POST (methodOverride) para inputs
+      // sensíveis — ex.: a chave do painel — nunca irem na URL/logs.
+      allowMethodOverride: true,
     })
   );
   // Subdomínio giselle.* abre direto no perfil da Giselle
