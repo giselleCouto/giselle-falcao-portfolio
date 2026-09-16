@@ -51,6 +51,15 @@ export type PracticeResource = {
   url: string | null;
 };
 
+/** Próximo passo sugerido ao fim do curso (funil: mentoria, curso de aprofundamento...) */
+export type NextStep = {
+  title: string;
+  description: string;
+  /** Rota interna (ex: /giselle/mentoria?src=curso&c=slug) — navegação SPA */
+  href: string;
+  label: string;
+};
+
 export type Course = {
   slug: string;
   title: string;
@@ -68,4 +77,6 @@ export type Course = {
   modules: CourseModule[];
   /** Biblioteca de prática: recursos permanentes do curso (notebooks, datasets, modelos) */
   library: PracticeResource[];
+  /** Próximos passos exibidos na lateral do player (opcional) */
+  nextSteps?: NextStep[];
 };

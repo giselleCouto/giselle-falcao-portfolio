@@ -638,6 +638,31 @@ export default function CoursePlayer({ slug }: { slug: string }) {
               </div>
             </div>
           ) : null}
+
+          {/* Próximos passos (funil: mentoria, aprofundamento) */}
+          {course.nextSteps && course.nextSteps.length > 0 ? (
+            <div className="rounded-3xl border-2 border-violet-200 bg-violet-50/50 p-5">
+              <p className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] text-[#6b21a8]">
+                <Sparkles className="size-4" />
+                Próximos passos
+              </p>
+              <div className="mt-4 space-y-3">
+                {course.nextSteps.map((step) => (
+                  <div key={step.title} className="rounded-2xl border border-violet-100 bg-white px-4 py-3">
+                    <p className="text-sm font-bold text-[#1a1333]">{step.title}</p>
+                    <p className="mt-1 text-xs leading-5 text-slate-500">{step.description}</p>
+                    <Link
+                      href={step.href}
+                      className="mt-2 inline-flex items-center gap-1 text-xs font-bold text-[#6b21a8] hover:text-[#8b5cf6]"
+                    >
+                      {step.label}
+                      <ChevronRight className="size-3" />
+                    </Link>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ) : null}
         </div>
 
         {/* Aula ativa */}

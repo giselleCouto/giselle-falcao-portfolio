@@ -7,6 +7,7 @@ import { fundamentosMl } from "./fundamentos-ml";
 import { analiseDadosEstrategica } from "./analise-dados-estrategica";
 import { estatisticaPadroes } from "./estatistica-padroes";
 import { daQueryAoModelo } from "./da-query-ao-modelo";
+import { empreendedorismoIa } from "./empreendedorismo-ia";
 import { iaNaPratica } from "./ia-na-pratica";
 import { agentesIa } from "./agentes-ia";
 
@@ -15,6 +16,7 @@ export const courses: Course[] = [
   fundamentosMl,
   analiseDadosEstrategica,
   daQueryAoModelo,
+  empreendedorismoIa,
   estatisticaPadroes,
   iaNaPratica,
   agentesIa,
