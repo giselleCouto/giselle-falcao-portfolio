@@ -42,6 +42,9 @@ const trpcClient = trpc.createClient({
     httpBatchLink({
       url: "/api/trpc",
       transformer: superjson,
+      // Queries via POST: inputs (ex.: a chave do painel) nunca vão na URL,
+      // então não aparecem em logs de proxy/edge nem no histórico.
+      methodOverride: "POST",
       fetch(input, init) {
         return globalThis.fetch(input, {
           ...(init ?? {}),

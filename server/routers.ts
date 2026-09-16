@@ -1,3 +1,4 @@
+import { createHash, timingSafeEqual } from "node:crypto";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { COOKIE_NAME } from "@shared/const";
@@ -14,6 +15,7 @@ import {
   createPageVisit,
   createPalestraPedido,
   getLeadDigest,
+  getPainelFunil,
   createTrajetoriaCandidatura,
   listAiMaturity,
   listMentoriaDiagnostico,
@@ -45,6 +47,35 @@ import {
   hasCompletedCourseCertificate,
   hasCompletedModuleLessons,
 } from "./courseCertificate";
+
+// Guarda dos endpoints de token (digest/painel): comparação em tempo constante
+// (hash de ambos os lados iguala o comprimento) + freio simples de força bruta
+// — após 30 chaves erradas em 10 minutos, o endpoint responde 429 até a janela
+// esvaziar. Estado em memória: suficiente para a instância única do Railway.
+let falhasDeToken: number[] = [];
+const JANELA_FALHAS_MS = 10 * 60 * 1000;
+const MAX_FALHAS = 30;
+
+function guardaDeToken(token: string) {
+  const agora = Date.now();
+  falhasDeToken = falhasDeToken.filter((t) => agora - t < JANELA_FALHAS_MS);
+  if (falhasDeToken.length >= MAX_FALHAS) {
+    throw new TRPCError({
+      code: "TOO_MANY_REQUESTS",
+      message: "Muitas tentativas. Aguarde alguns minutos.",
+    });
+  }
+  const valido =
+    Boolean(ENV.digestToken) &&
+    timingSafeEqual(
+      createHash("sha256").update(token).digest(),
+      createHash("sha256").update(ENV.digestToken ?? "").digest()
+    );
+  if (!valido) {
+    falhasDeToken.push(agora);
+    throw new TRPCError({ code: "UNAUTHORIZED", message: "Chave de acesso inválida" });
+  }
+}
 
 const leadInputSchema = z
   .object({
@@ -514,14 +545,28 @@ export const appRouter = router({
         })
       )
       .query(async ({ input }) => {
-        if (!ENV.digestToken || input.token !== ENV.digestToken) {
-          throw new TRPCError({ code: "UNAUTHORIZED", message: "Invalid digest token" });
-        }
+        guardaDeToken(input.token);
         const digest = await getLeadDigest(input.hours ?? 24);
         if (!digest) {
           throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "Database unavailable" });
         }
         return digest;
+      }),
+    // Métricas do funil para o painel protegido (/painel) — mesma chave do digest.
+    painel: publicProcedure
+      .input(
+        z.object({
+          token: z.string().min(1),
+          days: z.number().int().min(1).max(90).optional(),
+        })
+      )
+      .query(async ({ input }) => {
+        guardaDeToken(input.token);
+        const funil = await getPainelFunil(input.days ?? 14);
+        if (!funil) {
+          throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "Database unavailable" });
+        }
+        return funil;
       }),
     maturidade: publicProcedure.input(maturityInputSchema).mutation(async ({ input }) => {
       const total =

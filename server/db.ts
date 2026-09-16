@@ -639,3 +639,117 @@ export async function listCourseProgress(userId: number, courseSlug: string) {
     .where(and(eq(courseProgress.userId, userId), eq(courseProgress.courseSlug, courseSlug)))
     .orderBy(desc(courseProgress.lastVisitedAt));
 }
+
+/**
+ * Métricas do funil de vendas para o painel protegido da Giselle (/painel).
+ * Janela em dias; somente leitura, consumido via academy.painel (token).
+ * O diagnóstico da masterclass fica codificado em lead_contacts:
+ *   interest = "mc-perfil:<perfil>" · businessArea = "uso:x;inv:x;obj:x;agentes:x".
+ */
+export async function getPainelFunil(days: number) {
+  const db = await getDb();
+  if (!db) return null;
+  const since = new Date(Date.now() - days * 24 * 60 * 60 * 1000);
+
+  const [visitasDia, visitasPath, canais, eventosKit, leads, [contagemLeads], trajetorias, impulso, maturidade, pedidos, interesses] =
+    await Promise.all([
+      db
+        .select({
+          dia: sql<string>`date(${pageVisits.createdAt})`,
+          visitas: sql<number>`count(*)`,
+          unicos: sql<number>`count(distinct ${pageVisits.visitorId})`,
+        })
+        .from(pageVisits)
+        .where(and(gte(pageVisits.createdAt, since), sql`${pageVisits.path} not like '/kit/e/%'`))
+        .groupBy(sql`date(${pageVisits.createdAt})`)
+        .orderBy(sql`date(${pageVisits.createdAt})`),
+      db
+        .select({
+          path: pageVisits.path,
+          visitas: sql<number>`count(*)`,
+          unicos: sql<number>`count(distinct ${pageVisits.visitorId})`,
+        })
+        .from(pageVisits)
+        .where(and(gte(pageVisits.createdAt, since), sql`${pageVisits.path} not like '/kit/e/%'`))
+        .groupBy(pageVisits.path)
+        .orderBy(desc(sql`count(*)`))
+        .limit(40),
+      db
+        .select({
+          source: sql<string>`coalesce(${pageVisits.source}, 'direto')`,
+          visitas: sql<number>`count(*)`,
+          unicos: sql<number>`count(distinct ${pageVisits.visitorId})`,
+        })
+        .from(pageVisits)
+        .where(and(gte(pageVisits.createdAt, since), sql`${pageVisits.path} not like '/kit/e/%'`))
+        .groupBy(sql`coalesce(${pageVisits.source}, 'direto')`)
+        .orderBy(desc(sql`count(*)`))
+        .limit(15),
+      db
+        .select({ path: pageVisits.path, total: sql<number>`count(*)` })
+        .from(pageVisits)
+        .where(and(gte(pageVisits.createdAt, since), sql`${pageVisits.path} like '/kit/e/%'`))
+        .groupBy(pageVisits.path)
+        .orderBy(desc(sql`count(*)`)),
+      db
+        .select({
+          route: leadContacts.route,
+          persona: leadContacts.persona,
+          interest: leadContacts.interest,
+          businessArea: leadContacts.businessArea,
+          source: leadContacts.source,
+          campaign: leadContacts.campaign,
+          name: leadContacts.name,
+          createdAt: leadContacts.createdAt,
+        })
+        .from(leadContacts)
+        .where(gte(leadContacts.createdAt, since))
+        .orderBy(desc(leadContacts.createdAt))
+        .limit(500),
+      // Contagem sem teto: os tiles usam este número; a lista acima é amostra.
+      db
+        .select({ total: sql<number>`count(*)` })
+        .from(leadContacts)
+        .where(gte(leadContacts.createdAt, since)),
+      db
+        .select({ status: trajetoriaCandidatura.status, total: sql<number>`count(*)` })
+        .from(trajetoriaCandidatura)
+        .where(gte(trajetoriaCandidatura.createdAt, since))
+        .groupBy(trajetoriaCandidatura.status),
+      db
+        .select({ total: sql<number>`count(*)` })
+        .from(mentoriaDiagnostico)
+        .where(gte(mentoriaDiagnostico.createdAt, since)),
+      db
+        .select({ total: sql<number>`count(*)`, mediaScore: sql<number>`avg(${aiMaturity.totalScore})` })
+        .from(aiMaturity)
+        .where(gte(aiMaturity.createdAt, since)),
+      db
+        .select({ status: palestraPedidos.status, total: sql<number>`count(*)` })
+        .from(palestraPedidos)
+        .where(gte(palestraPedidos.createdAt, since)),
+      db
+        .select({ total: sql<number>`count(*)` })
+        .from(courseInterest)
+        .where(gte(courseInterest.createdAt, since)),
+    ]);
+
+  return {
+    desde: since.toISOString(),
+    janelaDias: days,
+    visitasDia: visitasDia.map((v) => ({ ...v, visitas: Number(v.visitas), unicos: Number(v.unicos) })),
+    visitasPath: visitasPath.map((v) => ({ ...v, visitas: Number(v.visitas), unicos: Number(v.unicos) })),
+    canais: canais.map((c) => ({ ...c, visitas: Number(c.visitas), unicos: Number(c.unicos) })),
+    eventosKit: eventosKit.map((e) => ({ evento: e.path.replace("/kit/e/", ""), total: Number(e.total) })),
+    leads,
+    leadsTotal: Number(contagemLeads?.total ?? 0),
+    trajetorias: trajetorias.map((t) => ({ ...t, total: Number(t.total) })),
+    impulso: Number(impulso[0]?.total ?? 0),
+    maturidade: {
+      total: Number(maturidade[0]?.total ?? 0),
+      mediaScore: maturidade[0]?.mediaScore !== null && maturidade[0]?.mediaScore !== undefined ? Math.round(Number(maturidade[0]?.mediaScore) * 10) / 10 : null,
+    },
+    pedidosPalestra: pedidos.map((p) => ({ ...p, total: Number(p.total) })),
+    interesseCursos: Number(interesses[0]?.total ?? 0),
+  };
+}

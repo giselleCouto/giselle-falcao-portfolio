@@ -35,6 +35,7 @@ import GiselleBio from "./pages/giselle/GiselleBio";
 import GisellePrivacidade from "./pages/giselle/GisellePrivacidade";
 import GiselleKit from "./pages/giselle/GiselleKit";
 import GiselleMasterclass from "./pages/giselle/GiselleMasterclass";
+import GisellePainel from "./pages/giselle/GisellePainel";
 import GiselleLab from "./pages/giselle/GiselleLab";
 import GiselleTrajetoria from "./pages/giselle/GiselleTrajetoria";
 import GiselleTrilha from "./pages/giselle/GiselleTrilha";
@@ -626,10 +627,22 @@ function RouteSeo() {
       keywords = "Jade, posicionamento, narrativa, presença de marca, Couto Falcão";
     }
 
+    // Painel protegido: fora do índice dos buscadores.
+    const isPainel = location === "/painel" || location === "/giselle/painel";
+    if (isPainel) {
+      title = "Painel do Funil | Giselle Falcão";
+      description = "Área restrita.";
+    }
+
     document.title = title;
     upsertMeta('meta[name="description"]', "name", "description", description);
     upsertMeta('meta[name="keywords"]', "name", "keywords", keywords);
-    upsertMeta('meta[name="robots"]', "name", "robots", "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1");
+    upsertMeta(
+      'meta[name="robots"]',
+      "name",
+      "robots",
+      isPainel ? "noindex, nofollow" : "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+    );
     upsertMeta('meta[property="og:type"]', "property", "og:type", "website");
     upsertMeta('meta[property="og:locale"]', "property", "og:locale", "pt_BR");
     upsertMeta('meta[property="og:site_name"]', "property", "og:site_name", "Couto Falcão");
@@ -919,6 +932,8 @@ function Router() {
         <Route path="/giselle/lab" component={GiselleLab} />
         <Route path="/masterclass" component={GiselleMasterclass} />
         <Route path="/giselle/masterclass" component={GiselleMasterclass} />
+        <Route path="/painel" component={GisellePainel} />
+        <Route path="/giselle/painel" component={GisellePainel} />
         <Route path="/kit">{() => <GiselleKit tool="home" />}</Route>
         <Route path="/giselle/kit">{() => <GiselleKit tool="home" />}</Route>
         <Route path="/kit/diagnostico">{() => <GiselleKit tool="diagnostico" />}</Route>

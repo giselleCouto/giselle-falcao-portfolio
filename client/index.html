@@ -40,6 +40,8 @@
     <!-- LinkedIn Insight Tag (conta de anuncios NOKAHI). So carrega se VITE_LINKEDIN_PARTNER_ID estiver definido. -->
     <script type="text/javascript">
       (function () {
+        // Painel restrito: nenhum script de terceiros roda junto da chave de acesso.
+        if (location.pathname.indexOf("/painel") === 0 || location.pathname.indexOf("/giselle/painel") === 0) return;
         var pid = "%VITE_LINKEDIN_PARTNER_ID%";
         if (!pid || pid.indexOf("%") === 0) return;
         window._linkedin_partner_id = pid;
@@ -62,10 +64,24 @@
   <body>
     <div id="root"><div style="min-height:100vh;display:flex;align-items:center;justify-content:center;background:#f7f8fc;font-family:system-ui,sans-serif"><div style="text-align:center"><div style="font-size:1.35rem;font-weight:700;background:linear-gradient(90deg,#6b21a8,#8b5cf6,#14b8a6);-webkit-background-clip:text;background-clip:text;color:transparent">Giselle Falcão</div><div style="margin-top:.35rem;font-size:.8rem;color:#94a3b8">AI que entende, transforma e impulsiona</div></div></div></div>
     <script type="module" src="/src/main.tsx"></script>
-    <script src="https://platform.linkedin.com/badges/js/profile.js" async defer type="text/javascript"></script>
-    <script
-      defer
-      src="%VITE_ANALYTICS_ENDPOINT%/umami"
-      data-website-id="%VITE_ANALYTICS_WEBSITE_ID%"></script>
+    <script type="text/javascript">
+      // Badge do LinkedIn e umami carregam em todo o site, EXCETO no painel
+      // restrito — scripts de terceiros não convivem com a chave de acesso.
+      (function () {
+        if (location.pathname.indexOf("/painel") === 0 || location.pathname.indexOf("/giselle/painel") === 0) return;
+        var b = document.createElement("script");
+        b.src = "https://platform.linkedin.com/badges/js/profile.js";
+        b.async = true; b.defer = true;
+        document.body.appendChild(b);
+        var endpoint = "%VITE_ANALYTICS_ENDPOINT%";
+        if (endpoint && endpoint.indexOf("%") !== 0) {
+          var u = document.createElement("script");
+          u.defer = true;
+          u.src = endpoint + "/umami";
+          u.setAttribute("data-website-id", "%VITE_ANALYTICS_WEBSITE_ID%");
+          document.body.appendChild(u);
+        }
+      })();
+    </script>
   </body>
 </html>

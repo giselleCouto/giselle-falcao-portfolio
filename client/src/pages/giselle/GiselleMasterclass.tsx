@@ -66,6 +66,50 @@ const WHATS_MSG: Record<Momento, string> = {
     "Oi, Giselle! Entrei para a turma fundadora da Masterclass Dados & IA na Prática e tenho interesse na pós-graduação em Dados & IA. Me avisa das novidades?",
 };
 
+// ── Diagnóstico mapeável (grava em leads.submit: interest + businessArea) ──
+// Objetivo da Giselle: separar com clareza (a) quem busca formação para se
+// qualificar, (b) empresário explorando soluções e (c) empresário que teve
+// custo de IA sem retorno — além da maturidade em agentes/MCP/AGI.
+
+type OpcaoDiag = { id: string; label: string };
+
+const Q_USO: OpcaoDiag[] = [
+  { id: "chatbots", label: "Uso chatbots (ChatGPT, Gemini) para tarefas pontuais" },
+  { id: "agentes", label: "Já uso automações ou agentes (integrações, MCP, fluxos)" },
+  { id: "dados", label: "Trabalho com dados estruturados ou modelos preditivos" },
+  { id: "nao-uso", label: "Ainda não uso de verdade" },
+];
+
+const Q_INVESTIMENTO: OpcaoDiag[] = [
+  { id: "retorno", label: "Sim — e com retorno claro" },
+  { id: "sem-retorno", label: "Sim — mas o custo veio e o retorno, não" },
+  { id: "parado", label: "Começamos um projeto que está parado" },
+  { id: "explorando", label: "Ainda não — estou explorando as soluções" },
+];
+
+const Q_OBJETIVO: OpcaoDiag[] = [
+  { id: "qualificar", label: "Me qualificar para trabalhar com Dados & IA em empresas" },
+  { id: "empreender", label: "Empreender ou criar soluções próprias com IA" },
+  { id: "crescer", label: "Crescer no cargo e na empresa onde já estou" },
+  { id: "descobrindo", label: "Ainda estou descobrindo" },
+];
+
+const Q_AGENTES: OpcaoDiag[] = [
+  { id: "perdido", label: "Perdido(a) — os termos mudam toda semana" },
+  { id: "curioso", label: "Entendo o hype, mas não sei aplicar" },
+  { id: "aplicando", label: "Já aplico e quero profundidade" },
+];
+
+function derivarPerfil(momento: Momento, invest?: string, objetivo?: string): string {
+  if (momento === "empresa-decisor") {
+    if (invest === "sem-retorno" || invest === "parado") return "empresa-custo-sem-retorno";
+    return "empresa-explorador";
+  }
+  if (objetivo === "empreender") return "formacao-empreender";
+  if (objetivo === "qualificar") return "formacao-qualificacao";
+  return "formacao-geral";
+}
+
 const APRENDIZADOS = [
   {
     t: "O mapa honesto do mercado de Dados & IA",
@@ -117,6 +161,10 @@ const FAQ = [
 
 function FormularioLista() {
   const [momento, setMomento] = useState<Momento | null>(null);
+  const [uso, setUso] = useState<string | null>(null);
+  const [invest, setInvest] = useState<string | null>(null);
+  const [objetivo, setObjetivo] = useState<string | null>(null);
+  const [agentes, setAgentes] = useState<string | null>(null);
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
   const [whats, setWhats] = useState("");
@@ -161,6 +209,11 @@ function FormularioLista() {
       toast.error("Escolha o seu momento — é o que define o que você recebe.");
       return;
     }
+    const ramificada = momento === "empresa-decisor" ? invest : objetivo;
+    if (!uso || !ramificada || !agentes) {
+      toast.error("Responda as 3 perguntas do diagnóstico — é assim que o encontro chega calibrado para você.");
+      return;
+    }
     if (nome.trim().length < 2 || !email.includes("@")) {
       toast.error("Confira seu nome e e-mail.");
       return;
@@ -175,14 +228,29 @@ function FormularioLista() {
     }
     const attr = getAttribution();
     const rotulo = MOMENTOS.find((m) => m.id === momento)?.titulo ?? momento;
+    const perfil = derivarPerfil(momento, invest ?? undefined, objetivo ?? undefined);
+    const respostaLabel = (lista: OpcaoDiag[], id: string | null) =>
+      lista.find((o) => o.id === id)?.label ?? "—";
     mutation.mutate({
       route: "/masterclass",
       persona: momento,
+      // Diagnóstico mapeável: perfil derivado + respostas compactas — o painel
+      // (/painel) agrega por estes campos.
+      interest: `mc-perfil:${perfil}`,
+      businessArea: `uso:${uso};inv:${momento === "empresa-decisor" ? (invest ?? "-") : "-"};obj:${
+        momento === "empresa-decisor" ? "-" : (objetivo ?? "-")
+      };agentes:${agentes}`,
       name: nome.trim(),
       email: email.trim(),
       phone: whats.trim(),
-      interest: "masterclass-dados-ia",
-      message: `Inscrição na lista prioritária da Masterclass Dados & IA na Prática. Momento: ${rotulo}.`,
+      message: [
+        `Inscrição na turma fundadora da Masterclass Dados & IA na Prática. Momento: ${rotulo}.`,
+        `Uso de IA hoje: ${respostaLabel(Q_USO, uso)}.`,
+        momento === "empresa-decisor"
+          ? `Investimento em IA na empresa: ${respostaLabel(Q_INVESTIMENTO, invest)}.`
+          : `Objetivo com a formação: ${respostaLabel(Q_OBJETIVO, objetivo)}.`,
+        `Sobre agentes/MCP/AGI: ${respostaLabel(Q_AGENTES, agentes)}.`,
+      ].join(" "),
       source: attr.source ?? "website",
       campaign: attr.campaign ?? "masterclass-dados-ia",
       howFound: "landing-masterclass",
@@ -216,7 +284,12 @@ function FormularioLista() {
               key={m.id}
               type="button"
               aria-pressed={ativo}
-              onClick={() => setMomento(m.id)}
+              onClick={() => {
+                setMomento(m.id);
+                // Troca de momento limpa a pergunta ramificada — sem resposta órfã.
+                setInvest(null);
+                setObjetivo(null);
+              }}
               className={`flex w-full items-start gap-3 rounded-2xl border-2 p-4 text-left transition ${
                 ativo ? "border-[#8b5cf6] bg-violet-50/60" : "border-slate-200 bg-white hover:border-violet-300"
               }`}
@@ -230,6 +303,45 @@ function FormularioLista() {
           );
         })}
       </div>
+
+      {momento ? (
+        <div className="mt-6 rounded-2xl border border-slate-200 bg-[#f7f8fc] p-4">
+          <p className="text-sm font-bold text-[#1a1333]">
+            Diagnóstico rápido <span className="font-normal text-slate-400">· 3 toques</span>
+          </p>
+          <p className="mt-1 text-xs leading-5 text-slate-500">
+            Com essas respostas, o encontro — e o material — chegam calibrados para o seu momento.
+          </p>
+
+          <PerguntaDiag
+            titulo="No dia a dia, como você usa IA aplicada hoje?"
+            opcoes={Q_USO}
+            valor={uso}
+            onChange={setUso}
+          />
+          {momento === "empresa-decisor" ? (
+            <PerguntaDiag
+              titulo="Sua empresa já investiu em IA?"
+              opcoes={Q_INVESTIMENTO}
+              valor={invest}
+              onChange={setInvest}
+            />
+          ) : (
+            <PerguntaDiag
+              titulo="Qual seu objetivo principal com a formação?"
+              opcoes={Q_OBJETIVO}
+              valor={objetivo}
+              onChange={setObjetivo}
+            />
+          )}
+          <PerguntaDiag
+            titulo="Sobre agentes de IA, MCP e a conversa sobre AGI, você está…"
+            opcoes={Q_AGENTES}
+            valor={agentes}
+            onChange={setAgentes}
+          />
+        </div>
+      ) : null}
 
       <div className="mt-5 grid gap-3">
         <input className={inputClass} placeholder="Seu nome" value={nome} maxLength={160} onChange={(e) => setNome(e.target.value)} />
@@ -265,6 +377,44 @@ function FormularioLista() {
       <p className="mt-3 text-center text-[11px] text-slate-400">
         Turma intencionalmente pequena, para ser conversa · dados protegidos pela LGPD
       </p>
+    </div>
+  );
+}
+
+function PerguntaDiag({
+  titulo,
+  opcoes,
+  valor,
+  onChange,
+}: {
+  titulo: string;
+  opcoes: OpcaoDiag[];
+  valor: string | null;
+  onChange: (id: string) => void;
+}) {
+  return (
+    <div className="mt-4">
+      <p className="text-xs font-bold text-[#1a1333]">{titulo}</p>
+      <div className="mt-2 flex flex-wrap gap-2">
+        {opcoes.map((o) => {
+          const ativo = valor === o.id;
+          return (
+            <button
+              key={o.id}
+              type="button"
+              aria-pressed={ativo}
+              onClick={() => onChange(o.id)}
+              className={`rounded-full border px-3.5 py-2 text-left text-xs font-semibold leading-5 transition ${
+                ativo
+                  ? "border-[#6b21a8] bg-violet-100 text-[#6b21a8]"
+                  : "border-slate-200 bg-white text-slate-600 hover:border-violet-300"
+              }`}
+            >
+              {o.label}
+            </button>
+          );
+        })}
+      </div>
     </div>
   );
 }
