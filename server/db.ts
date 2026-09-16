@@ -727,7 +727,8 @@ export async function getPainelFunil(days: number) {
       db
         .select({ status: palestraPedidos.status, total: sql<number>`count(*)` })
         .from(palestraPedidos)
-        .where(gte(palestraPedidos.createdAt, since)),
+        .where(gte(palestraPedidos.createdAt, since))
+        .groupBy(palestraPedidos.status),
       db
         .select({ total: sql<number>`count(*)` })
         .from(courseInterest)
