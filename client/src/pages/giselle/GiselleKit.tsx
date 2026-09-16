@@ -64,7 +64,10 @@ function KitHome() {
   return (
     <div>
       <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }}>
-        <h1 className="font-baloo text-[32px] font-bold leading-[1.1] text-[#F4F4F5]">{kit.titulo}</h1>
+        <p className="text-xs font-bold uppercase tracking-[0.22em] text-[#C9F31D]">
+          {kit.nomeCurto} · por Giselle Falcão
+        </p>
+        <h1 className="mt-3 font-baloo text-[32px] font-bold leading-[1.1] text-[#F4F4F5]">{kit.titulo}</h1>
         <p className="mt-3 text-base leading-7 text-[#9CA3AF]">{kit.subtitulo}</p>
       </motion.div>
 

@@ -15,8 +15,13 @@ export const CONTATO = {
 export const KIT_CREDITOS = "Giselle Falcão · @gisellecfalcao · in/giselle-falcao-phd";
 
 export const kit = {
+  // Âncora de marca (decisão da Giselle, 16/set): o nome curto identifica o
+  // assunto para quem chega sem contexto; a pergunta-metáfora da palestra
+  // permanece como título da home.
+  nomeCurto: "Kit do Agente",
   titulo: "Quem está aprendendo a dirigir?",
-  subtitulo: "Três ferramentas para você aplicar, em minutos, o que viu na palestra. Sem cadastro. O resultado é seu.",
+  subtitulo:
+    "Três ferramentas para você aplicar, em minutos, o que viu na palestra sobre agentes de IA. Sem cadastro. O resultado é seu.",
   rodapeHome: "Se você chegou aqui pelo HackTown: o agente é a parte fácil. Comece pelo que dói.",
   ferramentas: [
     {

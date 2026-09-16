@@ -374,7 +374,7 @@ function RouteSeo() {
       keywords =
         "masterclass dados e IA, transição de carreira dados, curso IA ao vivo, IA para empresas, pós-graduação dados e IA, mentoria dados, Giselle Falcão";
     } else if (location === "/kit" || location.startsWith("/kit/") || location === "/giselle/kit") {
-      title = "Quem está aprendendo a dirigir? — Kit da palestra | Giselle Falcão";
+      title = "Kit do Agente — Quem está aprendendo a dirigir? | Giselle Falcão";
       description =
         "Continuação da palestra 'A próxima interface do mundo não será um app: será um agente'. Três ferramentas para aplicar em minutos: Diagnóstico de Prontidão, Checklist das 5 Peças e Roteiro dos 30 Dias (método 4M). Sem cadastro — o resultado é seu.";
       keywords =

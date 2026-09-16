@@ -82,7 +82,7 @@ export default function KitShell({ children }: { children: ReactNode }) {
             href="/kit"
             className="min-w-0 truncate font-baloo text-sm font-bold uppercase tracking-[0.08em] text-[#F4F4F5]"
           >
-            Quem está aprendendo a dirigir?
+            Kit do Agente
           </Link>
           <Link
             href="/kit"

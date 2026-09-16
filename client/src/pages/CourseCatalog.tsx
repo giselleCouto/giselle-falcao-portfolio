@@ -105,10 +105,10 @@ export default function CourseCatalog() {
             </span>
             <div>
               <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#C9F31D]">
-                Veio da palestra?
+                Veio da palestra sobre agentes de IA?
               </p>
               <p className="mt-1 font-baloo text-lg font-bold text-white">
-                Kit “Quem está aprendendo a dirigir?” — 3 ferramentas, sem cadastro
+                Kit do Agente: “Quem está aprendendo a dirigir?” — 3 ferramentas, sem cadastro
               </p>
             </div>
           </div>
