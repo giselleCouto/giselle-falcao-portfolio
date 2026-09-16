@@ -368,9 +368,9 @@ function RouteSeo() {
       location === "/masterclass/" ||
       location === "/giselle/masterclass"
     ) {
-      title = "Masterclass Dados & IA na Prática — 1ª Turma | Giselle Falcão";
+      title = "Masterclass Dados & IA na Prática — Turma Fundadora | Giselle Falcão";
       description =
-        "3 horas ao vivo com a Dra. Giselle Falcão para decidir seu próximo passo em Dados & IA: transição de carreira com plano de 90 dias, IA que paga o investimento na sua empresa, ou a formação certa. Lista prioritária com condição de fundador.";
+        "3 horas ao vivo com a Dra. Giselle Falcão, em turma pequena, para construir junto o seu próximo passo em Dados & IA: transição de carreira com plano de 90 dias, IA que faz sentido na sua empresa, ou a formação certa. Turma fundadora com condição especial.";
       keywords =
         "masterclass dados e IA, transição de carreira dados, curso IA ao vivo, IA para empresas, pós-graduação dados e IA, mentoria dados, Giselle Falcão";
     } else if (location === "/kit" || location.startsWith("/kit/") || location === "/giselle/kit") {

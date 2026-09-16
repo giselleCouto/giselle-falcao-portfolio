@@ -47,7 +47,7 @@ const MOMENTOS: { id: Momento; Icon: typeof TrendingUp; titulo: string; sub: str
     id: "empresa-decisor",
     Icon: Briefcase,
     titulo: "Quero levar Dados & IA para a minha empresa",
-    sub: "Decidir onde a IA paga o investimento — antes de gastar errado",
+    sub: "Encontrar, junto, onde Dados & IA fazem sentido no seu negócio",
   },
   {
     id: "pos-graduacao",
@@ -59,11 +59,11 @@ const MOMENTOS: { id: Momento; Icon: typeof TrendingUp; titulo: string; sub: str
 
 const WHATS_MSG: Record<Momento, string> = {
   "transicao-carreira":
-    "Oi, Giselle! Acabei de entrar na lista da Masterclass Dados & IA na Prática (transição de carreira). Pode me confirmar os próximos passos?",
+    "Oi, Giselle! Acabei de entrar para a turma fundadora da Masterclass Dados & IA na Prática (transição de carreira). Feliz em construir junto! Quais são os próximos passos?",
   "empresa-decisor":
-    "Oi, Giselle! Entrei na lista da Masterclass Dados & IA na Prática pensando na minha empresa. Queria também entender o diagnóstico executivo de 15 minutos.",
+    "Oi, Giselle! Entrei para a turma fundadora da Masterclass Dados & IA na Prática pensando na minha empresa. Queria também entender a conversa executiva de 15 minutos.",
   "pos-graduacao":
-    "Oi, Giselle! Entrei na lista da Masterclass Dados & IA na Prática e tenho interesse na pós-graduação em Dados & IA. Me avisa das novidades?",
+    "Oi, Giselle! Entrei para a turma fundadora da Masterclass Dados & IA na Prática e tenho interesse na pós-graduação em Dados & IA. Me avisa das novidades?",
 };
 
 const APRENDIZADOS = [
@@ -76,12 +76,12 @@ const APRENDIZADOS = [
     d: "Como sair do consumo infinito de cursos para UM caso prático que vira portfólio, argumento de entrevista ou projeto interno.",
   },
   {
-    t: "IA que paga o investimento (e a que só gasta)",
+    t: "Onde a IA gera valor de verdade (e onde ela só gasta)",
     d: "A pergunta que a Giselle leva às empresas: qual dor do negócio a IA precisa resolver — com exemplos reais do agro, indústria e educação.",
   },
   {
-    t: "Seu plano ao vivo",
-    d: "Você sai da masterclass com o seu próximo passo escrito: o plano de 90 dias no seu contexto — carreira ou empresa.",
+    t: "Seu plano, construído junto",
+    d: "Você não assiste — constrói. Saímos do encontro com o seu próximo passo escrito: o plano de 90 dias no seu contexto, feito com orientação ao vivo.",
   },
 ];
 
@@ -95,19 +95,23 @@ const PROVAS = [
 const FAQ = [
   {
     q: "A masterclass garante emprego ou resultado financeiro?",
-    a: "Não — e desconfie de quem promete isso. Ela entrega direção, método e um plano de 90 dias honesto. O resultado depende da sua execução; o que a Giselle garante é o caminho testado e a verdade sobre o mercado.",
+    a: "Não — e você deve desconfiar de quem promete isso. Ela entrega direção, método e um plano de 90 dias honesto, construído com você. O resultado vem da sua execução; o que a Giselle garante é caminhar junto com um caminho testado e a verdade sobre o mercado.",
   },
   {
     q: "Quando acontece? Por que a data não está aqui?",
-    a: "A 1ª turma tem a data confirmada diretamente com a lista prioritária, pelo WhatsApp. Quem está na lista trava a condição de fundador (R$ 97) e escolhe primeiro.",
+    a: "Porque a turma fundadora escolhe junto: quem está na lista recebe as opções de data primeiro e ajuda a definir o melhor dia. É assim que uma primeira turma deve nascer — em conjunto.",
+  },
+  {
+    q: "Por que pago R$ 97 se é uma 'construção conjunta'?",
+    a: "Porque compromisso constrói turma boa. O valor é simbólico perto do que se entrega em 3 horas — e garante que o encontro reúna quem está de verdade disposto a construir, não só a assistir. Em troca, a turma fundadora molda as próximas edições e leva condições que não se repetem.",
   },
   {
     q: "Sou de empresa — isso serve para mim?",
-    a: "Sim. Um dos três blocos é exatamente sobre decidir onde Dados & IA pagam o investimento no seu negócio. E, se preferir começar por uma conversa executiva de 15 minutos, marque essa opção no formulário.",
+    a: "Sim. Um dos três blocos é exatamente sobre encontrar onde Dados & IA fazem sentido no seu negócio. E, se preferir começar por uma conversa executiva de 15 minutos, marque essa opção no formulário — a Giselle te chama.",
   },
   {
     q: "E se eu não puder ao vivo?",
-    a: "A gravação fica disponível por tempo limitado para os inscritos. Mas o plano de 90 dias é construído ao vivo — se puder, esteja lá.",
+    a: "A gravação fica disponível por um período para os inscritos. Mas o plano de 90 dias é construído ao vivo, em conversa — se puder, esteja com a gente.",
   },
 ];
 
@@ -129,11 +133,12 @@ function FormularioLista() {
       <div className="rounded-3xl border-2 border-teal-200 bg-teal-50/40 p-8 text-center">
         <CheckCircle2 className="mx-auto size-10 text-teal-600" />
         <h3 className="mt-4 font-baloo text-2xl font-bold text-[#1a1333]">
-          Você está na lista prioritária!
+          Que bom ter você na turma fundadora!
         </h3>
         <p className="mx-auto mt-2 max-w-md text-sm leading-7 text-slate-600">
-          Sua condição de fundador (R$ 97) está travada. O próximo passo acontece no WhatsApp: a
-          data da 1ª turma e o material de preparação chegam primeiro para quem está na lista.
+          Seu lugar na condição de fundador (R$ 97) está reservado. O próximo passo é uma conversa:
+          as opções de data — que a turma escolhe junto — e o material de preparação chegam pelo
+          WhatsApp, primeiro para quem está aqui.
         </p>
         <a
           href={`https://wa.me/${WHATSAPP}?text=${encodeURIComponent(WHATS_MSG[enviado])}`}
@@ -142,7 +147,7 @@ function FormularioLista() {
           className="mt-5 inline-flex items-center gap-2 rounded-full bg-emerald-500 px-6 py-3.5 text-sm font-bold text-white transition hover:bg-emerald-600"
         >
           <MessageCircle className="size-4" />
-          Confirmar no WhatsApp (recomendado)
+          Continuar a conversa no WhatsApp
         </a>
         <p className="mt-3 text-xs text-slate-400">
           Um toque no botão abre a conversa já escrita — é só enviar.
@@ -190,15 +195,16 @@ function FormularioLista() {
   return (
     <div className="rounded-3xl border-2 border-violet-200 bg-white p-6 shadow-[0_18px_50px_rgba(107,33,168,0.12)] sm:p-8">
       <p className="text-xs font-bold uppercase tracking-[0.22em] text-[#6b21a8]">
-        Lista prioritária · condição de fundador
+        Turma fundadora · construção conjunta
       </p>
       <h3 className="mt-2 font-baloo text-2xl font-bold text-[#1a1333]">
-        Garanta R$ 97 <span className="text-base font-semibold text-slate-400 line-through">R$ 197</span>{" "}
-        na 1ª turma
+        Participe por R$ 97 na turma fundadora
       </h3>
       <p className="mt-2 text-sm leading-6 text-slate-500">
-        Sem pagamento agora. Entrar na lista trava sua condição de fundador e te dá prioridade na
-        data — o fechamento acontece pelo WhatsApp.
+        Sem pagamento agora — entrar na lista reserva sua condição de fundador (nas próximas
+        turmas, o valor passa a R$ 197). A turma fundadora tem um papel especial: escolhe a data
+        junto e o retorno de vocês molda as próximas edições. O convite chega pelo WhatsApp, numa
+        conversa de verdade.
       </p>
 
       <div className="mt-5 space-y-2.5">
@@ -254,10 +260,10 @@ function FormularioLista() {
         disabled={mutation.isPending}
         className="mt-5 w-full rounded-full bg-[#1a1333] px-6 py-4 text-sm font-bold text-white transition hover:bg-[#6b21a8] disabled:opacity-50"
       >
-        {mutation.isPending ? "Enviando..." : "Quero minha vaga na condição de fundador"}
+        {mutation.isPending ? "Enviando..." : "Quero construir junto na turma fundadora"}
       </button>
       <p className="mt-3 text-center text-[11px] text-slate-400">
-        Vagas de fundador limitadas à 1ª turma · dados protegidos pela LGPD
+        Turma intencionalmente pequena, para ser conversa · dados protegidos pela LGPD
       </p>
     </div>
   );
@@ -288,25 +294,26 @@ export default function GiselleMasterclass() {
           <motion.div variants={fadeUp} initial="hidden" animate="visible" transition={{ duration: 0.3 }}>
             <p className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.2em] text-teal-200 backdrop-blur">
               <Sparkles className="size-3.5" />
-              Masterclass ao vivo · 1ª turma
+              Masterclass ao vivo · turma fundadora
             </p>
             <h1 className="mt-5 max-w-3xl font-baloo text-3xl font-bold leading-[1.1] text-white sm:text-5xl">
               Dados & IA na Prática:{" "}
               <span className="bg-[linear-gradient(90deg,#2dd4bf,#8b5cf6,#c4b5fd)] bg-clip-text text-transparent">
-                pare de coletar cursos
+                vamos construir juntos
               </span>{" "}
-              e saia com o seu plano de 90 dias
+              o seu plano de 90 dias
             </h1>
             <p className="mt-5 max-w-2xl text-lg leading-8 text-slate-300">
-              3 horas com a Dra. Giselle Falcão para decidir — com método e sem promessas vazias —
-              o seu próximo passo em Dados & IA: a virada de carreira, a IA que paga o investimento
-              na sua empresa, ou a formação certa para o seu momento.
+              3 horas ao vivo com a Dra. Giselle Falcão, em turma pequena e com conversa de
+              verdade, para desenhar — com método e sem promessas vazias — o seu próximo passo em
+              Dados & IA: a virada de carreira, a IA que faz sentido na sua empresa, ou a formação
+              certa para o seu momento.
             </p>
             <a
               href="#lista"
               className="mt-7 inline-flex items-center gap-2 rounded-full bg-teal-400 px-7 py-3.5 text-sm font-bold text-slate-950 transition hover:bg-teal-300"
             >
-              Quero a condição de fundador (R$ 97)
+              Quero fazer parte da turma fundadora
               <ChevronDown className="size-4" />
             </a>
             <div className="mt-8 grid max-w-3xl gap-2.5 sm:grid-cols-2">
