@@ -42,6 +42,7 @@ import GiselleTrilha from "./pages/giselle/GiselleTrilha";
 import GiselleTrilhas from "./pages/giselle/GiselleTrilhas";
 import GiselleTrilhaCarreira from "./pages/giselle/GiselleTrilhaCarreira";
 import { getDailyVisitorId, readTrackingParams, stickAttribution } from "./lib/tracking";
+import { installEventTracking } from "./lib/eventos";
 import { trilhasCarreira } from "./lib/trilhasCarreiraData";
 import MinasSummitFaq from "./pages/MinasSummitFaq";
 
@@ -173,6 +174,9 @@ function trackVisit(path: string) {
 
 function RouteSeo() {
   const [location] = useLocation();
+
+  // Cliques, formulários e rolagem — mostram em que etapa a pessoa para.
+  useEffect(() => installEventTracking(), []);
 
   useEffect(() => {
     // Navegação SPA deve se comportar como troca de página: volta ao topo.

@@ -1,16 +1,12 @@
 import { motion } from "framer-motion";
 import { Link } from "wouter";
 import {
-  BookOpen,
-  Building2,
   Compass,
   FlaskConical,
   GraduationCap,
   Instagram,
   Linkedin,
-  Mic,
   MessageCircle,
-  Route as RouteIcon,
 } from "lucide-react";
 import { contact } from "@/lib/portfolioData";
 
@@ -19,19 +15,16 @@ import { contact } from "@/lib/portfolioData";
 // ao canal no rastreamento (page_visits + formulários que leem a atribuição).
 const TRACK = "?src=instagram&c=bio";
 
+// Só 3 caminhos (Instagram = B2C): primeiro o passo gratuito com resultado
+// na hora, depois os cursos, e a mentoria para quem já quer ir mais fundo.
+// Empresas/palestras ficam no LinkedIn; o resto, em "ver tudo" (/giselle).
 const LINKS = [
-  {
-    href: `/trajetoria${TRACK}`,
-    icon: Compass,
-    titulo: "Mentoria Trajetória — Turma Fundadora",
-    sub: "4 semanas: direção, projeto e plano de 90 dias",
-    destaque: true,
-  },
   {
     href: `/lab${TRACK}`,
     icon: FlaskConical,
     titulo: "Em que ponto você está travado(a)?",
-    sub: "Diagnóstico de 5 minutos, resultado na hora",
+    sub: "Diagnóstico gratuito de 5 minutos, resultado na hora",
+    destaque: true,
   },
   {
     href: `/giselle/cursos${TRACK}`,
@@ -40,28 +33,10 @@ const LINKS = [
     sub: "Comece hoje, direto no navegador",
   },
   {
-    href: `/trilhas${TRACK}`,
-    icon: RouteIcon,
-    titulo: "Trilhas de carreira",
-    sub: "Do zero ao arquiteto, na ordem certa",
-  },
-  {
-    href: `/livro${TRACK}`,
-    icon: BookOpen,
-    titulo: "Livro Metodologia CEOD",
-    sub: "A revolução data-driven na aprendizagem",
-  },
-  {
-    href: `/diagnostico-ia${TRACK}`,
-    icon: Building2,
-    titulo: "Para empresas: maturidade em IA",
-    sub: "3 minutos, com recomendações práticas",
-  },
-  {
-    href: `/palestras${TRACK}`,
-    icon: Mic,
-    titulo: "Palestras e workshops",
-    sub: "Do DATA BH ao Minas Summit",
+    href: `/trajetoria${TRACK}`,
+    icon: Compass,
+    titulo: "Mentoria Trajetória — Turma Fundadora",
+    sub: "4 semanas: direção, projeto e plano de 90 dias",
   },
 ];
 
@@ -122,6 +97,13 @@ export default function GiselleBio() {
             </motion.div>
           ))}
         </div>
+
+        <Link
+          href={`/giselle${TRACK}`}
+          className="mt-5 text-sm font-semibold text-[#6b21a8] underline-offset-4 hover:underline"
+        >
+          Ver tudo: trilhas, livro e mais →
+        </Link>
 
         <div className="mt-8 flex items-center gap-5">
           <a

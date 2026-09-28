@@ -266,6 +266,13 @@ export async function listTrajetoriaCandidatura() {
   return db.select().from(trajetoriaCandidatura).orderBy(desc(trajetoriaCandidatura.createdAt));
 }
 
+// Eventos usam o mesmo endpoint de visitas mas não são páginas vistas:
+// /e/... (cliques, início/envio de formulário, rolagem), /kit/e/... (kit) e
+// .../cta-... (botões dos simuladores da newsletter).
+const ehEvento = () =>
+  sql`(${pageVisits.path} like '/e/%' or ${pageVisits.path} like '/kit/e/%' or ${pageVisits.path} like '%/cta-%')`;
+const ehPagina = () => sql`not ${ehEvento()}`;
+
 /**
  * Resumo de leads e visitas das últimas N horas — alimenta o digest diário
  * enviado à Giselle. Somente leitura; consumido via academy.digest (token).
@@ -284,6 +291,7 @@ export async function getLeadDigest(hoursWindow: number) {
     pedidosPalestra,
     visitas,
     [contagemVisitas],
+    eventos,
   ] = await Promise.all([
       db
         .select({
@@ -359,10 +367,9 @@ export async function getLeadDigest(hoursWindow: number) {
       db
         .select({ path: pageVisits.path, source: pageVisits.source, campaign: pageVisits.campaign })
         .from(pageVisits)
-        .where(gte(pageVisits.createdAt, since))
+        .where(and(gte(pageVisits.createdAt, since), ehPagina()))
         .limit(2000),
-      // Pessoas x páginas: visitorId é anônimo e muda por dia. Eventos do kit
-      // (/kit/e/...) usam o mesmo endpoint mas não são páginas vistas.
+      // Pessoas x páginas: visitorId é anônimo e muda por dia.
       db
         .select({
           paginasVistas: sql<number>`count(*)`,
@@ -370,7 +377,19 @@ export async function getLeadDigest(hoursWindow: number) {
           paginasSemIdentificador: sql<number>`sum(case when ${pageVisits.visitorId} is null then 1 else 0 end)`,
         })
         .from(pageVisits)
-        .where(and(gte(pageVisits.createdAt, since), sql`${pageVisits.path} not like '/kit/e/%'`)),
+        .where(and(gte(pageVisits.createdAt, since), ehPagina())),
+      // Onde as pessoas agem (ou param): cliques, formulários, rolagem.
+      db
+        .select({
+          evento: pageVisits.path,
+          total: sql<number>`count(*)`,
+          pessoas: sql<number>`count(distinct ${pageVisits.visitorId})`,
+        })
+        .from(pageVisits)
+        .where(and(gte(pageVisits.createdAt, since), ehEvento()))
+        .groupBy(pageVisits.path)
+        .orderBy(desc(sql`count(*)`))
+        .limit(100),
     ]);
 
   return {
@@ -388,6 +407,7 @@ export async function getLeadDigest(hoursWindow: number) {
       visitantesUnicos: Number(contagemVisitas?.visitantesUnicos ?? 0),
       paginasSemIdentificador: Number(contagemVisitas?.paginasSemIdentificador ?? 0),
     },
+    eventos: eventos.map((e) => ({ ...e, total: Number(e.total), pessoas: Number(e.pessoas) })),
   };
 }
 
@@ -660,7 +680,7 @@ export async function getPainelFunil(days: number) {
           unicos: sql<number>`count(distinct ${pageVisits.visitorId})`,
         })
         .from(pageVisits)
-        .where(and(gte(pageVisits.createdAt, since), sql`${pageVisits.path} not like '/kit/e/%'`))
+        .where(and(gte(pageVisits.createdAt, since), ehPagina()))
         .groupBy(sql`date(${pageVisits.createdAt})`)
         .orderBy(sql`date(${pageVisits.createdAt})`),
       db
@@ -670,7 +690,7 @@ export async function getPainelFunil(days: number) {
           unicos: sql<number>`count(distinct ${pageVisits.visitorId})`,
         })
         .from(pageVisits)
-        .where(and(gte(pageVisits.createdAt, since), sql`${pageVisits.path} not like '/kit/e/%'`))
+        .where(and(gte(pageVisits.createdAt, since), ehPagina()))
         .groupBy(pageVisits.path)
         .orderBy(desc(sql`count(*)`))
         .limit(40),
@@ -681,7 +701,7 @@ export async function getPainelFunil(days: number) {
           unicos: sql<number>`count(distinct ${pageVisits.visitorId})`,
         })
         .from(pageVisits)
-        .where(and(gte(pageVisits.createdAt, since), sql`${pageVisits.path} not like '/kit/e/%'`))
+        .where(and(gte(pageVisits.createdAt, since), ehPagina()))
         .groupBy(sql`coalesce(${pageVisits.source}, 'direto')`)
         .orderBy(desc(sql`count(*)`))
         .limit(15),
