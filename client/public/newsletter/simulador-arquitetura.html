@@ -55,6 +55,19 @@ li[data-status="stop"] [data-state]{color:var(--stop);font-weight:600}
 .btn-cal:hover{border-color:var(--accent)}
 .btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .btn svg{width:20px;height:20px;flex:none}
+.email-step{margin:0 0 18px;padding-bottom:18px;border-bottom:1px dashed var(--input)}
+.email-step p{margin:0 0 12px;color:var(--muted)}
+.email-step .fields{display:flex;flex-wrap:wrap;gap:10px}
+.email-step .fields input{flex:1 1 180px;font:inherit;font-weight:500;min-height:44px;padding:0 12px;border:1px solid var(--input);border-radius:10px;background:var(--bg);color:var(--fg);font-size:16px}
+.email-step .fields input:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.btn-mail{background:var(--accent);color:#fff;border:0;cursor:pointer;flex:1 1 220px}
+.btn-mail:hover{filter:brightness(1.08)}
+.btn-mail:disabled{opacity:.55;cursor:wait}
+.email-msg{margin-top:10px;font-size:14px;font-weight:600}
+.email-msg.err{color:#c2410c}
+.lgpd{margin:8px 0 0;font-size:12px;color:var(--muted)}
+.lgpd a{color:var(--muted)}
+.alt{font-size:14px;font-weight:700;color:var(--fg);margin:0 0 6px}
 footer{margin-top:28px;font-size:13px;color:var(--muted)}
 footer a{color:var(--accent)}
 @media (max-width:540px){.flow li{grid-template-columns:1fr}[data-state]{grid-column:1}}
@@ -89,6 +102,17 @@ footer a{color:var(--accent)}
 
   <section class="cta" aria-labelledby="cta-title">
     <h2 id="cta-title">Na sua operação, em que etapa a recomendação para?</h2>
+    <div class="email-step">
+      <p>Comece leve: deixe seu nome e e-mail e eu envio o resumo do cenário que você explorou, com o encaminhamento e o que verificar primeiro. Pessoalmente — sem robô, sem spam.</p>
+      <div class="fields">
+        <input type="text" name="re-nome" placeholder="Seu nome" maxlength="160" autocomplete="name" aria-label="Seu nome">
+        <input type="email" name="re-email" placeholder="Seu melhor e-mail" maxlength="320" autocomplete="email" aria-label="Seu melhor e-mail">
+        <button type="button" class="btn btn-mail" data-cta="email" data-enviar-email>Quero o resumo por e-mail</button>
+      </div>
+      <div class="email-msg" data-email-msg role="status"></div>
+      <p class="lgpd">Ao enviar, você autoriza o contato por e-mail sobre este resultado, conforme a <a href="https://www.coutofalcao.com/privacidade" target="_blank" rel="noopener">Política de Privacidade</a>.</p>
+    </div>
+    <p class="alt">Prefere conversar agora?</p>
     <p>Em uma conversa de 30 minutos, mapeamos juntos dados, regras e revisão humana do seu caso — e o que falta para uma recomendação de IA virar ação com segurança.</p>
     <div class="who">Giselle Falcão, PhD<small>Consultora em IA aplicada a processos e decisão</small></div>
     <div class="btns">
@@ -171,6 +195,39 @@ footer a{color:var(--accent)}
   }
   try{if(!sessionStorage.getItem('trk-v:'+PAGE)){sessionStorage.setItem('trk-v:'+PAGE,'1');send(PAGE);}}catch{send(PAGE);}
   document.querySelectorAll('[data-cta]').forEach(a=>a.addEventListener('click',()=>send(PAGE+'/cta-'+a.dataset.cta)));
+})();
+
+// Passo leve: "receba seu resultado por e-mail" — grava o lead com o cenário
+// explorado (a Giselle responde pessoalmente; o pedido aparece no digest diário).
+(()=>{
+  const botao=document.querySelector('[data-enviar-email]');
+  const msg=document.querySelector('[data-email-msg]');
+  if(!botao||!msg)return;
+  const sticky=k=>{try{return sessionStorage.getItem(k)||undefined}catch{return undefined}};
+  botao.addEventListener('click',async()=>{
+    const nome=document.querySelector('[name="re-nome"]').value.trim();
+    const email=document.querySelector('[name="re-email"]').value.trim();
+    msg.classList.remove('err');
+    if(nome.length<2||!email.includes('@')){msg.classList.add('err');msg.textContent='Confira seu nome e e-mail.';return;}
+    botao.disabled=true;msg.textContent='Enviando…';
+    const sel=document.querySelector('#sim [name="cenario"]');
+    const rota=document.querySelector('#sim [data-route]');
+    const resumo='Pedido de resumo por e-mail — simulador "Uma recomendação pode seguir?". '
+      +'Cenário explorado: '+sel.options[sel.selectedIndex].text+'. '
+      +'Encaminhamento mostrado: '+(rota?rota.textContent.trim():'—');
+    try{
+      const r=await fetch('/api/trpc/leads.submit',{method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({json:{route:'/newsletter/simulador-arquitetura',persona:'newsletter-leitor',name:nome,email:email,
+          interest:'resumo-simulador-arquitetura',message:resumo,source:sticky('trk-src')||'newsletter',
+          campaign:sticky('trk-c')||'simulador-arquitetura',howFound:'simulador-newsletter'}})});
+      if(!r.ok)throw new Error('http '+r.status);
+      msg.textContent='Recebido! O resumo do seu cenário chega no seu e-mail.';
+      document.querySelector('.email-step .fields').hidden=true;
+    }catch{
+      botao.disabled=false;msg.classList.add('err');
+      msg.textContent='Não consegui enviar agora. Tente de novo em instantes — ou use o WhatsApp abaixo.';
+    }
+  });
 })();
 </script>
 </body>
