@@ -1,46 +1,92 @@
 import { motion } from "framer-motion";
 import { Link } from "wouter";
 import {
+  Building2,
   Compass,
   FlaskConical,
   GraduationCap,
   Instagram,
   Linkedin,
   MessageCircle,
+  Presentation,
+  Youtube,
 } from "lucide-react";
 import { contact } from "@/lib/portfolioData";
 
-// Link-in-bio próprio (Instagram @gisellecfalcao → coutofalcao.com/bio).
-// Cada botão carrega ?src=instagram&c=bio: a visita e o lead ficam atribuídos
-// ao canal no rastreamento (page_visits + formulários que leem a atribuição).
-const TRACK = "?src=instagram&c=bio";
+type Canal = "instagram" | "youtube";
 
-// Só 3 caminhos (Instagram = B2C): primeiro o passo gratuito com resultado
+// Link-in-bio próprio, um por rede:
+//  - Instagram @gisellecfalcao → coutofalcao.com/bio
+//  - YouTube @GiselleCFalcao  → coutofalcao.com/youtube (links do canal e das descrições)
+// Cada botão carrega ?src=<canal>&c=...: a visita e o lead ficam atribuídos
+// ao canal no rastreamento (page_visits + formulários que leem a atribuição).
+const TRACK: Record<Canal, string> = {
+  instagram: "?src=instagram&c=bio",
+  youtube: "?src=youtube&c=canal",
+};
+
+// Instagram = B2C, só 3 caminhos: primeiro o passo gratuito com resultado
 // na hora, depois os cursos, e a mentoria para quem já quer ir mais fundo.
 // Empresas/palestras ficam no LinkedIn; o resto, em "ver tudo" (/giselle).
-const LINKS = [
-  {
-    href: `/lab${TRACK}`,
-    icon: FlaskConical,
-    titulo: "Em que ponto você está travado(a)?",
-    sub: "Diagnóstico gratuito de 5 minutos, resultado na hora",
-    destaque: true,
-  },
-  {
-    href: `/giselle/cursos${TRACK}`,
-    icon: GraduationCap,
-    titulo: "Cursos gratuitos de Dados & IA",
-    sub: "Comece hoje, direto no navegador",
-  },
-  {
-    href: `/trajetoria${TRACK}`,
-    icon: Compass,
-    titulo: "Mentoria Trajetória — Turma Fundadora",
-    sub: "4 semanas: direção, projeto e plano de 90 dias",
-  },
-];
+// YouTube = público misto: os vídeos falam de ROI de IA nas empresas (B2B) e
+// de aprender a pensar com dados (B2C), então empresa vem primeiro e a
+// pessoa física tem o diagnóstico e os cursos logo abaixo.
+function links(canal: Canal) {
+  const t = TRACK[canal];
+  if (canal === "youtube") {
+    return [
+      {
+        href: `/diagnostico-ia${t}`,
+        icon: Building2,
+        titulo: "A IA da sua empresa dá retorno?",
+        sub: "Diagnóstico de maturidade em 3 minutos, resultado na hora",
+        destaque: true,
+      },
+      {
+        href: `/lab${t}`,
+        icon: FlaskConical,
+        titulo: "Em que ponto você está travado(a)?",
+        sub: "Diagnóstico pessoal de 5 minutos, gratuito",
+      },
+      {
+        href: `/giselle/cursos${t}`,
+        icon: GraduationCap,
+        titulo: "Cursos gratuitos de Dados & IA",
+        sub: "Aprenda a resolver problemas reais, direto no navegador",
+      },
+      {
+        href: `/giselle/palestras${t}`,
+        icon: Presentation,
+        titulo: "Palestras e workshops para equipes",
+        sub: "Leve este conteúdo para a sua empresa",
+      },
+    ];
+  }
+  return [
+    {
+      href: `/lab${t}`,
+      icon: FlaskConical,
+      titulo: "Em que ponto você está travado(a)?",
+      sub: "Diagnóstico gratuito de 5 minutos, resultado na hora",
+      destaque: true,
+    },
+    {
+      href: `/giselle/cursos${t}`,
+      icon: GraduationCap,
+      titulo: "Cursos gratuitos de Dados & IA",
+      sub: "Comece hoje, direto no navegador",
+    },
+    {
+      href: `/trajetoria${t}`,
+      icon: Compass,
+      titulo: "Mentoria Trajetória — Turma Fundadora",
+      sub: "4 semanas: direção, projeto e plano de 90 dias",
+    },
+  ];
+}
 
-export default function GiselleBio() {
+export default function GiselleBio({ canal = "instagram" }: { canal?: Canal }) {
+  const LINKS = links(canal);
   return (
     <div className="giselle-light min-h-screen bg-[#f7f8fc] font-baloo">
       <main className="mx-auto flex max-w-md flex-col items-center px-5 pb-14 pt-10">
@@ -99,7 +145,7 @@ export default function GiselleBio() {
         </div>
 
         <Link
-          href={`/giselle${TRACK}`}
+          href={`/giselle${TRACK[canal]}`}
           className="mt-5 text-sm font-semibold text-[#6b21a8] underline-offset-4 hover:underline"
         >
           Ver tudo: trilhas, livro e mais →
@@ -132,6 +178,15 @@ export default function GiselleBio() {
             className="text-slate-400 transition hover:text-[#6b21a8]"
           >
             <Linkedin className="size-5" />
+          </a>
+          <a
+            href="https://www.youtube.com/@GiselleCFalcao"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="YouTube"
+            className="text-slate-400 transition hover:text-[#6b21a8]"
+          >
+            <Youtube className="size-5" />
           </a>
         </div>
         <p className="mt-4 text-xs text-slate-400">coutofalcao.com</p>

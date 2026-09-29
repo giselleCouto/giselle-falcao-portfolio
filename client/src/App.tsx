@@ -133,6 +133,8 @@ const ROUTE_CHANNELS: Record<string, string> = {
   "/linkedin/": "linkedin",
   "/bio": "instagram",
   "/bio/": "instagram",
+  "/youtube": "youtube",
+  "/youtube/": "youtube",
 };
 
 function trackVisit(path: string) {
@@ -352,7 +354,12 @@ function RouteSeo() {
       description =
         "Como o site de Giselle Falcão coleta, usa e protege seus dados pessoais, em conformidade com a LGPD: formulários com consentimento, métricas anônimas e nenhum compartilhamento comercial.";
       keywords = "política de privacidade, LGPD, proteção de dados, Giselle Falcão";
-    } else if (location === "/bio" || location === "/bio/") {
+    } else if (
+      location === "/bio" ||
+      location === "/bio/" ||
+      location === "/youtube" ||
+      location === "/youtube/"
+    ) {
       title = "Giselle Falcão — Links";
       description =
         "Mentoria, diagnóstico, cursos gratuitos, trilhas de carreira, livro e palestras da Dra. Giselle Falcão — todos os caminhos em um só lugar.";
@@ -929,7 +936,10 @@ function Router() {
         <Route path="/giselle/mentoria" component={GiselleMentoriaHub} />
         <Route path="/impulso" component={GiselleMentoria} />
         <Route path="/giselle/mentoria/impulso" component={GiselleMentoria} />
-        <Route path="/bio" component={GiselleBio} />
+        <Route path="/bio">{() => <GiselleBio />}</Route>
+        {/* Link do canal e das descrições do YouTube: visita/lead com source="youtube" */}
+        <Route path="/youtube">{() => <GiselleBio canal="youtube" />}</Route>
+        <Route path="/youtube/">{() => <GiselleBio canal="youtube" />}</Route>
         <Route path="/privacidade" component={GisellePrivacidade} />
         <Route path="/politica-de-privacidade" component={GisellePrivacidade} />
         <Route path="/lab" component={GiselleLab} />
