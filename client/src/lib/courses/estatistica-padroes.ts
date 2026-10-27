@@ -22,6 +22,7 @@ export const estatisticaPadroes: Course = {
   "audience": "Analistas e cientistas de dados em início de carreira que já treinam modelos com scikit-learn (ou concluíram Fundamentos de ML) e querem o alicerce estatístico para interpretar, validar e defender seus resultados com rigor — em relatórios, entrevistas e discussões técnicas.",
   "prerequisites": "Python básico com pandas no Google Colab e noções de ML aplicado (regressão, classificação, clustering) — o equivalente ao curso Fundamentos de Machine Learning da Academy; a matemática necessária é construída em aula, com intuição antes de fórmula.",
   "status": "disponivel",
+  "conteudo": "em-producao",
   "modules": [
     {
       "id": "modulo-1",

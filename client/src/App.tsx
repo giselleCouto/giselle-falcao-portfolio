@@ -236,8 +236,13 @@ function RouteSeo() {
       const course = getCourse(slug);
 
       if (course) {
-        title = `${course.title} — Curso ${course.free ? "Gratuito" : "Premium"} com Certificado | Giselle Falcão Academy`;
-        description = `${course.tagline} Curso ${course.level.toLowerCase()} de ${course.hours} com trilha gamificada, práticas no navegador e certificado digital.`;
+        const empresas = course.publico === "empresas";
+        title = empresas
+          ? `${course.title} — Programa Executivo NOKAHI Edu, com Giselle Falcão`
+          : `${course.title} — Curso ${course.free ? "Gratuito" : "Premium"} com Certificado | Giselle Falcão Academy`;
+        description = empresas
+          ? `${course.tagline} Programa Executivo NOKAHI Edu de ${course.hours}, conduzido por Giselle Falcão, em turma fechada: videoaulas, encontros ao vivo, projeto aplicado e certificado.`
+          : `${course.tagline} Curso ${course.level.toLowerCase()} de ${course.hours} com trilha gamificada, práticas no navegador e certificado digital.`;
         keywords = `curso ${course.title}, curso de IA, curso ${course.free ? "gratuito" : "online"}, ${course.level}, certificado, Giselle Falcão Academy`;
 
         upsertJsonLd("giselle-course-schema", {
@@ -246,11 +251,13 @@ function RouteSeo() {
           name: course.title,
           description: course.description,
           inLanguage: "pt-BR",
-          provider: {
-            "@type": "Organization",
-            name: "Giselle Falcão Academy",
-            url: "https://www.coutofalcao.com/giselle",
-          },
+          provider: empresas
+            ? { "@type": "Organization", name: "NOKAHI Edu" }
+            : {
+                "@type": "Organization",
+                name: "Giselle Falcão Academy",
+                url: "https://www.coutofalcao.com/giselle",
+              },
           offers: {
             "@type": "Offer",
             category: course.free ? "Free" : "Paid",
@@ -258,7 +265,8 @@ function RouteSeo() {
           },
           hasCourseInstance: {
             "@type": "CourseInstance",
-            courseMode: "Online",
+            courseMode: empresas ? "Blended" : "Online",
+            ...(empresas ? { instructor: { "@type": "Person", name: "Giselle Falcão" } } : {}),
             courseWorkload: `PT${course.hours.replace(/\D/g, "")}H`,
           },
           educationalCredentialAwarded: "Certificado digital de conclusão",

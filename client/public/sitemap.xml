@@ -46,12 +46,42 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://www.coutofalcao.com/giselle/cursos/solucoes-dados-ia-lideres</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.coutofalcao.com/giselle/cursos/ia-generativa-no-trabalho</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.coutofalcao.com/giselle/cursos/agentes-ia-lideres</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.coutofalcao.com/giselle/cursos/decisoes-orientadas-por-dados</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.coutofalcao.com/giselle/cursos/ia-de-producao-times-dados</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://www.coutofalcao.com/giselle/cursos/da-query-ao-modelo</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.coutofalcao.com/giselle/cursos/empreendedorismo-ia</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.coutofalcao.com/giselle/cursos/ensinar-avaliacao-mlops-llmops</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>

@@ -58,6 +58,34 @@ export function serveStatic(app: Express) {
     );
   }
 
+  // ---------------------------------------------------------------------
+  // Renderização para robôs: os assistentes de IA (GPTBot, ClaudeBot,
+  // PerplexityBot, Amazonbot, CCBot...) não executam JavaScript, então a SPA
+  // chegaria vazia para eles. Quando existe um snapshot da rota em
+  // dist/public/__snapshots (gerado por scripts/prerender.ts no build), ele é
+  // entregue a esses agentes. O conteúdo é o mesmo que a pessoa vê na tela.
+  // Use ?__snapshot=1 para conferir o snapshot no navegador.
+  // ---------------------------------------------------------------------
+  const BOT_UA =
+    /(googlebot|google-extended|bingbot|duckduckbot|baiduspider|yandex|slurp|gptbot|oai-searchbot|chatgpt-user|claudebot|claude-searchbot|claude-user|anthropic-ai|perplexitybot|perplexity-user|applebot|amazonbot|ccbot|meta-externalagent|facebookexternalhit|twitterbot|linkedinbot|slackbot|discordbot|telegrambot|whatsapp)/i;
+
+  function snapshotFor(urlPath: string): string | null {
+    const clean = urlPath.replace(/\/+$/, "") || "/__home";
+    if (clean.includes("..") || /\.[a-z0-9]+$/i.test(clean)) return null;
+    const file = path.resolve(distPath, "__snapshots", clean.replace(/^\//, ""), "index.html");
+    return fs.existsSync(file) ? file : null;
+  }
+
+  app.get("*", (req, res, next) => {
+    const ua = req.get("user-agent") || "";
+    const forced = req.query.__snapshot === "1";
+    if (!forced && !BOT_UA.test(ua)) return next();
+    const file = snapshotFor(req.path);
+    if (!file) return next();
+    res.set("x-rendered-for", forced ? "preview" : "bot");
+    return res.sendFile(file);
+  });
+
   app.use(express.static(distPath));
 
   // fall through to index.html if the file doesn't exist

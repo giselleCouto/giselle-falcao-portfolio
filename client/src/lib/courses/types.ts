@@ -74,6 +74,12 @@ export type Course = {
   prerequisites: string;
   /** "disponivel" habilita a página do curso; "em-breve" mantém só o card na vitrine */
   status: "disponivel" | "em-breve";
+  /** Conteúdo das aulas: "completo" (padrão) ou "em-producao" (estrutura no ar,
+   *  aulas sendo gravadas — o catálogo e a página avisam e oferecem lista de aviso) */
+  conteudo?: "completo" | "em-producao";
+  /** "empresas" = programa corporativo (turma fechada, investimento sob proposta):
+   *  vai para a seção "Programas para empresas" do catálogo e o CTA vira pedido de proposta */
+  publico?: "empresas";
   modules: CourseModule[];
   /** Biblioteca de prática: recursos permanentes do curso (notebooks, datasets, modelos) */
   library: PracticeResource[];

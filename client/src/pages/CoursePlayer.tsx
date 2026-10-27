@@ -359,12 +359,148 @@ function Placeholder({
   );
 }
 
+/** Apresentação comercial (cursos com conteúdo em produção): responde o que é,
+ *  para quem, o programa, formato, certificado e o próximo passo honesto —
+ *  lista de aviso, nunca venda de conteúdo que ainda não existe. */
+function VisaoComercial({ course, onVerAmostra }: { course: NonNullable<ReturnType<typeof getCourse>>; onVerAmostra: () => void }) {
+  const empresas = course.publico === "empresas";
+  const avisoHref = empresas
+    ? `/giselle/palestras?src=curso&c=${course.slug}#proposta`
+    : `/interesse?src=aviso-${course.slug}`;
+  return (
+    <>
+      <section className="border-b border-slate-200/70 bg-white">
+        <div className="container py-10 sm:py-12">
+          <Link
+            href="/giselle/cursos"
+            className="inline-flex items-center gap-2 text-sm font-semibold text-slate-500 transition hover:text-[#6b21a8]"
+          >
+            <ArrowLeft className="size-4" />
+            Todos os cursos
+          </Link>
+          <div className="mt-5 flex flex-wrap gap-2">
+            <span className="rounded-full bg-violet-100 px-3 py-1 text-xs font-bold text-violet-700">{course.level}</span>
+            {empresas ? (
+              <span className="rounded-full bg-cyan-100 px-3 py-1 text-xs font-bold text-cyan-800">Programa Executivo NOKAHI Edu</span>
+            ) : (
+              <>
+                <span className={`rounded-full px-3 py-1 text-xs font-bold ${course.free ? "bg-teal-100 text-teal-700" : "bg-amber-100 text-amber-700"}`}>
+                  {course.free ? "Gratuito" : "Premium"}
+                </span>
+                <span className="rounded-full bg-amber-100 px-3 py-1 text-xs font-bold text-amber-700">Conteúdo em produção</span>
+              </>
+            )}
+          </div>
+          <h1 className="mt-4 max-w-3xl font-baloo text-3xl font-bold leading-tight sm:text-4xl">{course.title}</h1>
+          {empresas ? (
+            <p className="mt-2 text-sm font-semibold text-[#0f766e]">Programa Executivo NOKAHI Edu · conduzido por Giselle Falcão</p>
+          ) : null}
+          <p className="mt-3 max-w-2xl text-base leading-7 text-slate-600">{course.tagline}</p>
+          <div className="mt-6 flex flex-wrap items-center gap-3">
+            <Link
+              href={avisoHref}
+              className="inline-flex items-center gap-2 rounded-full bg-[#1a1333] px-6 py-3 text-sm font-bold text-white transition hover:bg-[#6b21a8]"
+            >
+              {empresas ? "Solicitar proposta para sua empresa" : "Receber aviso de lançamento"}
+            </Link>
+            <button
+              type="button"
+              onClick={onVerAmostra}
+              className="inline-flex items-center gap-2 rounded-full border-2 border-slate-200 px-5 py-2.5 text-sm font-semibold text-slate-600 transition hover:border-[#8b5cf6] hover:text-[#6b21a8]"
+            >
+              Ver a estrutura das aulas (amostra)
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section className="container grid gap-6 py-10 lg:grid-cols-[1.2fr_0.8fr]">
+        <div className="space-y-6">
+          <div className="rounded-3xl border border-slate-200/70 bg-white p-6">
+            <h2 className="font-baloo text-xl font-bold text-[#1a1333]">O que você vai conseguir fazer</h2>
+            <ul className="mt-4 space-y-2.5">
+              {course.outcomes.map((o) => (
+                <li key={o} className="flex gap-2.5 text-sm leading-6 text-slate-600">
+                  <CheckCircle2 className="mt-0.5 size-4 shrink-0 text-teal-600" />
+                  {o}
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="rounded-3xl border border-slate-200/70 bg-white p-6">
+            <h2 className="font-baloo text-xl font-bold text-[#1a1333]">Programa</h2>
+            <div className="mt-4 space-y-3">
+              {course.modules.map((m, i) => (
+                <div key={m.id} className="rounded-2xl bg-[#f7f8fc] px-4 py-3">
+                  <p className="text-sm font-bold text-[#1a1333]">
+                    {i + 1}. {m.title}
+                  </p>
+                  {m.subtitle ? <p className="mt-0.5 text-xs leading-5 text-slate-500">{m.subtitle}</p> : null}
+                  <p className="mt-1 text-xs text-slate-400">{m.lessons.length} aulas · {m.duration}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div className="space-y-4">
+          <div className="rounded-3xl border border-slate-200/70 bg-white p-6 text-sm leading-6 text-slate-600">
+            <h2 className="font-baloo text-lg font-bold text-[#1a1333]">Para quem é</h2>
+            <p className="mt-2">{course.audience}</p>
+            <h3 className="mt-4 font-bold text-[#1a1333]">Pré-requisitos</h3>
+            <p className="mt-1">{course.prerequisites}</p>
+            <h3 className="mt-4 font-bold text-[#1a1333]">Formato</h3>
+            <p className="mt-1">
+              {empresas
+                ? `Híbrido, em turma fechada: videoaulas curtas, um encontro ao vivo por módulo (presencial ou on-line) e um projeto aplicado à realidade da empresa — ${course.hours} no total.`
+                : `On-line, no seu ritmo, direto no navegador — ${course.hours} estimadas de dedicação, com práticas em ferramentas gratuitas e quiz por módulo.`}
+            </p>
+            <h3 className="mt-4 font-bold text-[#1a1333]">Certificado</h3>
+            <p className="mt-1">
+              {empresas
+                ? "Certificado de qualificação profissional NOKAHI Edu, com aproveitamento mínimo de 70% nas avaliações e entrega do projeto aplicado. Curso livre de capacitação profissional, nos termos da Lei nº 9.394/96 (LDB) e do Decreto nº 5.154/2004 — não sujeito a autorização do MEC."
+                : "Certificado digital de conclusão ao completar as aulas e os quizzes."}
+            </p>
+          </div>
+          <div className="rounded-3xl border-2 border-amber-200 bg-amber-50 p-6">
+            <h2 className="font-baloo text-lg font-bold text-amber-800">{empresas ? "Como funciona" : "Disponibilidade"}</h2>
+            <p className="mt-2 text-sm leading-6 text-amber-900">
+              {empresas
+                ? "O programa é adaptado ao setor e ao momento da sua empresa: casos, exemplos e calendário são combinados com a equipe antes do início. A amostra mostra a estrutura real das aulas."
+                : "As aulas deste curso estão em produção. A estrutura completa do programa já está publicada — o que você vê na amostra é o plano real, não o conteúdo final."}
+            </p>
+          </div>
+          <div className="rounded-3xl border border-slate-200/70 bg-white p-6">
+            <h2 className="font-baloo text-lg font-bold text-[#1a1333]">Investimento</h2>
+            <p className="mt-2 text-sm leading-6 text-slate-600">
+              {empresas
+                ? "Sob proposta, conforme o número de participantes e o formato. Conte um pouco da sua empresa e a gente prepara uma proposta sem compromisso."
+                : course.free
+                  ? "Gratuito. Entre na lista e receba o aviso assim que as aulas forem liberadas."
+                  : "As condições de investimento serão publicadas no lançamento. Quem está na lista de aviso recebe primeiro — sem compromisso."}
+            </p>
+            <Link
+              href={avisoHref}
+              className="mt-4 inline-flex w-full items-center justify-center rounded-full bg-[#1a1333] px-6 py-3 text-sm font-bold text-white transition hover:bg-[#6b21a8]"
+            >
+              {empresas ? "Solicitar proposta" : "Entrar na lista de aviso"}
+            </Link>
+          </div>
+        </div>
+      </section>
+    </>
+  );
+}
+
 export default function CoursePlayer({ slug }: { slug: string }) {
   const course = getCourse(slug);
   const [activeModuleId, setActiveModuleId] = useState<string | null>(null);
   const [activeLessonIndex, setActiveLessonIndex] = useState(0);
   const [celebrating, setCelebrating] = useState(false);
   const [gateOpen, setGateOpen] = useState(false);
+  // Cursos com conteúdo em produção abrem na apresentação comercial;
+  // a estrutura das aulas fica acessível como amostra consciente.
+  const [verAmostra, setVerAmostra] = useState(false);
   const { profile, saveProfile } = useStudentProfile();
 
   const progress = useCourseProgress(
@@ -378,6 +514,14 @@ export default function CoursePlayer({ slug }: { slug: string }) {
 
   if (!course || course.status !== "disponivel") {
     return <NotFound />;
+  }
+
+  if (course.conteudo === "em-producao" && !verAmostra) {
+    return (
+      <GiselleLayout>
+        <VisaoComercial course={course} onVerAmostra={() => setVerAmostra(true)} />
+      </GiselleLayout>
+    );
   }
 
   const moduleUnlocked = course.free || (activeModule?.free ?? false);
@@ -444,10 +588,12 @@ export default function CoursePlayer({ slug }: { slug: string }) {
                 </span>
                 <span
                   className={`rounded-full px-3 py-1 text-xs font-bold ${
-                    course.free ? "bg-teal-100 text-teal-700" : "bg-amber-100 text-amber-700"
+                    course.publico === "empresas"
+                      ? "bg-cyan-100 text-cyan-800"
+                      : course.free ? "bg-teal-100 text-teal-700" : "bg-amber-100 text-amber-700"
                   }`}
                 >
-                  {course.free ? "Gratuito" : "Premium"}
+                  {course.publico === "empresas" ? "NOKAHI Edu" : course.free ? "Gratuito" : "Premium"}
                 </span>
                 <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-bold text-slate-500">
                   {course.hours}
@@ -591,18 +737,34 @@ export default function CoursePlayer({ slug }: { slug: string }) {
 
                 {isActive && !unlocked ? (
                   <div className="border-t border-slate-100 px-5 py-5">
-                    <p className="text-sm leading-6 text-slate-500">
-                      Conteúdo premium. Garanta sua vaga e libere a trilha completa com certificado.
-                    </p>
-                    <a
-                      href={contact.whatsapp}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="mt-4 inline-flex items-center gap-2 rounded-full bg-emerald-500 px-5 py-2.5 text-sm font-bold text-white transition hover:bg-emerald-600"
-                    >
-                      <MessageCircle className="size-4" />
-                      Quero me matricular
-                    </a>
+                    {course.publico === "empresas" ? (
+                      <>
+                        <p className="text-sm leading-6 text-slate-500">
+                          Este módulo faz parte do Programa Executivo NOKAHI Edu, liberado para a turma da sua organização.
+                        </p>
+                        <Link
+                          href={`/giselle/palestras?src=curso&c=${course.slug}#proposta`}
+                          className="mt-4 inline-flex items-center gap-2 rounded-full bg-[#1a1333] px-5 py-2.5 text-sm font-bold text-white transition hover:bg-[#0f766e]"
+                        >
+                          Solicitar proposta
+                        </Link>
+                      </>
+                    ) : (
+                      <>
+                        <p className="text-sm leading-6 text-slate-500">
+                          Conteúdo premium. Garanta sua vaga e libere a trilha completa com certificado.
+                        </p>
+                        <a
+                          href={contact.whatsapp}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="mt-4 inline-flex items-center gap-2 rounded-full bg-emerald-500 px-5 py-2.5 text-sm font-bold text-white transition hover:bg-emerald-600"
+                        >
+                          <MessageCircle className="size-4" />
+                          Quero me matricular
+                        </a>
+                      </>
+                    )}
                   </div>
                 ) : null}
               </div>

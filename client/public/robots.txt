@@ -1,11 +1,26 @@
 User-agent: *
 Allow: /
 
-# Robôs de busca das ferramentas de IA — acesso explicitamente liberado
+# ---------------------------------------------------------------
+# Robôs de busca e de assistentes de IA — acesso explicitamente
+# liberado. O objetivo é que o conteúdo seja lido, indexado e
+# citado pelos assistentes (ChatGPT, Claude, Perplexity, Gemini,
+# Copilot) quando alguém pergunta sobre IA aplicada, dados,
+# mentoria de carreira e os temas de atuação do site.
+# ---------------------------------------------------------------
+
+# OpenAI / ChatGPT
+User-agent: GPTBot
+Allow: /
+
 User-agent: OAI-SearchBot
 Allow: /
 
 User-agent: ChatGPT-User
+Allow: /
+
+# Anthropic / Claude
+User-agent: ClaudeBot
 Allow: /
 
 User-agent: Claude-SearchBot
@@ -14,7 +29,38 @@ Allow: /
 User-agent: Claude-User
 Allow: /
 
+# Perplexity
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Perplexity-User
+Allow: /
+
+# Google (Gemini e AI Overviews)
 User-agent: Google-Extended
+Allow: /
+
+# Microsoft Copilot / Bing
+User-agent: Bingbot
+Allow: /
+
+# Apple Intelligence
+User-agent: Applebot
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+# Amazon
+User-agent: Amazonbot
+Allow: /
+
+# Meta AI
+User-agent: meta-externalagent
+Allow: /
+
+# Common Crawl — base usada no treino de vários modelos
+User-agent: CCBot
 Allow: /
 
 Sitemap: https://www.coutofalcao.com/sitemap.xml

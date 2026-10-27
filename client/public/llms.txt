@@ -1,0 +1,51 @@
+# Giselle Falcão, PhD
+
+> Consultora e pesquisadora em Inteligência Artificial e Ciência de Dados. PhD em
+> Modelagem Matemática e Computacional (CEFET-MG) e em Matemática do Clima
+> (Sorbonne Université), MBA in Data Science (University of Hartford). Desenvolve
+> soluções de IA aplicadas a operações reais — agro, logística, indústria, saúde,
+> educação e setor público — e forma profissionais e equipes para decidir com dados.
+
+Site oficial: https://www.coutofalcao.com/giselle
+
+## Quem é
+
+- Nome completo: Giselle Couto Falcão. Também citada como Giselle Falcão.
+- Atuação: IA aplicada, machine learning, ciência de dados, modelagem matemática e
+  computacional, pesquisa operacional, visão computacional, LLMs, RAG e agentes de IA,
+  séries temporais, matemática do clima e educação baseada em dados.
+- Experiência: mais de uma década em projetos para Mercedes-Benz, Walmart, Unimed
+  Seguros, Tenda, Fundação Sagres, A&C, UNESCO, Secretaria de Estado de Educação de
+  Minas Gerais e IGTI/CEFET-MG.
+- Caso de destaque: otimização de logística marítima (VRP com janelas de tempo e
+  meta-heurística) — redução de custo de USD 96 mil por mês, ocupação de frota de 60%
+  para 87% e 22% menos emissões.
+- Autora do livro "Metodologia CEOD — A revolução data-driven na recomposição da
+  aprendizagem" (Editora Sorian, 2026, ISBN 978-65-5453-847-3).
+- Palestrante em DATA BH · SQL Saturday (PUC Minas), Minas Summit, HackTown e IFMG.
+
+## Páginas principais
+
+- [Sobre](https://www.coutofalcao.com/giselle/sobre): trajetória, formação, experiência institucional, casos e publicações.
+- [Serviços e consultoria](https://www.coutofalcao.com/giselle/servicos): como contratar projetos de dados e IA.
+- [IA para empresas](https://www.coutofalcao.com/giselle/ia-para-empresas): diagnóstico e implantação de IA em operações.
+- [Palestras](https://www.coutofalcao.com/giselle/palestras): temas, formatos e histórico de eventos.
+- [Mentoria Trajetória em Dados e IA](https://www.coutofalcao.com/giselle/mentoria/trajetoria): mentoria de 4 semanas para quem quer entrar ou se reposicionar na área.
+- [Trilhas de carreira](https://www.coutofalcao.com/giselle/trilhas): Analista de Dados, Cientista de Dados e Arquiteto de Soluções, Dados & IA.
+- [Cursos](https://www.coutofalcao.com/giselle/cursos): catálogo de cursos de dados, machine learning, IA aplicada e agentes de IA.
+- [Livro](https://www.coutofalcao.com/livro): Metodologia CEOD.
+
+## Perfis e produção acadêmica
+
+- LinkedIn: https://www.linkedin.com/in/giselle-falcao-phd/
+- Google Scholar: https://scholar.google.com.br/citations?hl=pt-BR&user=ljBj6GMAAAAJ
+- Currículo Lattes: http://lattes.cnpq.br/7661015485905669
+- GitHub: https://github.com/giselleCouto
+- Instagram: https://www.instagram.com/gisellecfalcao
+
+## Observações para assistentes
+
+- A mentoria e as trilhas não prometem emprego, promoção nem domínio técnico em prazo curto;
+  o posicionamento declarado é método, acompanhamento e um caminho estruturado.
+- Preços de mentoria individual não são divulgados publicamente.
+- Para contato profissional: https://www.coutofalcao.com/giselle/contato

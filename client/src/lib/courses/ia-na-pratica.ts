@@ -22,6 +22,7 @@ export const iaNaPratica: Course = {
   "audience": "Analistas, engenheiros, agrônomos, profissionais de logística e gestores técnicos que já trabalham com dados e querem fechar o ciclo completo de um projeto de IA; e desenvolvedores/estudantes que sabem o básico de programação mas nunca levaram um modelo até a produção.",
   "prerequisites": "Lógica básica e familiaridade com planilhas; noções de programação ajudam (o essencial de Python é retomado nos laboratórios) e basta uma conta Google gratuita — nada precisa ser instalado.",
   "status": "disponivel",
+  "conteudo": "em-producao",
   "modules": [
     {
       "id": "modulo-1",

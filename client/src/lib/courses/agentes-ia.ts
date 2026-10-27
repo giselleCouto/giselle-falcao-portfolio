@@ -22,6 +22,7 @@ export const agentesIa: Course = {
   "audience": "Profissionais de dados, engenharia, TI e inovação que já usam LLMs e querem construir automações que decidem e agem, não só respondem. Também atende especialistas de domínio (indústria, agro, logística, operações) com base técnica em Python que querem prototipar agentes para seus processos.",
   "prerequisites": "Python intermediário, noções de APIs REST e experiência prévia com LLMs via interface — nenhuma instalação local é necessária, pois todas as práticas rodam em ferramentas gratuitas de navegador.",
   "status": "disponivel",
+  "conteudo": "em-producao",
   "modules": [
     {
       "id": "modulo-1",

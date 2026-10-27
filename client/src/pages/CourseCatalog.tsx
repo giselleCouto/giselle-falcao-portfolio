@@ -118,19 +118,74 @@ export default function CourseCatalog() {
         </Link>
       </section>
 
-      {/* Grade de cursos */}
-      <section className="container py-10 sm:py-12">
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {courses.map((course, index) => {
+      {/* Comece gratuitamente */}
+      <section className="container pt-10">
+        <p className="text-xs font-bold uppercase tracking-[0.25em] text-teal-600">Comece gratuitamente</p>
+        <h2 className="mt-2 font-baloo text-2xl font-bold text-[#1a1333]">Cursos gratuitos</h2>
+        <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          {courses.filter((c) => c.free && c.publico !== "empresas").sort((a, b) => Number(a.conteudo === "em-producao") - Number(b.conteudo === "em-producao")).map((course, index) => {
             const percent = progressBySlug[course.slug] ?? 0;
             return (
-              <motion.article
-                key={course.slug}
-                variants={fadeUp}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, margin: "-60px" }}
-                transition={{ duration: 0.3, delay: index * 0.06 }}
+              <CourseCard key={course.slug} course={course} percent={percent} index={index} />
+            );
+          })}
+        </div>
+      </section>
+
+      {/* Aprofunde sua formação */}
+      <section className="container py-10 sm:py-12">
+        <p className="text-xs font-bold uppercase tracking-[0.25em] text-[#6b21a8]">Aprofunde sua formação</p>
+        <h2 className="mt-2 font-baloo text-2xl font-bold text-[#1a1333]">Cursos Premium</h2>
+        <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-500">
+          As formações aprofundadas estão com o conteúdo em produção. Entre na lista de aviso e seja
+          a primeira pessoa a saber do lançamento — sem compromisso.
+        </p>
+        <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          {courses.filter((c) => !c.free && c.publico !== "empresas").map((course, index) => {
+            const percent = progressBySlug[course.slug] ?? 0;
+            return (
+              <CourseCard key={course.slug} course={course} percent={percent} index={index} />
+            );
+          })}
+        </div>
+      </section>
+
+      {/* Programas Executivos NOKAHI Edu (corporativos: turma fechada, sob proposta) */}
+      {courses.some((c) => c.publico === "empresas") ? (
+        <section className="border-t border-slate-200/70 bg-[#f7f8fc]">
+          <div className="container py-10 sm:py-12">
+            <p className="text-xs font-bold uppercase tracking-[0.25em] text-[#0f766e]">Para empresas</p>
+            <h2 className="mt-2 font-baloo text-2xl font-bold text-[#1a1333]">Programas Executivos NOKAHI Edu</h2>
+            <p className="mt-1 text-sm font-semibold text-[#0f766e]">Conduzidos por Giselle Falcão</p>
+            <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-500">
+              Formações para lideranças e equipes, em turmas fechadas: videoaulas curtas, encontros ao vivo
+              e um projeto aplicado à realidade da sua empresa. Adaptamos ao seu setor, e o investimento é sob proposta.
+            </p>
+            <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {courses.filter((c) => c.publico === "empresas").map((course, index) => (
+                <CourseCard key={course.slug} course={course} percent={0} index={index} />
+              ))}
+            </div>
+            <p className="mt-6 max-w-3xl text-xs leading-5 text-slate-400">
+              Cursos livres de capacitação profissional, nos termos da Lei nº 9.394/96 (LDB) e do Decreto nº 5.154/2004 — não sujeitos a autorização do MEC.
+            </p>
+          </div>
+        </section>
+      ) : null}
+    </GiselleLayout>
+  );
+}
+
+function CourseCard({ course, percent, index }: { course: (typeof courses)[number]; percent: number; index: number }) {
+  const emProducao = course.conteudo === "em-producao";
+  const empresas = course.publico === "empresas";
+  return (
+    <motion.article
+      variants={fadeUp}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, margin: "-60px" }}
+      transition={{ duration: 0.3, delay: index * 0.06 }}
                 className="group flex flex-col overflow-hidden rounded-3xl border border-slate-200/70 bg-white shadow-[0_10px_40px_rgba(26,19,51,0.06)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_18px_50px_rgba(107,33,168,0.12)]"
               >
                 {/* Capa */}
@@ -151,20 +206,28 @@ export default function CourseCatalog() {
                     </span>
                     <span
                       className={`rounded-full px-3 py-1 text-xs font-bold ${
-                        course.free ? "bg-teal-100 text-teal-700" : "bg-violet-100 text-violet-700"
+                        empresas ? "bg-cyan-100 text-cyan-800" : course.free ? "bg-teal-100 text-teal-700" : "bg-violet-100 text-violet-700"
                       }`}
                     >
-                      {course.free ? "Gratuito" : "Premium"}
+                      {empresas
+                        ? "NOKAHI Edu · sob proposta"
+                        : course.free
+                          ? (emProducao ? "Gratuito · em produção" : "Gratuito · acesso imediato")
+                          : "Premium · em produção"}
                     </span>
                   </div>
 
                   <h2 className="mt-4 text-lg font-bold leading-snug">{course.title}</h2>
                   <p className="mt-2 flex-1 text-sm leading-6 text-slate-500">{course.tagline}</p>
+                  <p className="mt-2 text-xs leading-5 text-slate-400">
+                    <b className="text-slate-500">Pré-requisitos:</b>{" "}
+                    {course.prerequisites.split(".")[0]}.
+                  </p>
 
                   <div className="mt-4 flex items-center gap-4 text-xs font-medium text-slate-400">
                     <span className="inline-flex items-center gap-1.5">
                       <Clock className="size-3.5" />
-                      {course.hours}
+                      {course.hours} estimadas
                     </span>
                     <span className="inline-flex items-center gap-1.5">
                       <Award className="size-3.5 text-teal-500" />
@@ -182,25 +245,46 @@ export default function CourseCatalog() {
                     </div>
                   ) : null}
 
-                  {course.status === "disponivel" ? (
+                  {empresas ? (
+                    <div className="mt-5 flex flex-col gap-2">
+                      <Link
+                        href={`/giselle/palestras?src=curso&c=${course.slug}#proposta`}
+                        className="inline-flex w-fit items-center gap-2 rounded-full bg-[#1a1333] px-5 py-2.5 text-sm font-semibold text-white transition group-hover:bg-[#0f766e]"
+                      >
+                        Solicitar proposta
+                      </Link>
+                      <Link
+                        href={`/giselle/cursos/${course.slug}`}
+                        className="text-xs font-semibold text-slate-400 underline-offset-2 hover:text-[#0f766e] hover:underline"
+                      >
+                        Ver o programa completo
+                      </Link>
+                    </div>
+                  ) : emProducao ? (
+                    <div className="mt-5 flex flex-col gap-2">
+                      <Link
+                        href={`/interesse?src=aviso-${course.slug}`}
+                        className="inline-flex w-fit items-center gap-2 rounded-full bg-[#1a1333] px-5 py-2.5 text-sm font-semibold text-white transition group-hover:bg-[#6b21a8]"
+                      >
+                        Receber aviso de lançamento
+                      </Link>
+                      <Link
+                        href={`/giselle/cursos/${course.slug}`}
+                        className="text-xs font-semibold text-slate-400 underline-offset-2 hover:text-[#6b21a8] hover:underline"
+                      >
+                        Ver o programa completo
+                      </Link>
+                    </div>
+                  ) : (
                     <Link
                       href={`/giselle/cursos/${course.slug}`}
                       className="mt-5 inline-flex w-fit items-center gap-2 rounded-full bg-[#1a1333] px-5 py-2.5 text-sm font-semibold text-white transition group-hover:bg-[#6b21a8]"
                     >
                       <Play className="size-4" />
-                      {percent > 0 ? "Continuar" : "Começar agora"}
+                      {percent > 0 ? "Continuar" : "Acessar gratuitamente"}
                     </Link>
-                  ) : (
-                    <span className="mt-5 inline-flex w-fit items-center rounded-full border border-slate-200 px-5 py-2.5 text-sm font-medium text-slate-400">
-                      Em breve
-                    </span>
                   )}
                 </div>
               </motion.article>
-            );
-          })}
-        </div>
-      </section>
-    </GiselleLayout>
   );
 }

@@ -22,6 +22,7 @@ export const fundamentosMl: Course = {
   "audience": "Profissionais e estudantes brasileiros que querem entrar na área de dados e IA: analistas, engenheiros de outras áreas, gestores e universitários que querem entender como a máquina aprende e treinar seus primeiros modelos.",
   "prerequisites": "Nenhum conhecimento prévio de programação ou estatística — basta familiaridade básica com planilhas e navegador; todo código Python é fornecido pronto e comentado.",
   "status": "disponivel",
+  "conteudo": "em-producao",
   "modules": [
     {
       "id": "modulo-1",

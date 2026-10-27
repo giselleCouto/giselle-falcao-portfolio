@@ -164,8 +164,9 @@ export const trajetoria = {
     parcelamento: "Possibilidade de parcelamento",
     justificativa:
       "A condição fundadora existe porque as primeiras pessoas também ajudam a validar e aprimorar o formato — com o mesmo compromisso de entrega e acompanhamento próximo.",
-    vagas: "12 vagas",
-    bolsas: "Até 2 bolsas integrais para mulheres em situação de vulnerabilidade econômica",
+    vagas: "12 vagas pagantes",
+    bolsas:
+      "Até 2 bolsas integrais para mulheres em situação de vulnerabilidade econômica — a turma tem, no máximo, 14 pessoas (12 pagantes + 2 bolsistas)",
   },
 
   compromissoMulheres:

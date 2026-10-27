@@ -10,6 +10,13 @@ import { daQueryAoModelo } from "./da-query-ao-modelo";
 import { empreendedorismoIa } from "./empreendedorismo-ia";
 import { iaNaPratica } from "./ia-na-pratica";
 import { agentesIa } from "./agentes-ia";
+import { ensinarAvaliacaoMlopsLlmops } from "./ensinar-avaliacao-mlops-llmops";
+// Programas para empresas (publico: "empresas")
+import { solucoesDadosIaLideres } from "./solucoes-dados-ia-lideres";
+import { iaGenerativaNoTrabalho } from "./ia-generativa-no-trabalho";
+import { agentesIaLideres } from "./agentes-ia-lideres";
+import { decisoesOrientadasPorDados } from "./decisoes-orientadas-por-dados";
+import { iaDeProducaoTimesDados } from "./ia-de-producao-times-dados";
 
 export const courses: Course[] = [
   fundamentosCienciaDeDados,
@@ -20,6 +27,12 @@ export const courses: Course[] = [
   estatisticaPadroes,
   iaNaPratica,
   agentesIa,
+  ensinarAvaliacaoMlopsLlmops,
+  solucoesDadosIaLideres,
+  iaGenerativaNoTrabalho,
+  agentesIaLideres,
+  decisoesOrientadasPorDados,
+  iaDeProducaoTimesDados,
 ];
 
 export function getCourse(slug: string): Course | undefined {

@@ -22,6 +22,7 @@ export const analiseDadosEstrategica: Course = {
   "audience": "Agentes públicos (com foco na gestão municipal paulistana) e profissionais de qualquer setor que precisam transformar dados em decisões — analistas, assessores, coordenadores e equipes de planejamento. Não é preciso nenhuma experiência prévia em programação, estatística ou BI.",
   "prerequisites": "Nenhum conhecimento prévio: basta uma conta Google gratuita, um navegador atualizado e familiaridade básica com computador.",
   "status": "disponivel",
+  "conteudo": "em-producao",
   "modules": [
     {
       "id": "modulo-1",

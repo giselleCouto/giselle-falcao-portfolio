@@ -22,6 +22,7 @@ export const fundamentosCienciaDeDados: Course = {
   "audience": "Qualquer pessoa que queira dar o primeiro passo na área de dados: estudantes, profissionais em transição de carreira, gestores e curiosos. É o curso de porta de entrada da Academy — nenhuma experiência prévia é necessária.",
   "prerequisites": "Nenhum pré-requisito: basta uma conta Google gratuita, um navegador atualizado e familiaridade básica com computador — todo código das primeiras práticas vem pronto e comentado.",
   "status": "disponivel",
+  "conteudo": "em-producao",
   "modules": [
     {
       "id": "modulo-1",
