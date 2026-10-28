@@ -1133,7 +1133,7 @@ export const solucoesDadosIaLideres: Course = {
     {
       "title": "Leve este programa para sua empresa",
       "description": "Turma fechada, com casos e exercícios adaptados ao seu setor; investimento sob proposta.",
-      "href": "/giselle/palestras?src=curso&c=solucoes-dados-ia-lideres#proposta",
+      "href": "/giselle/programas-executivos?src=curso&c=solucoes-dados-ia-lideres&programa=solucoes-dados-ia-lideres#proposta",
       "label": "Solicitar proposta"
     },
     {

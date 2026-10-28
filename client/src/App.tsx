@@ -14,6 +14,7 @@ import { ThemeProvider } from "./contexts/ThemeContext";
 import { caseStudies, faqItems, insightArticles } from "./lib/portfolioData";
 import { getCourse } from "./lib/courses";
 import { iaEmpresas } from "./lib/iaEmpresasData";
+import { programasExecutivos } from "./lib/programasExecutivosData";
 import { minasSummitFaqItems, minasSummitFaqMeta, minasSummitSocialLinks } from "./lib/minasSummitFaqData";
 import AiOsExperience from "./pages/AiOsExperience";
 import CourseCatalog from "./pages/CourseCatalog";
@@ -21,6 +22,7 @@ import CoursePlayer from "./pages/CoursePlayer";
 import GiselleCourses from "./pages/GiselleCourses";
 import GiselleHome from "./pages/giselle/GiselleHome";
 import GiselleIAEmpresas from "./pages/giselle/GiselleIAEmpresas";
+import GiselleProgramasExecutivos from "./pages/giselle/GiselleProgramasExecutivos";
 import GiselleServicos from "./pages/giselle/GiselleServicos";
 import GiselleSobre from "./pages/giselle/GiselleSobre";
 import GiselleContato from "./pages/giselle/GiselleContato";
@@ -115,6 +117,9 @@ const CANONICAL_ALIASES: Record<string, string> = {
   "/palestras": "/giselle/palestras",
   "/empresas": "/giselle/ia-para-empresas",
   "/empresas/": "/giselle/ia-para-empresas",
+  "/programas-executivos": "/giselle/programas-executivos",
+  "/programas-executivos/": "/giselle/programas-executivos",
+  "/nokahi-edu": "/giselle/programas-executivos",
   "/giselle/diagnostico-ia": "/diagnostico-ia",
   "/linkedin": "/diagnostico-ia",
   "/linkedin/": "/diagnostico-ia",
@@ -203,6 +208,7 @@ function RouteSeo() {
     removeJsonLd("giselle-person-schema");
     removeJsonLd("giselle-faq-schema");
     removeJsonLd("ia-empresas-faq-schema");
+    removeJsonLd("programas-executivos-schema");
     removeJsonLd("giselle-case-studies-schema");
     removeJsonLd("giselle-insights-schema");
     removeJsonLd("giselle-course-schema");
@@ -293,6 +299,43 @@ function RouteSeo() {
           name: item.q,
           acceptedAnswer: { "@type": "Answer", text: item.a },
         })),
+      });
+    } else if (
+      location === "/giselle/programas-executivos" ||
+      location === "/programas-executivos" ||
+      location === "/nokahi-edu"
+    ) {
+      title = "Programas Executivos NOKAHI Edu: formação em Dados e IA para empresas | Giselle Falcão";
+      description =
+        "Cinco programas in-company de Dados e IA para cada nível da empresa — diretoria, gestores, equipes não técnicas e times de TI —, conduzidos por Giselle Falcão, PhD. Turma fechada, casos do seu setor e um projeto aplicado ao final.";
+      keywords =
+        "treinamento de IA para empresas, formação in company em inteligência artificial, capacitação em dados para gestores, IA generativa para equipes, agentes de IA para líderes, MLOps para times de dados, NOKAHI Edu, Giselle Falcão";
+
+      upsertJsonLd("programas-executivos-schema", {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "FAQPage",
+            mainEntity: programasExecutivos.faq.map((item) => ({
+              "@type": "Question",
+              name: item.q,
+              acceptedAnswer: { "@type": "Answer", text: item.a },
+            })),
+          },
+          {
+            "@type": "ItemList",
+            name: programasExecutivos.marca,
+            itemListElement: programasExecutivos.programas.map((p, i) => {
+              const course = getCourse(p.slug);
+              return {
+                "@type": "ListItem",
+                position: i + 1,
+                url: `https://www.coutofalcao.com/giselle/cursos/${p.slug}`,
+                name: course?.title ?? p.entregavel,
+              };
+            }),
+          },
+        ],
       });
     } else if (location === "/giselle/servicos") {
       title = "Consultoria e Soluções de IA em Produção | Giselle Falcão";
@@ -1004,6 +1047,9 @@ function Router() {
         <Route path="/giselle/livro">{() => <Redirect to="/giselle/sobre" replace />}</Route>
         <Route path="/empresas" component={GiselleIAEmpresas} />
         <Route path="/giselle/ia-para-empresas" component={GiselleIAEmpresas} />
+        <Route path="/giselle/programas-executivos" component={GiselleProgramasExecutivos} />
+        <Route path="/programas-executivos" component={GiselleProgramasExecutivos} />
+        <Route path="/nokahi-edu" component={GiselleProgramasExecutivos} />
         <Route path="/giselle/servicos" component={GiselleServicos} />
         <Route path="/giselle/sobre" component={GiselleSobre} />
         <Route path="/giselle/contato" component={GiselleContato} />

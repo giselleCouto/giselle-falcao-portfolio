@@ -161,6 +161,12 @@ export default function CourseCatalog() {
               Formações para lideranças e equipes, em turmas fechadas: videoaulas curtas, encontros ao vivo
               e um projeto aplicado à realidade da sua empresa. Adaptamos ao seu setor, e o investimento é sob proposta.
             </p>
+            <Link
+              href="/giselle/programas-executivos"
+              className="mt-4 inline-flex items-center gap-2 rounded-full border-2 border-teal-200 bg-white px-5 py-2.5 text-sm font-bold text-[#0f766e] transition hover:border-[#0f766e]"
+            >
+              Conheça os Programas Executivos: qual serve para cada equipe
+            </Link>
             <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {courses.filter((c) => c.publico === "empresas").map((course, index) => (
                 <CourseCard key={course.slug} course={course} percent={0} index={index} />
@@ -248,7 +254,7 @@ function CourseCard({ course, percent, index }: { course: (typeof courses)[numbe
                   {empresas ? (
                     <div className="mt-5 flex flex-col gap-2">
                       <Link
-                        href={`/giselle/palestras?src=curso&c=${course.slug}#proposta`}
+                        href={`/giselle/programas-executivos?src=curso&c=${course.slug}&programa=${course.slug}#proposta`}
                         className="inline-flex w-fit items-center gap-2 rounded-full bg-[#1a1333] px-5 py-2.5 text-sm font-semibold text-white transition group-hover:bg-[#0f766e]"
                       >
                         Solicitar proposta

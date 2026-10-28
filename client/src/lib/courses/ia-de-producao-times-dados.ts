@@ -1127,7 +1127,7 @@ export const iaDeProducaoTimesDados: Course = {
     {
       "title": "Leve este programa para sua empresa",
       "description": "Turma fechada para o seu time de TI e dados, com laboratórios adaptados aos seus dados e ao seu setor, e investimento sob proposta.",
-      "href": "/giselle/palestras?src=curso&c=ia-de-producao-times-dados#proposta",
+      "href": "/giselle/programas-executivos?src=curso&c=ia-de-producao-times-dados&programa=ia-de-producao-times-dados#proposta",
       "label": "Solicitar proposta"
     },
     {

@@ -867,7 +867,7 @@ export const iaGenerativaNoTrabalho: Course = {
     {
       "title": "Leve este programa para sua empresa",
       "description": "Turma fechada, adaptada às ferramentas e ao setor da sua empresa, com encontros ao vivo para equipes e gestores; investimento sob proposta.",
-      "href": "/giselle/palestras?src=curso&c=ia-generativa-no-trabalho#proposta",
+      "href": "/giselle/programas-executivos?src=curso&c=ia-generativa-no-trabalho&programa=ia-generativa-no-trabalho#proposta",
       "label": "Solicitar proposta"
     },
     {

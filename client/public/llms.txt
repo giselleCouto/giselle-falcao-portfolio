@@ -29,6 +29,7 @@ Site oficial: https://www.coutofalcao.com/giselle
 - [Sobre](https://www.coutofalcao.com/giselle/sobre): trajetória, formação, experiência institucional, casos e publicações.
 - [Serviços e consultoria](https://www.coutofalcao.com/giselle/servicos): como contratar projetos de dados e IA.
 - [IA para empresas](https://www.coutofalcao.com/giselle/ia-para-empresas): diagnóstico e implantação de IA em operações.
+- [Programas Executivos NOKAHI Edu](https://www.coutofalcao.com/giselle/programas-executivos): cinco programas in-company de Dados e IA (diretoria, gestores, equipes não técnicas, times de TI), conduzidos por Giselle Falcão, com projeto aplicado e investimento sob proposta.
 - [Palestras](https://www.coutofalcao.com/giselle/palestras): temas, formatos e histórico de eventos.
 - [Mentoria Trajetória em Dados e IA](https://www.coutofalcao.com/giselle/mentoria/trajetoria): mentoria de 4 semanas para quem quer entrar ou se reposicionar na área.
 - [Trilhas de carreira](https://www.coutofalcao.com/giselle/trilhas): Analista de Dados, Cientista de Dados e Arquiteto de Soluções, Dados & IA.

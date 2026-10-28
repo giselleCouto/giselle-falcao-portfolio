@@ -1121,7 +1121,7 @@ export const agentesIaLideres: Course = {
     {
       "title": "Leve este programa para sua empresa",
       "description": "Turma fechada para a sua equipe de liderança, com casos adaptados ao seu setor e investimento sob proposta.",
-      "href": "/giselle/palestras?src=curso&c=agentes-ia-lideres#proposta",
+      "href": "/giselle/programas-executivos?src=curso&c=agentes-ia-lideres&programa=agentes-ia-lideres#proposta",
       "label": "Solicitar proposta"
     },
     {

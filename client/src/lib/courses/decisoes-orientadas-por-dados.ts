@@ -1115,7 +1115,7 @@ export const decisoesOrientadasPorDados: Course = {
     {
       "title": "Leve este programa para sua empresa",
       "description": "Turma fechada para gestores, com casos e indicadores adaptados ao setor da sua empresa e encontros ao vivo; investimento sob proposta.",
-      "href": "/giselle/palestras?src=curso&c=decisoes-orientadas-por-dados#proposta",
+      "href": "/giselle/programas-executivos?src=curso&c=decisoes-orientadas-por-dados&programa=decisoes-orientadas-por-dados#proposta",
       "label": "Solicitar proposta"
     },
     {

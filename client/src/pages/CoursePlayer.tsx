@@ -365,7 +365,7 @@ function Placeholder({
 function VisaoComercial({ course, onVerAmostra }: { course: NonNullable<ReturnType<typeof getCourse>>; onVerAmostra: () => void }) {
   const empresas = course.publico === "empresas";
   const avisoHref = empresas
-    ? `/giselle/palestras?src=curso&c=${course.slug}#proposta`
+    ? `/giselle/programas-executivos?src=curso&c=${course.slug}&programa=${course.slug}#proposta`
     : `/interesse?src=aviso-${course.slug}`;
   return (
     <>
@@ -393,7 +393,12 @@ function VisaoComercial({ course, onVerAmostra }: { course: NonNullable<ReturnTy
           </div>
           <h1 className="mt-4 max-w-3xl font-baloo text-3xl font-bold leading-tight sm:text-4xl">{course.title}</h1>
           {empresas ? (
-            <p className="mt-2 text-sm font-semibold text-[#0f766e]">Programa Executivo NOKAHI Edu · conduzido por Giselle Falcão</p>
+            <p className="mt-2 text-sm font-semibold text-[#0f766e]">
+              Programa Executivo NOKAHI Edu · conduzido por Giselle Falcão ·{" "}
+              <Link href="/giselle/programas-executivos" className="underline underline-offset-2 hover:text-[#1a1333]">
+                ver todos os programas
+              </Link>
+            </p>
           ) : null}
           <p className="mt-3 max-w-2xl text-base leading-7 text-slate-600">{course.tagline}</p>
           <div className="mt-6 flex flex-wrap items-center gap-3">
@@ -743,7 +748,7 @@ export default function CoursePlayer({ slug }: { slug: string }) {
                           Este módulo faz parte do Programa Executivo NOKAHI Edu, liberado para a turma da sua organização.
                         </p>
                         <Link
-                          href={`/giselle/palestras?src=curso&c=${course.slug}#proposta`}
+                          href={`/giselle/programas-executivos?src=curso&c=${course.slug}&programa=${course.slug}#proposta`}
                           className="mt-4 inline-flex items-center gap-2 rounded-full bg-[#1a1333] px-5 py-2.5 text-sm font-bold text-white transition hover:bg-[#0f766e]"
                         >
                           Solicitar proposta

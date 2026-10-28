@@ -27,6 +27,7 @@ import { trilhasCarreira, escadaCarreira } from "../client/src/lib/trilhasCarrei
 import { trilha } from "../client/src/lib/trilhaData";
 import { palestras } from "../client/src/lib/palestrasData";
 import { livro } from "../client/src/lib/livroData";
+import { programasExecutivos as pe } from "../client/src/lib/programasExecutivosData";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
@@ -548,6 +549,73 @@ routes.push({
     },
   ],
   schema: [PERSON],
+});
+
+// ---- /giselle/programas-executivos (página de vendas B2B)
+routes.push({
+  path: "/giselle/programas-executivos",
+  aliases: ["/programas-executivos", "/nokahi-edu"],
+  title: "Programas Executivos NOKAHI Edu: formação em Dados e IA para empresas | Giselle Falcão",
+  description:
+    "Cinco programas in-company de Dados e IA para cada nível da empresa — diretoria, gestores, equipes não técnicas e times de TI —, conduzidos por Giselle Falcão, PhD. Turma fechada, casos do seu setor e um projeto aplicado ao final.",
+  h1: pe.heroTitulo,
+  blocks: [
+    { p: `${pe.marca}, ${pe.assinatura}. ${pe.heroSub}` },
+    { h2: "Por que tanto treinamento de IA não vira resultado" },
+    { dl: pe.dores.map((d) => [d.titulo, d.texto] as [string, string]) },
+    { h2: "Como trabalhamos" },
+    { dl: pe.pilares.map((x) => [x.titulo, x.texto] as [string, string]) },
+    { h2: "Os programas" },
+    {
+      dl: pe.programas.map((x) => {
+        const c = courses.find((k) => k.slug === x.slug);
+        return [
+          `${c?.title ?? x.slug} (${c?.hours ?? ""}) — ${x.paraQuem}`,
+          `${x.pergunta} Entregável: ${x.entregavel}. ${x.entregavelDetalhe}`,
+        ] as [string, string];
+      }),
+    },
+    { p: pe.combinar },
+    { h2: "Método por módulo" },
+    { ul: pe.metodo.map((m) => `${m.titulo}: ${m.texto}`) },
+    { h2: "Como contratar" },
+    { ul: pe.jornada.map((j) => `${j.titulo}: ${j.texto}`) },
+    { h2: "O que está incluído" },
+    { ul: pe.inclui },
+    { h2: "Quem conduz" },
+    { p: `${pe.conductora.nome}. ${pe.conductora.resumo}` },
+    { ul: pe.conductora.provas },
+    { h2: "Quem aprendeu com a Giselle" },
+    {
+      dl: pe.depoimentos.map(
+        (d) => [`${d.nome} — ${d.tema}`, `${d.contexto} “${d.texto.replace(/\n\n/g, " ")}”`] as [string, string],
+      ),
+    },
+    { h2: "Perguntas frequentes" },
+    { dl: pe.faq.map((f) => [f.q, f.a] as [string, string]) },
+    { p: pe.notaLegal },
+    {
+      links: [
+        ...pe.programas.map(
+          (x) =>
+            [courses.find((k) => k.slug === x.slug)?.title ?? x.slug, `/giselle/cursos/${x.slug}`] as [string, string],
+        ),
+        ["Diagnóstico de maturidade em IA (3 minutos)", "/diagnostico-ia"],
+        ["Palestras e workshops", "/giselle/palestras"],
+      ],
+    },
+  ],
+  schema: [
+    PERSON,
+    {
+      "@type": "FAQPage",
+      mainEntity: pe.faq.map((f) => ({
+        "@type": "Question",
+        name: f.q,
+        acceptedAnswer: { "@type": "Answer", text: f.a },
+      })),
+    },
+  ],
 });
 
 // ---- /giselle/mentoria (hub)
