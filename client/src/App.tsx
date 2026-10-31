@@ -23,6 +23,7 @@ import GiselleCourses from "./pages/GiselleCourses";
 import GiselleHome from "./pages/giselle/GiselleHome";
 import GiselleIAEmpresas from "./pages/giselle/GiselleIAEmpresas";
 import GiselleProgramasExecutivos from "./pages/giselle/GiselleProgramasExecutivos";
+import GiselleFluente from "./pages/giselle/GiselleFluente";
 import GiselleServicos from "./pages/giselle/GiselleServicos";
 import GiselleSobre from "./pages/giselle/GiselleSobre";
 import GiselleContato from "./pages/giselle/GiselleContato";
@@ -124,6 +125,12 @@ const CANONICAL_ALIASES: Record<string, string> = {
   "/linkedin": "/diagnostico-ia",
   "/linkedin/": "/diagnostico-ia",
   "/giselle/interesse": "/interesse",
+  "/fluente/": "/fluente",
+  "/fluente/youtube": "/fluente",
+  "/fluente/instagram": "/fluente",
+  "/fluente/linkedin": "/fluente",
+  "/fluente/tiktok": "/fluente",
+  "/kit-letramento": "/fluente",
   "/giselle/trilhas/arquiteto-dados-ia": "/giselle/trilha",
 };
 
@@ -140,6 +147,11 @@ const ROUTE_CHANNELS: Record<string, string> = {
   "/bio/": "instagram",
   "/youtube": "youtube",
   "/youtube/": "youtube",
+  // Kit de Letramento Fluente em IA: uma rota curta por canal de anúncio/descrição
+  "/fluente/youtube": "youtube",
+  "/fluente/instagram": "instagram",
+  "/fluente/linkedin": "linkedin",
+  "/fluente/tiktok": "tiktok",
 };
 
 function trackVisit(path: string) {
@@ -337,6 +349,12 @@ function RouteSeo() {
           },
         ],
       });
+    } else if (location === "/fluente" || location.startsWith("/fluente/") || location === "/kit-letramento") {
+      title = "Kit de Letramento Fluente em IA (grátis) | NOKAHI EDU · Giselle Falcão";
+      description =
+        "Use IA com critério, não só com pressa: os 5 entregáveis da série Fluente em IA em 7 páginas — autoavaliação, Semáforo do Dado, Ficha de Caso de Uso, 7 perguntas antes de aprovar e plano de 90 dias. Grátis, para imprimir e usar no trabalho.";
+      keywords =
+        "letramento em IA, kit de letramento em IA, IA no trabalho, uso seguro de IA, Fluente em IA, NOKAHI EDU, Giselle Falcão";
     } else if (location === "/giselle/servicos") {
       title = "Consultoria e Soluções de IA em Produção | Giselle Falcão";
       description =
@@ -1048,6 +1066,9 @@ function Router() {
         <Route path="/empresas" component={GiselleIAEmpresas} />
         <Route path="/giselle/ia-para-empresas" component={GiselleIAEmpresas} />
         <Route path="/giselle/programas-executivos" component={GiselleProgramasExecutivos} />
+        <Route path="/fluente">{() => <GiselleFluente />}</Route>
+        <Route path="/kit-letramento">{() => <GiselleFluente />}</Route>
+        <Route path="/fluente/:canal">{(params) => <GiselleFluente canal={params.canal} />}</Route>
         <Route path="/programas-executivos" component={GiselleProgramasExecutivos} />
         <Route path="/nokahi-edu" component={GiselleProgramasExecutivos} />
         <Route path="/giselle/servicos" component={GiselleServicos} />

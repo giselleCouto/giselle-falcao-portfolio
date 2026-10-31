@@ -28,6 +28,7 @@ import { trilha } from "../client/src/lib/trilhaData";
 import { palestras } from "../client/src/lib/palestrasData";
 import { livro } from "../client/src/lib/livroData";
 import { programasExecutivos as pe } from "../client/src/lib/programasExecutivosData";
+import { fluente } from "../client/src/lib/fluenteData";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
@@ -59,6 +60,8 @@ type Route = {
   h1: string;
   blocks: Block[];
   schema?: Record<string, unknown>[];
+  /** Imagem de prévia (og:image/twitter:image) própria da página; padrão = a do index.html */
+  image?: string;
 };
 
 function renderBlocks(blocks: Block[]): string {
@@ -618,6 +621,27 @@ routes.push({
   ],
 });
 
+// ---- /fluente (Kit de Letramento da série Fluente em IA — destino dos anúncios)
+routes.push({
+  path: "/fluente",
+  aliases: ["/fluente/youtube", "/fluente/instagram", "/fluente/linkedin", "/fluente/tiktok", "/kit-letramento"],
+  title: "Kit de Letramento Fluente em IA (grátis) | NOKAHI EDU · Giselle Falcão",
+  description:
+    "Use IA com critério, não só com pressa: os 5 entregáveis da série Fluente em IA em 7 páginas, para imprimir e usar no trabalho. Grátis.",
+  h1: fluente.titulo,
+  image: `${ORIGIN}/iscas/kit-fluente/og-kit-fluente.jpg`,
+  blocks: [
+    { p: `${fluente.selo}. ${fluente.sub}` },
+    { h2: "O que vem no kit" },
+    { dl: fluente.entregaveis.map((e) => [`${e.n} · ${e.titulo} (${e.ep})`, e.texto] as [string, string]) },
+    { p: fluente.porQueAgora },
+    { h2: "Quem preparou" },
+    { p: `${fluente.autora.nome}. ${fluente.autora.texto}` },
+    { h2: fluente.proximoPasso.nome },
+    { p: `${fluente.proximoPasso.texto} ${fluente.proximoPasso.certificado} ${fluente.proximoPasso.turma}` },
+  ],
+});
+
 // ---- /giselle/mentoria (hub)
 routes.push({
   path: "/giselle/mentoria",
@@ -711,6 +735,10 @@ function buildHtml(shell: string, r: Route): string {
     /<meta\s+name="twitter:description"[\s\S]*?\/>/,
     `<meta name="twitter:description" content="${esc(r.description)}" />`
   );
+  if (r.image) {
+    html = html.replace(/<meta\s+property="og:image"[\s\S]*?\/>/, `<meta property="og:image" content="${esc(r.image)}" />`);
+    html = html.replace(/<meta\s+name="twitter:image"[\s\S]*?\/>/, `<meta name="twitter:image" content="${esc(r.image)}" />`);
+  }
 
   const head = [
     `<link rel="canonical" href="${esc(url)}" />`,
