@@ -5,8 +5,14 @@ import { httpBatchLink, TRPCClientError } from "@trpc/client";
 import { createRoot } from "react-dom/client";
 import superjson from "superjson";
 import App from "./App";
+import AvisoCookies from "./components/AvisoCookies";
 import { getLoginUrl } from "./const";
+import { iniciarTagsAnuncio } from "./lib/anuncios";
 import "./index.css";
+
+// Pixel da Meta / LinkedIn: PageView nas trocas de rota e cliques de conversão,
+// sempre condicionados ao aceite no aviso de cookies.
+iniciarTagsAnuncio();
 
 const queryClient = new QueryClient();
 
@@ -59,6 +65,7 @@ createRoot(document.getElementById("root")!).render(
   <trpc.Provider client={trpcClient} queryClient={queryClient}>
     <QueryClientProvider client={queryClient}>
       <App />
+      <AvisoCookies />
     </QueryClientProvider>
   </trpc.Provider>
 );

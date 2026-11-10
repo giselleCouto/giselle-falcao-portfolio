@@ -37,28 +37,58 @@
     <meta
       name="twitter:description"
       content="IA industrial, modelagem matemática e ciência de dados para decisões críticas, com atuação em visão computacional, digital twins, logística, saúde, educação, indústria e setor público." />
-    <!-- LinkedIn Insight Tag (conta de anuncios NOKAHI). So carrega se VITE_LINKEDIN_PARTNER_ID estiver definido. -->
+    <!-- Tags de anuncios: LinkedIn Insight Tag (conta NOKAHI) e Pixel da Meta.
+         Cada uma so existe se o ID estiver definido no Railway (VITE_LINKEDIN_PARTNER_ID,
+         VITE_META_PIXEL_ID) e so carrega depois do aceite no aviso de cookies
+         (localStorage "nk-consentimento-anuncios" = "sim"; ver client/src/lib/anuncios.ts).
+         Sem noscript: quem nao roda JavaScript nao viu o aviso e nao e rastreado. -->
     <script type="text/javascript">
       (function () {
         // Painel restrito: nenhum script de terceiros roda junto da chave de acesso.
         if (location.pathname.indexOf("/painel") === 0 || location.pathname.indexOf("/giselle/painel") === 0) return;
-        var pid = "%VITE_LINKEDIN_PARTNER_ID%";
-        if (!pid || pid.indexOf("%") === 0) return;
-        window._linkedin_partner_id = pid;
-        window._linkedin_data_partner_ids = window._linkedin_data_partner_ids || [];
-        window._linkedin_data_partner_ids.push(pid);
-        if (!window.lintrk) {
-          window.lintrk = function (a, b) { window.lintrk.q.push([a, b]); };
-          window.lintrk.q = [];
-        }
-        var s = document.getElementsByTagName("script")[0];
-        var b = document.createElement("script");
-        b.type = "text/javascript"; b.async = true;
-        b.src = "https://snap.licdn.com/li.lms-analytics/insight.min.js";
-        s.parentNode.insertBefore(b, s);
+        var li = "%VITE_LINKEDIN_PARTNER_ID%";
+        var meta = "%VITE_META_PIXEL_ID%";
+        var ids = {
+          linkedin: li && li.indexOf("%") !== 0 ? li : "",
+          meta: meta && meta.indexOf("%") !== 0 ? meta : ""
+        };
+        window.__nkTagsAnuncio = ids;
+        window.__nkCarregarTagsAnuncio = function () {
+          if (window.__nkTagsCarregadas) return;
+          window.__nkTagsCarregadas = true;
+          var s = document.getElementsByTagName("script")[0];
+          if (ids.linkedin) {
+            window._linkedin_partner_id = ids.linkedin;
+            window._linkedin_data_partner_ids = window._linkedin_data_partner_ids || [];
+            window._linkedin_data_partner_ids.push(ids.linkedin);
+            if (!window.lintrk) {
+              window.lintrk = function (a, b) { window.lintrk.q.push([a, b]); };
+              window.lintrk.q = [];
+            }
+            var b = document.createElement("script");
+            b.type = "text/javascript"; b.async = true;
+            b.src = "https://snap.licdn.com/li.lms-analytics/insight.min.js";
+            s.parentNode.insertBefore(b, s);
+          }
+          if (ids.meta) {
+            !function (f, b, e, v, n, t, s) {
+              if (f.fbq) return; n = f.fbq = function () { n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments); };
+              if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = "2.0"; n.queue = [];
+              t = b.createElement(e); t.async = !0; t.src = v; s = b.getElementsByTagName(e)[0]; s.parentNode.insertBefore(t, s);
+            }(window, document, "script", "https://connect.facebook.net/en_US/fbevents.js");
+            // SPA: o PageView das trocas de rota sai de anuncios.ts (sem duplicar o automatico)
+            window.fbq.disablePushState = true;
+            // Sem coleta automatica de botoes e metadados: so os eventos que a politica descreve
+            window.fbq("set", "autoConfig", false, ids.meta);
+            window.fbq("init", ids.meta);
+            window.fbq("track", "PageView");
+          }
+        };
+        var escolha = null;
+        try { escolha = localStorage.getItem("nk-consentimento-anuncios"); } catch (e) {}
+        if (escolha === "sim") window.__nkCarregarTagsAnuncio();
       })();
     </script>
-    <noscript><img height="1" width="1" style="display:none;" alt="" src="https://px.ads.linkedin.com/collect/?pid=%VITE_LINKEDIN_PARTNER_ID%&fmt=gif" /></noscript>
     <!-- Dados estruturados fixos: lidos por buscadores e por robôs de IA sem executar JavaScript -->
     <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://www.coutofalcao.com#website","url":"https://www.coutofalcao.com","name":"Giselle Falcão","inLanguage":"pt-BR","publisher":{"@id":"https://www.coutofalcao.com/giselle#person"}},{"@type":"Person","@id":"https://www.coutofalcao.com/giselle#person","name":"Giselle Couto Falcão","alternateName":"Giselle Falcão","honorificSuffix":"PhD","jobTitle":"Consultora e pesquisadora em Inteligência Artificial e Ciência de Dados","description":"PhD em Modelagem Matemática e Computacional. Desenvolve soluções de inteligência artificial e ciência de dados aplicadas a operações reais — agro, logística, indústria, saúde, educação e setor público — e forma profissionais e equipes para decidir com base em dados.","url":"https://www.coutofalcao.com/giselle","image":"https://www.coutofalcao.com/brand/giselle-retrato.jpg","knowsAbout":["Inteligência artificial aplicada","Machine learning","Ciência de dados","Modelagem matemática e computacional","Pesquisa operacional e otimização","IA no agronegócio","Visão computacional","LLMs, RAG e agentes de IA","Séries temporais e previsão de demanda","Matemática do clima","Educação baseada em dados"],"alumniOf":[{"@type":"CollegeOrUniversity","name":"CEFET-MG"},{"@type":"CollegeOrUniversity","name":"Sorbonne Université"},{"@type":"CollegeOrUniversity","name":"University of Hartford"},{"@type":"CollegeOrUniversity","name":"Universidade Federal de Minas Gerais"}],"sameAs":["https://www.linkedin.com/in/giselle-falcao-phd/","https://github.com/giselleCouto","https://scholar.google.com.br/citations?hl=pt-BR&user=ljBj6GMAAAAJ","http://lattes.cnpq.br/7661015485905669","https://www.instagram.com/gisellecfalcao"],"worksFor":{"@type":"Organization","name":"Couto Falcão","url":"https://www.coutofalcao.com"}}]}</script>
   </head>

@@ -26,6 +26,7 @@ import {
   SURFACE,
   TEAL,
   fadeUp,
+  useEventoPaginaOferta,
 } from "@/components/nokahiEdu/Venda";
 import { mba } from "@/lib/mbaData";
 import { DDV_ROTA } from "@/lib/doDadoAoValorData";
@@ -40,6 +41,7 @@ const ICONES_ESTUDO = [PlayCircle, BookOpen, Headphones, ClipboardCheck, Message
 
 export default function GiselleMba({ canal }: { canal?: string }) {
   const origem = canalValido(canal);
+  useEventoPaginaOferta("mba", mba.precos);
   const faq = [
     ...mba.faq,
     condicaoPrimeiraTurmaAtiva()

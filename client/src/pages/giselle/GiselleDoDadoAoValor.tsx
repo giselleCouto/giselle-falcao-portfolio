@@ -16,6 +16,7 @@ import {
   SURFACE,
   TEAL,
   fadeUp,
+  useEventoPaginaOferta,
 } from "@/components/nokahiEdu/Venda";
 import { doDadoAoValor as ddv } from "@/lib/doDadoAoValorData";
 import { MBA_ROTA } from "@/lib/mbaData";
@@ -30,6 +31,7 @@ const ALVOS_PRECO = ["preco-topo", "preco-final"];
 
 export default function GiselleDoDadoAoValor({ canal }: { canal?: string }) {
   const origem = canalValido(canal);
+  useEventoPaginaOferta("extensao", ddv.precos);
   const faq = [
     ...ddv.faq,
     condicaoPrimeiraTurmaAtiva()

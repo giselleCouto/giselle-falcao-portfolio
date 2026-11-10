@@ -1,12 +1,14 @@
+import { RevisarCookies } from "@/components/AvisoCookies";
 import GiselleLayout from "@/components/giselle/GiselleLayout";
 
 // Política de privacidade (LGPD) — página exigida também por plataformas de
 // captação (ex.: LinkedIn Lead Gen). O conteúdo descreve o que o site FAZ de
 // verdade: formulários com consentimento, métricas de navegação anônimas e
-// nenhum compartilhamento comercial com terceiros. Mantenha esta página em
-// sincronia com qualquer novo formulário ou coleta.
+// cookies de anúncios (Meta, LinkedIn) só com aceite no aviso de cookies
+// (lib/anuncios.ts). Mantenha esta página em sincronia com qualquer novo
+// formulário, tag ou coleta.
 
-const VIGENCIA = "8 de setembro de 2026";
+const VIGENCIA = "10 de novembro de 2026";
 
 const secoes = [
   {
@@ -19,7 +21,7 @@ const secoes = [
   {
     titulo: "2. Quais dados coletamos e quando",
     corpo: [
-      "Coletamos dados pessoais apenas quando você os informa voluntariamente em um dos formulários do site, sempre com uma caixa de consentimento explícita:",
+      "Nos formulários do site, coletamos apenas os dados que você informa voluntariamente, sempre com uma caixa de consentimento explícita:",
     ],
     lista: [
       "Cadastro de aluno(a) na plataforma de cursos: nome, e-mail e, opcionalmente, WhatsApp, cargo e organização;",
@@ -31,9 +33,10 @@ const secoes = [
     ],
   },
   {
-    titulo: "3. Métricas de navegação (sem identificação pessoal)",
+    titulo: "3. Métricas de navegação e cookies de anúncios",
     corpo: [
-      "Para saber quais páginas e canais de divulgação funcionam, registramos métricas anônimas de navegação: a página visitada, a origem do acesso (por exemplo, um QR code de palestra ou um link de rede social), o domínio do site de referência e a data. Para contar quantas pessoas diferentes visitaram o site no dia, o navegador gera um número aleatório que é trocado todos os dias; ele não identifica você e não permite acompanhar sua navegação de um dia para outro. Não registramos endereço IP, não usamos cookies de publicidade e não criamos perfil individual de visitante.",
+      "Para saber quais páginas e canais de divulgação funcionam, registramos métricas anônimas de navegação: a página visitada, a origem do acesso (por exemplo, um QR code de palestra ou um link de rede social), o domínio do site de referência e a data. Para contar quantas pessoas diferentes visitaram o site no dia, o navegador gera um número aleatório que é trocado todos os dias; ele não identifica você e não permite acompanhar sua navegação de um dia para outro. Essas métricas não registram endereço IP, não usam cookies de publicidade e não criam perfil individual de visitante.",
+      "Cookies de anúncios, só com a sua permissão: se você aceitar no aviso do site, carregamos o Pixel da Meta (Facebook e Instagram) e a Insight Tag do LinkedIn. Eles registram as páginas visitadas e ações como clicar em “Quero me inscrever” ou em falar pelo WhatsApp, para sabermos quais anúncios funcionam e para mostrar nossos anúncios a quem já conhece este site. A Meta e o LinkedIn podem associar essas informações à sua conta nessas plataformas e tratam os dados conforme as próprias políticas de privacidade, inclusive fora do Brasil. Se você não aceitar, essas ferramentas não são carregadas. Você pode mudar sua escolha a qualquer momento no fim desta página.",
       "O navegador pode guardar, apenas no seu aparelho, conveniências locais como progresso de curso e rascunhos de ferramentas interativas (localStorage/sessionStorage). Essas informações não identificam você e podem ser apagadas limpando os dados do navegador.",
     ],
   },
@@ -45,19 +48,21 @@ const secoes = [
       "Conduzir processos de seleção de turmas e mentorias;",
       "Enviar o resultado, recomendações ou materiais que você solicitou;",
       "Entrar em contato pelos canais que você autorizou (e-mail ou WhatsApp);",
-      "Melhorar o conteúdo e a experiência do site (métricas agregadas).",
+      "Melhorar o conteúdo e a experiência do site (métricas agregadas);",
+      "Medir e direcionar nossos anúncios, apenas se você aceitar os cookies de anúncios (seção 3).",
     ],
   },
   {
     titulo: "5. Base legal",
     corpo: [
-      "O tratamento dos dados de formulários tem como base legal o seu consentimento (art. 7º, I, da LGPD), colhido de forma destacada em cada formulário. As métricas anônimas de navegação apoiam-se no legítimo interesse (art. 7º, IX), sem tratamento de dados pessoais identificáveis.",
+      "O tratamento dos dados de formulários tem como base legal o seu consentimento (art. 7º, I, da LGPD), colhido de forma destacada em cada formulário. As métricas anônimas de navegação apoiam-se no legítimo interesse (art. 7º, IX), sem tratamento de dados pessoais identificáveis. Os cookies de anúncios dependem do seu consentimento (art. 7º, I), dado no aviso do site e revogável a qualquer momento.",
     ],
   },
   {
     titulo: "6. Compartilhamento",
     corpo: [
-      "Não vendemos, alugamos nem compartilhamos seus dados pessoais com terceiros para fins comerciais ou de publicidade.",
+      "Não vendemos nem alugamos seus dados pessoais, e os dados dos formulários não são compartilhados com terceiros para fins comerciais ou de publicidade.",
+      "Se você aceitar os cookies de anúncios, a Meta e o LinkedIn recebem dados da sua navegação neste site, como descrito na seção 3.",
       "Os dados ficam armazenados em infraestrutura de nuvem contratada para hospedar este site (Railway, com servidores que podem estar localizados fora do Brasil), que atua como operadora e não utiliza os dados para outros fins. Poderemos compartilhar dados se exigido por lei ou ordem de autoridade competente.",
     ],
   },
@@ -120,6 +125,8 @@ export default function GisellePrivacidade() {
               </div>
             ))}
           </div>
+
+          <RevisarCookies />
 
           <div className="mt-10 rounded-3xl border border-slate-200/70 bg-white p-6">
             <p className="text-sm leading-7 text-slate-600">

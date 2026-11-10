@@ -27,16 +27,22 @@ export type OfertaId = "mba" | "extensao";
 // em breve" e leva para o WhatsApp, sem quebrar nada.
 // ===================================================================
 export const CHECKOUT_VOOMP: Record<OfertaId, string | null> = {
-  mba: null,
+  mba: "https://pay.voompcreators.com.br/17779",
   extensao: null,
 };
 
 /**
  * WhatsApp das dúvidas: só dígitos, com 55 e DDD (ex.: "5531900000000").
  * Preenchido, o botão abre a conversa com a mensagem pronta; vazio, usa o
- * WhatsApp geral do site (o mesmo do rodapé).
+ * WhatsApp geral do site (o mesmo do rodapé). É o mesmo número da tutoria do PPC.
  */
-export const WHATSAPP_DUVIDAS: string | null = null;
+export const WHATSAPP_DUVIDAS: string | null = "5531982280551";
+
+/** Nome de cada oferta nos eventos de conversão (Pixel da Meta) */
+export const NOME_OFERTA: Record<OfertaId, string> = {
+  mba: "MBA Executivo em Estratégia de IA e Transformação Empresarial",
+  extensao: "Do Dado ao Valor",
+};
 
 // ===================================================================
 

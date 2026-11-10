@@ -2,7 +2,9 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { CalendarDays, CheckCircle2, ChevronDown, MessageCircle, Quote, ShieldCheck } from "lucide-react";
 import { programasExecutivos } from "@/lib/programasExecutivosData";
+import { metaEventoDaPagina } from "@/lib/anuncios";
 import {
+  NOME_OFERTA,
   checkoutUrl,
   condicaoPrimeiraTurmaAtiva,
   giselle,
@@ -48,6 +50,21 @@ function useCheckout(id: OfertaId, canal?: string) {
   return href;
 }
 
+/**
+ * ViewContent da oferta para o Pixel da Meta (só sai com o aceite de cookies;
+ * se a pessoa aceitar depois de abrir a página, sai na hora do aceite).
+ */
+export function useEventoPaginaOferta(id: OfertaId, precos: Precos) {
+  useEffect(() => {
+    metaEventoDaPagina("ViewContent", {
+      content_name: NOME_OFERTA[id],
+      content_category: id === "mba" ? "MBA Executivo" : "Curso de extensão",
+      value: precoAtual(precos).valor,
+      currency: "BRL",
+    });
+  }, [id, precos]);
+}
+
 type OfertaProps = {
   id: OfertaId;
   nomeCurto: string;
@@ -88,6 +105,8 @@ export function CartaoPreco({ id, nomeCurto, precos, certificado, canal, ancora 
           <a
             href={href}
             data-cta={`inscrever-${id}`}
+            data-meta-nome={NOME_OFERTA[id]}
+            data-meta-valor={preco.valor}
             className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full px-7 py-4 text-base font-bold text-white transition hover:brightness-110"
             style={{ backgroundColor: INK }}
           >
@@ -99,6 +118,7 @@ export function CartaoPreco({ id, nomeCurto, precos, certificado, canal, ancora 
             target="_blank"
             rel="noopener noreferrer"
             data-cta={`inscricao-em-breve-${id}`}
+            data-meta-nome={NOME_OFERTA[id]}
             className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full px-7 py-4 text-base font-bold text-white transition hover:brightness-110"
             style={{ backgroundColor: INK }}
           >
@@ -115,6 +135,7 @@ export function CartaoPreco({ id, nomeCurto, precos, certificado, canal, ancora 
         target="_blank"
         rel="noopener noreferrer"
         data-cta={`whatsapp-${id}`}
+        data-meta-nome={NOME_OFERTA[id]}
         className="mt-3 inline-flex w-full items-center justify-center gap-2 rounded-full border-2 border-slate-200 px-7 py-3 text-sm font-bold text-slate-700 transition hover:border-[#078aa7]"
       >
         <MessageCircle className="size-4" style={{ color: TEAL }} />
@@ -190,6 +211,8 @@ export function BarraFixa({ id, precos, canal, alvos }: Omit<OfertaProps, "certi
           href={destino}
           tabIndex={visivel ? 0 : -1}
           data-cta={`barra-inscrever-${id}`}
+          data-meta-nome={NOME_OFERTA[id]}
+          data-meta-valor={preco.valor}
           className="shrink-0 rounded-full px-5 py-3 text-sm font-bold text-white"
           style={{ backgroundColor: INK }}
         >
