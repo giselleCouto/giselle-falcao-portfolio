@@ -15,6 +15,9 @@ import { caseStudies, faqItems, insightArticles } from "./lib/portfolioData";
 import { getCourse } from "./lib/courses";
 import { iaEmpresas } from "./lib/iaEmpresasData";
 import { programasExecutivos } from "./lib/programasExecutivosData";
+import { mba } from "./lib/mbaData";
+import { doDadoAoValor } from "./lib/doDadoAoValorData";
+import { schemaOferta } from "./lib/turma01Data";
 import { minasSummitFaqItems, minasSummitFaqMeta, minasSummitSocialLinks } from "./lib/minasSummitFaqData";
 import AiOsExperience from "./pages/AiOsExperience";
 import CourseCatalog from "./pages/CourseCatalog";
@@ -24,6 +27,8 @@ import GiselleHome from "./pages/giselle/GiselleHome";
 import GiselleIAEmpresas from "./pages/giselle/GiselleIAEmpresas";
 import GiselleProgramasExecutivos from "./pages/giselle/GiselleProgramasExecutivos";
 import GiselleFluente from "./pages/giselle/GiselleFluente";
+import GiselleMba from "./pages/giselle/GiselleMba";
+import GiselleDoDadoAoValor from "./pages/giselle/GiselleDoDadoAoValor";
 import GiselleServicos from "./pages/giselle/GiselleServicos";
 import GiselleSobre from "./pages/giselle/GiselleSobre";
 import GiselleContato from "./pages/giselle/GiselleContato";
@@ -131,6 +136,23 @@ const CANONICAL_ALIASES: Record<string, string> = {
   "/fluente/linkedin": "/fluente",
   "/fluente/tiktok": "/fluente",
   "/kit-letramento": "/fluente",
+  // Páginas de vendas da Turma 01 (NOKAHI EDU): atalhos e rotas curtas por canal
+  "/mba/": "/mba",
+  "/mba/instagram": "/mba",
+  "/mba/facebook": "/mba",
+  "/mba/youtube": "/mba",
+  "/mba/linkedin": "/mba",
+  "/mba/tiktok": "/mba",
+  "/mba/whatsapp": "/mba",
+  "/do-dado-ao-valor/": "/do-dado-ao-valor",
+  "/extensao": "/do-dado-ao-valor",
+  "/extensao/": "/do-dado-ao-valor",
+  "/do-dado-ao-valor/instagram": "/do-dado-ao-valor",
+  "/do-dado-ao-valor/facebook": "/do-dado-ao-valor",
+  "/do-dado-ao-valor/youtube": "/do-dado-ao-valor",
+  "/do-dado-ao-valor/linkedin": "/do-dado-ao-valor",
+  "/do-dado-ao-valor/tiktok": "/do-dado-ao-valor",
+  "/do-dado-ao-valor/whatsapp": "/do-dado-ao-valor",
   "/giselle/trilhas/arquiteto-dados-ia": "/giselle/trilha",
 };
 
@@ -152,6 +174,19 @@ const ROUTE_CHANNELS: Record<string, string> = {
   "/fluente/instagram": "instagram",
   "/fluente/linkedin": "linkedin",
   "/fluente/tiktok": "tiktok",
+  // Páginas de vendas da Turma 01: a rota curta carimba a origem
+  "/mba/instagram": "instagram",
+  "/mba/facebook": "facebook",
+  "/mba/youtube": "youtube",
+  "/mba/linkedin": "linkedin",
+  "/mba/tiktok": "tiktok",
+  "/mba/whatsapp": "whatsapp",
+  "/do-dado-ao-valor/instagram": "instagram",
+  "/do-dado-ao-valor/facebook": "facebook",
+  "/do-dado-ao-valor/youtube": "youtube",
+  "/do-dado-ao-valor/linkedin": "linkedin",
+  "/do-dado-ao-valor/tiktok": "tiktok",
+  "/do-dado-ao-valor/whatsapp": "whatsapp",
 };
 
 function trackVisit(path: string) {
@@ -221,6 +256,7 @@ function RouteSeo() {
     removeJsonLd("giselle-faq-schema");
     removeJsonLd("ia-empresas-faq-schema");
     removeJsonLd("programas-executivos-schema");
+    removeJsonLd("nokahi-edu-oferta-schema");
     removeJsonLd("giselle-case-studies-schema");
     removeJsonLd("giselle-insights-schema");
     removeJsonLd("giselle-course-schema");
@@ -355,6 +391,49 @@ function RouteSeo() {
         "Use IA com critério, não só com pressa: os 5 entregáveis da série Fluente em IA em 7 páginas — autoavaliação, Semáforo do Dado, Ficha de Caso de Uso, 7 perguntas antes de aprovar e plano de 90 dias. Grátis, para imprimir e usar no trabalho.";
       keywords =
         "letramento em IA, kit de letramento em IA, IA no trabalho, uso seguro de IA, Fluente em IA, NOKAHI EDU, Giselle Falcão";
+    } else if (location === "/mba" || location.startsWith("/mba/")) {
+      // Páginas de vendas da Turma 01 (NOKAHI EDU) — MBA Executivo
+      title = "MBA Executivo em Estratégia de IA e Transformação Empresarial | NOKAHI EDU · Giselle Falcão";
+      description =
+        "MBA para quem decide e lidera IA: priorizar casos de uso, provar que a solução funciona, governar riscos e sair do piloto com um plano de 365 dias. 380 h em 12 meses, 100% on-line, sem programação. Certificado emitido pela Anhanguera, instituição credenciada pelo MEC.";
+      keywords =
+        "MBA em inteligência artificial, MBA estratégia de IA, MBA executivo em IA, pós-graduação em IA para líderes, transformação digital, governança de IA, NOKAHI EDU, Giselle Falcão";
+      upsertJsonLd("nokahi-edu-oferta-schema", {
+        "@context": "https://schema.org",
+        "@graph": schemaOferta({
+          nome: mba.nome,
+          descricao: mba.sub,
+          rota: "/mba",
+          horas: 380,
+          credencial: mba.certificado,
+          precos: mba.precos,
+          faq: mba.faq,
+        }),
+      });
+    } else if (
+      location === "/do-dado-ao-valor" ||
+      location.startsWith("/do-dado-ao-valor/") ||
+      location === "/extensao" ||
+      location === "/extensao/"
+    ) {
+      // Páginas de vendas da Turma 01 (NOKAHI EDU) — extensão Do Dado ao Valor
+      title = "Do Dado ao Valor: curso de extensão em Dados e IA, sem hype | NOKAHI EDU · Giselle Falcão";
+      description =
+        "Letramento em Dados e IA para decidir com critério: o que é um projeto de IA, quando ele dá retorno e como atuar na transformação. 40 h, 100% on-line, aulas de 3 a 12 minutos, sem programação e sem exigência de graduação. Certificado emitido pela Anhanguera, instituição credenciada pelo MEC.";
+      keywords =
+        "curso de IA, letramento em IA, curso de extensão em inteligência artificial, IA para gestores, ROI de IA, IA sem hype, Do Dado ao Valor, NOKAHI EDU, Giselle Falcão";
+      upsertJsonLd("nokahi-edu-oferta-schema", {
+        "@context": "https://schema.org",
+        "@graph": schemaOferta({
+          nome: doDadoAoValor.nomeCompleto,
+          descricao: doDadoAoValor.sub,
+          rota: "/do-dado-ao-valor",
+          horas: 40,
+          credencial: doDadoAoValor.certificado,
+          precos: doDadoAoValor.precos,
+          faq: doDadoAoValor.faq,
+        }),
+      });
     } else if (location === "/giselle/servicos") {
       title = "Consultoria e Soluções de IA em Produção | Giselle Falcão";
       description =
@@ -1069,6 +1148,12 @@ function Router() {
         <Route path="/fluente">{() => <GiselleFluente />}</Route>
         <Route path="/kit-letramento">{() => <GiselleFluente />}</Route>
         <Route path="/fluente/:canal">{(params) => <GiselleFluente canal={params.canal} />}</Route>
+        {/* Páginas de vendas da Turma 01 (NOKAHI EDU); /<rota>/<canal> carimba a origem */}
+        <Route path="/mba">{() => <GiselleMba />}</Route>
+        <Route path="/mba/:canal">{(params) => <GiselleMba canal={params.canal} />}</Route>
+        <Route path="/do-dado-ao-valor">{() => <GiselleDoDadoAoValor />}</Route>
+        <Route path="/extensao">{() => <GiselleDoDadoAoValor />}</Route>
+        <Route path="/do-dado-ao-valor/:canal">{(params) => <GiselleDoDadoAoValor canal={params.canal} />}</Route>
         <Route path="/programas-executivos" component={GiselleProgramasExecutivos} />
         <Route path="/nokahi-edu" component={GiselleProgramasExecutivos} />
         <Route path="/giselle/servicos" component={GiselleServicos} />

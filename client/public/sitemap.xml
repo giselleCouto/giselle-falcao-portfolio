@@ -176,6 +176,16 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://www.coutofalcao.com/mba</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.coutofalcao.com/do-dado-ao-valor</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://www.coutofalcao.com/giselle/servicos</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>

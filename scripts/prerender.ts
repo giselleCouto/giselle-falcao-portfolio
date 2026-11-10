@@ -29,6 +29,14 @@ import { palestras } from "../client/src/lib/palestrasData";
 import { livro } from "../client/src/lib/livroData";
 import { programasExecutivos as pe } from "../client/src/lib/programasExecutivosData";
 import { fluente } from "../client/src/lib/fluenteData";
+import { mba } from "../client/src/lib/mbaData";
+import { doDadoAoValor as ddv } from "../client/src/lib/doDadoAoValorData";
+import {
+  giselle as turmaGiselle,
+  notaEmpresa as turmaNotaEmpresa,
+  schemaOferta,
+  turma01,
+} from "../client/src/lib/turma01Data";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
@@ -639,6 +647,152 @@ routes.push({
     { p: `${fluente.autora.nome}. ${fluente.autora.texto}` },
     { h2: fluente.proximoPasso.nome },
     { p: `${fluente.proximoPasso.texto} ${fluente.proximoPasso.certificado} ${fluente.proximoPasso.turma}` },
+  ],
+});
+
+// ---- /mba (página de vendas do MBA Executivo, Turma 01 — destino dos anúncios)
+// O snapshot é gerado no build, então mostra os dois preços com as datas.
+routes.push({
+  path: "/mba",
+  aliases: ["/mba/instagram", "/mba/facebook", "/mba/youtube", "/mba/linkedin", "/mba/tiktok", "/mba/whatsapp"],
+  title: "MBA Executivo em Estratégia de IA e Transformação Empresarial | NOKAHI EDU · Giselle Falcão",
+  description:
+    "MBA para quem decide e lidera IA: priorizar casos de uso, provar que a solução funciona, governar riscos e sair do piloto com um plano de 365 dias. 380 h em 12 meses, 100% on-line, sem programação.",
+  h1: `${mba.tituloInicio} ${mba.tituloDestaque}`,
+  image: `${ORIGIN}/nokahi-edu/og-mba.jpg`,
+  blocks: [
+    { p: `${mba.selo}. ${mba.nome}. ${mba.sub}` },
+    { ul: mba.fatos },
+    { p: mba.certificado },
+    {
+      p: `Investimento: condição de primeira turma até ${turma01.fimCondicao}, ${mba.precos.primeiraTurma.avista} à vista ou ${mba.precos.primeiraTurma.parcelado}. A partir de ${turma01.inicioRegular}, ${mba.precos.regular.avista} ou ${mba.precos.regular.parcelado}. A Turma 01 começa em ${turma01.inicio}, com inscrições até ${turma01.fimInscricoes}. ${turma01.pagamento}`,
+    },
+    { h2: mba.porQueAgora.titulo },
+    { ul: mba.porQueAgora.fatos.map((f) => `${f.numero} ${f.texto} (${f.fonte})`) },
+    { p: mba.porQueAgora.fecho },
+    { h2: mba.perguntas.titulo },
+    { ul: mba.perguntas.itens.map((i) => i.pergunta) },
+    { h2: "As 10 disciplinas" },
+    {
+      dl: mba.disciplinas.map(
+        (d) => [`${d.n}. ${d.titulo} (${d.horas}${d.anhanguera ? ", disciplina Anhanguera" : ""})`, d.texto] as [string, string],
+      ),
+    },
+    { p: mba.ritmo },
+    { h2: mba.blueprint.nome },
+    { p: `${mba.blueprint.titulo}. ${mba.blueprint.texto}` },
+    { ul: mba.blueprint.partes },
+    { h2: "Como é estudar" },
+    { dl: mba.comoEstudar.map((c) => [c.titulo, c.texto] as [string, string]) },
+    { h2: "Para quem é" },
+    { ul: mba.paraQuem },
+    { h2: "Para quem não é" },
+    { ul: mba.naoEPara },
+    { h2: "Coordenação pedagógica e corpo docente" },
+    { p: `${turmaGiselle.nome}. ${turmaGiselle.resumo}` },
+    { ul: turmaGiselle.provas },
+    { dl: mba.docentes.map((d) => [`${d.nome} (${d.titulo})`, d.disciplinas] as [string, string]) },
+    { h2: "Quem aprendeu com a Giselle" },
+    {
+      dl: pe.depoimentos.map(
+        (d) => [`${d.nome} — ${d.tema}`, `${d.contexto} “${d.texto.replace(/\n\n/g, " ")}”`] as [string, string],
+      ),
+    },
+    { h2: "Perguntas frequentes" },
+    { dl: mba.faq.map((f) => [f.q, f.a] as [string, string]) },
+    { p: `${mba.notaLegal} ${turmaNotaEmpresa}` },
+    {
+      links: [
+        ["Extensão Do Dado ao Valor (40 h, sem exigência de graduação)", "/do-dado-ao-valor"],
+        ["Kit de Letramento Fluente em IA (grátis)", "/fluente"],
+      ],
+    },
+  ],
+  schema: [
+    PERSON,
+    ...schemaOferta({
+      nome: mba.nome,
+      descricao: mba.sub,
+      rota: "/mba",
+      horas: 380,
+      credencial: mba.certificado,
+      precos: mba.precos,
+      faq: mba.faq,
+    }),
+  ],
+});
+
+// ---- /do-dado-ao-valor (página de vendas da extensão, Turma 01 — destino dos anúncios)
+routes.push({
+  path: "/do-dado-ao-valor",
+  aliases: [
+    "/extensao",
+    "/do-dado-ao-valor/instagram",
+    "/do-dado-ao-valor/facebook",
+    "/do-dado-ao-valor/youtube",
+    "/do-dado-ao-valor/linkedin",
+    "/do-dado-ao-valor/tiktok",
+    "/do-dado-ao-valor/whatsapp",
+  ],
+  title: "Do Dado ao Valor: curso de extensão em Dados e IA, sem hype | NOKAHI EDU · Giselle Falcão",
+  description:
+    "Letramento em Dados e IA para decidir com critério: o que é um projeto de IA, quando ele dá retorno e como atuar na transformação. 40 h, 100% on-line, sem programação e sem exigência de graduação.",
+  h1: `${ddv.tituloInicio} ${ddv.tituloDestaque}`,
+  image: `${ORIGIN}/nokahi-edu/og-do-dado-ao-valor.jpg`,
+  blocks: [
+    { p: `${ddv.selo}. ${ddv.nomeCompleto}. ${ddv.sub}` },
+    { ul: ddv.fatos },
+    { p: ddv.certificado },
+    {
+      p: `Investimento: condição de primeira turma até ${turma01.fimCondicao}, ${ddv.precos.primeiraTurma.avista} à vista ou ${ddv.precos.primeiraTurma.parcelado}. A partir de ${turma01.inicioRegular}, ${ddv.precos.regular.avista} ou ${ddv.precos.regular.parcelado}. A Turma 01 começa em ${turma01.inicio}, com inscrições até ${turma01.fimInscricoes}. ${turma01.pagamento}`,
+    },
+    { h2: ddv.problema.titulo },
+    { ul: ddv.problema.fatos.map((f) => `${f.numero} ${f.texto} (${f.fonte})`) },
+    { p: ddv.problema.texto },
+    { h2: ddv.respostas.titulo },
+    { dl: ddv.respostas.itens.map((r) => [r.pergunta, r.texto] as [string, string]) },
+    { h2: "Conteúdo: 4 módulos e 48 aulas" },
+    {
+      dl: ddv.modulos.map(
+        (m) =>
+          [
+            `Módulo ${m.n}: ${m.titulo}`,
+            `${m.texto} Aulas: ${m.aulas.map((a, k) => `${k + 1}. ${a.titulo} (${a.min} min)`).join("; ")}.`,
+          ] as [string, string],
+      ),
+    },
+    { h2: ddv.canvas.nome },
+    { p: `${ddv.canvas.titulo}. ${ddv.canvas.texto}` },
+    { h2: "O que está incluído" },
+    { ul: ddv.inclui },
+    { h2: "Bônus (fora da carga horária)" },
+    { dl: ddv.bonus.map((b) => [b.titulo, b.texto] as [string, string]) },
+    { h2: "Para quem é" },
+    { dl: ddv.paraQuem.map((p) => [p.titulo, p.texto] as [string, string]) },
+    { h2: "Sua professora" },
+    { p: `${turmaGiselle.nome}. ${turmaGiselle.resumo}` },
+    { ul: turmaGiselle.provas },
+    { h2: "Perguntas frequentes" },
+    { dl: ddv.faq.map((f) => [f.q, f.a] as [string, string]) },
+    { p: `${ddv.notaLegal} ${turmaNotaEmpresa}` },
+    {
+      links: [
+        ["MBA Executivo em Estratégia de IA e Transformação Empresarial", "/mba"],
+        ["Kit de Letramento Fluente em IA (grátis)", "/fluente"],
+      ],
+    },
+  ],
+  schema: [
+    PERSON,
+    ...schemaOferta({
+      nome: ddv.nomeCompleto,
+      descricao: ddv.sub,
+      rota: "/do-dado-ao-valor",
+      horas: 40,
+      credencial: ddv.certificado,
+      precos: ddv.precos,
+      faq: ddv.faq,
+    }),
   ],
 });
 
