@@ -1,0 +1,638 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>IA contra o desperdício em Minas · Giselle Falcão</title>
+<meta name="description" content="Proposta para a equipe de transição de Minas Gerais: quatro pilotos de 100 dias com dados que o Estado já tem — grão, contratos, rotas escolares e irrigação.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: proposta em rolagem longa. Hero com a tese, depois uma banda por
+   piloto: ilustração ao lado da história e uma calculadora interativa.
+   Paleta da casa (portal Giselle Falcão): névoa #f7f8fc, tinta #1a1333,
+   roxo para navegação/links; as cores SEMÂNTICAS dos pilotos permanecem
+   (ouro=milho, terracota=perda, teal=água/rotas, verde=o que se salva). */
+:root {
+  --bg: #f7f8fc;        /* névoa do portal */
+  --surface: #FFFFFF;
+  --ink: #1a1333;       /* tinta do portal */
+  --muted: #5b5570;
+  --line: #e4e2ee;
+  --roxo: #6b21a8;      /* navegação e links da casa */
+  --roxo-claro: #8b5cf6;
+  --ouro: #ca8a04;      /* milho, ipê */
+  --ferro: #a63e1e;     /* o que se perde — ferrugem, família da terracota */
+  --rio: #0369a1;       /* água e rotas — azul-água */
+  --mata: #15803d;      /* o que se salva */
+  --soil: #8A6A4E;
+  --soil-2: #A8876A;
+  --tint: #f1ecfa;      /* lilás pálido da marca */
+  --f-display: "Baloo 2", "Segoe UI", system-ui, sans-serif;
+  --f-body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --f-data: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #12101c; --surface: #1b1828; --ink: #f0edf8; --muted: #a89fc0; --line: #312b45;
+    --roxo: #c4a3ec; --roxo-claro: #a78bfa;
+    --ouro: #e2a62c; --ferro: #e2683f; --rio: #4db1d3; --mata: #4cc07e;
+    --soil: #6B513C; --soil-2: #84674F; --tint: #2a2140;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #12101c; --surface: #1b1828; --ink: #f0edf8; --muted: #a89fc0; --line: #312b45;
+  --roxo: #c4a3ec; --roxo-claro: #a78bfa;
+  --ouro: #e2a62c; --ferro: #e2683f; --rio: #4db1d3; --mata: #4cc07e;
+  --soil: #6B513C; --soil-2: #84674F; --tint: #2a2140;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body {
+  background: var(--bg); color: var(--ink);
+  font-family: var(--f-body); font-size: 17px; line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--roxo); text-underline-offset: 3px; }
+a:focus-visible, button:focus-visible, input:focus-visible { outline: 3px solid var(--roxo-claro); outline-offset: 2px; border-radius: 4px; }
+.wrap {
+  max-width: 1100px; margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; margin: 0; letter-spacing: -0.01em; }
+h1 { font-size: clamp(2.4rem, 6.4vw, 4.6rem); line-height: 1.02; font-weight: 800; }
+h2 { font-size: clamp(1.7rem, 3.6vw, 2.5rem); line-height: 1.1; font-weight: 800; }
+h3 { font-size: 1.05rem; font-weight: 700; }
+p { margin: 0; }
+.eyebrow { font-family: var(--f-data); font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.num { font-family: var(--f-data); font-variant-numeric: tabular-nums; }
+
+/* Hero */
+.hero { padding-block: 56px 32px; display: grid; gap: 22px; }
+.hero .lead { font-size: clamp(1.1rem, 2.1vw, 1.35rem); max-width: 58ch; color: var(--ink); }
+.deficit { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 12px; color: var(--muted); font-size: 0.95rem; }
+.deficit strong { font-family: var(--f-data); color: var(--ferro); font-size: 1.15rem; font-weight: 500; }
+
+.index { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; padding-block: 8px 40px; }
+.index a {
+  display: grid; gap: 8px; text-decoration: none; color: var(--ink);
+  background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 16px;
+  transition: transform .2s ease, border-color .2s ease;
+}
+.index a:hover { transform: translateY(-2px); border-color: var(--k, var(--roxo)); }
+.index .tag { font-family: var(--f-data); font-size: 0.75rem; color: var(--k); letter-spacing: 0.06em; text-transform: uppercase; }
+.index .big { font-family: var(--f-display); font-weight: 800; font-size: 1.6rem; line-height: 1.05; color: var(--k); }
+.index .t { font-weight: 600; line-height: 1.25; }
+.index .s { color: var(--muted); font-size: 0.88rem; line-height: 1.4; }
+.k1 { --k: var(--ouro); } .k2 { --k: var(--ferro); } .k3 { --k: var(--rio); } .k4 { --k: var(--mata); }
+
+/* 100 days */
+.days { border-block: 1px solid var(--line); padding-block: 28px; display: grid; gap: 18px; }
+.days ol { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; position: relative; }
+.days li { padding: 16px 14px 0 0; position: relative; border-top: 3px solid var(--line); min-width: 0; }
+.days li::before { content: ""; position: absolute; top: -9px; left: 0; width: 15px; height: 15px; border-radius: 50%; background: var(--bg); border: 3px solid var(--roxo); }
+.days li:last-child::before { background: var(--roxo); }
+.days .d { font-family: var(--f-data); font-size: 0.8rem; color: var(--roxo); }
+.days .w { font-weight: 600; line-height: 1.3; margin-top: 2px; }
+.days .x { color: var(--muted); font-size: 0.9rem; line-height: 1.45; margin-top: 4px; }
+
+/* Pilot bands */
+.pilot { padding-block: 64px; border-bottom: 1px solid var(--line); display: grid; gap: 28px; }
+.pilot-head { display: grid; gap: 10px; max-width: 760px; }
+.pilot-head .eyebrow { color: var(--k); }
+.pilot-head .what { font-size: 1.15rem; color: var(--ink); max-width: 60ch; }
+.pilot-body { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 28px; align-items: start; }
+.stage { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 18px; display: grid; gap: 12px; min-width: 0; }
+.stage figcaption { color: var(--muted); font-size: 0.86rem; line-height: 1.45; }
+.stage svg { width: 100%; height: auto; display: block; }
+.story { display: grid; gap: 20px; min-width: 0; }
+.facts { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.facts li { padding-left: 18px; position: relative; line-height: 1.5; }
+.facts li::before { content: ""; position: absolute; left: 0; top: 0.62em; width: 8px; height: 8px; border-radius: 2px; background: var(--k); }
+.facts a { font-size: 0.86rem; white-space: nowrap; }
+.proof { font-size: 0.95rem; border-left: 3px solid var(--k); padding: 4px 0 4px 12px; }
+.proof b { font-family: var(--f-data); font-weight: 500; color: var(--k); }
+
+/* Calculator */
+.calc { background: var(--tint); border-radius: 14px; padding: 18px; display: grid; gap: 14px; }
+.calc label { font-weight: 600; font-size: 0.95rem; display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+.calc label output { font-family: var(--f-data); font-weight: 500; color: var(--k); }
+input[type="range"] { width: 100%; accent-color: var(--k); height: 28px; }
+.outs { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; }
+.out { background: var(--surface); border-radius: 10px; padding: 10px 12px; min-width: 0; }
+.out .v { font-family: var(--f-display); font-weight: 800; font-size: 1.45rem; line-height: 1.1; color: var(--ink); }
+.out .v.hl { color: var(--k); }
+.out .l { color: var(--muted); font-size: 0.8rem; line-height: 1.3; margin-top: 2px; }
+.calc .note { color: var(--muted); font-size: 0.82rem; line-height: 1.4; }
+
+/* Pilot 1: grain */
+.grain-wrap { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 16px; align-items: center; }
+.sacks { display: grid; grid-template-columns: repeat(20, minmax(0, 1fr)); gap: 3px; }
+.sacks span { aspect-ratio: 1; border-radius: 2px; background: var(--ouro); opacity: .85; transition: background-color .5s ease, opacity .5s ease; transition-delay: var(--dl, 0s); max-width: 100%; }
+.sacks span.lost { background: var(--ferro); opacity: 1; }
+.sacks span.saved { background: var(--ferro); opacity: 1; }
+.with-model .sacks span.saved { background: var(--mata); }
+.toggle { display: inline-flex; background: var(--tint); border-radius: 999px; padding: 4px; gap: 4px; justify-self: start; }
+.toggle button { font: inherit; font-size: 0.88rem; font-weight: 600; border: 0; border-radius: 999px; padding: 6px 14px; background: transparent; color: var(--muted); cursor: pointer; }
+.toggle button[aria-pressed="true"] { background: var(--surface); color: var(--ink); box-shadow: 0 1px 2px rgba(0,0,0,.12); }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 0.82rem; color: var(--muted); }
+.legend i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; vertical-align: -1px; }
+.hot { transform-origin: 48px 118px; animation: pulse 2.4s ease-in-out infinite; transition: transform .6s ease; }
+.with-model .hot { transform: scale(.45); }
+.alert-bubble { opacity: 0; transition: opacity .5s ease; }
+.with-model .alert-bubble { opacity: 1; }
+.node { animation: blink 1.8s ease-in-out infinite; }
+.node:nth-of-type(2) { animation-delay: .3s; } .node:nth-of-type(3) { animation-delay: .6s; } .node:nth-of-type(4) { animation-delay: .9s; }
+@keyframes pulse { 0%,100% { opacity: .55; } 50% { opacity: .95; } }
+@keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: .35; } }
+
+/* Pilot 2: edital scan */
+.edital { position: relative; overflow: hidden; border: 1px solid var(--line); border-radius: 10px; background: var(--bg); }
+.edital .row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 12px; padding: 10px 14px; border-bottom: 1px solid var(--line); font-size: 0.9rem; align-items: center; }
+.edital .row:last-child { border-bottom: 0; }
+.edital .row .p { font-family: var(--f-data); font-variant-numeric: tabular-nums; }
+.edital .head { font-family: var(--f-data); font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); background: var(--tint); }
+.edital .flag { background: color-mix(in srgb, var(--ferro) 14%, transparent); }
+.edital .flag .p { color: var(--ferro); font-weight: 500; }
+.badge { display: inline-block; font-family: var(--f-data); font-size: 0.7rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--surface); background: var(--ferro); border-radius: 4px; padding: 1px 6px; margin-top: 4px; }
+.scan { position: absolute; left: 0; right: 0; height: 36px; top: -40px; pointer-events: none;
+  background: linear-gradient(180deg, transparent, color-mix(in srgb, var(--rio) 22%, transparent) 70%, var(--rio) 100%);
+  animation: scan 4.2s cubic-bezier(.45,0,.55,1) infinite; }
+@keyframes scan { 0% { top: -40px; } 85%, 100% { top: 100%; } }
+
+/* Pilot 3: route */
+.road { stroke: var(--line); stroke-width: 6; fill: none; stroke-linecap: round; }
+.route-now { stroke: var(--ferro); stroke-width: 2.5; fill: none; stroke-dasharray: 6 6; opacity: .9; }
+.route-new { stroke: var(--rio); stroke-width: 3.5; fill: none; stroke-linejoin: round; stroke-dasharray: 1000; stroke-dashoffset: 0; }
+.draw .route-new { animation: draw 2.4s ease-out both; }
+@keyframes draw { from { stroke-dashoffset: 1000; } to { stroke-dashoffset: 0; } }
+.farm { fill: var(--surface); stroke: var(--ink); stroke-width: 2; }
+.school { fill: var(--ouro); }
+.svg-label { font-family: var(--f-data); font-size: 10px; fill: var(--muted); }
+.svg-label.strong { fill: var(--ink); }
+.bus-body { fill: var(--ouro); stroke: var(--ink); stroke-width: 1.2; }
+
+/* Pilot 4: irrigation */
+.bar-fixed { fill: var(--line); }
+.bar-model { fill: var(--rio); }
+.axis { stroke: var(--muted); stroke-width: 1; }
+.grid-line { stroke: var(--line); stroke-width: 1; stroke-dasharray: 2 4; }
+.drop { fill: var(--rio); animation: fall 1.6s ease-in infinite; }
+.drop.d2 { animation-delay: .5s; } .drop.d3 { animation-delay: 1s; }
+@keyframes fall { 0% { transform: translateY(0); opacity: 0; } 15% { opacity: 1; } 100% { transform: translateY(46px); opacity: 0; } }
+.soil-a { fill: var(--soil-2); } .soil-b { fill: var(--soil); }
+.leaf { fill: var(--mata); }
+.capsule { fill: var(--surface); stroke: var(--ink); stroke-width: 1.5; }
+
+/* Proponente + sources */
+.who { padding-block: 64px; display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 32px; align-items: start; }
+.who .bio { display: grid; gap: 14px; max-width: 62ch; }
+.stats { display: grid; gap: 10px; }
+.stat { display: grid; grid-template-columns: 92px minmax(0, 1fr); gap: 14px; align-items: center; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; }
+.stat .v { font-family: var(--f-display); font-weight: 800; font-size: 1.9rem; color: var(--k); line-height: 1; }
+.stat .l { font-size: 0.92rem; line-height: 1.35; }
+.links { display: flex; flex-wrap: wrap; gap: 10px; }
+.links a { display: inline-block; text-decoration: none; font-weight: 600; border: 1.5px solid var(--roxo); border-radius: 999px; padding: 6px 16px; }
+.cta { background: var(--ink); color: var(--bg); border-radius: 16px; padding: 22px; display: grid; gap: 6px; }
+.cta .eyebrow { color: color-mix(in srgb, var(--bg) 70%, transparent); }
+.cta p { font-family: var(--f-display); font-weight: 800; font-size: 1.5rem; line-height: 1.15; }
+.sources { padding-block: 40px 64px; border-top: 1px solid var(--line); display: grid; gap: 14px; }
+.sources ol { margin: 0; padding-left: 22px; columns: 2; column-gap: 32px; font-size: 0.88rem; }
+.sources li { break-inside: avoid; margin-bottom: 6px; }
+.foot { color: var(--muted); font-size: 0.82rem; }
+
+@media (max-width: 860px) {
+  .index { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .pilot-body, .who { grid-template-columns: minmax(0, 1fr); }
+  .sources ol { columns: 1; }
+}
+@media (max-width: 560px) {
+  body { font-size: 16px; }
+  .index { grid-template-columns: minmax(0, 1fr); }
+  .days ol { grid-template-columns: minmax(0, 1fr); }
+  .days li { border-top: 0; border-left: 3px solid var(--line); padding: 0 0 18px 18px; }
+  .days li::before { top: 2px; left: -9px; }
+  .grain-wrap { grid-template-columns: 64px minmax(0, 1fr); gap: 10px; }
+  .stat { grid-template-columns: 76px minmax(0, 1fr); }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  .scan { display: none; }
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <header class="hero">
+    <span class="eyebrow">Proposta para a equipe de transição · Minas Gerais · novembro de 2026</span>
+    <h1>IA contra o desperdício em Minas</h1>
+    <p class="lead">Quatro pilotos de 100 dias usam dados que o Estado já tem para mostrar onde Minas perde grão, dinheiro, quilômetro e água, e quanto dá para recuperar.</p>
+    <p class="deficit"><span>Déficit previsto no orçamento de 2027</span><strong>R$ 8,9 bilhões</strong><a href="https://www.agenciaminas.mg.gov.br/noticia/governo-de-minas-encaminha-projeto-de-lei-orcamentaria-2027-para-a-almg">PLOA 2027</a></p>
+  </header>
+
+  <nav class="index" aria-label="Os quatro pilotos">
+    <a class="k1" href="#grao"><span class="tag">Piloto 1 · Agro</span><span class="big">R$ 5,3 mi</span><span class="t">Grão sem perda</span><span class="s">para o produtor a cada 100 mil t de milho guardado</span></a>
+    <a class="k2" href="#contratos"><span class="tag">Piloto 2 · Gestão</span><span class="big">≈ R$ 20 mi</span><span class="t">Contrato por contrato</span><span class="s">em R$ 2 bi de compras auditadas antes da assinatura</span></a>
+    <a class="k3" href="#rotas"><span class="tag">Piloto 3 · Educação</span><span class="big">R$ 45 mi/ano</span><span class="t">Rotas inteligentes</span><span class="s">com 5% menos quilômetros no transporte escolar rural</span></a>
+    <a class="k4" href="#jaiba"><span class="tag">Piloto 4 · Água</span><span class="big">−20%</span><span class="t">Irrigação de precisão</span><span class="s">de água e energia por hectare nos lotes do Jaíba</span></a>
+  </nav>
+
+  <section class="days" aria-labelledby="dias-t">
+    <h3 id="dias-t">Como funcionam os 100 dias, em cada piloto</h3>
+    <ol>
+      <li><div class="d">Dia 1</div><div class="w">Linha de base</div><div class="x">Perda, gasto ou consumo medido com a equipe da secretaria.</div></li>
+      <li><div class="d">Dias 2–30</div><div class="w">Dados e modelo</div><div class="x">Bases do Estado conectadas e modelo calibrado.</div></li>
+      <li><div class="d">Dias 31–90</div><div class="w">Operação</div><div class="x">Alertas e rotas em uso, com relatório semanal.</div></li>
+      <li><div class="d">Dia 100</div><div class="w">Resultado auditável</div><div class="x">Economia comparada à linha de base e decisão de escalar.</div></li>
+    </ol>
+  </section>
+
+  <!-- Piloto 1 -->
+  <section class="pilot k1" id="grao" aria-labelledby="p1">
+    <div class="pilot-head">
+      <span class="eyebrow">Piloto 1 · Armazenagem na propriedade, com a Emater</span>
+      <h2 id="p1">Grão sem perda</h2>
+      <p class="what">Sensores de temperatura e umidade e um modelo de risco avisam o produtor antes que insetos e fungos estraguem o milho guardado.</p>
+    </div>
+    <div class="pilot-body">
+      <figure class="stage" id="grain-fig" style="margin:0">
+        <div class="toggle" role="group" aria-label="Comparar">
+          <button type="button" id="g-off" aria-pressed="false">Sem modelo</button>
+          <button type="button" id="g-on" aria-pressed="true">Com modelo</button>
+        </div>
+        <div class="grain-wrap">
+          <svg viewBox="0 0 96 200" role="img" aria-label="Silo com cabo de sensores e um foco de umidade">
+            <path d="M14 56 Q48 18 82 56 V186 H14 Z" fill="var(--tint)" stroke="var(--ink)" stroke-width="2"/>
+            <path d="M18 80 H78 V182 H18 Z" fill="var(--ouro)" opacity=".75"/>
+            <circle class="hot" cx="48" cy="118" r="22" fill="var(--ferro)"/>
+            <line x1="48" y1="40" x2="48" y2="178" stroke="var(--ink)" stroke-width="1.5"/>
+            <circle class="node" cx="48" cy="90" r="3.5" fill="var(--rio)"/>
+            <circle class="node" cx="48" cy="118" r="3.5" fill="var(--rio)"/>
+            <circle class="node" cx="48" cy="146" r="3.5" fill="var(--rio)"/>
+            <circle class="node" cx="48" cy="172" r="3.5" fill="var(--rio)"/>
+            <g class="alert-bubble">
+              <rect x="2" y="2" width="92" height="26" rx="6" fill="var(--mata)"/>
+              <text x="48" y="19" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9.5" fill="var(--surface)">aerar em 6 h</text>
+            </g>
+          </svg>
+          <div class="sacks" id="sacks" aria-hidden="true"></div>
+        </div>
+        <div class="legend"><span><i style="background:var(--ouro)"></i>sacas preservadas</span><span><i style="background:var(--ferro)"></i>perdidas</span><span><i style="background:var(--mata)"></i>salvas pelo modelo</span></div>
+        <figcaption id="grain-cap">De cada 200 sacas guardadas, 30 se perdem (15%). Com o modelo, 9 delas são salvas: 30% menos perda.</figcaption>
+      </figure>
+      <div class="story">
+        <ul class="facts">
+          <li>Milho mal armazenado na região central de Minas perde cerca de 15%; em paióis, mais de 40%. <a href="https://www.revistacultivar.com.br/noticias/armazenamento-inadequado-de-graos-resulta-em-cerca-de-15-de-perdas">Embrapa Milho e Sorgo</a></li>
+          <li>Minas colheu 7,2 milhões de toneladas de milho na safra 2025/26. <a href="https://diariodocomercio.com.br/agronegocio/producao-graos-minas-gerais-safra-2025-26/">Conab</a></li>
+          <li>A Emater opera o piloto dentro do Minas Rural Empreendedor, previsto no plano de governo. <a href="https://divulgacandcontas.tse.jus.br/divulga/rest/arquivo/doc/130017111301">Plano de governo</a></li>
+        </ul>
+        <p class="proof">Evidência: <b>30% menos perdas</b> em silos, em projeto anterior da proponente.</p>
+        <div class="calc">
+          <label for="r1">Milho guardado nas propriedades do piloto <output id="o1" for="r1">100 mil t</output></label>
+          <input type="range" id="r1" min="10000" max="500000" step="10000" value="100000">
+          <div class="outs" aria-live="polite">
+            <div class="out"><div class="v hl num" id="v1a">4.500 t</div><div class="l">de milho salvas</div></div>
+            <div class="out"><div class="v num" id="v1b">75 mil</div><div class="l">sacas de 60 kg</div></div>
+            <div class="out"><div class="v num" id="v1c">R$ 5,3 mi</div><div class="l">a R$ 70 por saca</div></div>
+            <div class="out"><div class="v num" id="v1d">150</div><div class="l">caminhões de 30 t</div></div>
+          </div>
+          <p class="note">Conta: toneladas × 15% de perda × 30% de redução. Preço de referência do Cepea em dezembro de 2025 (<a href="https://www.agrolink.com.br/noticias/milho-se-aproxima-de-r--70-e-vendedores-recuam-a-espera-de-mais-altas_508752.html">Agrolink</a>).</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Piloto 2 -->
+  <section class="pilot k2" id="contratos" aria-labelledby="p2">
+    <div class="pilot-head">
+      <span class="eyebrow">Piloto 2 · Compras e contratos de custeio</span>
+      <h2 id="p2">Contrato por contrato</h2>
+      <p class="what">IA lê editais e contratos e aponta preço fora do padrão antes da assinatura, como já faz o robô Alice, da CGU.</p>
+    </div>
+    <div class="pilot-body">
+      <figure class="stage" style="margin:0">
+        <div class="edital" role="img" aria-label="Edital sendo lido por IA, com um item marcado por preço fora do padrão">
+          <div class="scan"></div>
+          <div class="row head"><span>Item do edital</span><span>Preço de referência</span></div>
+          <div class="row"><span>Papel A4, resma com 500 folhas</span><span class="p">R$ 26,40</span></div>
+          <div class="row"><span>Cartucho de toner para impressora</span><span class="p">R$ 318,00</span></div>
+          <div class="row flag"><span>Garrafa de água mineral, 500 ml<br><span class="badge">Alerta: preço fora do padrão</span></span><span class="p">R$ 147,65</span></div>
+          <div class="row"><span>Álcool em gel 70%, 500 ml</span><span class="p">R$ 9,80</span></div>
+          <div class="row"><span>Diária de veículo com motorista</span><span class="p">R$ 412,00</span></div>
+        </div>
+        <figcaption>Ilustração. A garrafa de água a R$ 147,65 é um caso real apontado pelo Alice; os preços das outras linhas são fictícios.</figcaption>
+      </figure>
+      <div class="story">
+        <ul class="facts">
+          <li>Em 2024, o Alice analisou 118.069 processos de compra. Em 206 auditorias preventivas sobre R$ 25,57 bi, evitou R$ 257,25 mi, cerca de 1%. <a href="https://agenciagov.ebc.com.br/noticias/202412/orgaos-federais-economizaram-em-2024-257-milhoes-de-reais-com-apoio-do-robo-alice-da-controladoria-geral-da-uniao">Agência Gov</a></li>
+          <li>O plano de governo prevê revisão integral das despesas e o fim de “contratos superestimados”. <a href="https://divulgacandcontas.tse.jus.br/divulga/rest/arquivo/doc/130017111301">Plano de governo</a></li>
+          <li>Os alertas vão para a Controladoria e para a secretaria compradora antes da assinatura, quando ainda dá para corrigir.</li>
+        </ul>
+        <div class="calc">
+          <label for="r2">Compras auditadas nos 100 dias <output id="o2" for="r2">R$ 2 bi</output></label>
+          <input type="range" id="r2" min="0.5" max="10" step="0.5" value="2">
+          <div class="outs" aria-live="polite">
+            <div class="out"><div class="v hl num" id="v2a">R$ 20 mi</div><div class="l">de economia estimada</div></div>
+            <div class="out"><div class="v num" id="v2b">1%</div><div class="l">taxa obtida pela CGU em 2024</div></div>
+          </div>
+          <p class="note">Conta: valor auditado × 1%. O volume anual de compras do Estado entra na linha de base do dia 1.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Piloto 3 -->
+  <section class="pilot k3" id="rotas" aria-labelledby="p3">
+    <div class="pilot-head">
+      <span class="eyebrow">Piloto 3 · Transporte escolar rural</span>
+      <h2 id="p3">Rotas inteligentes</h2>
+      <p class="what">Otimização matemática reordena as rotas que o Estado paga por quilômetro, sem deixar nenhum aluno para trás.</p>
+    </div>
+    <div class="pilot-body">
+      <figure class="stage" style="margin:0">
+        <svg id="route-svg" viewBox="0 0 360 250" role="img" aria-label="Mapa ilustrativo: rota atual com cruzamentos e rota otimizada, mais curta, passando pelas mesmas seis propriedades">
+          <path class="road" d="M20 120 H340 M150 10 V240 M40 40 L300 120 L70 180"/>
+          <path class="route-now" d="M300 120 L230 40 L40 40 L150 70 L70 180 L170 200 L250 190 Z"/>
+          <path id="best" class="route-new" d="M300 120 L250 190 L170 200 L70 180 L40 40 L150 70 L230 40 Z"/>
+          <g>
+            <circle class="farm" cx="40" cy="40" r="7"/><circle class="farm" cx="70" cy="180" r="7"/>
+            <circle class="farm" cx="150" cy="70" r="7"/><circle class="farm" cx="170" cy="200" r="7"/>
+            <circle class="farm" cx="230" cy="40" r="7"/><circle class="farm" cx="250" cy="190" r="7"/>
+          </g>
+          <rect class="school" x="288" y="108" width="24" height="24" rx="3"/>
+          <path d="M300 108 V92 H314 V100 H300" fill="none" stroke="var(--ink)" stroke-width="1.5"/>
+          <text class="svg-label strong" x="300" y="148" text-anchor="middle">escola</text>
+          <g>
+            <rect class="bus-body" x="-9" y="-5" width="18" height="10" rx="2.5"/>
+            <rect x="2" y="-3" width="5" height="3.5" fill="var(--surface)"/>
+            <animateMotion dur="10s" repeatCount="indefinite" rotate="auto"><mpath href="#best"/></animateMotion>
+          </g>
+          <g transform="translate(14 226)">
+            <line x1="0" y1="0" x2="22" y2="0" stroke="var(--ferro)" stroke-width="2.5" stroke-dasharray="6 6"/>
+            <text class="svg-label" x="28" y="4">rota atual</text>
+            <line x1="110" y1="0" x2="132" y2="0" stroke="var(--rio)" stroke-width="3.5"/>
+            <text class="svg-label" x="138" y="4">rota otimizada</text>
+          </g>
+        </svg>
+        <figcaption>Ilustração: as mesmas seis propriedades, visitadas em outra ordem. A rota otimizada não cruza a si mesma e roda menos quilômetros.</figcaption>
+      </figure>
+      <div class="story">
+        <ul class="facts">
+          <li>O Estado prevê cerca de R$ 900 mi em 2026 para 841 municípios levarem mais de 160 mil alunos rurais. <a href="https://consed.org.br/noticia/governo-de-minas-realiza-pagamento-do-programa-estadual-de-transporte-escolar">Consed</a></li>
+          <li>O repasse é calculado pela quilometragem das rotas × 200 dias letivos: cada quilômetro a menos é dinheiro a menos. <a href="https://www.agenciaminas.mg.gov.br/noticia/programa-estadual-de-transporte-escolar-implementa-sistema-inovador-para-otimizacao-de-recursos-125198">Agência Minas</a></li>
+          <li>O Sistema Transcolar Rural, da UFMG (cerca de R$ 30 mi), já georreferencia as rotas, mas não publicou economia. O piloto aproveita esses dados.</li>
+          <li>O mesmo motor de rotas serve à Patrulha Rural Digital do plano de governo.</li>
+        </ul>
+        <p class="proof">Evidência: <b>15% menos diesel</b> em rotas de cana-de-açúcar, em projeto anterior da proponente.</p>
+        <div class="calc">
+          <label for="r3">Quilômetros cortados nas rotas <output id="o3" for="r3">5%</output></label>
+          <input type="range" id="r3" min="1" max="15" step="1" value="5">
+          <div class="outs" aria-live="polite">
+            <div class="out"><div class="v hl num" id="v3a">R$ 45 mi</div><div class="l">por ano, em escala estadual</div></div>
+            <div class="out"><div class="v num" id="v3b">R$ 900 mi</div><div class="l">base anual do programa (2026)</div></div>
+          </div>
+          <p class="note">Conta: R$ 900 mi × percentual de quilômetros cortados. A meta do piloto é 5%, um terço do resultado obtido na cana.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Piloto 4 -->
+  <section class="pilot k4" id="jaiba" aria-labelledby="p4">
+    <div class="pilot-head">
+      <span class="eyebrow">Piloto 4 · Perímetro irrigado do Jaíba</span>
+      <h2 id="p4">Irrigação de precisão no Jaíba</h2>
+      <p class="what">Sensores no solo e previsão do tempo dizem ao irrigante quando e quanto regar, poupando água do São Francisco e energia de bombeamento.</p>
+    </div>
+    <div class="pilot-body">
+      <figure class="stage" style="margin:0">
+        <svg viewBox="0 0 360 300" role="img" aria-label="Solo com sensor na zona das raízes e gráfico de uma semana: turno fixo de 70 mm contra 56 mm com o modelo, 20% menos">
+          <!-- planta e solo -->
+          <rect class="soil-a" x="0" y="96" width="120" height="34"/>
+          <rect class="soil-b" x="0" y="130" width="120" height="30"/>
+          <path class="leaf" d="M60 96 C40 60 20 52 6 50 C26 62 42 76 56 96 Z"/>
+          <path class="leaf" d="M62 96 C78 56 98 44 116 40 C96 58 80 76 66 96 Z"/>
+          <path class="leaf" d="M60 96 C58 66 60 40 62 22 C66 42 66 70 63 96 Z"/>
+          <path d="M60 100 V126 M60 108 L46 122 M60 110 L76 124" stroke="var(--ink)" stroke-width="1.5" fill="none" opacity=".6"/>
+          <rect class="capsule" x="84" y="112" width="10" height="20" rx="5"/>
+          <line x1="89" y1="112" x2="89" y2="86" stroke="var(--ink)" stroke-width="1.5"/>
+          <rect x="80" y="74" width="18" height="12" rx="2" fill="var(--rio)"/>
+          <path d="M24 30 H40" stroke="var(--muted)" stroke-width="3" stroke-linecap="round"/>
+          <circle class="drop" cx="32" cy="40" r="2.6"/><circle class="drop d2" cx="28" cy="40" r="2.2"/><circle class="drop d3" cx="36" cy="40" r="2.2"/>
+          <text class="svg-label" x="60" y="176" text-anchor="middle">sensor na raiz</text>
+          <!-- gráfico semanal: escala 0–12 mm em 120 px, base y=262 -->
+          <g transform="translate(146 0)">
+            <text class="svg-label strong" x="0" y="20">Lâmina por dia (mm), uma semana</text>
+            <line class="grid-line" x1="22" y1="162" x2="210" y2="162"/>
+            <line class="grid-line" x1="22" y1="212" x2="210" y2="212"/>
+            <text class="svg-label" x="16" y="165" text-anchor="end">10</text>
+            <text class="svg-label" x="16" y="215" text-anchor="end">5</text>
+            <text class="svg-label" x="16" y="265" text-anchor="end">0</text>
+            <line class="axis" x1="22" y1="262" x2="210" y2="262"/>
+            <g id="bars"></g>
+            <g transform="translate(0 36)">
+              <rect x="0" y="0" width="10" height="10" class="bar-fixed"/><text class="svg-label" x="14" y="9">turno fixo: 70 mm</text>
+              <rect x="0" y="16" width="10" height="10" class="bar-model"/><text class="svg-label" x="14" y="25">com modelo: 56 mm (−20%)</text>
+            </g>
+          </g>
+        </svg>
+        <figcaption>Ilustração: no turno fixo, rega-se 10 mm todo dia. Com o modelo, a rega se ajusta ao solo e à chuva prevista (quarta-feira) e a semana fecha com 20% menos água.</figcaption>
+      </figure>
+      <div class="story">
+        <ul class="facts">
+          <li>O Jaíba tem 44 mil ha irrigáveis e vai a 67 mil ha com as etapas 3 e 4. <a href="https://www.gov.br/codevasf/pt-br/assuntos/noticias/2026/audiencia-publica-debate-expansao-do-projeto-jaiba-e-reforca-protagonismo-do-norte-de-minas-na-agricultura-irrigada">Codevasf</a></li>
+          <li>São cerca de 2.150 agricultores. A Etapa II pertence ao Estado, e a distribuição de água tem parceria com a Seapa. <a href="https://gazetanm.com.br/jaiba-sustentabilidade-e-crescimento-no-maior-perimetro-irrigado-da-america-do-sul/">Gazeta NM</a></li>
+          <li>Epamig e Emater já testaram sensores de solo com 24 produtores de banana em Mocambinho, sem economia publicada. O piloto soma a eles um modelo que agenda a rega. <a href="https://revistacultivar.com.br/noticias/projeto-da-epamig-testa-tecnica-de-irrigacao-de-baixo-custo-na-regiao-do-jaiba">Revista Cultivar</a></li>
+        </ul>
+        <p class="proof">Evidência: <b>mais de 40% de economia de água</b> em estufas, em projeto anterior da proponente. A campo aberto, a meta é metade disso.</p>
+        <div class="calc">
+          <label for="r4">Área dos lotes piloto <output id="o4" for="r4">1.000 ha</output></label>
+          <input type="range" id="r4" min="200" max="5000" step="100" value="1000">
+          <div class="outs" aria-live="polite">
+            <div class="out"><div class="v hl num" id="v4a">200 ha</div><div class="l">de água poupada, em área equivalente</div></div>
+            <div class="out"><div class="v num">−20%</div><div class="l">de água e energia por hectare</div></div>
+          </div>
+          <p class="note">Conta: área × 20%. Não há dado público de consumo por hectare; o valor em reais sai da conta de energia do Distrito de Irrigação, medida no dia 1.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Proponente -->
+  <section class="who" aria-labelledby="who-t">
+    <div class="bio">
+      <span class="eyebrow">Quem propõe</span>
+      <h2 id="who-t">Giselle Falcão, PhD</h2>
+      <p>Mestre e doutora em Modelagem Matemática e Computacional pelo CEFET-MG, com formação em Matemática do Clima na Sorbonne, em Paris. Trabalha com dados há mais de 15 anos, aplicando modelos matemáticos e computacionais no agro e na educação.</p>
+      <div class="links">
+        <a href="http://lattes.cnpq.br/7661015485905669">Currículo Lattes</a>
+        <a href="https://www.linkedin.com/in/giselle-falcao-phd/">LinkedIn</a>
+      </div>
+      <div class="cta">
+        <span class="eyebrow">Próximo passo</span>
+        <p>20 minutos com a equipe de transição para apresentar o detalhamento dos quatro pilotos.</p>
+      </div>
+    </div>
+    <div class="stats">
+      <div class="stat k1"><span class="v">30%</span><span class="l">menos perdas em silos de armazenamento de grãos</span></div>
+      <div class="stat k4"><span class="v">40%+</span><span class="l">de economia de água em estufas</span></div>
+      <div class="stat k3"><span class="v">15%</span><span class="l">menos diesel em rotas de cana-de-açúcar</span></div>
+    </div>
+  </section>
+
+  <section class="sources" aria-labelledby="src-t">
+    <h3 id="src-t">Fontes</h3>
+    <ol>
+      <li><a href="https://www.agenciaminas.mg.gov.br/noticia/governo-de-minas-encaminha-projeto-de-lei-orcamentaria-2027-para-a-almg">Agência Minas – PLOA 2027</a></li>
+      <li><a href="https://divulgacandcontas.tse.jus.br/divulga/rest/arquivo/doc/130017111301">Plano de governo Cleitinho e Falcão (TSE)</a></li>
+      <li><a href="https://diariodocomercio.com.br/agronegocio/producao-graos-minas-gerais-safra-2025-26/">Diário do Comércio – safra 2025/26 (Conab)</a></li>
+      <li><a href="https://www.revistacultivar.com.br/noticias/armazenamento-inadequado-de-graos-resulta-em-cerca-de-15-de-perdas">Revista Cultivar – perdas no armazenamento (Embrapa)</a></li>
+      <li><a href="https://www.agrolink.com.br/noticias/milho-se-aproxima-de-r--70-e-vendedores-recuam-a-espera-de-mais-altas_508752.html">Agrolink – milho perto de R$ 70/saca (dez/2025)</a></li>
+      <li><a href="https://agenciagov.ebc.com.br/noticias/202412/orgaos-federais-economizaram-em-2024-257-milhoes-de-reais-com-apoio-do-robo-alice-da-controladoria-geral-da-uniao">Agência Gov – robô Alice em 2024</a></li>
+      <li><a href="https://consed.org.br/noticia/governo-de-minas-realiza-pagamento-do-programa-estadual-de-transporte-escolar">Consed – transporte escolar de Minas em 2026</a></li>
+      <li><a href="https://www.agenciaminas.mg.gov.br/noticia/programa-estadual-de-transporte-escolar-implementa-sistema-inovador-para-otimizacao-de-recursos-125198">Agência Minas – Sistema Transcolar Rural</a></li>
+      <li><a href="https://www.gov.br/codevasf/pt-br/assuntos/noticias/2026/audiencia-publica-debate-expansao-do-projeto-jaiba-e-reforca-protagonismo-do-norte-de-minas-na-agricultura-irrigada">Codevasf – expansão do Jaíba (2026)</a></li>
+      <li><a href="https://gazetanm.com.br/jaiba-sustentabilidade-e-crescimento-no-maior-perimetro-irrigado-da-america-do-sul/">Gazeta NM – o perímetro irrigado do Jaíba</a></li>
+      <li><a href="https://revistacultivar.com.br/noticias/projeto-da-epamig-testa-tecnica-de-irrigacao-de-baixo-custo-na-regiao-do-jaiba">Revista Cultivar – sensores da Epamig no Jaíba</a></li>
+    </ol>
+    <p class="foot">As ilustrações mostram o funcionamento de cada piloto e não são dados do Estado. As estimativas usam as fontes acima e serão recalculadas com a linha de base do dia 1.</p>
+  </section>
+
+</div>
+
+<script>
+(function () {
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var nf = new Intl.NumberFormat('pt-BR', { maximumFractionDigits: 0 });
+  var nf1 = new Intl.NumberFormat('pt-BR', { maximumFractionDigits: 1 });
+  function mil(n) { return n >= 1000 ? nf1.format(n / 1000) + ' mil' : nf.format(n); }
+  function mi(reais) { return 'R$ ' + nf1.format(reais / 1e6) + ' mi'; }
+
+  // Piloto 1: grade de 200 sacas (15% perdidas = 30; 30% delas salvas = 9)
+  var sacks = document.getElementById('sacks');
+  var cells = [];
+  for (var i = 0; i < 200; i++) { var s = document.createElement('span'); sacks.appendChild(s); cells.push(s); }
+  // espalha as 30 perdidas pela grade de forma estável
+  var lostIdx = [];
+  for (var k = 0; k < 30; k++) { lostIdx.push((k * 67 + 13) % 200); }
+  lostIdx.forEach(function (idx, j) {
+    cells[idx].classList.add(j < 9 ? 'saved' : 'lost');
+    cells[idx].style.setProperty('--dl', (j * 0.04) + 's');
+  });
+  var fig = document.getElementById('grain-fig');
+  var on = document.getElementById('g-on'), off = document.getElementById('g-off');
+  var cap = document.getElementById('grain-cap');
+  function setModel(m) {
+    fig.classList.toggle('with-model', m);
+    on.setAttribute('aria-pressed', String(m));
+    off.setAttribute('aria-pressed', String(!m));
+    cap.textContent = m
+      ? 'De cada 200 sacas guardadas, 30 se perdem (15%). Com o modelo, 9 delas são salvas: 30% menos perda.'
+      : 'Sem o modelo, 30 de cada 200 sacas guardadas se perdem (15%) para insetos, fungos e umidade.';
+  }
+  on.addEventListener('click', function () { setModel(true); });
+  off.addEventListener('click', function () { setModel(false); });
+  setModel(true);
+
+  // Calculadoras
+  function bind(id, fn) { var el = document.getElementById(id); el.addEventListener('input', fn); fn(); }
+  bind('r1', function () {
+    var t = +document.getElementById('r1').value;
+    var salvas = t * 0.15 * 0.30;
+    var sacas = salvas / 0.06;
+    document.getElementById('o1').textContent = mil(t) + ' t';
+    document.getElementById('v1a').textContent = nf.format(salvas) + ' t';
+    document.getElementById('v1b').textContent = mil(Math.round(sacas));
+    document.getElementById('v1c').textContent = mi(sacas * 70);
+    document.getElementById('v1d').textContent = nf.format(Math.round(salvas / 30));
+  });
+  bind('r2', function () {
+    var bi = +document.getElementById('r2').value;
+    document.getElementById('o2').textContent = 'R$ ' + nf1.format(bi) + ' bi';
+    document.getElementById('v2a').textContent = mi(bi * 1e9 * 0.01);
+  });
+  bind('r3', function () {
+    var p = +document.getElementById('r3').value;
+    document.getElementById('o3').textContent = p + '%';
+    document.getElementById('v3a').textContent = mi(900e6 * p / 100);
+  });
+  bind('r4', function () {
+    var ha = +document.getElementById('r4').value;
+    document.getElementById('o4').textContent = nf.format(ha) + ' ha';
+    document.getElementById('v4a').textContent = nf.format(ha * 0.2) + ' ha';
+  });
+
+  // Piloto 4: barras semanais, escala 12 mm = 120 px, base y = 262
+  var dias = ['seg', 'ter', 'qua', 'qui', 'sex', 'sáb', 'dom'];
+  var modelo = [10, 8, 0, 6, 12, 10, 10];
+  var g = document.getElementById('bars');
+  var NS = 'http://www.w3.org/2000/svg';
+  function el(tag, attrs) { var e = document.createElementNS(NS, tag); for (var a in attrs) e.setAttribute(a, attrs[a]); return e; }
+  dias.forEach(function (d, i) {
+    var x = 30 + i * 26;
+    var hF = 10 * 10, hM = modelo[i] * 10;
+    g.appendChild(el('rect', { x: x, y: 262 - hF, width: 9, height: hF, 'class': 'bar-fixed' }));
+    g.appendChild(el('rect', { x: x + 10, y: 262 - hM, width: 9, height: Math.max(hM, 0.01), 'class': 'bar-model' }));
+    var t = el('text', { x: x + 9.5, y: 278, 'text-anchor': 'middle', 'class': 'svg-label' }); t.textContent = d; g.appendChild(t);
+    if (modelo[i] === 0) {
+      var c = el('text', { x: x + 9.5, y: 152, 'text-anchor': 'middle', 'class': 'svg-label strong' }); c.textContent = 'chuva'; g.appendChild(c);
+    }
+  });
+
+  // Piloto 3: desenha a rota otimizada quando aparece; pausa animações se o usuário pede menos movimento
+  var routeSvg = document.getElementById('route-svg');
+  if (reduce) {
+    try { routeSvg.pauseAnimations(); } catch (e) {}
+  } else if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) { if (en.isIntersecting) { routeSvg.classList.add('draw'); io.disconnect(); } });
+    }, { threshold: 0.4 });
+    io.observe(routeSvg);
+  }
+})();
+
+// Rastreamento anônimo (mesmo endpoint do site): a Giselle vê no /painel
+// quando a página foi aberta. Sem IP, identificador troca por dia (LGPD).
+(function () {
+  var PAGE = '/propostas/ia-contra-desperdicio-minas';
+  var clean = function (v) { v = (v || '').trim(); return v ? v.slice(0, 120) : undefined; };
+  var src, c;
+  try {
+    var p = new URLSearchParams(location.search);
+    src = clean(p.get('src')) || clean(p.get('utm_source'));
+    c = clean(p.get('c')) || clean(p.get('utm_campaign'));
+    if (src) sessionStorage.setItem('trk-src', src); else src = sessionStorage.getItem('trk-src') || undefined;
+    if (c) sessionStorage.setItem('trk-c', c); else c = sessionStorage.getItem('trk-c') || undefined;
+  } catch (e) {}
+  if (!c) c = 'proposta-minas';
+  function visitorId() {
+    try {
+      var d = new Date(), today = d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
+      var s = localStorage.getItem('trk-vid');
+      if (s) { var parts = s.split('|'); if (parts[0] === today && parts[1]) return parts[1]; }
+      var id = (crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 12));
+      localStorage.setItem('trk-vid', today + '|' + id); return id;
+    } catch (e) { return undefined; }
+  }
+  function send(path) {
+    var referrer;
+    try { if (document.referrer) { var h = new URL(document.referrer).host; if (h && h !== location.host) referrer = h.slice(0, 255); } } catch (e) {}
+    try {
+      fetch('/api/trpc/academy.visita', { method: 'POST', headers: { 'Content-Type': 'application/json' }, keepalive: true,
+        body: JSON.stringify({ json: { path: path, visitorId: visitorId(), source: src, campaign: c, referrer: referrer } }) }).catch(function () {});
+    } catch (e) {}
+  }
+  try { if (!sessionStorage.getItem('trk-v:' + PAGE)) { sessionStorage.setItem('trk-v:' + PAGE, '1'); send(PAGE); } } catch (e) { send(PAGE); }
+})();
+</script>
+
+</body>
+</html>
