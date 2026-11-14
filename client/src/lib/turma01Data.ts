@@ -37,10 +37,11 @@ export const CHECKOUT_VOOMP: Record<OfertaId, string | null> = {
  * cupom (?cupom=, que o checkout da Voomp aplica sozinho) e o cartão de preço
  * mostra o código, que também vai nos anúncios. O preço do produto na Voomp é o
  * regular; o cupom leva ao valor de primeira turma da página.
+ * MBA: R$ 9.000 − MBA2800 (R$ 2.800) = R$ 6.200.
  * Extensão: R$ 2.500 − DADO750 (R$ 750) = R$ 1.750.
  */
 export const CUPOM_PRIMEIRA_TURMA: Record<OfertaId, { codigo: string; desconto: string } | null> = {
-  mba: null,
+  mba: { codigo: "MBA2800", desconto: "R$ 2.800" },
   extensao: { codigo: "DADO750", desconto: "R$ 750" },
 };
 
