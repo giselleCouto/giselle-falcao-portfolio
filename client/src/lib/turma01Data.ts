@@ -28,8 +28,26 @@ export type OfertaId = "mba" | "extensao";
 // ===================================================================
 export const CHECKOUT_VOOMP: Record<OfertaId, string | null> = {
   mba: "https://pay.voompcreators.com.br/17779",
-  extensao: null,
+  extensao: "https://pay.voompcreators.com.br/17781",
 };
+
+/**
+ * Cupom da condição de primeira turma, criado na Voomp (Cupons) com validade
+ * até 12/12/2026 23:59. Enquanto a condição vale, o link de inscrição já leva o
+ * cupom (?cupom=, que o checkout da Voomp aplica sozinho) e o cartão de preço
+ * mostra o código, que também vai nos anúncios. O preço do produto na Voomp é o
+ * regular; o cupom leva ao valor de primeira turma da página.
+ * Extensão: R$ 2.500 − DADO750 (R$ 750) = R$ 1.750.
+ */
+export const CUPOM_PRIMEIRA_TURMA: Record<OfertaId, { codigo: string; desconto: string } | null> = {
+  mba: null,
+  extensao: { codigo: "DADO750", desconto: "R$ 750" },
+};
+
+/** Cupom que vale hoje (só durante a condição de primeira turma). */
+export function cupomAtual(id: OfertaId, agora = Date.now()) {
+  return condicaoPrimeiraTurmaAtiva(agora) ? CUPOM_PRIMEIRA_TURMA[id] : null;
+}
 
 /**
  * WhatsApp das dúvidas: só dígitos, com 55 e DDD (ex.: "5531900000000").
@@ -126,6 +144,8 @@ export function checkoutUrl(id: OfertaId, origemDaRota?: string): string | null 
     for (const [chave, valor] of Object.entries(utm)) {
       if (!url.searchParams.has(chave)) url.searchParams.set(chave, valor);
     }
+    const cupom = cupomAtual(id);
+    if (cupom && !url.searchParams.has("cupom")) url.searchParams.set("cupom", cupom.codigo);
     return url.toString();
   } catch {
     return base;

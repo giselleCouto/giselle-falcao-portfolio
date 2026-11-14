@@ -7,6 +7,7 @@ import {
   NOME_OFERTA,
   checkoutUrl,
   condicaoPrimeiraTurmaAtiva,
+  cupomAtual,
   giselle,
   guardarUtmDaChegada,
   inscricoesAbertas,
@@ -78,6 +79,7 @@ export function CartaoPreco({ id, nomeCurto, precos, certificado, canal, ancora 
   const condicao = condicaoPrimeiraTurmaAtiva();
   const aberto = inscricoesAbertas();
   const preco = precoAtual(precos);
+  const cupom = aberto ? cupomAtual(id) : null;
   const msg = `Olá, Giselle! Tenho uma dúvida sobre o ${nomeCurto} (Turma 01).`;
 
   return (
@@ -98,6 +100,25 @@ export function CartaoPreco({ id, nomeCurto, precos, certificado, canal, ancora 
         <p className="mt-2 text-xs leading-5 text-slate-500">
           A partir de {turma01.inicioRegular}: {precos.regular.avista} ou {precos.regular.parcelado}.
         </p>
+      ) : null}
+      {cupom ? (
+        <div
+          className="mt-4 rounded-2xl border border-dashed px-4 py-3 text-sm leading-6"
+          style={{ borderColor: TEAL, backgroundColor: SURFACE, color: INK }}
+        >
+          <p>
+            Cupom{" "}
+            <span className="rounded-md bg-white px-2 py-0.5 font-mono font-bold tracking-wider" style={{ color: TEAL }}>
+              {cupom.codigo}
+            </span>{" "}
+            ({cupom.desconto} de desconto até {turma01.fimCondicao})
+          </p>
+          <p className="mt-1 text-xs text-slate-600">
+            {href
+              ? "Ele já vai aplicado quando você clica em “Quero me inscrever”. Se não aparecer no checkout, é só digitar o código."
+              : "Informe o código no checkout da Voomp."}
+          </p>
+        </div>
       ) : null}
 
       {aberto ? (
