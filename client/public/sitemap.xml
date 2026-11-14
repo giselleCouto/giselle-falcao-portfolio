@@ -186,6 +186,11 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://www.coutofalcao.com/ninguem-nasce-fluente</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://www.coutofalcao.com/giselle/servicos</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>

@@ -29,6 +29,7 @@ import GiselleProgramasExecutivos from "./pages/giselle/GiselleProgramasExecutiv
 import GiselleFluente from "./pages/giselle/GiselleFluente";
 import GiselleMba from "./pages/giselle/GiselleMba";
 import GiselleDoDadoAoValor from "./pages/giselle/GiselleDoDadoAoValor";
+import GiselleNinguemNasceFluente from "./pages/giselle/GiselleNinguemNasceFluente";
 import GiselleServicos from "./pages/giselle/GiselleServicos";
 import GiselleSobre from "./pages/giselle/GiselleSobre";
 import GiselleContato from "./pages/giselle/GiselleContato";
@@ -153,6 +154,15 @@ const CANONICAL_ALIASES: Record<string, string> = {
   "/do-dado-ao-valor/linkedin": "/do-dado-ao-valor",
   "/do-dado-ao-valor/tiktok": "/do-dado-ao-valor",
   "/do-dado-ao-valor/whatsapp": "/do-dado-ao-valor",
+  // Lançamento "Ninguém nasce fluente" (Turma 01): /nivel é a rota curta
+  "/ninguem-nasce-fluente/": "/ninguem-nasce-fluente",
+  "/nivel": "/ninguem-nasce-fluente",
+  "/nivel/": "/ninguem-nasce-fluente",
+  "/nivel/youtube": "/ninguem-nasce-fluente",
+  "/nivel/instagram": "/ninguem-nasce-fluente",
+  "/nivel/linkedin": "/ninguem-nasce-fluente",
+  "/nivel/tiktok": "/ninguem-nasce-fluente",
+  "/nivel/whatsapp": "/ninguem-nasce-fluente",
   "/giselle/trilhas/arquiteto-dados-ia": "/giselle/trilha",
 };
 
@@ -187,6 +197,12 @@ const ROUTE_CHANNELS: Record<string, string> = {
   "/do-dado-ao-valor/linkedin": "linkedin",
   "/do-dado-ao-valor/tiktok": "tiktok",
   "/do-dado-ao-valor/whatsapp": "whatsapp",
+  // Lançamento "Ninguém nasce fluente": uma rota curta por canal
+  "/nivel/youtube": "youtube",
+  "/nivel/instagram": "instagram",
+  "/nivel/linkedin": "linkedin",
+  "/nivel/tiktok": "tiktok",
+  "/nivel/whatsapp": "whatsapp",
 };
 
 function trackVisit(path: string) {
@@ -391,6 +407,17 @@ function RouteSeo() {
         "Use IA com critério, não só com pressa: os 5 entregáveis da série Fluente em IA em 7 páginas — autoavaliação, Semáforo do Dado, Ficha de Caso de Uso, 7 perguntas antes de aprovar e plano de 90 dias. Grátis, para imprimir e usar no trabalho.";
       keywords =
         "letramento em IA, kit de letramento em IA, IA no trabalho, uso seguro de IA, Fluente em IA, NOKAHI EDU, Giselle Falcão";
+    } else if (
+      location === "/ninguem-nasce-fluente" ||
+      location.startsWith("/ninguem-nasce-fluente/") ||
+      location === "/nivel" ||
+      location.startsWith("/nivel/")
+    ) {
+      title = "Ninguém nasce fluente em IA: em qual nível você está? | Turma 01 · NOKAHI EDU";
+      description =
+        "Fluência em IA tem três níveis: usar, decidir e liderar. Escolha a frase que parece com você ou faça o teste de 5 perguntas e veja por qual curso começar. Turma 01 começa em 25/01/2027.";
+      keywords =
+        "Ninguém nasce fluente, fluência em IA, curso de IA, letramento em IA, Do Dado ao Valor, MBA em estratégia de IA, NOKAHI EDU, Giselle Falcão";
     } else if (location === "/mba" || location.startsWith("/mba/")) {
       // Páginas de vendas da Turma 01 (NOKAHI EDU) — MBA Executivo
       title = "MBA Executivo em Estratégia de IA e Transformação Empresarial | NOKAHI EDU · Giselle Falcão";
@@ -1154,6 +1181,10 @@ function Router() {
         <Route path="/do-dado-ao-valor">{() => <GiselleDoDadoAoValor />}</Route>
         <Route path="/extensao">{() => <GiselleDoDadoAoValor />}</Route>
         <Route path="/do-dado-ao-valor/:canal">{(params) => <GiselleDoDadoAoValor canal={params.canal} />}</Route>
+        {/* Lançamento "Ninguém nasce fluente" (Turma 01); /nivel/<canal> carimba a origem */}
+        <Route path="/ninguem-nasce-fluente">{() => <GiselleNinguemNasceFluente />}</Route>
+        <Route path="/nivel">{() => <GiselleNinguemNasceFluente />}</Route>
+        <Route path="/nivel/:canal">{(params) => <GiselleNinguemNasceFluente canal={params.canal} />}</Route>
         <Route path="/programas-executivos" component={GiselleProgramasExecutivos} />
         <Route path="/nokahi-edu" component={GiselleProgramasExecutivos} />
         <Route path="/giselle/servicos" component={GiselleServicos} />

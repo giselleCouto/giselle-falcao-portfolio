@@ -37,6 +37,7 @@ import {
   schemaOferta,
   turma01,
 } from "../client/src/lib/turma01Data";
+import { niveis as nnfNiveis, nnf, teste as nnfTeste, turma as nnfTurma } from "../client/src/lib/ninguemNasceFluenteData";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
@@ -793,6 +794,52 @@ routes.push({
       precos: ddv.precos,
       faq: ddv.faq,
     }),
+  ],
+});
+
+// ---- /ninguem-nasce-fluente (lançamento da Turma 01; /nivel é a rota curta)
+// O snapshot é gerado no build, então mostra os dois preços com as datas.
+routes.push({
+  path: "/ninguem-nasce-fluente",
+  aliases: [
+    "/nivel",
+    "/nivel/youtube",
+    "/nivel/instagram",
+    "/nivel/linkedin",
+    "/nivel/tiktok",
+    "/nivel/whatsapp",
+  ],
+  title: "Ninguém nasce fluente em IA: em qual nível você está? | Turma 01 · NOKAHI EDU",
+  description:
+    "Fluência em IA tem três níveis: usar, decidir e liderar. Escolha a frase que parece com você ou faça o teste de 5 perguntas e veja por qual curso começar.",
+  h1: `${nnf.assinatura} ${nnf.assinaturaFim}`,
+  blocks: [
+    { p: `${nnf.selo}. ${nnf.sub}` },
+    { h2: nnf.pergunta },
+    ...nnfNiveis.flatMap((n) => [
+      { h2: `Nível ${n.id} · ${n.rotulo}: ${n.curso}` },
+      { p: `“${n.frase}”` },
+      {
+        ul: [
+          n.tipo,
+          `O que você sai sabendo: ${n.saiSabendo}`,
+          ...n.detalhes,
+          n.paraQuem,
+          n.certificado,
+          `Até ${nnfTurma.fimCondicao}: ${n.precos.primeiraTurma.avista} à vista ou ${n.precos.primeiraTurma.parcelado} no cartão.`,
+          `A partir de ${nnfTurma.inicioRegular}: ${n.precos.regular.avista} à vista ou ${n.precos.regular.parcelado} no cartão.`,
+        ],
+      } as Block,
+    ]),
+    { p: `A ${nnfTurma.nome} começa em ${nnfTurma.inicio}, com inscrições até ${nnfTurma.fimInscricoes}. ${nnfTurma.atendimento}` },
+    { h2: nnfTeste.titulo },
+    { p: nnfTeste.intro },
+    { ul: nnfTeste.perguntas },
+    { dl: nnfTeste.faixas.map((f) => [`${f.de} a ${f.ate} “sim”`, `Nível ${f.nivel}. ${f.texto}`] as [string, string]) },
+    { h2: "Perguntas frequentes" },
+    { dl: nnf.faq.map((f) => [f.q, f.a] as [string, string]) },
+    { h2: "Quem conduz" },
+    { p: `${nnf.autora.nome}. ${nnf.autora.texto}` },
   ],
 });
 
