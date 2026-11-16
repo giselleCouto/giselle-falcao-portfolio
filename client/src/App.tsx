@@ -30,6 +30,7 @@ import GiselleFluente from "./pages/giselle/GiselleFluente";
 import GiselleMba from "./pages/giselle/GiselleMba";
 import GiselleDoDadoAoValor from "./pages/giselle/GiselleDoDadoAoValor";
 import GiselleNinguemNasceFluente from "./pages/giselle/GiselleNinguemNasceFluente";
+import GiselleObrigado from "./pages/giselle/GiselleObrigado";
 import GiselleServicos from "./pages/giselle/GiselleServicos";
 import GiselleSobre from "./pages/giselle/GiselleSobre";
 import GiselleContato from "./pages/giselle/GiselleContato";
@@ -819,6 +820,12 @@ function RouteSeo() {
       title = "Painel do Funil | Giselle Falcão";
       description = "Área restrita.";
     }
+    // Páginas pós-compra da Voomp (upsell e obrigado): só para quem acabou de comprar.
+    const isObrigado = location.startsWith("/obrigado/");
+    if (isObrigado) {
+      title = "Inscrição confirmada | NOKAHI EDU · Giselle Falcão";
+      description = "Confirmação de inscrição na Turma 01 da NOKAHI EDU.";
+    }
 
     document.title = title;
     upsertMeta('meta[name="description"]', "name", "description", description);
@@ -827,7 +834,7 @@ function RouteSeo() {
       'meta[name="robots"]',
       "name",
       "robots",
-      isPainel ? "noindex, nofollow" : "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+      isPainel || isObrigado ? "noindex, nofollow" : "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
     );
     upsertMeta('meta[property="og:type"]', "property", "og:type", "website");
     upsertMeta('meta[property="og:locale"]', "property", "og:locale", "pt_BR");
@@ -1185,6 +1192,10 @@ function Router() {
         <Route path="/ninguem-nasce-fluente">{() => <GiselleNinguemNasceFluente />}</Route>
         <Route path="/nivel">{() => <GiselleNinguemNasceFluente />}</Route>
         <Route path="/nivel/:canal">{(params) => <GiselleNinguemNasceFluente canal={params.canal} />}</Route>
+        {/* Pós-compra da Voomp (Turma 01): upsell do Fluente e páginas de obrigado, fora do índice */}
+        <Route path="/obrigado/fluente/confirmado">{() => <GiselleObrigado pagina="fluente-confirmado" />}</Route>
+        <Route path="/obrigado/fluente">{() => <GiselleObrigado pagina="fluente" />}</Route>
+        <Route path="/obrigado/do-dado-ao-valor">{() => <GiselleObrigado pagina="do-dado-ao-valor" />}</Route>
         <Route path="/programas-executivos" component={GiselleProgramasExecutivos} />
         <Route path="/nokahi-edu" component={GiselleProgramasExecutivos} />
         <Route path="/giselle/servicos" component={GiselleServicos} />
