@@ -34,11 +34,14 @@ export type NivelId = 1 | 2 | 3;
 // lugar nenhum.
 // ===================================================================
 
-/** Links de inscrição: checkout da Voomp (Produtos → Links) de cada curso. */
+/**
+ * Links de inscrição: checkout da Voomp (Produtos → Links) de cada curso, com
+ * ?ch_id= do checkout personalizado da NOKAHI EDU (ver turma01Data.ts).
+ */
 export const LINKS_INSCRICAO: Record<NivelId, string | null> = {
-  1: "https://pay.voompcreators.com.br/17873", // Fluente em IA completo (curso livre, Voomp)
-  2: "https://pay.voompcreators.com.br/17781", // Do Dado ao Valor (extensão, Voomp)
-  3: "https://pay.voompcreators.com.br/17779", // MBA Executivo (Voomp)
+  1: "https://pay.voompcreators.com.br/17873?ch_id=3073", // Fluente em IA completo (curso livre, Voomp)
+  2: "https://pay.voompcreators.com.br/17781?ch_id=3072", // Do Dado ao Valor (extensão, Voomp)
+  3: "https://pay.voompcreators.com.br/17779?ch_id=3071", // MBA Executivo (Voomp)
 };
 
 /**

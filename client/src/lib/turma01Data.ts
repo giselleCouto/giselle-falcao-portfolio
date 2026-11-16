@@ -25,10 +25,13 @@ export type OfertaId = "mba" | "extensao";
 // Links de checkout da Voomp (Produtos → Links → copiar o link do produto).
 // Enquanto um link estiver vazio, o botão da página vira "Inscrições abrem
 // em breve" e leva para o WhatsApp, sem quebrar nada.
+// ?ch_id= escolhe o checkout personalizado da NOKAHI EDU (Voomp → Checkouts →
+// Checkouts Personalizados): 3071 = MBA, 3072 = Do Dado ao Valor,
+// 3073 = Fluente em IA completo. Banners em marketing/capas-turma01/checkout-voomp.
 // ===================================================================
 export const CHECKOUT_VOOMP: Record<OfertaId, string | null> = {
-  mba: "https://pay.voompcreators.com.br/17779",
-  extensao: "https://pay.voompcreators.com.br/17781",
+  mba: "https://pay.voompcreators.com.br/17779?ch_id=3071",
+  extensao: "https://pay.voompcreators.com.br/17781?ch_id=3072",
 };
 
 /**

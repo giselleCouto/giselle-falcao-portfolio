@@ -61,11 +61,13 @@ describe("Ninguém nasce fluente: dados do lançamento", () => {
   it("leva o cupom FLUENTE105 ao checkout 17873 só até 12/12/2026", () => {
     const antes = new URL(inscricaoUrl(1, { agora: brasilia("2026-12-12T23:59:59"), origem: "instagram" })!);
     expect(antes.origin + antes.pathname).toBe("https://pay.voompcreators.com.br/17873");
+    expect(antes.searchParams.get("ch_id")).toBe("3073");
     expect(antes.searchParams.get("cupom")).toBe("FLUENTE105");
     expect(antes.searchParams.get("utm_source")).toBe("instagram");
     expect(antes.searchParams.get("utm_campaign")).toBe("ninguem-nasce-fluente");
 
     const depois = new URL(inscricaoUrl(1, { agora: brasilia("2026-12-13T00:00:00") })!);
+    expect(depois.searchParams.get("ch_id")).toBe("3073");
     expect(depois.searchParams.has("cupom")).toBe(false);
     expect(depois.searchParams.has("utm_source")).toBe(false);
   });
