@@ -11,8 +11,32 @@ import {
   precoAtual,
   teste,
 } from "./ninguemNasceFluenteData";
+import { mba } from "./mbaData";
+import { doDadoAoValor } from "./doDadoAoValorData";
 
 const brasilia = (iso: string) => new Date(`${iso}-03:00`).getTime();
+
+/**
+ * Parcela de 12× no checkout da Voomp: Tabela Price a 2,923% a.m., arredondada
+ * ao centavo. Conferida em 16/11/2026 nas 11 parcelas do checkout do MBA
+ * (R$ 9.000 → 12× de R$ 900,01; R$ 6.200 com cupom → 12× de R$ 620,01).
+ */
+const parcelaVoomp = (avista: string) => {
+  const p = Number(avista.replace(/[^\d,]/g, "").replace(",", "."));
+  const i = 0.02923;
+  const v = Math.round(((p * i) / (1 - (1 + i) ** -12)) * 100) / 100;
+  return `12× de R$ ${v.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+};
+
+describe("Parcelado igual ao do checkout da Voomp", () => {
+  it("bate com a Tabela Price da Voomp em todos os preços do site", () => {
+    const precos = [...niveis.map((n) => n.precos), mba.precos, doDadoAoValor.precos];
+    for (const p of precos) {
+      expect(p.primeiraTurma.parcelado).toBe(parcelaVoomp(p.primeiraTurma.avista));
+      expect(p.regular.parcelado).toBe(parcelaVoomp(p.regular.avista));
+    }
+  });
+});
 
 describe("Ninguém nasce fluente: dados do lançamento", () => {
   it("troca o preço sozinha à meia-noite de 13/12/2026 (Brasília)", () => {
@@ -20,15 +44,15 @@ describe("Ninguém nasce fluente: dados do lançamento", () => {
     const virada = brasilia("2026-12-13T00:00:00");
     expect(niveis.map((n) => precoAtual(n, ultimoMinuto).avista)).toEqual(["R$ 245", "R$ 1.750", "R$ 6.200"]);
     expect(niveis.map((n) => precoAtual(n, ultimoMinuto).parcelado)).toEqual([
-      "12× de R$ 21,30",
-      "12× de R$ 152,10",
-      "12× de R$ 521,00",
+      "12× de R$ 24,50",
+      "12× de R$ 175,00",
+      "12× de R$ 620,01",
     ]);
     expect(niveis.map((n) => precoAtual(n, virada).avista)).toEqual(["R$ 350", "R$ 2.500", "R$ 9.000"]);
     expect(niveis.map((n) => precoAtual(n, virada).parcelado)).toEqual([
-      "12× de R$ 30,45",
-      "12× de R$ 217,10",
-      "12× de R$ 781,50",
+      "12× de R$ 35,00",
+      "12× de R$ 250,00",
+      "12× de R$ 900,01",
     ]);
     expect(faqCondicao(ultimoMinuto).a).toContain("Até 12/12/2026");
     expect(faqCondicao(virada).a).toContain("terminou");

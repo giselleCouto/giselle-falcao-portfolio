@@ -26,8 +26,8 @@ export const doDadoAoValor = {
   certificado: "Certificado de extensão universitária emitido pela Anhanguera, instituição credenciada pelo MEC.",
 
   precos: {
-    primeiraTurma: { avista: "R$ 1.750", parcelado: "12× de R$ 152,10", valor: 1750 },
-    regular: { avista: "R$ 2.500", parcelado: "12× de R$ 217,10", valor: 2500 },
+    primeiraTurma: { avista: "R$ 1.750", parcelado: "12× de R$ 175,00", valor: 1750 },
+    regular: { avista: "R$ 2.500", parcelado: "12× de R$ 250,00", valor: 2500 },
   } satisfies Precos,
 
   // ---- O problema (justificativa do PPCE)

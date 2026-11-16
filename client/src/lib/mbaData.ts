@@ -31,8 +31,8 @@ export const mba = {
     "Certificado de especialização lato sensu emitido pela Anhanguera, instituição credenciada pelo MEC, com histórico escolar.",
 
   precos: {
-    primeiraTurma: { avista: "R$ 6.200", parcelado: "12× de R$ 521,00", valor: 6200 },
-    regular: { avista: "R$ 9.000", parcelado: "12× de R$ 781,50", valor: 9000 },
+    primeiraTurma: { avista: "R$ 6.200", parcelado: "12× de R$ 620,01", valor: 6200 },
+    regular: { avista: "R$ 9.000", parcelado: "12× de R$ 900,01", valor: 9000 },
   } satisfies Precos,
 
   // ---- Por que agora (urgência verdadeira, com fonte)

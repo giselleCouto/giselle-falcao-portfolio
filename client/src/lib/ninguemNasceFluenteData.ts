@@ -115,8 +115,8 @@ export const niveis: Nivel[] = [
     certificado: "Certificado de conclusão de curso livre.",
     paraQuem: "Qualquer pessoa pode fazer.",
     precos: {
-      primeiraTurma: { avista: "R$ 245", parcelado: "12× de R$ 21,30" },
-      regular: { avista: "R$ 350", parcelado: "12× de R$ 30,45" },
+      primeiraTurma: { avista: "R$ 245", parcelado: "12× de R$ 24,50" },
+      regular: { avista: "R$ 350", parcelado: "12× de R$ 35,00" },
     },
   },
   {
@@ -137,8 +137,8 @@ export const niveis: Nivel[] = [
       "Certificado de extensão universitária emitido pela Anhanguera, instituição credenciada pelo MEC.",
     paraQuem: "Qualquer pessoa pode fazer, sem exigência de graduação.",
     precos: {
-      primeiraTurma: { avista: "R$ 1.750", parcelado: "12× de R$ 152,10" },
-      regular: { avista: "R$ 2.500", parcelado: "12× de R$ 217,10" },
+      primeiraTurma: { avista: "R$ 1.750", parcelado: "12× de R$ 175,00" },
+      regular: { avista: "R$ 2.500", parcelado: "12× de R$ 250,00" },
     },
   },
   {
@@ -158,8 +158,8 @@ export const niveis: Nivel[] = [
       "Certificado de especialização lato sensu emitido pela Anhanguera, instituição credenciada pelo MEC.",
     paraQuem: "Para quem tem graduação concluída, em qualquer área.",
     precos: {
-      primeiraTurma: { avista: "R$ 6.200", parcelado: "12× de R$ 521,00" },
-      regular: { avista: "R$ 9.000", parcelado: "12× de R$ 781,50" },
+      primeiraTurma: { avista: "R$ 6.200", parcelado: "12× de R$ 620,01" },
+      regular: { avista: "R$ 9.000", parcelado: "12× de R$ 900,01" },
     },
   },
 ];
