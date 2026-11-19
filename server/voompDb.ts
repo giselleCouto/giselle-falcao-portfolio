@@ -1,6 +1,6 @@
 // Gravação e leitura do registro de estudantes da Voomp (ver voompWebhook.ts).
 
-import { and, desc, eq, isNull, like, sql } from "drizzle-orm";
+import { TransactionRollbackError, and, desc, eq, isNull, like, sql } from "drizzle-orm";
 import { voompEventos, voompInscricoes, type InsertVoompInscricao } from "../drizzle/schema";
 import { cursoVoomp, formatarMatricula, type StatusInscricao } from "../shared/voomp";
 import { getDb } from "./db";
@@ -83,9 +83,11 @@ const ehDuplicado = (erro: unknown) =>
   String((erro as Error)?.message ?? "").includes("Duplicate entry");
 
 /** Próximo número da matrícula daquele curso (NK-MBA-0001, 0002...). */
-async function proximaSequencia(prefixo: string) {
-  const db = await getDb();
-  if (!db) return 1;
+type Banco = NonNullable<Awaited<ReturnType<typeof getDb>>>;
+type Transacao = Parameters<Parameters<Banco["transaction"]>[0]>[0];
+type Executor = Banco | Transacao;
+
+async function proximaSequencia(db: Executor, prefixo: string) {
   const [linha] = await db
     .select({
       maior: sql<number>`coalesce(max(cast(substring_index(${voompInscricoes.matricula}, '-', -1) as unsigned)), 0)`,
@@ -95,12 +97,10 @@ async function proximaSequencia(prefixo: string) {
   return Number(linha?.maior ?? 0) + 1;
 }
 
-async function atribuirMatricula(inscricaoId: number, productId: string) {
-  const db = await getDb();
-  if (!db) return null;
+async function atribuirMatricula(db: Executor, inscricaoId: number, productId: string) {
   const { codigo } = cursoVoomp(productId);
   for (let tentativa = 0; tentativa < 5; tentativa++) {
-    const matricula = formatarMatricula(codigo, await proximaSequencia(`NK-${codigo}-`));
+    const matricula = formatarMatricula(codigo, await proximaSequencia(db, `NK-${codigo}-`));
     try {
       await db
         .update(voompInscricoes)
@@ -122,12 +122,29 @@ async function atribuirMatricula(inscricaoId: number, productId: string) {
 /**
  * Grava o aviso da Voomp e atualiza (ou cria) a inscrição da pessoa naquele
  * curso. Campos que o novo aviso não traz mantêm o valor que já estava.
+ * Com { teste: true } faz tudo dentro de uma transação e desfaz no fim: prova
+ * o caminho inteiro no banco real sem deixar estudante de mentira no painel.
  */
-export async function registrarEventoVoomp(ev: EventoVoomp, payload: string) {
+export async function registrarEventoVoomp(ev: EventoVoomp, payload: string, opcoes: { teste?: boolean } = {}) {
   const db = await getDb();
   if (!db) return null;
   await garantirTabelas();
+  if (!opcoes.teste) return gravarEvento(db, ev, payload);
 
+  let resultado: Awaited<ReturnType<typeof gravarEvento>> | null = null;
+  try {
+    await db.transaction(async (tx) => {
+      resultado = await gravarEvento(tx, ev, payload);
+      tx.rollback();
+    });
+  } catch (erro) {
+    if (!(erro instanceof TransactionRollbackError)) throw erro;
+  }
+  if (!resultado) throw new Error("Teste não gravou o evento");
+  return { ...(resultado as Awaited<ReturnType<typeof gravarEvento>>), teste: true, desfeito: true };
+}
+
+async function gravarEvento(db: Executor, ev: EventoVoomp, payload: string) {
   const [evento] = await db
     .insert(voompEventos)
     .values({
@@ -227,7 +244,7 @@ export async function registrarEventoVoomp(ev: EventoVoomp, payload: string) {
       .limit(1);
     matricula = atual?.matricula ?? null;
     // matrícula nasce no pagamento; quem pagou e depois pediu reembolso a mantém
-    if (!matricula && status === "pago") matricula = await atribuirMatricula(inscricaoId, ev.productId);
+    if (!matricula && status === "pago") matricula = await atribuirMatricula(db, inscricaoId, ev.productId);
   }
 
   await db.update(voompEventos).set({ inscricaoId }).where(eq(voompEventos.id, evento.id));

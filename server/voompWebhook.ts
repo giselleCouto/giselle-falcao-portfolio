@@ -224,7 +224,9 @@ export function registerVoompWebhook(app: Express) {
     try {
       const { registrarEventoVoomp } = await import("./voompDb");
       const corpo = req.body ?? {};
-      const resultado = await registrarEventoVoomp(interpretarEventoVoomp(corpo), JSON.stringify(corpo));
+      // ?teste=1 percorre a gravação inteira e desfaz no fim (nada fica no painel)
+      const teste = req.query.teste === "1";
+      const resultado = await registrarEventoVoomp(interpretarEventoVoomp(corpo), JSON.stringify(corpo), { teste });
       if (!resultado) {
         res.status(503).json({ ok: false, erro: "banco indisponível" });
         return;

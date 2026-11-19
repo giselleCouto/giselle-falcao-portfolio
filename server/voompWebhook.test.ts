@@ -188,6 +188,18 @@ describe("rota do webhook", () => {
     expect(JSON.parse(payload)).toEqual(vendaPaga);
   });
 
+  it("modo teste (?teste=1) avisa o gravador para desfazer no fim", async () => {
+    process.env.VOOMP_WEBHOOK_TOKEN = "segredo-certo";
+    registrarEventoVoompMock.mockResolvedValue({ eventoId: 1, inscricaoId: 7, status: "pago", matricula: "NK-DDV-0001", teste: true });
+    const r = await fetch(`${base}/api/voomp/webhook/segredo-certo?teste=1`, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify(vendaPaga),
+    });
+    expect(r.status).toBe(200);
+    expect(registrarEventoVoompMock.mock.calls[0][2]).toEqual({ teste: true });
+  });
+
   it("responde 200 a um GET de teste com o token certo", async () => {
     process.env.VOOMP_WEBHOOK_TOKEN = "segredo-certo";
     const r = await fetch(`${base}/api/voomp/webhook/segredo-certo`);
