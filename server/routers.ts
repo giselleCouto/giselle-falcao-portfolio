@@ -568,6 +568,18 @@ export const appRouter = router({
         }
         return funil;
       }),
+    // Estudantes da Voomp (inscrições pagas e não finalizadas) para /painel/estudantes — mesma chave.
+    estudantes: publicProcedure
+      .input(z.object({ token: z.string().min(1) }))
+      .query(async ({ input }) => {
+        guardaDeToken(input.token);
+        const { listarEstudantesVoomp } = await import("./voompDb");
+        const dados = await listarEstudantesVoomp();
+        if (!dados) {
+          throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "Database unavailable" });
+        }
+        return dados;
+      }),
     maturidade: publicProcedure.input(maturityInputSchema).mutation(async ({ input }) => {
       const total =
         input.scores.dados +

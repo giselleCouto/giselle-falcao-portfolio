@@ -12,6 +12,8 @@ export default defineConfig({
       "@assets": path.resolve(templateRoot, "attached_assets"),
     },
   },
+  // Mesmo runtime de JSX do app (Vite + React): páginas sem `import React` também renderizam nos testes.
+  esbuild: { jsx: "automatic" },
   test: {
     environment: "node",
     // Testes de UI (jsdom) ficam lentos com a suíte inteira em paralelo em

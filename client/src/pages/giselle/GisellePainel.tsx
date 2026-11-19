@@ -17,7 +17,7 @@ import {
 } from "lucide-react";
 import { trpc } from "@/lib/trpc";
 
-const KEY_STORAGE = "painel-key";
+export const KEY_STORAGE = "painel-key";
 
 // Paleta validada (dataviz): roxo = visitas, teal = conversões/leads.
 const COR_VISITAS = "#6b21a8";
@@ -149,7 +149,7 @@ function parseBA(businessArea: string | null | undefined, campo: string): string
 
 // ── componentes visuais ──────────────────────────────────────────────────────
 
-function Tile({ rotulo, valor, detalhe }: { rotulo: string; valor: string; detalhe?: string }) {
+export function Tile({ rotulo, valor, detalhe }: { rotulo: string; valor: string; detalhe?: string }) {
   return (
     <div className="rounded-2xl bg-[#1a1333] px-5 py-4 text-white">
       <p className="text-[11px] font-bold uppercase tracking-[0.14em] opacity-70">{rotulo}</p>
@@ -159,7 +159,7 @@ function Tile({ rotulo, valor, detalhe }: { rotulo: string; valor: string; detal
   );
 }
 
-function Barras({
+export function Barras({
   dados,
   cor = COR_VISITAS,
   formato = (n: number) => String(n),
@@ -250,7 +250,7 @@ function SerieDiaria({ dias }: { dias: { dia: string; visitas: number; leads: nu
   );
 }
 
-function Cartao({ titulo, children, icone: Icone = BarChart3 }: { titulo: string; children: React.ReactNode; icone?: typeof BarChart3 }) {
+export function Cartao({ titulo, children, icone: Icone = BarChart3 }: { titulo: string; children: React.ReactNode; icone?: typeof BarChart3 }) {
   return (
     <div className="rounded-3xl border border-slate-200/70 bg-white p-5">
       <p className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.16em] text-[#6b21a8]">
@@ -414,7 +414,15 @@ export default function GisellePainel() {
     <div className="min-h-screen bg-[#f7f8fc] pb-16 text-[#1a1333]">
       <header className="sticky top-0 z-40 border-b border-slate-200/70 bg-white/85 backdrop-blur">
         <div className="container flex h-14 items-center justify-between gap-3">
-          <p className="font-baloo text-sm font-bold uppercase tracking-[0.12em]">Painel do Funil</p>
+          <div className="flex items-center gap-3">
+            <p className="font-baloo text-sm font-bold uppercase tracking-[0.12em]">Painel do Funil</p>
+            <Link
+              href="/painel/estudantes"
+              className="rounded-full bg-[#0f9d8f]/10 px-3 py-1.5 text-xs font-bold text-[#0f766e] transition hover:bg-[#0f9d8f]/20"
+            >
+              Estudantes →
+            </Link>
+          </div>
           <div className="flex items-center gap-2">
             {[7, 14, 30, 90].map((d) => (
               <button

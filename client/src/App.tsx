@@ -46,6 +46,7 @@ import GisellePrivacidade from "./pages/giselle/GisellePrivacidade";
 import GiselleKit from "./pages/giselle/GiselleKit";
 import GiselleMasterclass from "./pages/giselle/GiselleMasterclass";
 import GisellePainel from "./pages/giselle/GisellePainel";
+import GiselleEstudantes from "./pages/giselle/GiselleEstudantes";
 import GiselleLab from "./pages/giselle/GiselleLab";
 import GiselleTrajetoria from "./pages/giselle/GiselleTrajetoria";
 import GiselleTrilha from "./pages/giselle/GiselleTrilha";
@@ -815,7 +816,7 @@ function RouteSeo() {
     }
 
     // Painel protegido: fora do índice dos buscadores.
-    const isPainel = location === "/painel" || location === "/giselle/painel";
+    const isPainel = location.startsWith("/painel") || location.startsWith("/giselle/painel");
     if (isPainel) {
       title = "Painel do Funil | Giselle Falcão";
       description = "Área restrita.";
@@ -1128,6 +1129,8 @@ function Router() {
         <Route path="/giselle/lab" component={GiselleLab} />
         <Route path="/masterclass" component={GiselleMasterclass} />
         <Route path="/giselle/masterclass" component={GiselleMasterclass} />
+        <Route path="/painel/estudantes" component={GiselleEstudantes} />
+        <Route path="/giselle/painel/estudantes" component={GiselleEstudantes} />
         <Route path="/painel" component={GisellePainel} />
         <Route path="/giselle/painel" component={GisellePainel} />
         <Route path="/kit">{() => <GiselleKit tool="home" />}</Route>

@@ -320,3 +320,76 @@ export const palestraPedidos = mysqlTable("palestra_pedidos", {
 
 export type PalestraPedido = typeof palestraPedidos.$inferSelect;
 export type InsertPalestraPedido = typeof palestraPedidos.$inferInsert;
+
+/**
+ * Estudantes da Turma 01 vindos da Voomp — uma linha por pessoa × curso.
+ * Alimentada pelo webhook (/api/voomp/webhook/:token): inscrição paga recebe
+ * número de matrícula; quem parou no meio (checkout abandonado, Pix/boleto não
+ * pago, cartão recusado) fica registrado com o mesmo cadastro. Consultada no
+ * painel protegido /painel/estudantes.
+ */
+export const voompInscricoes = mysqlTable(
+  "voomp_inscricoes",
+  {
+    id: int("id").autoincrement().primaryKey(),
+    matricula: varchar("matricula", { length: 24 }),
+    status: varchar("status", { length: 32 }).notNull(),
+    statusVoomp: varchar("statusVoomp", { length: 64 }),
+    productId: varchar("productId", { length: 32 }).notNull(),
+    productName: varchar("productName", { length: 255 }),
+    offerName: varchar("offerName", { length: 255 }),
+    email: varchar("email", { length: 320 }).notNull(),
+    name: varchar("name", { length: 200 }),
+    phone: varchar("phone", { length: 40 }),
+    document: varchar("document", { length: 32 }),
+    zipcode: varchar("zipcode", { length: 16 }),
+    city: varchar("city", { length: 120 }),
+    uf: varchar("uf", { length: 4 }),
+    saleId: varchar("saleId", { length: 64 }),
+    method: varchar("method", { length: 40 }),
+    installments: int("installments"),
+    amountCents: int("amountCents"),
+    coupon: varchar("coupon", { length: 80 }),
+    refusedReason: varchar("refusedReason", { length: 255 }),
+    utmSource: varchar("utmSource", { length: 120 }),
+    utmCampaign: varchar("utmCampaign", { length: 160 }),
+    utmContent: varchar("utmContent", { length: 160 }),
+    eventsCount: int("eventsCount").default(0).notNull(),
+    firstEventAt: timestamp("firstEventAt").defaultNow().notNull(),
+    lastEventAt: timestamp("lastEventAt").defaultNow().notNull(),
+    paidAt: timestamp("paidAt"),
+    createdAt: timestamp("createdAt").defaultNow().notNull(),
+    updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+  },
+  (table) => ({
+    pessoaCursoUnique: uniqueIndex("voomp_inscricoes_email_produto_unique").on(table.email, table.productId),
+    matriculaUnique: uniqueIndex("voomp_inscricoes_matricula_unique").on(table.matricula),
+    statusIdx: index("voomp_inscricoes_status_idx").on(table.status),
+  }),
+);
+
+export type VoompInscricao = typeof voompInscricoes.$inferSelect;
+export type InsertVoompInscricao = typeof voompInscricoes.$inferInsert;
+
+/** Cada aviso recebido da Voomp, como chegou (auditoria e depuração do webhook). */
+export const voompEventos = mysqlTable(
+  "voomp_eventos",
+  {
+    id: int("id").autoincrement().primaryKey(),
+    evento: varchar("evento", { length: 64 }),
+    status: varchar("status", { length: 32 }).notNull(),
+    statusVoomp: varchar("statusVoomp", { length: 64 }),
+    saleId: varchar("saleId", { length: 64 }),
+    productId: varchar("productId", { length: 32 }),
+    email: varchar("email", { length: 320 }),
+    inscricaoId: int("inscricaoId"),
+    payload: text("payload").notNull(),
+    receivedAt: timestamp("receivedAt").defaultNow().notNull(),
+  },
+  (table) => ({
+    recebidoIdx: index("voomp_eventos_recebido_idx").on(table.receivedAt),
+  }),
+);
+
+export type VoompEvento = typeof voompEventos.$inferSelect;
+export type InsertVoompEvento = typeof voompEventos.$inferInsert;
