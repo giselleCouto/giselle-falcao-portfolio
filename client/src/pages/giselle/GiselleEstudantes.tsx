@@ -11,6 +11,9 @@ import { Download, GraduationCap, KeyRound, LogOut, MapPin, RadioTower, RefreshC
 import { trpc } from "@/lib/trpc";
 import { CURSOS_VOOMP, STATUS_INSCRICAO, cursoVoomp, type StatusInscricao } from "@shared/voomp";
 import { Barras, Cartao, KEY_STORAGE, Tile } from "./GisellePainel";
+import GiselleEstudanteCartao from "./GiselleEstudanteCartao";
+import GiselleEstudantesAcompanhamento from "./GiselleEstudantesAcompanhamento";
+import { Selo, baixarCsv, contar, dataHora, linkWhatsApp, reais, statusDe, type Inscricao } from "./estudantesUtil";
 
 const COR_PAGO = "#0f9d8f";
 const COR_NAO = "#c2410c";
@@ -28,73 +31,16 @@ const ORDEM_STATUS: StatusInscricao[] = [
 ];
 
 type FiltroSituacao = "todas" | "finalizaram" | "nao-finalizaram" | StatusInscricao;
+type Aba = "inscricoes" | "acompanhamento";
 
-const statusDe = (s: string): StatusInscricao => (s in STATUS_INSCRICAO ? (s as StatusInscricao) : "outro");
-
-function dataHora(d: string | Date | null | undefined) {
-  if (!d) return "";
-  return new Date(d).toLocaleString("pt-BR", {
-    timeZone: "America/Sao_Paulo",
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-  });
-}
-
-const reais = (centavos: number) =>
-  (centavos / 100).toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
-
-/** CPF parcialmente oculto na tela (o CSV leva completo). */
-function mascararDocumento(doc: string | null) {
-  const d = (doc ?? "").replace(/\D/g, "");
-  if (d.length === 11) return `•••.${d.slice(3, 6)}.${d.slice(6, 9)}-••`;
-  return doc ?? "";
-}
-
-function linkWhatsApp(telefone: string | null) {
-  let d = (telefone ?? "").replace(/\D/g, "");
-  if (d.length === 10 || d.length === 11) d = `55${d}`;
-  return d.length >= 12 ? `https://wa.me/${d}` : null;
-}
-
-function contar<T>(itens: T[], chave: (item: T) => string | null | undefined): [string, number][] {
-  const mapa = new Map<string, number>();
-  for (const item of itens) {
-    const k = chave(item);
-    if (!k) continue;
-    mapa.set(k, (mapa.get(k) ?? 0) + 1);
+/** /painel/alunos abre direto no acompanhamento do curso. */
+const abaInicial = (): Aba => {
+  try {
+    return window.location.pathname.includes("/alunos") ? "acompanhamento" : "inscricoes";
+  } catch {
+    return "inscricoes";
   }
-  return Array.from(mapa.entries()).sort((a, b) => b[1] - a[1]);
-}
-
-function baixarCsv(nome: string, linhas: (string | number | null | undefined)[][]) {
-  const celula = (v: string | number | null | undefined) => {
-    const s = v === null || v === undefined ? "" : String(v);
-    return /[";\n\r]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
-  };
-  // ";" e BOM: o Excel em português abre com acentos e colunas certas.
-  const conteudo = "﻿" + linhas.map((l) => l.map(celula).join(";")).join("\r\n");
-  const url = URL.createObjectURL(new Blob([conteudo], { type: "text/csv;charset=utf-8" }));
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = nome;
-  a.click();
-  setTimeout(() => URL.revokeObjectURL(url), 1000);
-}
-
-function Selo({ status }: { status: StatusInscricao }) {
-  const info = STATUS_INSCRICAO[status];
-  return (
-    <span
-      className="inline-flex whitespace-nowrap rounded-full px-2.5 py-1 text-[11px] font-bold"
-      style={{ background: `${info.cor}1a`, color: info.cor }}
-    >
-      {info.rotulo}
-    </span>
-  );
-}
+};
 
 export default function GiselleEstudantes() {
   const [chave, setChave] = useState<string>(() => {
@@ -108,12 +54,18 @@ export default function GiselleEstudantes() {
   const [curso, setCurso] = useState<string>("todos");
   const [situacao, setSituacao] = useState<FiltroSituacao>("todas");
   const [busca, setBusca] = useState("");
+  const [aba, setAba] = useState<Aba>(abaInicial);
+  const [aberto, setAberto] = useState<number | null>(null);
+  const [cpfCompleto, setCpfCompleto] = useState(false);
 
   const query = trpc.academy.estudantes.useQuery(
     { token: chave },
     { enabled: chave.length > 0, retry: false, refetchOnWindowFocus: false }
   );
-  type Inscricao = NonNullable<typeof query.data>["inscricoes"][number];
+  const documentos = trpc.academy.documentosEstudantes.useMutation();
+  const agora = useMemo(() => new Date(), [query.data]);
+  const buscarDocumentos = async (ids: number[]) =>
+    new Map((await documentos.mutateAsync({ token: chave, ids })).map((d) => [d.id, d.documento] as const));
 
   const entrar = () => {
     const k = entrada.trim();
@@ -151,7 +103,7 @@ export default function GiselleEstudantes() {
       if (situacao !== "todas" && situacao !== "finalizaram" && situacao !== "nao-finalizaram" && st !== situacao) return false;
       if (!termo) return true;
       const alvo = [i.name, i.email, i.matricula, i.city].filter(Boolean).join(" ").toLowerCase();
-      const digitos = `${i.document ?? ""} ${i.phone ?? ""}`.replace(/\D/g, "");
+      const digitos = `${i.documentoMascarado ?? ""} ${i.phone ?? ""}`.replace(/\D/g, "");
       return alvo.includes(termo) || (termoDigitos.length >= 3 && digitos.includes(termoDigitos));
     });
 
@@ -192,7 +144,8 @@ export default function GiselleEstudantes() {
     };
   }, [query.data, curso, situacao, busca]);
 
-  const exportar = () => {
+  const exportar = async () => {
+    const cpfs = cpfCompleto ? await buscarDocumentos(calculado.filtradas.map((i) => i.id)) : null;
     const cabecalho = [
       "Matrícula", "Situação", "Finalizou", "Curso", "Oferta", "Nome", "E-mail", "Telefone", "CPF/CNPJ", "CEP",
       "Cidade", "UF", "Valor (R$)", "Forma de pagamento", "Parcelas", "Cupom", "Motivo da recusa", "Origem (utm_source)",
@@ -203,7 +156,8 @@ export default function GiselleEstudantes() {
       const fin = STATUS_INSCRICAO[st].finalizou;
       return [
         i.matricula, STATUS_INSCRICAO[st].rotulo, fin === true ? "sim" : fin === false ? "não" : "—",
-        cursoVoomp(i.productId, i.productName).nome, i.offerName, i.name, i.email, i.phone, i.document, i.zipcode,
+        cursoVoomp(i.productId, i.productName).nome, i.offerName, i.name, i.email, i.phone,
+        cpfs ? (cpfs.get(i.id) ?? "") : (i.documentoMascarado ?? ""), i.zipcode,
         i.city, i.uf, i.amountCents !== null ? (i.amountCents / 100).toFixed(2).replace(".", ",") : "", i.method,
         i.installments, i.coupon, i.refusedReason, i.utmSource, i.utmCampaign, i.utmContent, dataHora(i.firstEventAt),
         dataHora(i.lastEventAt), dataHora(i.paidAt), i.eventsCount,
@@ -266,16 +220,6 @@ export default function GiselleEstudantes() {
           <div className="flex items-center gap-2">
             <button
               type="button"
-              onClick={exportar}
-              disabled={!dados || calculado.filtradas.length === 0}
-              className="flex items-center gap-1.5 rounded-full bg-[#1a1333] px-3 py-1.5 text-xs font-bold text-white transition hover:bg-[#6b21a8] disabled:opacity-40"
-            >
-              <Download className="size-3.5" />
-              <span className="hidden sm:inline">Exportar planilha</span>
-              <span className="sm:hidden">CSV</span>
-            </button>
-            <button
-              type="button"
               onClick={() => void query.refetch()}
               aria-label="Atualizar"
               className="flex size-8 items-center justify-center rounded-full bg-slate-100 text-slate-500 transition hover:bg-violet-100"
@@ -311,6 +255,40 @@ export default function GiselleEstudantes() {
           <p className="py-20 text-center text-sm text-slate-400">Carregando estudantes…</p>
         ) : (
           <>
+            {/* Abas */}
+            <div role="tablist" aria-label="Visões" className="flex gap-1 rounded-full bg-white p-1 shadow-sm ring-1 ring-slate-200/70 sm:w-fit">
+              {(
+                [
+                  ["inscricoes", "Inscrições (checkout)"],
+                  ["acompanhamento", "Acompanhamento do curso"],
+                ] as [Aba, string][]
+              ).map(([id, rotulo]) => (
+                <button
+                  key={id}
+                  type="button"
+                  role="tab"
+                  aria-selected={aba === id}
+                  onClick={() => setAba(id)}
+                  className={`flex-1 rounded-full px-4 py-2 text-xs font-bold transition sm:flex-none ${
+                    aba === id ? "bg-[#1a1333] text-white" : "text-slate-500 hover:bg-violet-50"
+                  }`}
+                >
+                  {rotulo}
+                </button>
+              ))}
+            </div>
+
+            {aba === "acompanhamento" ? (
+              <GiselleEstudantesAcompanhamento
+                token={chave}
+                dados={dados}
+                agora={agora}
+                onAbrir={setAberto}
+                onAtualizar={() => void query.refetch()}
+                buscarDocumentos={buscarDocumentos}
+              />
+            ) : (
+            <>
             {/* Filtros */}
             <div className="flex flex-col gap-2 rounded-3xl border border-slate-200/70 bg-white p-3 sm:flex-row sm:items-center">
               <select
@@ -430,6 +408,22 @@ export default function GiselleEstudantes() {
 
             {/* Lista */}
             <Cartao titulo={`Estudantes (${calculado.filtradas.length}${calculado.filtradas.length > 300 ? " · mostrando 300; a planilha leva todos" : ""})`} icone={Users}>
+              <div className="mb-3 flex flex-wrap items-center gap-3">
+                <button
+                  type="button"
+                  onClick={() => void exportar()}
+                  disabled={calculado.filtradas.length === 0}
+                  className="flex items-center gap-1.5 rounded-full bg-[#1a1333] px-3 py-1.5 text-xs font-bold text-white transition hover:bg-[#6b21a8] disabled:opacity-40"
+                >
+                  <Download className="size-3.5" />
+                  Exportar planilha
+                </button>
+                <label className="flex items-center gap-1.5 text-xs font-semibold text-slate-500">
+                  <input type="checkbox" checked={cpfCompleto} onChange={(e) => setCpfCompleto(e.target.checked)} />
+                  incluir CPF completo
+                </label>
+                <span className="text-[11px] text-slate-400">Clique numa linha para abrir o cartão do estudante.</span>
+              </div>
               {calculado.filtradas.length === 0 ? (
                 <p className="text-sm text-slate-400">
                   {calculado.todas.length === 0
@@ -457,17 +451,27 @@ export default function GiselleEstudantes() {
                         const st = statusDe(i.status);
                         const wa = linkWhatsApp(i.phone);
                         return (
-                          <tr key={i.id} className="border-t border-slate-100 align-top">
+                          <tr
+                            key={i.id}
+                            onClick={() => setAberto(i.id)}
+                            className="cursor-pointer border-t border-slate-100 align-top hover:bg-violet-50/50"
+                          >
                             <td className="py-2.5 font-mono text-xs font-bold">{i.matricula ?? "—"}</td>
                             <td className="py-2.5">
                               <p className="font-semibold">{i.name || "—"}</p>
-                              <p className="text-xs text-slate-400">{mascararDocumento(i.document)}</p>
+                              <p className="text-xs text-slate-400">{i.documentoMascarado ?? ""}</p>
                             </td>
                             <td className="py-2.5 text-xs">
                               <p>{i.email}</p>
                               {i.phone ? (
                                 wa ? (
-                                  <a href={wa} target="_blank" rel="noreferrer" className="font-semibold text-[#0f766e] underline">
+                                  <a
+                                    href={wa}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    onClick={(e) => e.stopPropagation()}
+                                    className="font-semibold text-[#0f766e] underline"
+                                  >
                                     {i.phone}
                                   </a>
                                 ) : (
@@ -520,9 +524,20 @@ export default function GiselleEstudantes() {
                 </ul>
               )}
             </Cartao>
+            </>
+            )}
           </>
         )}
       </main>
+
+      {aberto !== null ? (
+        <GiselleEstudanteCartao
+          token={chave}
+          inscricaoId={aberto}
+          onFechar={() => setAberto(null)}
+          onSalvo={() => void query.refetch()}
+        />
+      ) : null}
     </div>
   );
 }

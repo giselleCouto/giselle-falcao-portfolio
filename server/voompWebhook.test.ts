@@ -130,10 +130,10 @@ describe("situação da inscrição", () => {
     expect(proximoStatus("abandonado", "outro")).toBe("abandonado");
   });
 
-  it("matrícula legível por curso", () => {
-    expect(formatarMatricula(cursoVoomp("17779").codigo, 1)).toBe("NK-MBA-0001");
-    expect(formatarMatricula(cursoVoomp("17781").codigo, 27)).toBe("NK-DDV-0027");
-    expect(formatarMatricula(cursoVoomp("17873").codigo, 1234)).toBe("NK-FIA-1234");
+  it("matrícula legível por curso e ano da turma", () => {
+    expect(formatarMatricula(cursoVoomp("17779").codigo, 2027, 1)).toBe("NK-MBA-2027-0001");
+    expect(formatarMatricula(cursoVoomp("17781").codigo, 2027, 27)).toBe("NK-DDV-2027-0027");
+    expect(formatarMatricula(cursoVoomp("17873").codigo, 2028, 1234)).toBe("NK-FIA-2028-1234");
     expect(cursoVoomp("99999").codigo).toBe("P99999");
   });
 });
@@ -177,20 +177,22 @@ describe("rota do webhook", () => {
     expect(registrarEventoVoompMock).not.toHaveBeenCalled();
   });
 
-  it("grava o aviso com token certo e guarda o corpo original", async () => {
+  it("grava o aviso com token certo e guarda o corpo sem o CPF", async () => {
     process.env.VOOMP_WEBHOOK_TOKEN = "segredo-certo";
-    registrarEventoVoompMock.mockResolvedValue({ eventoId: 1, inscricaoId: 7, status: "pago", matricula: "NK-DDV-0001" });
+    registrarEventoVoompMock.mockResolvedValue({ eventoId: 1, inscricaoId: 7, status: "pago", matricula: "NK-DDV-2027-0001" });
     const r = await enviar("segredo-certo", vendaPaga);
     expect(r.status).toBe(200);
-    expect(await r.json()).toMatchObject({ ok: true, matricula: "NK-DDV-0001" });
+    expect(await r.json()).toMatchObject({ ok: true, matricula: "NK-DDV-2027-0001" });
     const [ev, payload] = registrarEventoVoompMock.mock.calls[0];
     expect(ev).toMatchObject({ status: "pago", email: "maria.souza@exemplo.com", productId: "17781" });
-    expect(JSON.parse(payload)).toEqual(vendaPaga);
+    expect(ev.document).toBe("123.456.789-09"); // vai para a inscrição, onde é cifrado
+    expect(JSON.parse(payload)).toEqual({ ...vendaPaga, client: { ...vendaPaga.client, document: "•••.456.789-••" } });
+    expect(payload).not.toContain("123.456.789-09");
   });
 
   it("modo teste (?teste=1) avisa o gravador para desfazer no fim", async () => {
     process.env.VOOMP_WEBHOOK_TOKEN = "segredo-certo";
-    registrarEventoVoompMock.mockResolvedValue({ eventoId: 1, inscricaoId: 7, status: "pago", matricula: "NK-DDV-0001", teste: true });
+    registrarEventoVoompMock.mockResolvedValue({ eventoId: 1, inscricaoId: 7, status: "pago", matricula: "NK-DDV-2027-0001", teste: true });
     const r = await fetch(`${base}/api/voomp/webhook/segredo-certo?teste=1`, {
       method: "POST",
       headers: { "content-type": "application/json" },

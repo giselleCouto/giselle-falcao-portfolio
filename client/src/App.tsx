@@ -1131,6 +1131,8 @@ function Router() {
         <Route path="/giselle/masterclass" component={GiselleMasterclass} />
         <Route path="/painel/estudantes" component={GiselleEstudantes} />
         <Route path="/giselle/painel/estudantes" component={GiselleEstudantes} />
+        <Route path="/painel/alunos" component={GiselleEstudantes} />
+        <Route path="/giselle/painel/alunos" component={GiselleEstudantes} />
         <Route path="/painel" component={GisellePainel} />
         <Route path="/giselle/painel" component={GisellePainel} />
         <Route path="/kit">{() => <GiselleKit tool="home" />}</Route>

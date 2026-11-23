@@ -127,6 +127,13 @@
       "when": 1795101795281,
       "tag": "0017_confused_speed_demon",
       "breakpoints": true
+    },
+    {
+      "idx": 18,
+      "version": "5",
+      "when": 1795104103004,
+      "tag": "0018_parched_celestials",
+      "breakpoints": true
     }
   ]
 }

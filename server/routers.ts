@@ -580,6 +580,70 @@ export const appRouter = router({
         }
         return dados;
       }),
+    // Cartão do estudante (CPF completo, vida acadêmica e avisos) — mesma chave.
+    estudante: publicProcedure
+      .input(z.object({ token: z.string().min(1), inscricaoId: z.number().int().positive() }))
+      .query(async ({ input }) => {
+        guardaDeToken(input.token);
+        const { obterEstudante } = await import("./voompDb");
+        const dados = await obterEstudante(input.inscricaoId);
+        if (!dados) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "Database unavailable" });
+        if (!dados.encontrado) throw new TRPCError({ code: "NOT_FOUND", message: "Estudante não encontrado" });
+        return dados;
+      }),
+    // RA, turma, progresso, conclusão, cancelamento e observações editados no painel.
+    atualizarEstudante: publicProcedure
+      .input(
+        z.object({
+          token: z.string().min(1),
+          inscricaoId: z.number().int().positive(),
+          ra: z.string().max(40).nullable().optional(),
+          turma: z.string().max(24).nullable().optional(),
+          progressoPct: z.number().int().min(0).max(100).nullable().optional(),
+          aprovado: z.boolean().nullable().optional(),
+          concluido: z.boolean().optional(),
+          cancelado: z.boolean().optional(),
+          motivoCancelamento: z.string().max(255).nullable().optional(),
+          observacoes: z.string().max(4000).nullable().optional(),
+        })
+      )
+      .mutation(async ({ input }) => {
+        guardaDeToken(input.token);
+        const { token: _token, inscricaoId, ...edicao } = input;
+        const { atualizarAcademico } = await import("./voompDb");
+        const r = await atualizarAcademico(inscricaoId, edicao);
+        if (!r) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "Database unavailable" });
+        if (!r.ok) throw new TRPCError({ code: "NOT_FOUND", message: r.erro });
+        return r;
+      }),
+    // Relatório de progresso (Voomp Play, Anhanguera ou planilha própria) — simula antes de gravar.
+    importarProgresso: publicProcedure
+      .input(
+        z.object({
+          token: z.string().min(1),
+          productId: z.string().min(1).max(32),
+          cabecalhos: z.array(z.string().max(200)).min(1).max(80),
+          linhas: z.array(z.array(z.string().max(500)).max(80)).max(5000),
+          simular: z.boolean(),
+        })
+      )
+      .mutation(async ({ input }) => {
+        guardaDeToken(input.token);
+        const { importarProgresso } = await import("./voompDb");
+        const r = await importarProgresso(input.productId, input.cabecalhos, input.linhas, { simular: input.simular });
+        if (!r) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "Database unavailable" });
+        return r;
+      }),
+    // CPF completo para a planilha, só quando "incluir CPF completo" é marcado.
+    documentosEstudantes: publicProcedure
+      .input(z.object({ token: z.string().min(1), ids: z.array(z.number().int().positive()).max(5000) }))
+      .mutation(async ({ input }) => {
+        guardaDeToken(input.token);
+        const { documentosCompletos } = await import("./voompDb");
+        const r = await documentosCompletos(input.ids);
+        if (!r) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "Database unavailable" });
+        return r;
+      }),
     maturidade: publicProcedure.input(maturityInputSchema).mutation(async ({ input }) => {
       const total =
         input.scores.dados +

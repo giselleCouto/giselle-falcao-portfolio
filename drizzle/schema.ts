@@ -341,7 +341,8 @@ export const voompInscricoes = mysqlTable(
     email: varchar("email", { length: 320 }).notNull(),
     name: varchar("name", { length: 200 }),
     phone: varchar("phone", { length: 40 }),
-    document: varchar("document", { length: 32 }),
+    // CPF/CNPJ cifrado (AES-256-GCM, prefixo "cpf1:") — ver server/cifraDocumento.ts
+    document: varchar("document", { length: 128 }),
     zipcode: varchar("zipcode", { length: 16 }),
     city: varchar("city", { length: 120 }),
     uf: varchar("uf", { length: 4 }),
@@ -393,3 +394,41 @@ export const voompEventos = mysqlTable(
 
 export type VoompEvento = typeof voompEventos.$inferSelect;
 export type InsertVoompEvento = typeof voompEventos.$inferInsert;
+
+/**
+ * Vida acadêmica de quem se matriculou (uma linha por inscrição paga): RA da
+ * Anhanguera, turma, progresso no curso, conclusão e cancelamento. Alimentada
+ * pela importação do relatório de progresso e pelas edições no painel
+ * /painel/estudantes. A situação (cursando, em risco, concluiu, não concluiu)
+ * é calculada a partir daqui em shared/academico.ts.
+ */
+export const voompAcademico = mysqlTable(
+  "voomp_academico",
+  {
+    id: int("id").autoincrement().primaryKey(),
+    inscricaoId: int("inscricaoId").notNull(),
+    ra: varchar("ra", { length: 40 }),
+    turma: varchar("turma", { length: 24 }),
+    progressoPct: int("progressoPct"),
+    aulasConcluidas: int("aulasConcluidas"),
+    aulasTotal: int("aulasTotal"),
+    aprovado: boolean("aprovado"),
+    ultimoAcessoAt: timestamp("ultimoAcessoAt"),
+    ultimoAvancoAt: timestamp("ultimoAvancoAt"),
+    concluidoAt: timestamp("concluidoAt"),
+    canceladoAt: timestamp("canceladoAt"),
+    motivoCancelamento: varchar("motivoCancelamento", { length: 255 }),
+    observacoes: text("observacoes"),
+    origem: varchar("origem", { length: 24 }),
+    importadoAt: timestamp("importadoAt"),
+    createdAt: timestamp("createdAt").defaultNow().notNull(),
+    updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+  },
+  (table) => ({
+    inscricaoUnique: uniqueIndex("voomp_academico_inscricao_unique").on(table.inscricaoId),
+    raIdx: index("voomp_academico_ra_idx").on(table.ra),
+  }),
+);
+
+export type VoompAcademico = typeof voompAcademico.$inferSelect;
+export type InsertVoompAcademico = typeof voompAcademico.$inferInsert;

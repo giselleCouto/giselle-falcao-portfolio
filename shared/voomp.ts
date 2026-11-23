@@ -35,7 +35,11 @@ export function cursoVoomp(productId: string | null | undefined, nomeVoomp?: str
   return CURSOS_VOOMP[id] ?? { codigo: id ? `P${id}` : "PRD", nome: nomeVoomp?.trim() || (id ? `Produto ${id}` : "Produto sem id") };
 }
 
-/** Matrícula legível e estável por curso: NK-MBA-0001, NK-DDV-0001, NK-FIA-0001. */
-export function formatarMatricula(codigoCurso: string, sequencia: number) {
-  return `NK-${codigoCurso}-${String(sequencia).padStart(4, "0")}`;
+/**
+ * Matrícula NOKAHI legível e estável: curso + ano da turma + sequência
+ * (NK-MBA-2027-0001, NK-DDV-2027-0001, NK-FIA-2027-0001). A numeração recomeça
+ * a cada ano de turma. O RA da Anhanguera fica guardado à parte (voomp_academico).
+ */
+export function formatarMatricula(codigoCurso: string, ano: number, sequencia: number) {
+  return `NK-${codigoCurso}-${ano}-${String(sequencia).padStart(4, "0")}`;
 }

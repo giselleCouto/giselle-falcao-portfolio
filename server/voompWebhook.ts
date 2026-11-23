@@ -226,7 +226,10 @@ export function registerVoompWebhook(app: Express) {
       const corpo = req.body ?? {};
       // ?teste=1 percorre a gravação inteira e desfaz no fim (nada fica no painel)
       const teste = req.query.teste === "1";
-      const resultado = await registrarEventoVoomp(interpretarEventoVoomp(corpo), JSON.stringify(corpo), { teste });
+      const { ocultarDocumentos } = await import("./cifraDocumento");
+      // a cópia guardada do aviso vai sem CPF; o CPF fica só cifrado na inscrição
+      const copia = JSON.stringify(ocultarDocumentos(corpo));
+      const resultado = await registrarEventoVoomp(interpretarEventoVoomp(corpo), copia, { teste });
       if (!resultado) {
         res.status(503).json({ ok: false, erro: "banco indisponível" });
         return;
