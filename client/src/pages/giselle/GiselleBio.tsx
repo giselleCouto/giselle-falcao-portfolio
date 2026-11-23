@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Link } from "wouter";
 import {
+  ArrowRight,
   Building2,
   Compass,
   FlaskConical,
@@ -12,8 +13,80 @@ import {
   Youtube,
 } from "lucide-react";
 import { contact } from "@/lib/portfolioData";
+import { condicaoPrimeiraTurmaAtiva } from "@/lib/fluenteData";
+import { inscricoesAbertas, niveis, precoAtual, turma, type NivelId } from "@/lib/ninguemNasceFluenteData";
 
 type Canal = "instagram" | "youtube";
+
+// Turma 01 (NOKAHI EDU): os três cursos à venda, no topo da bio enquanto as
+// inscrições estão abertas (até 22/01/2027). Cada nível leva à página de
+// vendas com o canal na rota, que vira utm_source no checkout da Voomp.
+// O nível 1 vai para /nivel, que é a página de vendas do Fluente e mostra os
+// três níveis lado a lado. Preço: o que vale hoje (troca sozinho em 13/12).
+const DESTINO_NIVEL: Record<NivelId, (canal: Canal) => string> = {
+  1: (canal) => `/nivel/${canal}`,
+  2: (canal) => `/do-dado-ao-valor/${canal}`,
+  3: (canal) => `/mba/${canal}`,
+};
+
+/** Tipo de cada curso em uma linha curta (cabe no celular sem quebrar) */
+const TIPO_CURTO: Record<NivelId, string> = {
+  1: "Curso livre · 10 h",
+  2: "Extensão universitária · 40 h",
+  3: "Especialização lato sensu · 380 h",
+};
+
+function Turma01({ canal }: { canal: Canal }) {
+  if (!inscricoesAbertas()) return null;
+  const condicao = condicaoPrimeiraTurmaAtiva();
+  return (
+    <motion.section
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.35, delay: 0.05 }}
+      className="w-full rounded-3xl bg-[#0f3141] p-4 text-left shadow-[0_14px_40px_rgba(15,49,65,0.28)]"
+      aria-label="Turma 01: inscrições abertas"
+    >
+      <p className="px-1 font-mono text-[11px] font-semibold uppercase tracking-[0.14em] text-[#61e8bf]">
+        Inscrições abertas · início {turma.inicio}
+      </p>
+      <h2 className="mt-1.5 px-1 text-lg font-bold leading-tight text-white">
+        NOKAHI EDU · Turma 01: escolha o seu nível
+      </h2>
+      <div className="mt-3 space-y-2">
+        {niveis.map((n) => {
+          const preco = precoAtual(n);
+          return (
+            <Link
+              key={n.id}
+              href={DESTINO_NIVEL[n.id](canal)}
+              data-cta={`bio-turma01-nivel-${n.id}`}
+              className="flex items-center gap-3 rounded-2xl bg-white/[0.07] p-3 transition hover:bg-white/[0.12]"
+            >
+              <span className="flex size-10 shrink-0 flex-col items-center justify-center rounded-xl bg-[#61e8bf] leading-none text-[#0f3141]">
+                <span className="text-[15px] font-bold">{n.id}</span>
+                <span className="mt-0.5 text-[8px] font-bold uppercase tracking-wide">{n.rotulo}</span>
+              </span>
+              <span className="min-w-0 flex-1">
+                <span className="block text-[15px] font-bold leading-tight text-white">{n.cursoCurto}</span>
+                <span className="mt-0.5 block text-xs leading-snug text-[#b7d3db]">{TIPO_CURTO[n.id]}</span>
+                <span className="mt-0.5 block whitespace-nowrap text-xs font-bold text-[#61e8bf]">
+                  {preco.avista} ou {preco.parcelado}
+                </span>
+              </span>
+              <ArrowRight className="size-4 shrink-0 text-[#61e8bf]" />
+            </Link>
+          );
+        })}
+      </div>
+      {condicao ? (
+        <p className="mt-3 px-1 text-xs text-[#b7d3db]">
+          Valores da condição de primeira turma, até {turma.fimCondicao}.
+        </p>
+      ) : null}
+    </motion.section>
+  );
+}
 
 // Link-in-bio próprio, um por rede:
 //  - Instagram @gisellecfalcao → coutofalcao.com/bio
@@ -110,7 +183,11 @@ export default function GiselleBio({ canal = "instagram" }: { canal?: Canal }) {
           </p>
         </motion.div>
 
-        <div className="mt-7 w-full space-y-3">
+        <div className="mt-7 w-full">
+          <Turma01 canal={canal} />
+        </div>
+
+        <div className="mt-3 w-full space-y-3">
           {LINKS.map((l, i) => (
             <motion.div
               key={l.href}
