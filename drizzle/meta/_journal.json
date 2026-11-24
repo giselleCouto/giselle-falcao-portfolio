@@ -134,6 +134,13 @@
       "when": 1795104103004,
       "tag": "0018_parched_celestials",
       "breakpoints": true
+    },
+    {
+      "idx": 19,
+      "version": "5",
+      "when": 1795484220306,
+      "tag": "0019_large_gorgon",
+      "breakpoints": true
     }
   ]
 }

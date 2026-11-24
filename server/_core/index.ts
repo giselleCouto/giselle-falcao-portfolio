@@ -11,6 +11,7 @@ import { registerStorageProxy } from "./storageProxy";
 import { registerStripeWebhook } from "../coursePayments";
 import { registerCourseCertificateRoute } from "../courseCertificate";
 import { registerVoompWebhook } from "../voompWebhook";
+import { registerWhatsAppWebhook } from "../whatsapp/webhook";
 
 function isPortAvailable(port: number): Promise<boolean> {
   return new Promise(resolve => {
@@ -38,6 +39,8 @@ async function startServer() {
   registerStorageProxy(app);
   registerStripeWebhook(app);
   registerCourseCertificateRoute(app);
+  // WhatsApp da NOKAHI EDU (agente de IA): antes do express.json, para conferir a assinatura no corpo cru
+  registerWhatsAppWebhook(app);
 
   // Configure body parser with larger size limit for file uploads
   app.use(express.json({ limit: "50mb" }));

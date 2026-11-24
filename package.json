@@ -11,9 +11,11 @@
     "check": "tsc --noEmit",
     "format": "prettier --write .",
     "test": "vitest run",
-    "db:push": "drizzle-kit generate && drizzle-kit migrate"
+    "db:push": "drizzle-kit generate && drizzle-kit migrate",
+    "whatsapp:avaliar": "tsx scripts/whatsapp-avaliar.ts"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^1.13.0",
     "@aws-sdk/client-s3": "^3.693.0",
     "@aws-sdk/s3-request-presigner": "^3.693.0",
     "@hookform/resolvers": "^5.2.2",

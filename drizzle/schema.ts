@@ -432,3 +432,86 @@ export const voompAcademico = mysqlTable(
 
 export type VoompAcademico = typeof voompAcademico.$inferSelect;
 export type InsertVoompAcademico = typeof voompAcademico.$inferInsert;
+
+/**
+ * Atendimento do WhatsApp da NOKAHI EDU (agente de IA + Giselle), uma linha por
+ * número que escreveu. Alimentada pelo webhook /api/whatsapp/webhook/:token e
+ * consultada no painel /painel/whatsapp. Ver server/whatsapp/.
+ */
+export const whatsappConversas = mysqlTable(
+  "whatsapp_conversas",
+  {
+    id: int("id").autoincrement().primaryKey(),
+    waId: varchar("waId", { length: 32 }).notNull(),
+    nome: varchar("nome", { length: 200 }),
+    // até quando o agente fica quieto nesta conversa (a Giselle respondeu ou houve repasse)
+    pausadoAte: timestamp("pausadoAte"),
+    motivoPausa: varchar("motivoPausa", { length: 64 }),
+    ultimaMensagemAt: timestamp("ultimaMensagemAt").defaultNow().notNull(),
+    createdAt: timestamp("createdAt").defaultNow().notNull(),
+    updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+  },
+  (table) => ({
+    waIdUnique: uniqueIndex("whatsapp_conversas_waid_unique").on(table.waId),
+    ultimaIdx: index("whatsapp_conversas_ultima_idx").on(table.ultimaMensagemAt),
+  }),
+);
+
+export type WhatsappConversa = typeof whatsappConversas.$inferSelect;
+
+/** Cada mensagem da conversa: da pessoa (entrada), do agente ou da Giselle (saída). */
+export const whatsappMensagens = mysqlTable(
+  "whatsapp_mensagens",
+  {
+    id: int("id").autoincrement().primaryKey(),
+    conversaId: int("conversaId").notNull(),
+    waMessageId: varchar("waMessageId", { length: 128 }),
+    direcao: varchar("direcao", { length: 8 }).notNull(),
+    autor: varchar("autor", { length: 16 }).notNull(),
+    tipo: varchar("tipo", { length: 32 }).notNull(),
+    texto: text("texto").notNull(),
+    semTexto: boolean("semTexto").default(false).notNull(),
+    status: varchar("status", { length: 24 }),
+    erro: varchar("erro", { length: 255 }),
+    // uso do modelo, tentativas e problemas corrigidos (JSON)
+    meta: text("meta"),
+    criadaEm: timestamp("criadaEm").defaultNow().notNull(),
+  },
+  (table) => ({
+    waMessageIdUnique: uniqueIndex("whatsapp_mensagens_wamid_unique").on(table.waMessageId),
+    conversaIdx: index("whatsapp_mensagens_conversa_idx").on(table.conversaId, table.id),
+  }),
+);
+
+export type WhatsappMensagem = typeof whatsappMensagens.$inferSelect;
+
+/** Conversas passadas para a Giselle (pagamento, reembolso, Anhanguera, empresa, reclamação…). */
+export const whatsappRepasses = mysqlTable(
+  "whatsapp_repasses",
+  {
+    id: int("id").autoincrement().primaryKey(),
+    conversaId: int("conversaId").notNull(),
+    categoria: varchar("categoria", { length: 24 }).notNull(),
+    resumo: text("resumo").notNull(),
+    origem: varchar("origem", { length: 16 }).notNull(),
+    status: varchar("status", { length: 16 }).default("aberto").notNull(),
+    avisadoAt: timestamp("avisadoAt"),
+    avisoErro: varchar("avisoErro", { length: 255 }),
+    resolvidoAt: timestamp("resolvidoAt"),
+    createdAt: timestamp("createdAt").defaultNow().notNull(),
+    updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+  },
+  (table) => ({
+    conversaIdx: index("whatsapp_repasses_conversa_idx").on(table.conversaId),
+    statusIdx: index("whatsapp_repasses_status_idx").on(table.status),
+  }),
+);
+
+export type WhatsappRepasse = typeof whatsappRepasses.$inferSelect;
+
+/** Ajustes do atendimento mudados pelo painel (ex.: agente_pausado = "1"). */
+export const whatsappAjustes = mysqlTable("whatsapp_ajustes", {
+  chave: varchar("chave", { length: 64 }).primaryKey(),
+  valor: varchar("valor", { length: 255 }),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});

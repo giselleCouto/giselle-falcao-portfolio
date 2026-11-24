@@ -568,6 +568,92 @@ export const appRouter = router({
         }
         return funil;
       }),
+    // Atendimento do WhatsApp (agente de IA + Giselle) para /painel/whatsapp — mesma chave.
+    whatsappConversas: publicProcedure
+      .input(z.object({ token: z.string().min(1) }))
+      .query(async ({ input }) => {
+        guardaDeToken(input.token);
+        const { listarConversas } = await import("./whatsapp/whatsappDb");
+        const { estadoDaConfiguracao } = await import("./whatsapp/webhook");
+        try {
+          return { ...(await listarConversas()), configuracao: estadoDaConfiguracao() };
+        } catch (erro) {
+          console.error("[WhatsApp] painel:", erro);
+          throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "Database unavailable" });
+        }
+      }),
+    whatsappConversa: publicProcedure
+      .input(z.object({ token: z.string().min(1), id: z.number().int().positive() }))
+      .query(async ({ input }) => {
+        guardaDeToken(input.token);
+        const { obterConversa } = await import("./whatsapp/whatsappDb");
+        const dados = await obterConversa(input.id);
+        if (!dados) throw new TRPCError({ code: "NOT_FOUND", message: "Conversa não encontrada" });
+        return dados;
+      }),
+    whatsappAcao: publicProcedure
+      .input(
+        z.object({
+          token: z.string().min(1),
+          acao: z.enum(["devolver_ao_agente", "pausar_conversa", "resolver_repasse", "pausar_agente", "religar_agente"]),
+          conversaId: z.number().int().positive().optional(),
+          horas: z.number().min(1).max(24 * 30).optional(),
+        })
+      )
+      .mutation(async ({ input }) => {
+        guardaDeToken(input.token);
+        const { repositorioMySql, definirAjuste, resolverRepassesDaConversa } = await import("./whatsapp/whatsappDb");
+        if (input.acao === "pausar_agente") await definirAjuste("agente_pausado", "1");
+        else if (input.acao === "religar_agente") await definirAjuste("agente_pausado", "0");
+        else {
+          if (!input.conversaId) throw new TRPCError({ code: "BAD_REQUEST", message: "Falta a conversa" });
+          if (input.acao === "devolver_ao_agente") {
+            await repositorioMySql.pausar(input.conversaId, null, null);
+            await resolverRepassesDaConversa(input.conversaId);
+          } else if (input.acao === "resolver_repasse") {
+            await resolverRepassesDaConversa(input.conversaId);
+          } else {
+            const ate = new Date(Date.now() + (input.horas ?? 24) * 3600_000);
+            await repositorioMySql.pausar(input.conversaId, ate, "pausado_no_painel");
+          }
+        }
+        return { ok: true } as const;
+      }),
+    // Testa o agente sem enviar nada pelo WhatsApp (mesma base, regras e conferência).
+    whatsappSimular: publicProcedure
+      .input(
+        z.object({
+          token: z.string().min(1),
+          mensagens: z
+            .array(z.object({ autor: z.enum(["cliente", "agente", "giselle"]), texto: z.string().min(1).max(2500) }))
+            .min(1)
+            .max(30),
+          data: z.string().datetime().optional(),
+        })
+      )
+      .mutation(async ({ input }) => {
+        guardaDeToken(input.token);
+        const { decidir, clienteClaudePadrao } = await import("./whatsapp/agente");
+        const { configAtendimento } = await import("./whatsapp/atendimento");
+        const cfg = configAtendimento();
+        return decidir(input.mensagens, {
+          claude: clienteClaudePadrao(),
+          agora: input.data ? new Date(input.data).getTime() : Date.now(),
+          modelo: cfg.modelo,
+          esforco: cfg.esforco,
+        });
+      }),
+    // Roda os cenários críticos (preço, cupom, certificado, repasse) com o Claude de verdade.
+    whatsappAvaliar: publicProcedure.input(z.object({ token: z.string().min(1) })).mutation(async ({ input }) => {
+      guardaDeToken(input.token);
+      const { clienteClaudePadrao } = await import("./whatsapp/agente");
+      const { avaliar } = await import("./whatsapp/avaliacao");
+      const { configAtendimento } = await import("./whatsapp/atendimento");
+      const claude = clienteClaudePadrao();
+      if (!claude) throw new TRPCError({ code: "PRECONDITION_FAILED", message: "Falta ANTHROPIC_API_KEY no Railway" });
+      const cfg = configAtendimento();
+      return avaliar(claude, { modelo: cfg.modelo, esforco: cfg.esforco });
+    }),
     // Estudantes da Voomp (inscrições pagas e não finalizadas) para /painel/estudantes — mesma chave.
     estudantes: publicProcedure
       .input(z.object({ token: z.string().min(1) }))

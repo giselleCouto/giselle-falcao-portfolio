@@ -47,6 +47,7 @@ import GiselleKit from "./pages/giselle/GiselleKit";
 import GiselleMasterclass from "./pages/giselle/GiselleMasterclass";
 import GisellePainel from "./pages/giselle/GisellePainel";
 import GiselleEstudantes from "./pages/giselle/GiselleEstudantes";
+import GiselleWhatsapp from "./pages/giselle/GiselleWhatsapp";
 import GiselleLab from "./pages/giselle/GiselleLab";
 import GiselleTrajetoria from "./pages/giselle/GiselleTrajetoria";
 import GiselleTrilha from "./pages/giselle/GiselleTrilha";
@@ -1131,6 +1132,8 @@ function Router() {
         <Route path="/giselle/masterclass" component={GiselleMasterclass} />
         <Route path="/painel/estudantes" component={GiselleEstudantes} />
         <Route path="/giselle/painel/estudantes" component={GiselleEstudantes} />
+        <Route path="/painel/whatsapp" component={GiselleWhatsapp} />
+        <Route path="/giselle/painel/whatsapp" component={GiselleWhatsapp} />
         <Route path="/painel/alunos" component={GiselleEstudantes} />
         <Route path="/giselle/painel/alunos" component={GiselleEstudantes} />
         <Route path="/painel" component={GisellePainel} />
