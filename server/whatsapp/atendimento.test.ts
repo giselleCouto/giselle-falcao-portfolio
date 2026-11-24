@@ -56,11 +56,41 @@ describe("atendimento do WhatsApp, do aviso à resposta", () => {
 
   it("aviso repetido pela Meta não gera resposta em dobro", async () => {
     const t = montar({ respostas: [respostaDeTexto("Oi!")] });
-    const aviso = avisoDeMensagem(ANA, "Oi", { id: "wamid.REPETIDO" });
+    const aviso = avisoDeMensagem(ANA, "O MBA tem aula ao vivo?", { id: "wamid.REPETIDO" });
     await t.receber(aviso);
     await t.receber(aviso);
     expect(t.claude.chamadas).toHaveLength(1);
     expect(t.wa.textos()).toHaveLength(1);
+  });
+
+  it("“Oi” recebe o menu em lista do WhatsApp, sem chamar a IA; “obrigada” não recebe nada", async () => {
+    const t = montar();
+    await t.receber(avisoDeMensagem(ANA, "Oi, boa tarde!", { id: "wamid.OI" }));
+    const [lista] = t.wa.envios;
+    expect(lista.corpo).toMatchObject({ type: "interactive", interactive: { type: "list", action: { button: "Ver opções" } } });
+    expect(lista.corpo.interactive.action.sections[0].rows.map((r: any) => r.title)).toContain("MBA Executivo");
+    expect(t.mensagens.at(-1)).toMatchObject({ autor: "agente", tipo: "interactive" });
+
+    // a pessoa escolhe na lista: o WhatsApp devolve o título da opção
+    await t.receber({
+      entry: [{ changes: [{ field: "messages", value: { contacts: [], messages: [{ from: ANA, id: "wamid.L1", type: "interactive", interactive: { type: "list_reply", list_reply: { id: "mba", title: "MBA Executivo" } } }] } }] }],
+    });
+    expect(t.wa.textos().at(-1)?.corpo.text.body).toContain("R$ 6.200");
+
+    const antes = t.wa.envios.length;
+    await t.receber(avisoDeMensagem(ANA, "obrigada!"));
+    expect(t.wa.envios.length).toBe(antes);
+    expect(t.claude.chamadas).toHaveLength(0);
+  });
+
+  it("o limite diário conta só as respostas da IA (menu e cartões não contam)", async () => {
+    const t = montar({ respostas: [respostaDeTexto("Resposta da IA")], config: { limiteDiario: 1 } });
+    await t.receber(avisoDeMensagem(ANA, "Oi"));
+    await t.receber(avisoDeMensagem(ANA, "1"));
+    await t.receber(avisoDeMensagem(ANA, "O MBA tem aula ao vivo?"));
+    expect(t.claude.chamadas).toHaveLength(1);
+    expect(t.repasses).toHaveLength(0);
+    expect(t.mensagens.filter((m) => (m.meta ?? "").includes('"llm":true'))).toHaveLength(1);
   });
 
   it("várias mensagens seguidas recebem uma resposta só", async () => {
@@ -231,7 +261,7 @@ describe("configuração pelo Railway", () => {
       esperaMs: 6000,
       pausaHumanoMs: 12 * 3600_000,
       pausaRepasseMs: 72 * 3600_000,
-      limiteDiario: 30,
+      limiteDiario: 15,
       avisoPara: null,
       idiomaAviso: "pt_BR",
     });

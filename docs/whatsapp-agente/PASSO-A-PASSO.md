@@ -1,6 +1,6 @@
 # Agente de IA no WhatsApp da NOKAHI EDU · passo a passo
 
-O agente atende o WhatsApp **(31) 98228-0551**, o mesmo dos botões das páginas da Turma 01. Ele usa a **API oficial da Meta** (WhatsApp Cloud API) e o **Claude** (modelo `claude-opus-5-5`). Nada imita o WhatsApp Web, então o número não corre risco de banimento por isso.
+O agente atende o WhatsApp **(31) 98228-0551**, o mesmo dos botões das páginas da Turma 01. Ele usa a **API oficial da Meta** (WhatsApp Cloud API) e o **Claude** (modelo `claude-haiku-5-5`, o mais econômico, só quando a resposta pronta não basta). Nada imita o WhatsApp Web, então o número não corre risco de banimento por isso.
 
 **O que você escolheu (23/11/2026):**
 - O número continua no app **WhatsApp Business** do seu celular, ligado à API em **coexistência**.
@@ -37,7 +37,14 @@ Tenha à mão:
 4. No Railway, crie:
    - `ANTHROPIC_API_KEY` = a chave que você copiou.
 
-> Custo estimado: de US$ 0,01 a US$ 0,03 por resposta. Com 30 conversas por dia, fica perto de US$ 10 a US$ 20 por mês.
+> **Custo:**
+> - **Respostas prontas, sem IA e sem custo do Claude:**
+>   - um "oi" recebe o menu de opções;
+>   - as opções do menu, os botões do site ("NÍVEL 1", "Tenho uma dúvida sobre o MBA…") e as perguntas curtas de preço ou link recebem cartões prontos;
+>   - "ok", "obrigada" e emojis não recebem resposta.
+> - **Só o resto vai para o Claude Haiku**, com as últimas 10 mensagens. Custa perto de US$ 0,001 a US$ 0,002 por resposta.
+> - **Limite por conversa:** depois de 15 respostas da IA em 24 h, a conversa passa para você.
+> - **Estimativa:** mesmo com 30 conversas por dia, o Claude deve ficar abaixo de US$ 2 por mês.
 
 **Por que não dá para usar a assinatura do Claude que você usa no dia a dia (claude.ai ou Claude Code)?** A assinatura é de uso pessoal. Um servidor que conversa com clientes precisa de uma chave da API. A Console (platform.claude.com) aceita o mesmo login, mas é uma conta separada, com cobrança própria, e o uso da API nunca entra na fatura da assinatura.
 
@@ -287,8 +294,8 @@ Depois de editar, rode `pnpm test` e publique. Os testes conferem as respostas c
 | `WHATSAPP_PAUSA_HUMANO_HORAS` | não (12) | horas de silêncio depois que você responde |
 | `WHATSAPP_PAUSA_REPASSE_HORAS` | não (72) | horas de silêncio depois de um repasse |
 | `WHATSAPP_ESPERA_SEGUNDOS` | não (6) | espera a pessoa terminar de escrever antes de responder |
-| `WHATSAPP_LIMITE_DIARIO` | não (30) | respostas por conversa em 24 h antes de passar para você |
-| `WHATSAPP_MODELO` | não | modelo do Claude (padrão `claude-opus-5-5`) |
+| `WHATSAPP_LIMITE_DIARIO` | não (15) | respostas **da IA** por conversa em 24 h antes de passar para você (menu e cartões prontos não contam) |
+| `WHATSAPP_MODELO` | não | modelo do Claude (padrão `claude-haiku-5-5`, o mais barato; `claude-sonnet-5-5` ou `claude-opus-5-5` respondem melhor e custam mais) |
 | `WHATSAPP_ESFORCO` | não (`low`) | esforço do modelo: `low`, `medium` ou `high` |
 
 ## 11. Privacidade

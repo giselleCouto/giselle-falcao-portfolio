@@ -10,16 +10,32 @@ describe("avaliação das respostas críticas", () => {
   });
 
   it("reprova resposta errada e aprova resposta certa", async () => {
-    const [mbaAntes, mbaDepois] = CENARIOS;
-    const errada = await avaliar(claudeFalso([respostaDeTexto("O MBA custa R$ 9.000."), respostaDeTexto("O MBA custa R$ 9.000.")]), {
-      cenarios: [mbaAntes],
-    });
+    const certificado = CENARIOS.find((c) => c.nome === "Certificado do MBA")!;
+    const errada = await avaliar(
+      claudeFalso([respostaDeTexto("O MBA dá diploma do MEC."), respostaDeTexto("O MBA dá diploma do MEC.")]),
+      { cenarios: [certificado] }
+    );
     expect(errada.resultados[0]).toMatchObject({ passou: false });
-    expect(errada.resultados[0].problemas.join(" ")).toMatch(/6\.200/);
 
-    const certa = await avaliar(claudeFalso([respostaDeTexto("O MBA custa R$ 9.000 à vista ou 12× de R$ 900,01.")]), {
-      cenarios: [mbaDepois],
-    });
-    expect(certa.resultados[0]).toMatchObject({ passou: true, tipo: "resposta" });
+    const certa = await avaliar(
+      claudeFalso([respostaDeTexto("O certificado é emitido pela Anhanguera, instituição credenciada pelo MEC.")]),
+      { cenarios: [certificado] }
+    );
+    expect(certa.resultados[0]).toMatchObject({ passou: true, tipo: "resposta", usouIa: true });
+  });
+
+  it("os cenários de economia passam sem chamar a IA", async () => {
+    const economia = CENARIOS.filter((c) => /sem IA|não responde/.test(c.nome));
+    expect(economia.length).toBeGreaterThanOrEqual(4);
+    const r = await avaliar(claudeFalso([]), { cenarios: economia });
+    expect(r.passaram).toBe(economia.length);
+    expect(r.semIa).toBe(economia.length);
+  });
+
+  it("os preços do MBA, antes e depois de 12/12, saem certos e sem IA", async () => {
+    const precos = CENARIOS.filter((c) => c.nome.startsWith("Preço do MBA"));
+    const r = await avaliar(claudeFalso([]), { cenarios: precos });
+    expect(r.passaram).toBe(precos.length);
+    expect(r.semIa).toBe(precos.length);
   });
 });

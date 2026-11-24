@@ -84,6 +84,41 @@ export function enviarTexto(cfg: ConfigWhatsApp, para: string, texto: string, bu
   );
 }
 
+/** Lista de opções do WhatsApp (até 10 linhas; título ≤ 24, descrição ≤ 72, botão ≤ 20 caracteres). */
+export function enviarLista(
+  cfg: ConfigWhatsApp,
+  para: string,
+  lista: { texto: string; botao: string; secao: string; linhas: { id: string; titulo: string; descricao: string }[] },
+  buscar: Buscar = fetch
+) {
+  return postar(
+    cfg,
+    {
+      recipient_type: "individual",
+      to: para,
+      type: "interactive",
+      interactive: {
+        type: "list",
+        body: { text: lista.texto.slice(0, 1024) },
+        action: {
+          button: lista.botao.slice(0, 20),
+          sections: [
+            {
+              title: lista.secao.slice(0, 24),
+              rows: lista.linhas.slice(0, 10).map((l) => ({
+                id: l.id.slice(0, 200),
+                title: l.titulo.slice(0, 24),
+                description: l.descricao.slice(0, 72),
+              })),
+            },
+          ],
+        },
+      },
+    },
+    buscar
+  );
+}
+
 /** Parâmetro de modelo: sem quebra de linha, tabulação nem 4+ espaços seguidos (regra da Meta). */
 export function limparParametro(v: string, max = 600): string {
   return v.replace(/[\r\n\t]+/g, " ").replace(/ {4,}/g, "   ").trim().slice(0, max) || "-";

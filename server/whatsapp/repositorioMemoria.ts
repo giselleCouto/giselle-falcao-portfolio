@@ -53,6 +53,7 @@ export function criarRepositorioEmMemoria() {
         status: s.status,
         erro: s.erro ?? null,
         criadaEm: s.criadaEm ?? new Date(),
+        meta: s.meta ?? null,
       };
       mensagens.push(m);
       return m;
@@ -107,8 +108,10 @@ export function criarRepositorioEmMemoria() {
       if ("avisoErro" in campos) r.avisoErro = campos.avisoErro ?? null;
       if (campos.resumo) r.resumo = campos.resumo;
     },
-    async respostasDoAgenteDesde(conversaId, desde) {
-      return mensagens.filter((m) => m.conversaId === conversaId && m.autor === "agente" && m.criadaEm >= desde).length;
+    async respostasDaIaDesde(conversaId, desde) {
+      return mensagens.filter(
+        (m) => m.conversaId === conversaId && m.autor === "agente" && (m.meta ?? "").includes('"llm":true') && m.criadaEm >= desde
+      ).length;
     },
     async ajuste(chave) {
       return ajustes.get(chave) ?? null;

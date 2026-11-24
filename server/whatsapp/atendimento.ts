@@ -12,8 +12,9 @@
 // - o painel (/painel/whatsapp) pausa ou devolve qualquer conversa, e pausa o
 //   agente inteiro (ajuste "agente_pausado").
 
-import { decidir, type Autor, type ClienteClaude, type Decisao } from "./agente";
+import { decidirComIa, decidirSemIa, type Autor, type ClienteClaude, type Decisao } from "./agente";
 import {
+  enviarLista,
   enviarModelo,
   enviarTexto,
   lerAviso,
@@ -22,6 +23,7 @@ import {
   type ConfigWhatsApp,
   type MensagemRecebida,
 } from "./cloudApi";
+import type { SaidaFixa } from "./menu";
 import { NOME_CATEGORIA, type CategoriaRepasse } from "./regras";
 
 export type Conversa = {
@@ -44,6 +46,8 @@ export type Mensagem = {
   status: string | null;
   erro: string | null;
   criadaEm: Date;
+  /** JSON com o uso do modelo; "llm":true marca resposta escrita pela IA. */
+  meta?: string | null;
 };
 
 export type StatusRepasse = "aberto" | "respondido" | "resolvido";
@@ -90,7 +94,8 @@ export interface RepositorioWhatsApp {
     id: number,
     campos: Partial<{ status: StatusRepasse; avisadoEm: Date | null; avisoErro: string | null; resumo: string; resolvidoEm: Date | null }>
   ): Promise<void>;
-  respostasDoAgenteDesde(conversaId: number, desde: Date): Promise<number>;
+  /** Respostas escritas pela IA (meta "llm":true) desde a data — base do limite diário. */
+  respostasDaIaDesde(conversaId: number, desde: Date): Promise<number>;
   ajuste(chave: string): Promise<string | null>;
 }
 
@@ -121,7 +126,7 @@ export function configAtendimento(env: NodeJS.ProcessEnv = process.env): ConfigA
     esperaMs: Math.max(0, Number(env.WHATSAPP_ESPERA_SEGUNDOS ?? 6) || 0) * 1000,
     pausaHumanoMs: horas(env.WHATSAPP_PAUSA_HUMANO_HORAS, 12),
     pausaRepasseMs: horas(env.WHATSAPP_PAUSA_REPASSE_HORAS, 72),
-    limiteDiario: Number(env.WHATSAPP_LIMITE_DIARIO ?? 30) || 30,
+    limiteDiario: Number(env.WHATSAPP_LIMITE_DIARIO ?? 15) || 15,
     avisoPara: env.WHATSAPP_AVISO_PARA?.replace(/\D/g, "") || null,
     modeloAviso: env.WHATSAPP_MODELO_AVISO?.trim() || null,
     idiomaAviso: env.WHATSAPP_MODELO_AVISO_IDIOMA?.trim() || "pt_BR",
@@ -138,14 +143,14 @@ export type DependenciasAtendimento = {
   config: ConfigAtendimento;
   buscar?: Buscar;
   agora?: () => number;
-  /** Troca o agente (testes). */
-  decidir?: typeof decidir;
+  /** Troca a parte da IA (testes). */
+  decidirComIa?: typeof decidirComIa;
 };
 
 export function criarAtendimento(deps: DependenciasAtendimento) {
   const agora = deps.agora ?? (() => Date.now());
   const buscar = deps.buscar ?? fetch;
-  const decide = deps.decidir ?? decidir;
+  const decideComIa = deps.decidirComIa ?? decidirComIa;
   const temporizadores = new Map<number, ReturnType<typeof setTimeout>>();
   const filas = new Map<number, Promise<void>>();
   const emAndamento = new Set<Promise<void>>();
@@ -187,7 +192,7 @@ export function criarAtendimento(deps: DependenciasAtendimento) {
     temporizadores.delete(conversaId);
   }
 
-  async function enviar(conversa: Conversa, texto: string, meta: Record<string, unknown>) {
+  async function enviar(conversa: Conversa, texto: string, meta: Record<string, unknown>, saida?: SaidaFixa) {
     let waMessageId: string | null = null;
     let status = "enviado";
     let erro: string | null = null;
@@ -196,7 +201,10 @@ export function criarAtendimento(deps: DependenciasAtendimento) {
       erro = "WhatsApp não configurado (WHATSAPP_TOKEN)";
     } else {
       try {
-        waMessageId = (await enviarTexto(deps.whatsapp, conversa.waId, texto, buscar)).id;
+        waMessageId =
+          saida?.tipo === "lista"
+            ? (await enviarLista(deps.whatsapp, conversa.waId, saida, buscar)).id
+            : (await enviarTexto(deps.whatsapp, conversa.waId, texto, buscar)).id;
       } catch (e) {
         status = "falhou";
         erro = String((e as Error)?.message ?? e).slice(0, 255);
@@ -205,6 +213,7 @@ export function criarAtendimento(deps: DependenciasAtendimento) {
     }
     await deps.repo.registrarSaida(conversa.id, {
       autor: "agente",
+      tipo: saida?.tipo === "lista" ? "interactive" : "text",
       texto,
       waMessageId,
       status,
@@ -274,37 +283,46 @@ export function criarAtendimento(deps: DependenciasAtendimento) {
     const ultima = historico[historico.length - 1];
     if (!ultima || ultima.autor !== "cliente") return; // nada pendente
 
-    const respostas24h = await deps.repo.respostasDoAgenteDesde(conversaId, new Date(agora() - 24 * 3600_000));
-    let decisao: Decisao;
-    if (respostas24h >= deps.config.limiteDiario) {
-      decisao = {
-        tipo: "repasse",
-        categoria: "outro",
-        resumo: `A conversa passou de ${deps.config.limiteDiario} respostas do agente em 24 h.`,
-        texto: "Já passei a nossa conversa para a Giselle, e ela continua com você por aqui mesmo.",
-        origem: "regra",
-      };
-    } else {
-      decisao = await decide(
-        historico
-          .filter((m): m is Mensagem & { autor: Autor } => m.autor !== "sistema")
-          .map((m) => ({ autor: m.autor, texto: m.texto, semTexto: m.semTexto })),
-        { claude: deps.claude, agora: agora(), modelo: deps.config.modelo, esforco: deps.config.esforco }
-      );
+    const historicoParaDecidir = historico
+      .filter((m): m is Mensagem & { autor: Autor } => m.autor !== "sistema")
+      .map((m) => ({ autor: m.autor, texto: m.texto, semTexto: m.semTexto, em: m.criadaEm }));
+    let decisao: Decisao | null = decidirSemIa(historicoParaDecidir, agora());
+    if (!decisao) {
+      const respostasDaIa24h = await deps.repo.respostasDaIaDesde(conversaId, new Date(agora() - 24 * 3600_000));
+      decisao =
+        respostasDaIa24h >= deps.config.limiteDiario
+          ? {
+              tipo: "repasse",
+              categoria: "outro",
+              resumo: `A conversa passou de ${deps.config.limiteDiario} respostas da IA em 24 h.`,
+              texto: "Já passei a nossa conversa para a Giselle, e ela continua com você por aqui mesmo.",
+              origem: "regra",
+            }
+          : await decideComIa(historicoParaDecidir, {
+              claude: deps.claude,
+              agora: agora(),
+              modelo: deps.config.modelo,
+              esforco: deps.config.esforco,
+            });
     }
+    if (decisao.tipo === "ignorar") return; // "ok", "obrigada", emoji: não gasta mensagem
 
     // A Giselle pode ter respondido enquanto a IA pensava: nesse caso, o agente não fala por cima.
     const atual = await deps.repo.conversaPorId(conversaId);
     if (atual?.pausadoAte && atual.pausadoAte.getTime() > agora()) return;
 
-    if (decisao.tipo === "resposta") {
+    if (decisao.tipo === "fixa") {
+      const enviou = await enviar(conversa, decisao.texto, { fixa: decisao.rota }, decisao.saida);
+      if (enviou && deps.whatsapp && ultima.waMessageId) await marcarComoLida(deps.whatsapp, ultima.waMessageId, buscar);
+    } else if (decisao.tipo === "resposta") {
       const enviou = await enviar(conversa, decisao.texto, {
+        llm: true,
         tentativas: decisao.tentativas,
         corrigidos: decisao.problemasCorrigidos,
         uso: decisao.uso,
       });
       if (enviou && deps.whatsapp && ultima.waMessageId) await marcarComoLida(deps.whatsapp, ultima.waMessageId, buscar);
-    } else {
+    } else if (decisao.tipo === "repasse") {
       await repassar(conversa, decisao);
     }
   }

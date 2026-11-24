@@ -28,7 +28,7 @@ const quando = (d: Date | string | null | undefined) =>
 const pausada = (ate: Date | string | null | undefined) => Boolean(ate && new Date(ate).getTime() > Date.now());
 
 type Filtro = "todas" | "repasse" | "pausadas";
-type MsgSimulada = { autor: "cliente" | "agente"; texto: string; nota?: string };
+type MsgSimulada = { autor: "cliente" | "agente"; texto: string; nota?: string; ignorada?: boolean };
 
 const DATAS_SIMULADAS: { rotulo: string; valor: string | undefined }[] = [
   { rotulo: "Hoje", valor: undefined },
@@ -350,8 +350,9 @@ function Avaliacao({ chave }: { chave: string }) {
   return (
     <Cartao titulo="Avaliação das respostas críticas (Claude de verdade)" icone={FlaskConical}>
       <p className="text-sm text-slate-500">
-        Roda 21 perguntas de teste: preço com e sem cupom antes e depois de 12/12, links, certificado, quem não tem graduação, e os
-        repasses para você. Leva cerca de 1 minuto e custa poucos centavos. Nada é enviado pelo WhatsApp.
+        Roda as perguntas de teste: preço com e sem cupom antes e depois de 12/12, links, certificado, quem não tem graduação, os
+        repasses para você e as mensagens que não devem gastar a IA. Leva cerca de 1 minuto e custa menos de um centavo de dólar.
+        Nada é enviado pelo WhatsApp.
       </p>
       <button
         type="button"
@@ -367,10 +368,15 @@ function Avaliacao({ chave }: { chave: string }) {
           <p className={`font-baloo text-lg font-bold ${r.passaram === r.total ? "text-[#0f766e]" : "text-amber-700"}`}>
             {r.passaram} de {r.total} passaram
           </p>
+          <p className="text-xs text-slate-500">
+            {r.semIa} de {r.total} foram resolvidas sem a IA (resposta pronta ou regra), com custo zero.
+          </p>
           <ul className="space-y-1.5">
             {r.resultados.map((x) => (
               <li key={x.nome} className={`rounded-2xl px-3 py-2 text-xs ${x.passou ? "bg-emerald-50" : "bg-amber-50"}`}>
-                <b>{x.passou ? "✓" : "✗"} {x.nome}</b> · {x.tipo === "repasse" ? `repasse (${NOME_CATEGORIA[x.categoria ?? ""] ?? x.categoria})` : "resposta"}
+                <b>{x.passou ? "✓" : "✗"} {x.nome}</b> ·{" "}
+                {x.tipo === "repasse" ? `repasse (${NOME_CATEGORIA[x.categoria ?? ""] ?? x.categoria})` : x.tipo === "fixa" ? "resposta pronta" : x.tipo}
+                {x.usouIa ? ` · IA${x.tokens ? ` (${x.tokens.entrada + x.tokens.cacheLido} lidos, ${x.tokens.saida} escritos)` : ""}` : " · sem IA"}
                 {x.problemas.length ? <p className="font-semibold text-amber-800">{x.problemas.join("; ")}</p> : null}
                 <p className="mt-1 whitespace-pre-wrap text-slate-600">{x.texto}</p>
               </li>
@@ -400,14 +406,20 @@ function Simulador({ chave }: { chave: string }) {
       const r = await simular.mutateAsync({
         token: chave,
         data,
-        mensagens: historico.map((m) => ({ autor: m.autor, texto: m.texto })),
+        mensagens: historico.filter((m) => !m.ignorada).map((m) => ({ autor: m.autor, texto: m.texto })),
       });
+      if (r.tipo === "ignorar") {
+        setMensagens([...historico, { autor: "agente", texto: "(sem resposta)", nota: `Não responde: ${r.motivo}. Custo zero.`, ignorada: true }]);
+        return;
+      }
       const nota =
         r.tipo === "repasse"
           ? `Repasse para você · ${NOME_CATEGORIA[r.categoria] ?? r.categoria} · ${r.origem} · resumo: ${r.resumo}`
-          : r.problemasCorrigidos.length
-            ? `Reescrita depois da conferência: ${r.problemasCorrigidos.join("; ")}`
-            : undefined;
+          : r.tipo === "fixa"
+            ? `Resposta pronta (${r.rota}), sem IA: custo zero.`
+            : r.problemasCorrigidos.length
+              ? `Resposta da IA, reescrita depois da conferência: ${r.problemasCorrigidos.join("; ")}`
+              : `Resposta da IA${r.uso ? ` · ${r.uso.entrada + r.uso.cacheLido} tokens lidos, ${r.uso.saida} escritos` : ""}.`;
       setMensagens([...historico, { autor: "agente", texto: r.texto, nota }]);
     } catch (e) {
       setMensagens([...historico, { autor: "agente", texto: "(erro no simulador)", nota: String((e as Error).message) }]);

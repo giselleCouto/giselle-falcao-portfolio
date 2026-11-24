@@ -5,7 +5,7 @@
 // servidor cria as tabelas na primeira vez (CREATE TABLE IF NOT EXISTS, mesmo
 // SQL da migração drizzle/0019_large_gorgon.sql; um teste garante que não divergem).
 
-import { and, desc, eq, gte, inArray, sql } from "drizzle-orm";
+import { and, desc, eq, gte, inArray, like, sql } from "drizzle-orm";
 import {
   whatsappAjustes,
   whatsappConversas,
@@ -118,6 +118,7 @@ const paraMensagem = (m: WhatsappMensagem): Mensagem => ({
   status: m.status,
   erro: m.erro,
   criadaEm: m.criadaEm,
+  meta: m.meta,
 });
 
 const paraRepasse = (r: WhatsappRepasse): Repasse => ({
@@ -270,7 +271,7 @@ export const repositorioMySql: RepositorioWhatsApp = {
     if (Object.keys(set).length) await db.update(whatsappRepasses).set(set).where(eq(whatsappRepasses.id, id));
   },
 
-  async respostasDoAgenteDesde(conversaId, desde) {
+  async respostasDaIaDesde(conversaId, desde) {
     const db = await banco();
     const [linha] = await db
       .select({ n: sql<number>`count(*)` })
@@ -279,6 +280,7 @@ export const repositorioMySql: RepositorioWhatsApp = {
         and(
           eq(whatsappMensagens.conversaId, conversaId),
           eq(whatsappMensagens.autor, "agente"),
+          like(whatsappMensagens.meta, '%"llm":true%'),
           gte(whatsappMensagens.criadaEm, desde)
         )
       );
