@@ -39,6 +39,13 @@ Tenha à mão:
 
 > Custo estimado: de US$ 0,01 a US$ 0,03 por resposta. Com 30 conversas por dia, fica perto de US$ 10 a US$ 20 por mês.
 
+**Por que não dá para usar a assinatura do Claude que você usa no dia a dia (claude.ai ou Claude Code)?** A assinatura é de uso pessoal. Um servidor que conversa com clientes precisa de uma chave da API. A Console (platform.claude.com) aceita o mesmo login, mas é uma conta separada, com cobrança própria, e o uso da API nunca entra na fatura da assinatura.
+
+**Créditos que já vêm com o plano:** os planos Max, Ultra e Team trazem créditos mensais de API. Os planos Free, Pro e Enterprise não trazem.
+- Para usar esses créditos, entre em claude.ai → **Settings** → **Billing** (no Team, quem é dona da organização usa **Organization settings** → **Billing**) e ligue o plano à organização da Console onde criou a chave.
+- O plano só se liga a uma organização. Depois de ligado, só o suporte troca.
+- Os créditos chegam todo mês e não acumulam. Quem assinou agora só pode resgatar depois de 7 dias.
+
 ---
 
 ## 2. Senha do webhook
@@ -99,6 +106,15 @@ Aplique o deploy e espere o site reiniciar.
    - **Token de verificação:** a mesma senha do passo 2.
 3. Clique em **Verificar e salvar**. Se der erro, confira se o deploy do passo 3.4 terminou.
 4. Em **Campos do webhook**, clique em **Gerenciar** e assine o campo **messages**.
+
+### 3.5.1 Publicar o app (sem isso, as mensagens de verdade não chegam)
+
+Desde 2026, a Meta só entrega ao webhook as mensagens de verdade, inclusive as suas, depois que o app é **publicado**. Antes disso, chegam só os testes enviados pelo próprio painel.
+
+1. **Faça os testes que a Meta pede.** Em **WhatsApp → Etapa 1. Experimente**, use **Enviar mensagem** para o seu celular. Depois, o agente respondendo também conta como teste. A Meta leva até 24 h para registrar os testes.
+2. **Publique o app.** Em **Analisar → Publicar**, clique em **Publicar**. O botão só acende quando os testes aparecem.
+
+Já estão preenchidas a política de privacidade (`https://www.coutofalcao.com/privacidade`) e a categoria (Educação).
 
 ### 3.6 Conferir
 

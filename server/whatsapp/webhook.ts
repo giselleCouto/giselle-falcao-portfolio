@@ -15,9 +15,29 @@ import { clienteClaudePadrao } from "./agente";
 import { configAtendimento, criarAtendimento, type Atendimento } from "./atendimento";
 import { assinaturaValida, configWhatsApp } from "./cloudApi";
 
+/**
+ * A senha nunca tem espaço: o que vier depois do primeiro espaço ou quebra de
+ * linha é lixo de cópia (ex.: a linha "PS C:\..." do PowerShell colada junto
+ * no Railway) e é descartado dos dois lados antes de comparar.
+ */
+export function limparToken(v: string | undefined | null): string {
+  return String(v ?? "").trim().split(/\s+/)[0] ?? "";
+}
+
 export function tokenConfere(recebido: string, esperado: string | undefined) {
-  if (!esperado) return false;
-  return timingSafeEqual(createHash("sha256").update(recebido).digest(), createHash("sha256").update(esperado).digest());
+  const certo = limparToken(esperado);
+  if (!certo) return false;
+  const ok = timingSafeEqual(
+    createHash("sha256").update(limparToken(recebido)).digest(),
+    createHash("sha256").update(certo).digest()
+  );
+  if (!ok) {
+    // só os tamanhos, nunca os valores
+    console.warn(
+      `[WhatsApp] senha do webhook não confere (recebida com ${limparToken(recebido).length} caracteres; a do Railway tem ${certo.length}, ${String(esperado ?? "").length} antes de limpar)`
+    );
+  }
+  return ok;
 }
 
 let atendimento: Atendimento | null = null;

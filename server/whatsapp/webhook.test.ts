@@ -83,6 +83,14 @@ describe("rotas do webhook do WhatsApp", () => {
     expect(recebidos).toHaveLength(1);
   });
 
+  it("ignora espaço, quebra de linha e lixo de cópia na senha salva no Railway", async () => {
+    const { base } = await subir({ WHATSAPP_WEBHOOK_TOKEN: ` ${TOKEN}\r\nPS C:\\WINDOWS\\System32> ` });
+    const ok = await fetch(`${base}/api/whatsapp/webhook/${TOKEN}?hub.mode=subscribe&hub.verify_token=${TOKEN}&hub.challenge=77`);
+    expect(ok.status).toBe(200);
+    expect(await ok.text()).toBe("77");
+    expect((await fetch(`${base}/api/whatsapp/webhook/${TOKEN}x?hub.mode=subscribe&hub.verify_token=${TOKEN}&hub.challenge=1`)).status).toBe(401);
+  });
+
   it("sem token configurado, o webhook fica fechado", async () => {
     const { base } = await subir({});
     expect((await fetch(`${base}/api/whatsapp/webhook/qualquer`, { method: "POST", body: "{}" })).status).toBe(503);
