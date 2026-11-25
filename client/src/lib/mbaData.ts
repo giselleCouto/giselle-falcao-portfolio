@@ -25,6 +25,9 @@ export const mba = {
   nomeCurto: "MBA Executivo",
   tituloInicio: "Todo mundo já usa IA. Falta quem saiba",
   tituloDestaque: "decidir onde ela gera valor.",
+  // Primeira tela no celular: uma linha de promessa e o formato em uma linha
+  promessa: "Um MBA para priorizar, provar, governar e escalar IA na sua empresa, com um plano de 365 dias.",
+  emResumo: "380 h em 12 meses · 100% on-line · sem programação",
   sub: "Um MBA para quem decide, lidera ou financia iniciativas de Dados e IA: priorizar os casos de uso certos, provar que a solução funciona, governar os riscos e sair do piloto com um plano de 100, 180 e 365 dias.",
   fatos: ["380 h em 12 meses", "100% on-line", "Sem programação", "Para quem tem graduação, em qualquer área"],
   certificado:

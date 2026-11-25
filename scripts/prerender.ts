@@ -29,6 +29,7 @@ import { palestras } from "../client/src/lib/palestrasData";
 import { livro } from "../client/src/lib/livroData";
 import { programasExecutivos as pe } from "../client/src/lib/programasExecutivosData";
 import { fluente } from "../client/src/lib/fluenteData";
+import { fluenteCompleto as fc } from "../client/src/lib/fluenteCompletoData";
 import { mba } from "../client/src/lib/mbaData";
 import { doDadoAoValor as ddv } from "../client/src/lib/doDadoAoValorData";
 import {
@@ -793,6 +794,52 @@ routes.push({
       credencial: ddv.certificado,
       precos: ddv.precos,
       faq: ddv.faq,
+    }),
+  ],
+});
+
+// ---- /fluente-completo (página de vendas do curso livre, Turma 01 — destino dos anúncios)
+// O snapshot é gerado no build, então mostra os dois preços com as datas.
+routes.push({
+  path: "/fluente-completo",
+  aliases: ["/fluente-completo/instagram", "/fluente-completo/facebook", "/fluente-completo/youtube", "/fluente-completo/linkedin", "/fluente-completo/tiktok", "/fluente-completo/whatsapp"],
+  title: "Fluente em IA completo: curso livre para usar IA com segurança | NOKAHI EDU · Giselle Falcão",
+  description:
+    "A versão completa da série Fluente em IA: 10 h em 7 módulos, 100% on-line, com aulas gravadas. Usar IA no trabalho com segurança, conferir as respostas e montar um plano de 90 dias. Sem programação.",
+  h1: `${fc.tituloInicio} ${fc.tituloDestaque}`,
+  blocks: [
+    { p: `${fc.selo}. ${fc.nomeCompleto}. ${fc.sub}` },
+    { ul: fc.fatos },
+    { p: fc.certificado },
+    {
+      p: `Investimento: condição de primeira turma até ${turma01.fimCondicao}, ${fc.precos.primeiraTurma.avista} à vista ou ${fc.precos.primeiraTurma.parcelado}. A partir de ${turma01.inicioRegular}, ${fc.precos.regular.avista} ou ${fc.precos.regular.parcelado}. A Turma 01 começa em ${turma01.inicio}, com inscrições até ${turma01.fimInscricoes}. ${turma01.pagamento}`,
+    },
+    { h2: fc.paraQuem.titulo },
+    { p: `“${fc.paraQuem.frase}”` },
+    { ul: fc.paraQuem.itens },
+    { h2: "Para quem não é" },
+    { ul: fc.naoEPara },
+    { h2: fc.percurso.titulo },
+    { p: fc.percurso.intro },
+    { dl: fc.percurso.modulos.map((m) => [`Módulo ${m.n} · ${m.titulo}`, m.aulas.join("; ")] as [string, string]) },
+    { h2: fc.inclui.titulo },
+    { ul: fc.inclui.itens },
+    { h2: "Sua professora" },
+    { p: `${fc.autora.nome}. ${fc.autora.resumo}` },
+    { h2: "Perguntas frequentes" },
+    { dl: fc.faq.map((f) => [f.q, f.a] as [string, string]) },
+    { p: `${fc.notaLegal} ${turmaNotaEmpresa}` },
+  ],
+  schema: [
+    PERSON,
+    ...schemaOferta({
+      nome: fc.nome,
+      descricao: fc.sub,
+      rota: "/fluente-completo",
+      horas: 10,
+      credencial: fc.certificado,
+      precos: fc.precos,
+      faq: fc.faq,
     }),
   ],
 });

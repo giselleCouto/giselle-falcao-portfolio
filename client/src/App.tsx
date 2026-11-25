@@ -17,6 +17,7 @@ import { iaEmpresas } from "./lib/iaEmpresasData";
 import { programasExecutivos } from "./lib/programasExecutivosData";
 import { mba } from "./lib/mbaData";
 import { doDadoAoValor } from "./lib/doDadoAoValorData";
+import { fluenteCompleto } from "./lib/fluenteCompletoData";
 import { schemaOferta } from "./lib/turma01Data";
 import { minasSummitFaqItems, minasSummitFaqMeta, minasSummitSocialLinks } from "./lib/minasSummitFaqData";
 import AiOsExperience from "./pages/AiOsExperience";
@@ -27,6 +28,7 @@ import GiselleHome from "./pages/giselle/GiselleHome";
 import GiselleIAEmpresas from "./pages/giselle/GiselleIAEmpresas";
 import GiselleProgramasExecutivos from "./pages/giselle/GiselleProgramasExecutivos";
 import GiselleFluente from "./pages/giselle/GiselleFluente";
+import GiselleFluenteCompleto from "./pages/giselle/GiselleFluenteCompleto";
 import GiselleMba from "./pages/giselle/GiselleMba";
 import GiselleDoDadoAoValor from "./pages/giselle/GiselleDoDadoAoValor";
 import GiselleNinguemNasceFluente from "./pages/giselle/GiselleNinguemNasceFluente";
@@ -157,6 +159,14 @@ const CANONICAL_ALIASES: Record<string, string> = {
   "/do-dado-ao-valor/linkedin": "/do-dado-ao-valor",
   "/do-dado-ao-valor/tiktok": "/do-dado-ao-valor",
   "/do-dado-ao-valor/whatsapp": "/do-dado-ao-valor",
+  // Fluente em IA completo (curso livre, Turma 01): entrada própria dos anúncios
+  "/fluente-completo/": "/fluente-completo",
+  "/fluente-completo/instagram": "/fluente-completo",
+  "/fluente-completo/facebook": "/fluente-completo",
+  "/fluente-completo/youtube": "/fluente-completo",
+  "/fluente-completo/linkedin": "/fluente-completo",
+  "/fluente-completo/tiktok": "/fluente-completo",
+  "/fluente-completo/whatsapp": "/fluente-completo",
   // Lançamento "Ninguém nasce fluente" (Turma 01): /nivel é a rota curta
   "/ninguem-nasce-fluente/": "/ninguem-nasce-fluente",
   "/nivel": "/ninguem-nasce-fluente",
@@ -200,6 +210,12 @@ const ROUTE_CHANNELS: Record<string, string> = {
   "/do-dado-ao-valor/linkedin": "linkedin",
   "/do-dado-ao-valor/tiktok": "tiktok",
   "/do-dado-ao-valor/whatsapp": "whatsapp",
+  "/fluente-completo/instagram": "instagram",
+  "/fluente-completo/facebook": "facebook",
+  "/fluente-completo/youtube": "youtube",
+  "/fluente-completo/linkedin": "linkedin",
+  "/fluente-completo/tiktok": "tiktok",
+  "/fluente-completo/whatsapp": "whatsapp",
   // Lançamento "Ninguém nasce fluente": uma rota curta por canal
   "/nivel/youtube": "youtube",
   "/nivel/instagram": "instagram",
@@ -403,6 +419,25 @@ function RouteSeo() {
             }),
           },
         ],
+      });
+    } else if (location === "/fluente-completo" || location.startsWith("/fluente-completo/")) {
+      // Páginas de vendas da Turma 01 (NOKAHI EDU) — curso livre Fluente em IA completo
+      title = "Fluente em IA completo: curso livre para usar IA com segurança | NOKAHI EDU · Giselle Falcão";
+      description =
+        "A versão completa da série Fluente em IA: 10 h em 7 módulos, 100% on-line, com aulas gravadas. Usar IA no trabalho com segurança, conferir as respostas e montar um plano de 90 dias. Sem programação, com certificado de conclusão de curso livre.";
+      keywords =
+        "curso de IA, Fluente em IA, letramento em IA, IA no trabalho, uso seguro de IA, curso livre de inteligência artificial, NOKAHI EDU, Giselle Falcão";
+      upsertJsonLd("nokahi-edu-oferta-schema", {
+        "@context": "https://schema.org",
+        "@graph": schemaOferta({
+          nome: fluenteCompleto.nome,
+          descricao: fluenteCompleto.sub,
+          rota: "/fluente-completo",
+          horas: 10,
+          credencial: fluenteCompleto.certificado,
+          precos: fluenteCompleto.precos,
+          faq: fluenteCompleto.faq,
+        }),
       });
     } else if (location === "/fluente" || location.startsWith("/fluente/") || location === "/kit-letramento") {
       title = "Kit de Letramento Fluente em IA (grátis) | NOKAHI EDU · Giselle Falcão";
@@ -1196,6 +1231,9 @@ function Router() {
         <Route path="/do-dado-ao-valor">{() => <GiselleDoDadoAoValor />}</Route>
         <Route path="/extensao">{() => <GiselleDoDadoAoValor />}</Route>
         <Route path="/do-dado-ao-valor/:canal">{(params) => <GiselleDoDadoAoValor canal={params.canal} />}</Route>
+        {/* Fluente em IA completo (Turma 01): entrada própria do curso; /<canal> carimba a origem */}
+        <Route path="/fluente-completo">{() => <GiselleFluenteCompleto />}</Route>
+        <Route path="/fluente-completo/:canal">{(params) => <GiselleFluenteCompleto canal={params.canal} />}</Route>
         {/* Lançamento "Ninguém nasce fluente" (Turma 01); /nivel/<canal> carimba a origem */}
         <Route path="/ninguem-nasce-fluente">{() => <GiselleNinguemNasceFluente />}</Route>
         <Route path="/nivel">{() => <GiselleNinguemNasceFluente />}</Route>

@@ -4,7 +4,11 @@ import { CalendarDays, CheckCircle2, ChevronDown, MessageCircle, Quote, ShieldCh
 import { programasExecutivos } from "@/lib/programasExecutivosData";
 import { metaEventoDaPagina } from "@/lib/anuncios";
 import {
+  CATEGORIA_OFERTA,
+  LINHA_CONFIANCA,
   NOME_OFERTA,
+  ROTULO_INSCRICAO,
+  ROTULO_WHATSAPP,
   checkoutUrl,
   condicaoPrimeiraTurmaAtiva,
   cupomAtual,
@@ -19,8 +23,9 @@ import {
   type Precos,
 } from "@/lib/turma01Data";
 
-// Peças compartilhadas pelas páginas de vendas da Turma 01 (/mba e
-// /do-dado-ao-valor). Paleta NOKAHI EDU, a mesma do Kit de Letramento.
+// Peças compartilhadas pelas páginas de vendas da Turma 01 (/mba,
+// /do-dado-ao-valor e /fluente-completo). Paleta NOKAHI EDU, a mesma do Kit
+// de Letramento.
 
 export const INK = "#0f3141";
 export const TEAL = "#078aa7";
@@ -59,7 +64,7 @@ export function useEventoPaginaOferta(id: OfertaId, precos: Precos) {
   useEffect(() => {
     metaEventoDaPagina("ViewContent", {
       content_name: NOME_OFERTA[id],
-      content_category: id === "mba" ? "MBA Executivo" : "Curso de extensão",
+      content_category: CATEGORIA_OFERTA[id],
       value: precoAtual(precos).valor,
       currency: "BRL",
     });
@@ -74,16 +79,108 @@ type OfertaProps = {
   canal?: string;
 };
 
-export function CartaoPreco({ id, nomeCurto, precos, certificado, canal, ancora }: OfertaProps & { ancora: string }) {
+/**
+ * Topo das páginas de venda. No celular (quem chega do anúncio está no
+ * celular), a primeira tela mostra, sem rolar: título, promessa, preço, botão
+ * de inscrição, botão de WhatsApp e linha de confiança. Por isso a ordem ali é
+ * título → cartão de preço → detalhes. No computador, o texto fica à esquerda
+ * e o cartão à direita, como sempre.
+ */
+export function HeroOferta({
+  selo,
+  tituloInicio,
+  tituloDestaque,
+  promessa,
+  emResumo,
+  nome,
+  sub,
+  fatos,
+  children,
+}: {
+  selo: string;
+  tituloInicio: string;
+  tituloDestaque: string;
+  /** Uma linha de promessa (só no celular; no computador, o parágrafo `sub` já está ao lado) */
+  promessa: string;
+  /** Formato do curso em uma linha (só no celular) */
+  emResumo: string;
+  nome: string;
+  sub: string;
+  fatos: string[];
+  /** O cartão de preço */
+  children: React.ReactNode;
+}) {
+  return (
+    <section className="relative overflow-hidden" style={{ backgroundColor: INK }}>
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_85%_85%,rgba(97,232,191,0.20),transparent_45%),radial-gradient(circle_at_10%_10%,rgba(17,175,200,0.18),transparent_40%)]" />
+      <div className="container relative grid gap-3.5 pb-10 pt-3 sm:gap-8 sm:py-14 lg:grid-cols-[1.1fr_0.9fr] lg:gap-x-10 lg:gap-y-0 lg:py-16">
+        <motion.div
+          variants={fadeUp}
+          initial="hidden"
+          animate="visible"
+          transition={{ duration: 0.3 }}
+          className="lg:col-start-1 lg:row-start-1 lg:self-end"
+        >
+          <p
+            className="text-[0.6875rem] font-bold uppercase leading-4 tracking-[0.16em] sm:text-xs sm:tracking-[0.25em]"
+            style={{ color: MINT }}
+          >
+            {selo}
+          </p>
+          <h1 className="mt-2 font-baloo text-[1.75rem] font-bold leading-[1.08] text-white sm:mt-5 sm:text-5xl sm:leading-[1.06]">
+            {tituloInicio} <span style={{ color: MINT }}>{tituloDestaque}</span>
+          </h1>
+          <p className="mt-1.5 text-[0.9375rem] leading-[1.4] text-slate-200 lg:hidden">{promessa}</p>
+          <p className="mt-1.5 text-xs font-semibold text-slate-400 lg:hidden">{emResumo}</p>
+        </motion.div>
+
+        <div className="lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:self-center">{children}</div>
+
+        <div className="lg:col-start-1 lg:row-start-2 lg:self-start">
+          <p className="text-base font-semibold text-slate-200 sm:text-lg lg:mt-4">{nome}</p>
+          <p className="mt-3 max-w-xl text-base leading-7 text-slate-300 sm:mt-4 sm:text-lg sm:leading-8">{sub}</p>
+          <ul className="mt-5 flex flex-wrap gap-2 sm:mt-7">
+            {fatos.map((f) => (
+              <li key={f} className="rounded-full border border-white/15 bg-white/5 px-3.5 py-1.5 text-sm font-semibold text-white">
+                {f}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/**
+ * Cartão de preço. De cima para baixo: condição, preço, botão de inscrição,
+ * botão de WhatsApp e linha de confiança (tudo isso cabe na primeira tela do
+ * celular); depois, cupom, datas e certificado.
+ */
+export function CartaoPreco({
+  id,
+  nomeCurto,
+  precos,
+  certificado,
+  canal,
+  ancora,
+  destaque = "parcela",
+}: OfertaProps & {
+  ancora: string;
+  /** Qual valor vai em letras grandes: a parcela (padrão) ou o valor à vista */
+  destaque?: "parcela" | "avista";
+}) {
   const href = useCheckout(id, canal);
   const condicao = condicaoPrimeiraTurmaAtiva();
   const aberto = inscricoesAbertas();
   const preco = precoAtual(precos);
   const cupom = aberto ? cupomAtual(id) : null;
   const msg = `Olá, Giselle! Tenho uma dúvida sobre o ${nomeCurto} (Turma 01).`;
+  const botaoPrincipal =
+    "mt-3.5 inline-flex w-full items-center justify-center gap-2 rounded-full px-6 py-3.5 text-base font-bold text-white transition hover:brightness-110 sm:mt-6 sm:px-7 sm:py-4";
 
   return (
-    <div id={ancora} className="scroll-mt-24 rounded-[2rem] bg-white p-7 shadow-[0_18px_60px_rgba(15,49,65,0.25)] sm:p-8">
+    <div id={ancora} className="scroll-mt-24 rounded-[1.75rem] bg-white px-5 pb-5 pt-4 shadow-[0_18px_60px_rgba(15,49,65,0.25)] sm:rounded-[2rem] sm:p-8">
       {condicao && aberto ? (
         <p
           className="inline-flex rounded-full px-3 py-1 text-xs font-bold"
@@ -92,18 +189,73 @@ export function CartaoPreco({ id, nomeCurto, precos, certificado, canal, ancora 
           Condição de primeira turma até {turma01.fimCondicao}
         </p>
       ) : null}
-      <p className="mt-4 font-baloo text-4xl font-bold leading-none sm:text-5xl" style={{ color: INK }}>
-        {preco.parcelado}
+      <p className="mt-2.5 font-baloo text-[2.125rem] font-bold leading-none sm:mt-4 sm:text-5xl" style={{ color: INK }}>
+        {destaque === "avista" ? (
+          <>
+            {preco.avista} <span className="font-sans text-base font-semibold text-slate-500">à vista</span>
+          </>
+        ) : (
+          preco.parcelado
+        )}
       </p>
-      <p className="mt-2 text-sm font-semibold text-slate-600">ou {preco.avista} à vista</p>
+      <p className="mt-1.5 text-sm font-semibold text-slate-600 sm:mt-2">
+        {destaque === "avista" ? `ou ${preco.parcelado} no cartão` : `ou ${preco.avista} à vista`}
+      </p>
       {condicao && aberto ? (
-        <p className="mt-2 text-xs leading-5 text-slate-500">
+        <p className="mt-1.5 text-xs leading-5 text-slate-500 sm:mt-2">
           A partir de {turma01.inicioRegular}: {precos.regular.avista} ou {precos.regular.parcelado}.
         </p>
       ) : null}
+
+      {aberto ? (
+        href ? (
+          <a
+            href={href}
+            data-cta={`inscrever-${id}`}
+            data-meta-nome={NOME_OFERTA[id]}
+            data-meta-valor={preco.valor}
+            className={botaoPrincipal}
+            style={{ backgroundColor: INK }}
+          >
+            {ROTULO_INSCRICAO}
+          </a>
+        ) : (
+          <a
+            href={whatsappUrl(`Olá, Giselle! Quero me inscrever no ${nomeCurto} (Turma 01).`)}
+            target="_blank"
+            rel="noopener noreferrer"
+            data-cta={`inscricao-em-breve-${id}`}
+            data-meta-nome={NOME_OFERTA[id]}
+            className={botaoPrincipal}
+            style={{ backgroundColor: INK }}
+          >
+            Inscrições abrem em breve: fale comigo
+          </a>
+        )
+      ) : (
+        <p className="mt-4 rounded-2xl px-4 py-3 text-sm font-semibold sm:mt-6" style={{ backgroundColor: SURFACE, color: INK }}>
+          As inscrições da Turma 01 terminaram em {turma01.fimInscricoes}. Chame a Giselle para saber da próxima turma.
+        </p>
+      )}
+      <a
+        href={whatsappUrl(msg)}
+        target="_blank"
+        rel="noopener noreferrer"
+        data-cta={`whatsapp-${id}`}
+        data-meta-nome={NOME_OFERTA[id]}
+        className="mt-2 inline-flex w-full items-center justify-center gap-2 rounded-full border-2 border-slate-200 px-6 py-2.5 text-sm font-bold text-slate-700 transition hover:border-[#078aa7] sm:mt-3 sm:px-7 sm:py-3"
+      >
+        <MessageCircle className="size-4" style={{ color: TEAL }} />
+        {ROTULO_WHATSAPP}
+      </a>
+      <p className="mt-3 flex items-start gap-2 text-xs leading-[1.45] text-slate-600 sm:mt-4">
+        <ShieldCheck className="mt-px size-4 shrink-0" style={{ color: TEAL }} />
+        <span>{LINHA_CONFIANCA[id]}</span>
+      </p>
+
       {cupom ? (
         <div
-          className="mt-4 rounded-2xl border border-dashed px-4 py-3 text-sm leading-6"
+          className="mt-5 rounded-2xl border border-dashed px-4 py-3 text-sm leading-6"
           style={{ borderColor: TEAL, backgroundColor: SURFACE, color: INK }}
         >
           <p>
@@ -115,55 +267,13 @@ export function CartaoPreco({ id, nomeCurto, precos, certificado, canal, ancora 
           </p>
           <p className="mt-1 text-xs text-slate-600">
             {href
-              ? "Ele já vai aplicado quando você clica em “Quero me inscrever”. Se não aparecer no checkout, é só digitar o código."
+              ? `Ele já vai aplicado quando você toca em “${ROTULO_INSCRICAO}”. Se não aparecer no checkout, é só digitar o código.`
               : "Informe o código no checkout da Voomp."}
           </p>
         </div>
       ) : null}
 
-      {aberto ? (
-        href ? (
-          <a
-            href={href}
-            data-cta={`inscrever-${id}`}
-            data-meta-nome={NOME_OFERTA[id]}
-            data-meta-valor={preco.valor}
-            className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full px-7 py-4 text-base font-bold text-white transition hover:brightness-110"
-            style={{ backgroundColor: INK }}
-          >
-            Quero me inscrever
-          </a>
-        ) : (
-          <a
-            href={whatsappUrl(`Olá, Giselle! Quero me inscrever no ${nomeCurto} (Turma 01).`)}
-            target="_blank"
-            rel="noopener noreferrer"
-            data-cta={`inscricao-em-breve-${id}`}
-            data-meta-nome={NOME_OFERTA[id]}
-            className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full px-7 py-4 text-base font-bold text-white transition hover:brightness-110"
-            style={{ backgroundColor: INK }}
-          >
-            Inscrições abrem em breve: fale comigo
-          </a>
-        )
-      ) : (
-        <p className="mt-6 rounded-2xl px-4 py-3 text-sm font-semibold" style={{ backgroundColor: SURFACE, color: INK }}>
-          As inscrições da Turma 01 terminaram em {turma01.fimInscricoes}. Chame a Giselle para saber da próxima turma.
-        </p>
-      )}
-      <a
-        href={whatsappUrl(msg)}
-        target="_blank"
-        rel="noopener noreferrer"
-        data-cta={`whatsapp-${id}`}
-        data-meta-nome={NOME_OFERTA[id]}
-        className="mt-3 inline-flex w-full items-center justify-center gap-2 rounded-full border-2 border-slate-200 px-7 py-3 text-sm font-bold text-slate-700 transition hover:border-[#078aa7]"
-      >
-        <MessageCircle className="size-4" style={{ color: TEAL }} />
-        Tirar dúvidas com a Giselle
-      </a>
-
-      <ul className="mt-6 space-y-2.5 border-t border-slate-100 pt-5 text-sm text-slate-600">
+      <ul className="mt-5 space-y-2.5 border-t border-slate-100 pt-5 text-sm text-slate-600">
         {aberto ? (
           <li className="flex items-start gap-2">
             <CalendarDays className="mt-0.5 size-4 shrink-0" style={{ color: TEAL }} />
@@ -188,7 +298,17 @@ export function CartaoPreco({ id, nomeCurto, precos, certificado, canal, ancora 
  * aparece, desde o topo da página, sempre que nenhum botão de inscrição dos
  * cartões de preço está na tela.
  */
-export function BarraFixa({ id, precos, canal, alvos }: Omit<OfertaProps, "certificado" | "nomeCurto"> & { alvos: string[] }) {
+export function BarraFixa({
+  id,
+  precos,
+  canal,
+  alvos,
+  destaque = "parcela",
+}: Omit<OfertaProps, "certificado" | "nomeCurto"> & {
+  alvos: string[];
+  /** O mesmo destaque do cartão de preço da página */
+  destaque?: "parcela" | "avista";
+}) {
   const href = useCheckout(id, canal);
   const [visivel, setVisivel] = useState(false);
   const preco = precoAtual(precos);
@@ -240,9 +360,11 @@ export function BarraFixa({ id, precos, canal, alvos }: Omit<OfertaProps, "certi
       <div className="mx-auto flex max-w-xl items-center justify-between gap-3">
         <div className="min-w-0">
           <p className="truncate text-sm font-bold" style={{ color: INK }}>
-            {preco.parcelado}
+            {destaque === "avista" ? `${preco.avista} à vista` : preco.parcelado}
           </p>
-          <p className="truncate text-xs text-slate-500">ou {preco.avista} à vista</p>
+          <p className="truncate text-xs text-slate-500">
+            {destaque === "avista" ? `ou ${preco.parcelado} no cartão` : `ou ${preco.avista} à vista`}
+          </p>
         </div>
         <a
           href={destino}
@@ -253,7 +375,7 @@ export function BarraFixa({ id, precos, canal, alvos }: Omit<OfertaProps, "certi
           className="shrink-0 rounded-full px-5 py-3 text-sm font-bold text-white"
           style={{ backgroundColor: INK }}
         >
-          {href ? "Quero me inscrever" : "Ver condições"}
+          {href ? ROTULO_INSCRICAO : "Ver condições"}
         </a>
       </div>
     </div>
@@ -285,7 +407,18 @@ export function NumerosComFonte({ fatos }: { fatos: { numero: string; texto: str
   );
 }
 
-export function QuemConduz({ rotulo, complemento }: { rotulo: string; complemento?: React.ReactNode }) {
+export function QuemConduz({
+  rotulo,
+  complemento,
+  nome = giselle.nome,
+  resumo = giselle.resumo,
+}: {
+  rotulo: string;
+  complemento?: React.ReactNode;
+  /** Nome e resumo próprios da página (padrão: os de turma01Data) */
+  nome?: string;
+  resumo?: string;
+}) {
   return (
     <section className="border-y border-slate-200/70 bg-white">
       <div className="container grid gap-10 py-14 sm:py-16 lg:grid-cols-[0.7fr_1.3fr] lg:items-start">
@@ -298,9 +431,9 @@ export function QuemConduz({ rotulo, complemento }: { rotulo: string; complement
         <div>
           <Rotulo>{rotulo}</Rotulo>
           <h2 className="mt-3 font-baloo text-3xl font-bold" style={{ color: INK }}>
-            {giselle.nome}
+            {nome}
           </h2>
-          <p className="mt-4 max-w-2xl text-base leading-7 text-slate-600">{giselle.resumo}</p>
+          <p className="mt-4 max-w-2xl text-base leading-7 text-slate-600">{resumo}</p>
           <ul className="mt-6 grid gap-3 sm:grid-cols-2">
             {giselle.provas.map((p) => (
               <li key={p} className="flex items-start gap-2 rounded-2xl px-4 py-3 text-sm leading-6 text-slate-700" style={{ backgroundColor: SURFACE }}>

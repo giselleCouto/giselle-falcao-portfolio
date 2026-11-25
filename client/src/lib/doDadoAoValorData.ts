@@ -21,6 +21,9 @@ export const doDadoAoValor = {
   nomeCompleto: "Do Dado ao Valor: Estratégia, Dados e Inteligência Artificial para Líderes",
   tituloInicio: "IA sem hype: saiba quais projetos",
   tituloDestaque: "dão retorno, e quais não dão.",
+  // Primeira tela no celular: uma linha de promessa e o formato em uma linha
+  promessa: "Letramento em Dados e IA para decidir com critério, qualquer que seja o seu cargo.",
+  emResumo: "40 h · 100% on-line · aulas de 3 a 12 minutos",
   sub: "Um curso de extensão universitária de 40 h, 100% on-line, em aulas de 3 a 12 minutos. É letramento em Dados e IA para decidir com critério, qualquer que seja o seu cargo, sem programação e sem exigência de graduação.",
   fatos: ["40 h · 100% on-line", "48 aulas de 3 a 12 minutos", "Sem programação", "Sem exigência de graduação"],
   certificado: "Certificado de extensão universitária emitido pela Anhanguera, instituição credenciada pelo MEC.",

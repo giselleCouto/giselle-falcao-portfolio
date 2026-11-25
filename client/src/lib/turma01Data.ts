@@ -1,6 +1,7 @@
 // Ofertas pagas da Turma 01 da NOKAHI EDU (nov/2026): MBA Executivo e a extensão
 // Do Dado ao Valor, vendidas pela Voomp Creators (IES parceira: Anhanguera).
-// Módulo compartilhado pelas páginas de vendas /mba e /do-dado-ao-valor:
+// Módulo compartilhado pelas páginas de vendas /mba, /do-dado-ao-valor e
+// /fluente-completo (curso livre, sem IES; conteúdo em fluenteCompletoData.ts):
 // datas reais da turma, condição de primeira turma, links de checkout, UTMs e
 // atendimento. O conteúdo de cada curso fica em mbaData.ts e doDadoAoValorData.ts.
 //
@@ -14,12 +15,13 @@
 // - Tom amigável e coletivo, confiança acima de tudo; preço sempre visível.
 
 import { condicaoPrimeiraTurmaAtiva } from "./fluenteData";
+import { CUPOM_PRIMEIRA_TURMA as CUPOM_POR_NIVEL, LINKS_INSCRICAO } from "./ninguemNasceFluenteData";
 import { contact } from "./portfolioData";
 import { getAttribution } from "./tracking";
 
 export { condicaoPrimeiraTurmaAtiva };
 
-export type OfertaId = "mba" | "extensao";
+export type OfertaId = "mba" | "extensao" | "fluente";
 
 // ===================================================================
 // Links de checkout da Voomp (Produtos → Links → copiar o link do produto).
@@ -32,6 +34,8 @@ export type OfertaId = "mba" | "extensao";
 export const CHECKOUT_VOOMP: Record<OfertaId, string | null> = {
   mba: "https://pay.voompcreators.com.br/17779?ch_id=3071",
   extensao: "https://pay.voompcreators.com.br/17781?ch_id=3072",
+  // Fluente em IA completo: o mesmo link do nível 1 da página /nivel
+  fluente: LINKS_INSCRICAO[1],
 };
 
 /**
@@ -42,10 +46,12 @@ export const CHECKOUT_VOOMP: Record<OfertaId, string | null> = {
  * regular; o cupom leva ao valor de primeira turma da página.
  * MBA: R$ 9.000 − MBA2800 (R$ 2.800) = R$ 6.200.
  * Extensão: R$ 2.500 − DADO750 (R$ 750) = R$ 1.750.
+ * Fluente em IA completo: R$ 350 − FLUENTE105 (R$ 105) = R$ 245.
  */
 export const CUPOM_PRIMEIRA_TURMA: Record<OfertaId, { codigo: string; desconto: string } | null> = {
   mba: { codigo: "MBA2800", desconto: "R$ 2.800" },
   extensao: { codigo: "DADO750", desconto: "R$ 750" },
+  fluente: CUPOM_POR_NIVEL[1] ? { codigo: CUPOM_POR_NIVEL[1], desconto: "R$ 105" } : null,
 };
 
 /** Cupom que vale hoje (só durante a condição de primeira turma). */
@@ -64,6 +70,31 @@ export const WHATSAPP_DUVIDAS: string | null = "5531982280551";
 export const NOME_OFERTA: Record<OfertaId, string> = {
   mba: "MBA Executivo em Estratégia de IA e Transformação Empresarial",
   extensao: "Do Dado ao Valor",
+  fluente: "Fluente em IA completo",
+};
+
+/** Categoria de cada oferta no ViewContent do Pixel da Meta */
+export const CATEGORIA_OFERTA: Record<OfertaId, string> = {
+  mba: "MBA Executivo",
+  extensao: "Curso de extensão",
+  fluente: "Curso livre",
+};
+
+// ------------------------------------------- primeira tela (quem chega do anúncio)
+
+/** Botões da oferta: os mesmos rótulos no topo, no cartão final e na barra fixa. */
+export const ROTULO_INSCRICAO = "Fazer minha inscrição";
+export const ROTULO_WHATSAPP = "Tirar dúvida no WhatsApp";
+
+/**
+ * Linha de confiança logo abaixo dos botões. A garantia só aparece no Fluente
+ * em IA completo (7 dias, cadastrada no produto da Voomp). Na extensão e no
+ * MBA, a Giselle ainda não confirmou a garantia: não escrever até ela confirmar.
+ */
+export const LINHA_CONFIANCA: Record<OfertaId, string> = {
+  fluente: "7 dias de garantia · certificado de conclusão emitido pela NOKAHI EDU · pagamento pela Voomp",
+  extensao: "Certificado emitido pela Anhanguera, instituição credenciada pelo MEC · pagamento pela Voomp",
+  mba: "Certificado emitido pela Anhanguera, instituição credenciada pelo MEC · pagamento pela Voomp",
 };
 
 // ===================================================================
@@ -134,7 +165,7 @@ function utmDaSessao(): Record<string, string> {
  * Link de checkout com as UTMs da sessão (ou, sem UTM, com a origem da rota:
  * /mba/instagram vira utm_source=instagram). Null se o link ainda não existe.
  */
-export function checkoutUrl(id: OfertaId, origemDaRota?: string): string | null {
+export function checkoutUrl(id: OfertaId, origemDaRota?: string, agora = Date.now()): string | null {
   const base = CHECKOUT_VOOMP[id];
   if (!base) return null;
   try {
@@ -148,7 +179,7 @@ export function checkoutUrl(id: OfertaId, origemDaRota?: string): string | null 
     for (const [chave, valor] of Object.entries(utm)) {
       if (!url.searchParams.has(chave)) url.searchParams.set(chave, valor);
     }
-    const cupom = cupomAtual(id);
+    const cupom = cupomAtual(id, agora);
     if (cupom && !url.searchParams.has("cupom")) url.searchParams.set("cupom", cupom.codigo);
     return url.toString();
   } catch {

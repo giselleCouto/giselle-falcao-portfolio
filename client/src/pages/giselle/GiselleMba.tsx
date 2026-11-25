@@ -17,6 +17,7 @@ import {
   CartaoPreco,
   Depoimentos,
   Faq,
+  HeroOferta,
   INK,
   MINT,
   NotaLegal,
@@ -51,35 +52,26 @@ export default function GiselleMba({ canal }: { canal?: string }) {
 
   return (
     <GiselleLayout>
-      {/* Hero: promessa + cartão de preço (acima da dobra no desktop) */}
-      <section className="relative overflow-hidden" style={{ backgroundColor: INK }}>
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_85%_85%,rgba(97,232,191,0.20),transparent_45%),radial-gradient(circle_at_10%_10%,rgba(17,175,200,0.18),transparent_40%)]" />
-        <div className="container relative grid gap-10 py-12 sm:py-16 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
-          <motion.div variants={fadeUp} initial="hidden" animate="visible" transition={{ duration: 0.3 }}>
-            <Rotulo claro>{mba.selo}</Rotulo>
-            <h1 className="mt-5 font-baloo text-4xl font-bold leading-[1.06] text-white sm:text-5xl">
-              {mba.tituloInicio} <span style={{ color: MINT }}>{mba.tituloDestaque}</span>
-            </h1>
-            <p className="mt-4 text-base font-semibold text-slate-200 sm:text-lg">{mba.nome}</p>
-            <p className="mt-4 max-w-xl text-base leading-7 text-slate-300 sm:text-lg sm:leading-8">{mba.sub}</p>
-            <ul className="mt-7 flex flex-wrap gap-2">
-              {mba.fatos.map((f) => (
-                <li key={f} className="rounded-full border border-white/15 bg-white/5 px-3.5 py-1.5 text-sm font-semibold text-white">
-                  {f}
-                </li>
-              ))}
-            </ul>
-          </motion.div>
-          <CartaoPreco
-            ancora="preco-topo"
-            id="mba"
-            nomeCurto={mba.nomeCurto}
-            precos={mba.precos}
-            certificado={mba.certificado}
-            canal={origem}
-          />
-        </div>
-      </section>
+      {/* Hero: no celular, título, preço e botões cabem na primeira tela */}
+      <HeroOferta
+        selo={mba.selo}
+        tituloInicio={mba.tituloInicio}
+        tituloDestaque={mba.tituloDestaque}
+        promessa={mba.promessa}
+        emResumo={mba.emResumo}
+        nome={mba.nome}
+        sub={mba.sub}
+        fatos={mba.fatos}
+      >
+        <CartaoPreco
+          ancora="preco-topo"
+          id="mba"
+          nomeCurto={mba.nomeCurto}
+          precos={mba.precos}
+          certificado={mba.certificado}
+          canal={origem}
+        />
+      </HeroOferta>
 
       {/* Por que agora: urgência verdadeira, com fonte */}
       <section className="container py-14 sm:py-16">
