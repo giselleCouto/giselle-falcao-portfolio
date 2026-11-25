@@ -25,7 +25,7 @@ export default function AvisoCookies() {
     <div
       role="region"
       aria-label="Aviso de cookies"
-      className="fixed inset-x-3 bottom-3 z-[70] sm:inset-x-auto sm:bottom-5 sm:left-5 sm:max-w-md"
+      className="fixed inset-x-3 bottom-3 z-[70] mb-[var(--barra-compra,0px)] transition-[margin] sm:inset-x-auto sm:bottom-5 sm:left-5 sm:max-w-md"
     >
       <div className="rounded-2xl border border-slate-200 bg-white p-5 text-sm leading-6 text-slate-600 shadow-[0_18px_50px_rgba(15,23,42,0.18)]">
         <p>

@@ -76,8 +76,11 @@ function agoraDaPagina(): number {
 
 function nivelDoHash(): NivelId | null {
   if (typeof window === "undefined") return null;
-  const m = window.location.hash.match(/^#nivel-([123])$/);
-  return m ? (Number(m[1]) as NivelId) : null;
+  // Aceita #nivel-1 (mesmo com algo colado depois pelo app de origem) e ?nivel=1
+  const m = window.location.hash.match(/^#nivel-([123])(?![0-9])/);
+  if (m) return Number(m[1]) as NivelId;
+  const q = new URLSearchParams(window.location.search).get("nivel");
+  return q && /^[123]$/.test(q) ? (Number(q) as NivelId) : null;
 }
 
 function rolarPara(id: string) {
@@ -396,6 +399,50 @@ function ContatoPorEmail({
   );
 }
 
+/**
+ * No celular (quem chega do anúncio está no celular), preço e inscrição vêm
+ * antes dos detalhes do curso: um toque até o checkout.
+ */
+function OfertaDireta({ nivel, agora, canal }: { nivel: Nivel; agora: number; canal?: NnfCanal }) {
+  const inscricao = inscricoesAbertas(agora)
+    ? inscricaoUrl(nivel.id, { agora, origem: canal ?? getAttribution().source })
+    : null;
+  if (!inscricao) return null;
+  const preco = precoAtual(nivel, agora);
+  const primeira = condicaoPrimeiraTurmaAtiva(agora);
+  return (
+    <div className="mt-6 rounded-[2rem] bg-white p-6 shadow-[0_18px_50px_rgba(15,49,65,0.08)] lg:hidden">
+      <p className="text-sm font-bold" style={{ color: TEAL }}>
+        Nível {nivel.id} · {nivel.rotulo}
+      </p>
+      <p className="mt-1 font-baloo text-2xl font-bold leading-tight" style={{ color: INK }}>
+        {nivel.curso}
+      </p>
+      <p className="mt-3 text-sm leading-6 text-slate-700">
+        <b className="text-base" style={{ color: INK }}>
+          {preco.avista}
+        </b>{" "}
+        à vista ou {preco.parcelado} no cartão
+        {primeira ? `. Condição de primeira turma até ${turma.fimCondicao}.` : "."}
+      </p>
+      <a
+        href={inscricao}
+        target="_blank"
+        rel="noopener noreferrer"
+        data-cta={`inscricao-topo-n${nivel.id}`}
+        className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-full px-7 py-4 text-sm font-bold text-white transition hover:brightness-110"
+        style={{ backgroundColor: INK }}
+      >
+        Quero me inscrever
+        <ArrowRight className="size-4" />
+      </a>
+      <p className="mt-3 text-xs leading-5 text-slate-500">
+        A {turma.nome} começa em {turma.inicio}. Os detalhes do curso estão logo abaixo.
+      </p>
+    </div>
+  );
+}
+
 function PainelNivel({
   nivel,
   origem,
@@ -440,6 +487,8 @@ function PainelNivel({
             })}
           </div>
         </div>
+
+        <OfertaDireta nivel={nivel} agora={agora} canal={canal} />
 
         <motion.div
           key={nivel.id}

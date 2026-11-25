@@ -185,7 +185,8 @@ export function CartaoPreco({ id, nomeCurto, precos, certificado, canal, ancora 
 
 /**
  * Barra fixa no rodapé do celular (quem chega do anúncio está no celular):
- * aparece quando nenhum cartão de preço está na tela.
+ * aparece, desde o topo da página, sempre que nenhum botão de inscrição dos
+ * cartões de preço está na tela.
  */
 export function BarraFixa({ id, precos, canal, alvos }: Omit<OfertaProps, "certificado" | "nomeCurto"> & { alvos: string[] }) {
   const href = useCheckout(id, canal);
@@ -195,21 +196,36 @@ export function BarraFixa({ id, precos, canal, alvos }: Omit<OfertaProps, "certi
   const chaveAlvos = alvos.join(",");
 
   useEffect(() => {
+    // Observa o botão de inscrição de cada cartão (não o cartão inteiro): a barra
+    // só some quando há um botão de inscrição de fato visível na tela.
     const elementos = chaveAlvos
       .split(",")
-      .map((a) => document.getElementById(a))
+      .map((a) => {
+        const cartao = document.getElementById(a);
+        return cartao?.querySelector<HTMLElement>('[data-cta^="inscr"]') ?? cartao;
+      })
       .filter(Boolean) as HTMLElement[];
     if (elementos.length === 0 || typeof IntersectionObserver === "undefined") return;
     const naTela = new Map<Element, boolean>();
     const obs = new IntersectionObserver((entradas) => {
       for (const e of entradas) naTela.set(e.target, e.isIntersecting);
       const algumNaTela = Array.from(naTela.values()).some(Boolean);
-      // Só depois de passar do primeiro cartão (evita a barra no topo da página)
-      setVisivel(!algumNaTela && window.scrollY > 400);
+      // Desde o topo: quem chega do anúncio vê preço e botão sem precisar rolar
+      setVisivel(!algumNaTela);
     });
     elementos.forEach((el) => obs.observe(el));
     return () => obs.disconnect();
   }, [chaveAlvos]);
+
+  // O aviso de cookies sobe para não cobrir a barra (ver AvisoCookies)
+  useEffect(() => {
+    const raiz = document.documentElement;
+    const celular = typeof window.matchMedia !== "function" || !window.matchMedia("(min-width: 1024px)").matches;
+    raiz.style.setProperty("--barra-compra", visivel && aberto && celular ? "76px" : "0px");
+    return () => {
+      raiz.style.removeProperty("--barra-compra");
+    };
+  }, [visivel, aberto]);
 
   if (!aberto) return null;
   const destino = href ?? `#${alvos[0]}`;
