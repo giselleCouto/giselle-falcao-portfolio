@@ -24,6 +24,24 @@ export function kitPdfUrl(agora = Date.now()) {
     : "/iscas/a-partir-de-13-12/Kit-de-Letramento-Fluente-em-IA.pdf";
 }
 
+// Validação do formulário do kit feita na página, com o aviso escrito na tela.
+// O navegador do Instagram e de outros apps pode bloquear o envio de um campo
+// obrigatório vazio sem mostrar aviso nenhum: em 25 e 26/11/2026, 13 pessoas
+// começaram o formulário e nenhuma conseguiu enviar.
+export type CampoKit = "nome" | "email" | "consent";
+
+export const PERFIL_NAO_ESCOLHIDO = "Não escolheu";
+
+export function validarKit(dados: { nome: string; email: string; consent: boolean }) {
+  const erros: Partial<Record<CampoKit, string>> = {};
+  if (dados.nome.trim().length < 2) erros.nome = "Escreva o seu nome.";
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(dados.email.trim())) {
+    erros.email = "Confira o e-mail. Ele precisa ser como nome@exemplo.com.";
+  }
+  if (!dados.consent) erros.consent = "Marque a autorização para liberar o kit.";
+  return erros;
+}
+
 export const fluente = {
   selo: "NOKAHI EDU · Série Fluente em IA",
   titulo: "Use IA com critério, não só com pressa.",

@@ -4,13 +4,17 @@ import { Link } from "wouter";
 import { CheckCircle2, Download, ExternalLink, FileText, Loader2, Share2, Youtube } from "lucide-react";
 import { toast } from "sonner";
 import GiselleLayout from "@/components/giselle/GiselleLayout";
+import { trackEvent } from "@/lib/eventos";
 import { getAttribution } from "@/lib/tracking";
 import { trpc } from "@/lib/trpc";
 import {
   FLUENTE_CANAIS,
+  PERFIL_NAO_ESCOLHIDO,
   condicaoPrimeiraTurmaAtiva,
   fluente,
   kitPdfUrl,
+  validarKit,
+  type CampoKit,
   type FluenteCanal,
 } from "@/lib/fluenteData";
 
@@ -122,29 +126,44 @@ function FormularioKit({ canal, onLiberado }: { canal?: FluenteCanal; onLiberado
   const [email, setEmail] = useState("");
   const [avisoExtensao, setAvisoExtensao] = useState(false);
   const [consent, setConsent] = useState(false);
+  const [erros, setErros] = useState<Partial<Record<CampoKit, string>>>({});
 
   const mutation = trpc.leads.submit.useMutation({
     onSuccess: () => {
+      trackEvent("form-ok");
       lembrarDownload();
       onLiberado();
     },
-    onError: (error) => toast.error(error.message || "Não foi possível enviar. Tente novamente."),
+    onError: (error) => {
+      trackEvent("form-falha");
+      toast.error(error.message || "Não foi possível enviar. Tente novamente.");
+    },
   });
 
+  const limparErro = (campo: CampoKit) => setErros((atual) => (atual[campo] ? { ...atual, [campo]: undefined } : atual));
+
+  // Sem validação nativa (noValidate): o navegador de alguns apps bloqueia o
+  // envio sem mostrar o motivo. Aqui o aviso aparece escrito, embaixo do campo.
   const enviar = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!perfil) {
-      toast.error("Escolha a opção que mais combina com você.");
+    const encontrados = validarKit({ nome, email, consent });
+    const primeiro = (["nome", "email", "consent"] as CampoKit[]).find((c) => encontrados[c]);
+    if (primeiro) {
+      setErros(encontrados);
+      trackEvent("form-erro", primeiro);
+      toast.error(encontrados[primeiro]);
+      document.getElementById(`fk-${primeiro}`)?.focus();
       return;
     }
+    setErros({});
     const attribution = getAttribution();
     mutation.mutate({
       route: "/fluente",
-      persona: perfil,
+      persona: perfil || PERFIL_NAO_ESCOLHIDO,
       name: nome,
       email,
       interest: avisoExtensao ? "Kit Fluente em IA + aviso Do Dado ao Valor" : "Kit Fluente em IA",
-      message: `Pediu o Kit de Letramento Fluente em IA. Perfil: ${perfil}. Quer aviso das inscrições da extensão Do Dado ao Valor: ${avisoExtensao ? "sim" : "não"}.`,
+      message: `Pediu o Kit de Letramento Fluente em IA. Perfil: ${perfil || PERFIL_NAO_ESCOLHIDO}. Quer aviso das inscrições da extensão Do Dado ao Valor: ${avisoExtensao ? "sim" : "não"}.`,
       source: canal ?? attribution.source ?? "fluente",
       campaign: attribution.campaign ?? "kit-letramento",
       howFound: canal ?? attribution.source ?? "",
@@ -154,6 +173,7 @@ function FormularioKit({ canal, onLiberado }: { canal?: FluenteCanal; onLiberado
   return (
     <form
       onSubmit={enviar}
+      noValidate
       className="space-y-5 rounded-[2rem] bg-white p-7 shadow-[0_18px_60px_rgba(15,49,65,0.25)] sm:p-9"
     >
       <div>
@@ -164,7 +184,7 @@ function FormularioKit({ canal, onLiberado }: { canal?: FluenteCanal; onLiberado
       </div>
       <fieldset>
         <legend className="text-sm font-bold" style={{ color: INK }}>
-          Qual frase combina mais com você? *
+          Qual frase combina mais com você? <span className="font-normal text-slate-500">(opcional)</span>
         </legend>
         <div className="mt-2 grid gap-2 sm:grid-cols-2">
           {fluente.perfis.map((p) => {
@@ -191,13 +211,54 @@ function FormularioKit({ canal, onLiberado }: { canal?: FluenteCanal; onLiberado
           <label className="block text-sm font-bold" style={{ color: INK }} htmlFor="fk-nome">
             Seu nome *
           </label>
-          <input id="fk-nome" required minLength={2} maxLength={160} className={`mt-1.5 ${inputClass}`} value={nome} onChange={(e) => setNome(e.target.value)} />
+          <input
+            id="fk-nome"
+            required
+            maxLength={160}
+            autoComplete="name"
+            enterKeyHint="next"
+            aria-invalid={erros.nome ? true : undefined}
+            aria-describedby={erros.nome ? "fk-nome-erro" : undefined}
+            className={`mt-1.5 ${inputClass} ${erros.nome ? "border-red-500" : ""}`}
+            value={nome}
+            onChange={(e) => {
+              setNome(e.target.value);
+              limparErro("nome");
+            }}
+          />
+          {erros.nome ? (
+            <p id="fk-nome-erro" className="mt-1.5 text-sm font-semibold text-red-600">
+              {erros.nome}
+            </p>
+          ) : null}
         </div>
         <div>
           <label className="block text-sm font-bold" style={{ color: INK }} htmlFor="fk-email">
             E-mail *
           </label>
-          <input id="fk-email" required type="email" maxLength={320} className={`mt-1.5 ${inputClass}`} value={email} onChange={(e) => setEmail(e.target.value)} />
+          <input
+            id="fk-email"
+            required
+            type="email"
+            inputMode="email"
+            autoComplete="email"
+            autoCapitalize="none"
+            enterKeyHint="done"
+            maxLength={320}
+            aria-invalid={erros.email ? true : undefined}
+            aria-describedby={erros.email ? "fk-email-erro" : undefined}
+            className={`mt-1.5 ${inputClass} ${erros.email ? "border-red-500" : ""}`}
+            value={email}
+            onChange={(e) => {
+              setEmail(e.target.value);
+              limparErro("email");
+            }}
+          />
+          {erros.email ? (
+            <p id="fk-email-erro" className="mt-1.5 text-sm font-semibold text-red-600">
+              {erros.email}
+            </p>
+          ) : null}
         </div>
       </div>
       <label className="flex cursor-pointer items-start gap-3 rounded-2xl bg-[#eef8f9] px-4 py-3">
@@ -206,16 +267,37 @@ function FormularioKit({ canal, onLiberado }: { canal?: FluenteCanal; onLiberado
           Quero receber o aviso quando abrirem as inscrições da extensão <b>Do Dado ao Valor</b> (opcional).
         </span>
       </label>
-      <label className="flex cursor-pointer items-start gap-3 px-1">
-        <input type="checkbox" required checked={consent} onChange={(e) => setConsent(e.target.checked)} className="mt-1 size-4 accent-[#078aa7]" />
-        <span className="text-xs leading-5 text-slate-500">
-          Autorizo a Giselle Falcão e a NOKAHI EDU a entrar em contato sobre a série e os cursos, conforme a{" "}
-          <Link href="/privacidade" className="font-semibold hover:underline" style={{ color: TEAL }}>
-            Política de Privacidade
-          </Link>
-          . *
-        </span>
-      </label>
+      <div>
+        <label
+          className={`flex cursor-pointer items-start gap-3 rounded-2xl border-2 px-4 py-3 ${erros.consent ? "border-red-500 bg-red-50" : "border-transparent"}`}
+        >
+          <input
+            id="fk-consent"
+            type="checkbox"
+            required
+            checked={consent}
+            aria-invalid={erros.consent ? true : undefined}
+            aria-describedby={erros.consent ? "fk-consent-erro" : undefined}
+            onChange={(e) => {
+              setConsent(e.target.checked);
+              limparErro("consent");
+            }}
+            className="mt-0.5 size-5 shrink-0 accent-[#078aa7]"
+          />
+          <span className="text-sm leading-6 text-slate-600">
+            Autorizo a Giselle Falcão e a NOKAHI EDU a entrar em contato sobre a série e os cursos, conforme a{" "}
+            <Link href="/privacidade" className="font-semibold hover:underline" style={{ color: TEAL }}>
+              Política de Privacidade
+            </Link>
+            . *
+          </span>
+        </label>
+        {erros.consent ? (
+          <p id="fk-consent-erro" className="mt-1.5 px-1 text-sm font-semibold text-red-600">
+            {erros.consent}
+          </p>
+        ) : null}
+      </div>
       <button
         type="submit"
         disabled={mutation.isPending}
