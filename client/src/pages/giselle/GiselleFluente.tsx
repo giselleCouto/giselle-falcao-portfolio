@@ -9,7 +9,7 @@ import { getAttribution } from "@/lib/tracking";
 import { trpc } from "@/lib/trpc";
 import {
   FLUENTE_CANAIS,
-  PERFIL_NAO_ESCOLHIDO,
+  PERFIL_NAO_PERGUNTADO,
   condicaoPrimeiraTurmaAtiva,
   fluente,
   kitPdfUrl,
@@ -17,6 +17,8 @@ import {
   type CampoKit,
   type FluenteCanal,
 } from "@/lib/fluenteData";
+import { fluenteCompleto } from "@/lib/fluenteCompletoData";
+import { precoAtual, turma01 } from "@/lib/turma01Data";
 
 // Página do Kit de Letramento Fluente em IA — destino dos anúncios e das
 // descrições da série (YouTube, Instagram, LinkedIn, TikTok). Conteúdo em
@@ -65,6 +67,8 @@ function compartilhar() {
 }
 
 function KitLiberado({ pdf }: { pdf: string }) {
+  const condicao = condicaoPrimeiraTurmaAtiva();
+  const preco = precoAtual(fluenteCompleto.precos);
   return (
     <motion.div
       initial={{ opacity: 0, y: 10 }}
@@ -116,16 +120,38 @@ function KitLiberado({ pdf }: { pdf: string }) {
           Mandar para o time
         </button>
       </div>
+      {/* Próximo passo depois do download: o curso, com preço visível e sem pressão */}
+      <div className="mt-6 rounded-2xl bg-[#eef8f9] p-5 text-left">
+        <p className="text-xs font-bold uppercase tracking-[0.18em]" style={{ color: TEAL }}>
+          Quer ir além do kit?
+        </p>
+        <p className="mt-2 font-baloo text-lg font-bold" style={{ color: INK }}>
+          {fluenteCompleto.nome}
+        </p>
+        <p className="mt-1 text-sm leading-6 text-slate-600">
+          O kit é o começo. No curso você aprofunda cada página, com aulas curtas. {fluenteCompleto.emResumo}. A turma
+          começa em {turma01.inicio}.
+        </p>
+        <p className="mt-2 text-sm font-bold" style={{ color: INK }}>
+          {preco.avista} à vista ou {preco.parcelado}
+          {condicao ? ` · condição de primeira turma até ${turma01.fimCondicao}` : ""}
+        </p>
+        <Link
+          href="/fluente-completo?src=kit&c=pos-download"
+          data-cta="kit-conhecer-curso"
+          className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-bold text-white transition hover:brightness-110"
+          style={{ backgroundColor: TEAL }}
+        >
+          Conhecer o curso
+        </Link>
+      </div>
     </motion.div>
   );
 }
 
 function FormularioKit({ canal, onLiberado }: { canal?: FluenteCanal; onLiberado: () => void }) {
-  const [perfil, setPerfil] = useState("");
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
-  const [avisoExtensao, setAvisoExtensao] = useState(false);
-  const [consent, setConsent] = useState(false);
   const [erros, setErros] = useState<Partial<Record<CampoKit, string>>>({});
 
   const mutation = trpc.leads.submit.useMutation({
@@ -142,12 +168,13 @@ function FormularioKit({ canal, onLiberado }: { canal?: FluenteCanal; onLiberado
 
   const limparErro = (campo: CampoKit) => setErros((atual) => (atual[campo] ? { ...atual, [campo]: undefined } : atual));
 
-  // Sem validação nativa (noValidate): o navegador de alguns apps bloqueia o
-  // envio sem mostrar o motivo. Aqui o aviso aparece escrito, embaixo do campo.
+  // Formulário curto (nome e e-mail) e sem validação nativa (noValidate): o
+  // navegador de alguns apps bloqueia o envio sem mostrar o motivo. Aqui o aviso
+  // aparece escrito, embaixo do campo.
   const enviar = (e: React.FormEvent) => {
     e.preventDefault();
-    const encontrados = validarKit({ nome, email, consent });
-    const primeiro = (["nome", "email", "consent"] as CampoKit[]).find((c) => encontrados[c]);
+    const encontrados = validarKit({ nome, email });
+    const primeiro = (["nome", "email"] as CampoKit[]).find((c) => encontrados[c]);
     if (primeiro) {
       setErros(encontrados);
       trackEvent("form-erro", primeiro);
@@ -159,11 +186,11 @@ function FormularioKit({ canal, onLiberado }: { canal?: FluenteCanal; onLiberado
     const attribution = getAttribution();
     mutation.mutate({
       route: "/fluente",
-      persona: perfil || PERFIL_NAO_ESCOLHIDO,
+      persona: PERFIL_NAO_PERGUNTADO,
       name: nome,
       email,
-      interest: avisoExtensao ? "Kit Fluente em IA + aviso Do Dado ao Valor" : "Kit Fluente em IA",
-      message: `Pediu o Kit de Letramento Fluente em IA. Perfil: ${perfil || PERFIL_NAO_ESCOLHIDO}. Quer aviso das inscrições da extensão Do Dado ao Valor: ${avisoExtensao ? "sim" : "não"}.`,
+      interest: "Kit Fluente em IA",
+      message: "Pediu o Kit de Letramento Fluente em IA pelo formulário curto (nome e e-mail).",
       source: canal ?? attribution.source ?? "fluente",
       campaign: attribution.campaign ?? "kit-letramento",
       howFound: canal ?? attribution.source ?? "",
@@ -174,127 +201,64 @@ function FormularioKit({ canal, onLiberado }: { canal?: FluenteCanal; onLiberado
     <form
       onSubmit={enviar}
       noValidate
-      className="space-y-5 rounded-[2rem] bg-white p-7 shadow-[0_18px_60px_rgba(15,49,65,0.25)] sm:p-9"
+      className="space-y-4 rounded-[2rem] bg-white p-6 shadow-[0_18px_60px_rgba(15,49,65,0.25)] sm:p-9"
     >
       <div>
         <p className="font-baloo text-xl font-bold" style={{ color: INK }}>
           Receba o kit grátis
         </p>
-        <p className="mt-1 text-sm text-slate-500">O download libera na hora, aqui mesmo.</p>
+        <p className="mt-1 text-sm text-slate-500">Só nome e e-mail. O download libera na hora, aqui mesmo.</p>
       </div>
-      <fieldset>
-        <legend className="text-sm font-bold" style={{ color: INK }}>
-          Qual frase combina mais com você? <span className="font-normal text-slate-500">(opcional)</span>
-        </legend>
-        <div className="mt-2 grid gap-2 sm:grid-cols-2">
-          {fluente.perfis.map((p) => {
-            const ativo = perfil === p;
-            return (
-              <button
-                key={p}
-                type="button"
-                aria-pressed={ativo}
-                onClick={() => setPerfil(p)}
-                className={`rounded-2xl border-2 px-4 py-2.5 text-left text-sm font-semibold transition ${
-                  ativo ? "text-white" : "border-slate-200 text-slate-600 hover:border-[#078aa7]"
-                }`}
-                style={ativo ? { backgroundColor: TEAL, borderColor: TEAL } : undefined}
-              >
-                {p}
-              </button>
-            );
-          })}
-        </div>
-      </fieldset>
-      <div className="grid gap-4 sm:grid-cols-2">
-        <div>
-          <label className="block text-sm font-bold" style={{ color: INK }} htmlFor="fk-nome">
-            Seu nome *
-          </label>
-          <input
-            id="fk-nome"
-            required
-            maxLength={160}
-            autoComplete="name"
-            enterKeyHint="next"
-            aria-invalid={erros.nome ? true : undefined}
-            aria-describedby={erros.nome ? "fk-nome-erro" : undefined}
-            className={`mt-1.5 ${inputClass} ${erros.nome ? "border-red-500" : ""}`}
-            value={nome}
-            onChange={(e) => {
-              setNome(e.target.value);
-              limparErro("nome");
-            }}
-          />
-          {erros.nome ? (
-            <p id="fk-nome-erro" className="mt-1.5 text-sm font-semibold text-red-600">
-              {erros.nome}
-            </p>
-          ) : null}
-        </div>
-        <div>
-          <label className="block text-sm font-bold" style={{ color: INK }} htmlFor="fk-email">
-            E-mail *
-          </label>
-          <input
-            id="fk-email"
-            required
-            type="email"
-            inputMode="email"
-            autoComplete="email"
-            autoCapitalize="none"
-            enterKeyHint="done"
-            maxLength={320}
-            aria-invalid={erros.email ? true : undefined}
-            aria-describedby={erros.email ? "fk-email-erro" : undefined}
-            className={`mt-1.5 ${inputClass} ${erros.email ? "border-red-500" : ""}`}
-            value={email}
-            onChange={(e) => {
-              setEmail(e.target.value);
-              limparErro("email");
-            }}
-          />
-          {erros.email ? (
-            <p id="fk-email-erro" className="mt-1.5 text-sm font-semibold text-red-600">
-              {erros.email}
-            </p>
-          ) : null}
-        </div>
-      </div>
-      <label className="flex cursor-pointer items-start gap-3 rounded-2xl bg-[#eef8f9] px-4 py-3">
-        <input type="checkbox" checked={avisoExtensao} onChange={(e) => setAvisoExtensao(e.target.checked)} className="mt-1 size-4 accent-[#078aa7]" />
-        <span className="text-xs leading-5 text-slate-600">
-          Quero receber o aviso quando abrirem as inscrições da extensão <b>Do Dado ao Valor</b> (opcional).
-        </span>
-      </label>
       <div>
-        <label
-          className={`flex cursor-pointer items-start gap-3 rounded-2xl border-2 px-4 py-3 ${erros.consent ? "border-red-500 bg-red-50" : "border-transparent"}`}
-        >
-          <input
-            id="fk-consent"
-            type="checkbox"
-            required
-            checked={consent}
-            aria-invalid={erros.consent ? true : undefined}
-            aria-describedby={erros.consent ? "fk-consent-erro" : undefined}
-            onChange={(e) => {
-              setConsent(e.target.checked);
-              limparErro("consent");
-            }}
-            className="mt-0.5 size-5 shrink-0 accent-[#078aa7]"
-          />
-          <span className="text-sm leading-6 text-slate-600">
-            Autorizo a Giselle Falcão e a NOKAHI EDU a entrar em contato sobre a série e os cursos, conforme a{" "}
-            <Link href="/privacidade" className="font-semibold hover:underline" style={{ color: TEAL }}>
-              Política de Privacidade
-            </Link>
-            . *
-          </span>
+        <label className="block text-sm font-bold" style={{ color: INK }} htmlFor="fk-nome">
+          Seu nome
         </label>
-        {erros.consent ? (
-          <p id="fk-consent-erro" className="mt-1.5 px-1 text-sm font-semibold text-red-600">
-            {erros.consent}
+        <input
+          id="fk-nome"
+          required
+          maxLength={160}
+          autoComplete="given-name"
+          enterKeyHint="next"
+          aria-invalid={erros.nome ? true : undefined}
+          aria-describedby={erros.nome ? "fk-nome-erro" : undefined}
+          className={`mt-1.5 ${inputClass} ${erros.nome ? "border-red-500" : ""}`}
+          value={nome}
+          onChange={(e) => {
+            setNome(e.target.value);
+            limparErro("nome");
+          }}
+        />
+        {erros.nome ? (
+          <p id="fk-nome-erro" className="mt-1.5 text-sm font-semibold text-red-600">
+            {erros.nome}
+          </p>
+        ) : null}
+      </div>
+      <div>
+        <label className="block text-sm font-bold" style={{ color: INK }} htmlFor="fk-email">
+          Seu e-mail
+        </label>
+        <input
+          id="fk-email"
+          required
+          type="email"
+          inputMode="email"
+          autoComplete="email"
+          autoCapitalize="none"
+          enterKeyHint="send"
+          maxLength={320}
+          aria-invalid={erros.email ? true : undefined}
+          aria-describedby={erros.email ? "fk-email-erro" : undefined}
+          className={`mt-1.5 ${inputClass} ${erros.email ? "border-red-500" : ""}`}
+          value={email}
+          onChange={(e) => {
+            setEmail(e.target.value);
+            limparErro("email");
+          }}
+        />
+        {erros.email ? (
+          <p id="fk-email-erro" className="mt-1.5 text-sm font-semibold text-red-600">
+            {erros.email}
           </p>
         ) : null}
       </div>
@@ -316,6 +280,13 @@ function FormularioKit({ canal, onLiberado }: { canal?: FluenteCanal; onLiberado
           </>
         )}
       </button>
+      <p className="text-xs leading-5 text-slate-500">
+        Ao pedir o kit, você autoriza a Giselle Falcão e a NOKAHI EDU a enviar e-mails sobre a série e os cursos, conforme a{" "}
+        <Link href="/privacidade" className="font-semibold hover:underline" style={{ color: TEAL }}>
+          Política de Privacidade
+        </Link>
+        . Dá para sair a qualquer momento.
+      </p>
     </form>
   );
 }
@@ -331,15 +302,15 @@ export default function GiselleFluente({ canal }: { canal?: string }) {
       {/* Hero com o formulário à direita (acima da dobra no desktop) */}
       <section className="relative overflow-hidden" style={{ backgroundColor: INK }}>
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_85%_80%,rgba(97,232,191,0.22),transparent_45%),radial-gradient(circle_at_10%_10%,rgba(17,175,200,0.18),transparent_40%)]" />
-        <div className="container relative grid gap-10 py-14 sm:py-16 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
+        <div className="container relative grid gap-6 py-8 sm:gap-10 sm:py-16 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
           <motion.div variants={fadeUp} initial="hidden" animate="visible" transition={{ duration: 0.3 }}>
             <p className="text-xs font-bold uppercase tracking-[0.22em]" style={{ color: MINT }}>
               {fluente.selo} · Material gratuito
             </p>
-            <h1 className="mt-5 font-baloo text-4xl font-bold leading-[1.05] text-white sm:text-5xl">
+            <h1 className="mt-3 font-baloo text-4xl font-bold leading-[1.05] text-white sm:mt-5 sm:text-5xl">
               Use IA com <span style={{ color: MINT }}>critério</span>, não só com pressa.
             </h1>
-            <p className="mt-5 max-w-xl text-lg leading-8 text-slate-300">{fluente.sub}</p>
+            <p className="mt-3 max-w-xl text-base leading-7 text-slate-300 sm:mt-5 sm:text-lg sm:leading-8">{fluente.sub}</p>
             {/* No celular a lista fica só em "Por dentro do kit", para o formulário subir */}
             <ol className="mt-7 hidden space-y-2.5 lg:block">
               {fluente.entregaveis.map((e) => (
@@ -503,11 +474,6 @@ export default function GiselleFluente({ canal }: { canal?: string }) {
               </li>
             ) : null}
           </ul>
-          {!liberado ? (
-            <p className="mt-6 text-sm text-slate-300">
-              Quer saber quando abrirem as inscrições? Marque a opção de aviso ao pedir o kit.
-            </p>
-          ) : null}
         </div>
       </section>
     </GiselleLayout>

@@ -27,18 +27,19 @@ export function kitPdfUrl(agora = Date.now()) {
 // Validação do formulário do kit feita na página, com o aviso escrito na tela.
 // O navegador do Instagram e de outros apps pode bloquear o envio de um campo
 // obrigatório vazio sem mostrar aviso nenhum: em 25 e 26/11/2026, 13 pessoas
-// começaram o formulário e nenhuma conseguiu enviar.
-export type CampoKit = "nome" | "email" | "consent";
+// começaram o formulário e nenhuma conseguiu enviar. Desde 26/11 o formulário
+// pede só nome e e-mail; a autorização é a frase ao lado do botão.
+export type CampoKit = "nome" | "email";
 
-export const PERFIL_NAO_ESCOLHIDO = "Não escolheu";
+/** O formulário curto não pergunta o perfil; o campo segue obrigatório no servidor. */
+export const PERFIL_NAO_PERGUNTADO = "Não informado (formulário curto)";
 
-export function validarKit(dados: { nome: string; email: string; consent: boolean }) {
+export function validarKit(dados: { nome: string; email: string }) {
   const erros: Partial<Record<CampoKit, string>> = {};
   if (dados.nome.trim().length < 2) erros.nome = "Escreva o seu nome.";
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(dados.email.trim())) {
     erros.email = "Confira o e-mail. Ele precisa ser como nome@exemplo.com.";
   }
-  if (!dados.consent) erros.consent = "Marque a autorização para liberar o kit.";
   return erros;
 }
 
